@@ -18,8 +18,7 @@
  */
 package org.animotron.bridge.webdav;
 
-import org.animotron.exist.index.AnimoIndex;
-import org.neo4j.graphdb.GraphDatabaseService;
+import org.animotron.graph.AnimoGraph;
 
 import com.bradmcevoy.common.Path;
 import com.bradmcevoy.http.Resource;
@@ -37,10 +36,8 @@ public class AnimoResourceFactory implements ResourceFactory {
 	
 	//private final SessionFactory sessionFactory;
 	
-	GraphDatabaseService graphDb;
-	
 	public AnimoResourceFactory() {
-		graphDb = AnimoIndex.graphDb;
+		new AnimoGraph("data");
 		
 		System.out.println("running AnimoResourceFactory");
 	}
@@ -49,13 +46,13 @@ public class AnimoResourceFactory implements ResourceFactory {
 	 * @see com.bradmcevoy.http.ResourceFactory#getResource(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Resource getResource(String host, String p) {
-		Path path = Path.path(p).getStripFirst();
+	public Resource getResource(String host, String url) {
+		Path path = Path.path(url).getStripFirst();
 		
 		//Session session = sessionFactory.openSession();
 		
 		if( path.isRoot() ) {
-            return new AnimoCollectionResource(graphDb.getReferenceNode()); 
+            return new AnimoCollectionResource(AnimoGraph.graphDb.getReferenceNode()); 
         } else {
             return null;
         }

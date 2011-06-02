@@ -18,24 +18,34 @@
  */
 package org.animotron.bridge.webdav;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
 
 import com.bradmcevoy.http.Auth;
 import com.bradmcevoy.http.CollectionResource;
+import com.bradmcevoy.http.GetableResource;
+import com.bradmcevoy.http.PropFindableResource;
+import com.bradmcevoy.http.Range;
 import com.bradmcevoy.http.Request;
 import com.bradmcevoy.http.Request.Method;
 import com.bradmcevoy.http.Resource;
+import com.bradmcevoy.http.exceptions.BadRequestException;
+import com.bradmcevoy.http.exceptions.NotAuthorizedException;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  *
  */
-public class AnimoCollectionResource implements CollectionResource {
+public class AnimoCollectionResource implements 
+	CollectionResource, Resource,
+	PropFindableResource,
+	GetableResource {
 	
 	Node node;
 
@@ -52,7 +62,8 @@ public class AnimoCollectionResource implements CollectionResource {
 	@Override
 	public List<? extends Resource> getChildren() {
 		// TODO Auto-generated method stub
-		return Collections.EMPTY_LIST;
+		return 
+			(List<? extends Resource>)Collections.EMPTY_LIST;
 	}
 
 	@Override
@@ -91,6 +102,36 @@ public class AnimoCollectionResource implements CollectionResource {
 	@Override
 	public String checkRedirect(Request request) {
 		// No redirects
+		return null;
+	}
+
+	@Override
+	public void sendContent(OutputStream out, Range range,
+			Map<String, String> params, String contentType) throws IOException,
+			NotAuthorizedException, BadRequestException {
+		
+		out.write("aaa".getBytes());
+	}
+
+	@Override
+	public Long getMaxAgeSeconds(Auth auth) {
+		// do not cache
+		return null;
+	}
+
+	@Override
+	public String getContentType(String accepts) {
+		return "text";
+	}
+
+	@Override
+	public Long getContentLength() {
+		return (long)3;
+	}
+
+	@Override
+	public Date getCreateDate() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

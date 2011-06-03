@@ -18,43 +18,19 @@
  */
 package org.animotron.bridge.webdav;
 
-import org.animotron.graph.AnimoGraph;
-
-import com.bradmcevoy.common.Path;
-import com.bradmcevoy.http.Resource;
-import com.bradmcevoy.http.ResourceFactory;
+import java.util.UUID;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  *
  */
-public class AnimoResourceFactory implements ResourceFactory {
+public class Root extends ACollection {
 	
-	protected static final String NAME = "org.animotron.bridge.webdav.AnimoResourceFactory";
-	
-	protected static final String REALM = "animo"; 
-	
-	//private final SessionFactory sessionFactory;
-	
-	public AnimoResourceFactory() {
-		new AnimoGraph("data");
+	public Root() {
+		super(UUID.randomUUID().toString(), "");
 		
-		System.out.println("running AnimoResourceFactory");
-	}
-
-	/* (non-Javadoc)
-	 * @see com.bradmcevoy.http.ResourceFactory#getResource(java.lang.String, java.lang.String)
-	 */
-	@Override
-	public Resource getResource(String host, String url) {
-		Path path = Path.path(url).getStripFirst();
-		
-		//Session session = sessionFactory.openSession();
-		
-		if( path.isRoot() ) {
-            return new Root(); 
-        } else {
-            return null;
-        }
+		addChild(new ACollection(UUID.randomUUID().toString(), "repo"));
+		addChild(new ACollection(UUID.randomUUID().toString(), "reso"));
+		addChild(new ACollection(UUID.randomUUID().toString(), "upld"));
 	}
 }

@@ -18,43 +18,46 @@
  */
 package org.animotron.bridge.webdav;
 
-import org.animotron.graph.AnimoGraph;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
-import com.bradmcevoy.common.Path;
+import javolution.util.FastList;
+import javolution.util.FastMap;
+
+import com.bradmcevoy.http.CollectionResource;
 import com.bradmcevoy.http.Resource;
-import com.bradmcevoy.http.ResourceFactory;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  *
  */
-public class AnimoResourceFactory implements ResourceFactory {
+public class ACollection extends AResource implements CollectionResource {
 	
-	protected static final String NAME = "org.animotron.bridge.webdav.AnimoResourceFactory";
+	private Map<String, Resource> children = new FastMap<String, Resource>();
 	
-	protected static final String REALM = "animo"; 
+	public ACollection(String id, String name) {
+		super(id, name);
+	}
 	
-	//private final SessionFactory sessionFactory;
-	
-	public AnimoResourceFactory() {
-		new AnimoGraph("data");
-		
-		System.out.println("running AnimoResourceFactory");
+	public void addChild(Resource child) {
+		children.put(child.getName(), child);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.bradmcevoy.http.ResourceFactory#getResource(java.lang.String, java.lang.String)
-	 */
 	@Override
-	public Resource getResource(String host, String url) {
-		Path path = Path.path(url).getStripFirst();
-		
-		//Session session = sessionFactory.openSession();
-		
-		if( path.isRoot() ) {
-            return new Root(); 
-        } else {
-            return null;
-        }
+	public Resource child(String childName) {
+		return children.get(childName);
+	}
+
+	@Override
+	public List<? extends Resource> getChildren() {
+		return new FastList<Resource>(children.values()); 
+	}
+
+	@Override
+	public Date getCreateDate() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

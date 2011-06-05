@@ -23,20 +23,15 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.Map;
 
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.*;
 
 import org.animotron.graph.AnimoGraph;
+import org.animotron.graph.GraphOperation;
 import org.animotron.graph.stax.StAXGraphSerializer;
 import org.animotron.operator.THE;
 import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.Transaction;
 
-import com.bradmcevoy.http.Auth;
-import com.bradmcevoy.http.GetableResource;
-import com.bradmcevoy.http.Range;
-import com.bradmcevoy.http.Request;
+import com.bradmcevoy.http.*;
 import com.bradmcevoy.http.Request.Method;
 import com.bradmcevoy.http.exceptions.BadRequestException;
 import com.bradmcevoy.http.exceptions.NotAuthorizedException;
@@ -58,12 +53,12 @@ public class AnimoResource implements GetableResource {
 	 */
 	@Override
 	public String getUniqueId() {
-		Transaction tx = AnimoGraph.beginTx();
-		try {
-			return String.valueOf( r.getId() );
-		} finally {
-			tx.finish();
-		}
+		return AnimoGraph.execute( new GraphOperation<String>() {
+			@Override
+			public String execute() {
+				return String.valueOf( r.getId() );
+			}
+		});
 	}
 
 	/* (non-Javadoc)
@@ -71,12 +66,12 @@ public class AnimoResource implements GetableResource {
 	 */
 	@Override
 	public String getName() {
-		Transaction tx = AnimoGraph.beginTx();
-		try {
-			return THE.getInstance().name(r);
-		} finally {
-			tx.finish();
-		}
+		return AnimoGraph.execute( new GraphOperation<String>() {
+			@Override
+			public String execute() {
+				return THE.getInstance().name(r);
+			}
+		});
 	}
 
 	/* (non-Javadoc)
@@ -124,23 +119,29 @@ public class AnimoResource implements GetableResource {
 	}
 
 	@Override
-	public void sendContent(OutputStream out, Range range,
+	public void sendContent(final OutputStream out, Range range,
 			Map<String, String> params, String contentType) throws IOException,
 			NotAuthorizedException, BadRequestException {
 		
-		Transaction tx = AnimoGraph.beginTx();
-		try {
-			XMLOutputFactory factory = XMLOutputFactory.newInstance();
-	        XMLStreamWriter writer = factory.createXMLStreamWriter(out);
-	        
-	        StAXGraphSerializer serializer = new StAXGraphSerializer(writer);
-	        serializer.serialize(r);
-	        
-		} catch (XMLStreamException e) {
-			throw new IOException(e);
-		} finally {
-			tx.finish();
-		}
+		XMLStreamException e = 
+			AnimoGraph.execute( new GraphOperation<XMLStreamException>() {
+				@Override
+				public XMLStreamException execute() {
+					try {
+						XMLOutputFactory factory = XMLOutputFactory.newInstance();
+				        XMLStreamWriter writer = factory.createXMLStreamWriter(out);
+				        
+				        StAXGraphSerializer serializer = new StAXGraphSerializer(writer);
+				        serializer.serialize(r);
+				        
+				        return null;
+					} catch (XMLStreamException e) {
+						return e;
+					}
+				}
+			});
+			
+		if (e != null) throw new IOException(e);
 	}
 
 	@Override

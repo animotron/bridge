@@ -19,6 +19,7 @@
 package org.animotron.bridge;
 
 import org.animotron.bridge.webdav.WebDAVServlet;
+import org.animotron.graph.AnimoGraph;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -33,6 +34,9 @@ public class JettyHttpServer {
     private int jettyPort = 8080;
 
     public void start() {
+    	
+    	new AnimoGraph("data");
+    	
         jetty = new Server(jettyPort);
         jetty.setStopAtShutdown(true);
         

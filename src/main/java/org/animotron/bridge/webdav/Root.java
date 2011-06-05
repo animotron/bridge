@@ -34,8 +34,8 @@ public class Root extends ACollection implements Resolvable {
 		
 //		addChild(new ACollection(UUID.randomUUID().toString(), "repo"));
 //		addChild(new ACollection(UUID.randomUUID().toString(), "reso"));
-//		addChild(new ACollection(UUID.randomUUID().toString(), "upld"));
 		addChild(new TheNodes());
+		addChild(new Uploader());
 	}
 
 	public Resource resolve(Path path) {

@@ -18,43 +18,41 @@
  */
 package org.animotron.bridge.webdav;
 
-import org.animotron.graph.AnimoGraph;
+import java.util.List;
+import java.util.UUID;
 
 import com.bradmcevoy.common.Path;
+import com.bradmcevoy.http.CollectionResource;
 import com.bradmcevoy.http.Resource;
-import com.bradmcevoy.http.ResourceFactory;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  *
  */
-public class AnimoResourceFactory implements ResourceFactory {
+public class Uploader extends AResource implements CollectionResource, Resolvable {
 	
-	protected static final String NAME = "org.animotron.bridge.webdav.AnimoResourceFactory";
-	
-	protected static final String REALM = "animo";
-	
-	private Root root = new Root();
-	
-	//private final SessionFactory sessionFactory;
-	
-	public AnimoResourceFactory() {
-		System.out.println("running AnimoResourceFactory");
+	public Uploader() {
+		super(UUID.randomUUID().toString(), "upld");
 	}
 
-	/* (non-Javadoc)
-	 * @see com.bradmcevoy.http.ResourceFactory#getResource(java.lang.String, java.lang.String)
-	 */
 	@Override
-	public Resource getResource(String host, String url) {
-		Path path = Path.path(url);
-		
-		//Session session = sessionFactory.openSession();
-		
-		if( path.isRoot() ) {
-            return root;
-        } else {
-            return root.resolve(path);
-        }
+	public Resource child(String childName) {
+		return new UploadResource(childName);
+	}
+
+	@Override
+	public List<? extends Resource> getChildren() {
+		return java.util.Collections.EMPTY_LIST;
+	}
+
+	@Override
+	public Resource resolve(Path path) {
+		return child(path.getName());
+//		String name = path.getFirst();
+//		
+//		if (path.getStripFirst().getLength() == 0)
+//			return child(name);
+//
+//		return null;
 	}
 }

@@ -32,7 +32,9 @@ public class AnimoResourceFactory implements ResourceFactory {
 	
 	protected static final String NAME = "org.animotron.bridge.webdav.AnimoResourceFactory";
 	
-	protected static final String REALM = "animo"; 
+	protected static final String REALM = "animo";
+	
+	private Root root = new Root();
 	
 	//private final SessionFactory sessionFactory;
 	
@@ -47,14 +49,14 @@ public class AnimoResourceFactory implements ResourceFactory {
 	 */
 	@Override
 	public Resource getResource(String host, String url) {
-		Path path = Path.path(url).getStripFirst();
+		Path path = Path.path(url);
 		
 		//Session session = sessionFactory.openSession();
 		
 		if( path.isRoot() ) {
-            return new Root(); 
+            return root;
         } else {
-            return null;
+            return root.resolve(path);
         }
 	}
 }

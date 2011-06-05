@@ -18,8 +18,6 @@
  */
 package org.animotron.bridge.webdav;
 
-import java.util.UUID;
-
 import com.bradmcevoy.common.Path;
 import com.bradmcevoy.http.Resource;
 
@@ -27,31 +25,8 @@ import com.bradmcevoy.http.Resource;
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  *
  */
-public class Root extends ACollection implements Resolvable {
+public interface Resolvable {
 	
-	public Root() {
-		super(UUID.randomUUID().toString(), "");
-		
-//		addChild(new ACollection(UUID.randomUUID().toString(), "repo"));
-//		addChild(new ACollection(UUID.randomUUID().toString(), "reso"));
-//		addChild(new ACollection(UUID.randomUUID().toString(), "upld"));
-		addChild(new TheNodes());
-	}
+	public Resource resolve(Path path);
 
-	public Resource resolve(Path path) {
-		String direction = path.getFirst();
-		
-		Resource child = child(direction);
-		if (child == null)
-			return null;
-		
-		path = path.getStripFirst();
-		if (path.getLength() == 0)
-			return child;
-		
-		if (child instanceof Resolvable)
-			return ((Resolvable) child).resolve(path);
-
-		return null;
-	}
 }

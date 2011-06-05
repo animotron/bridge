@@ -18,20 +18,34 @@
  */
 package org.animotron.bridge.webdav;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Date;
+import java.util.Map;
 
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
+import org.animotron.graph.AnimoGraph;
+import org.animotron.graph.stax.StAXGraphSerializer;
+import org.animotron.operator.THE;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.Transaction;
 
 import com.bradmcevoy.http.Auth;
+import com.bradmcevoy.http.GetableResource;
+import com.bradmcevoy.http.Range;
 import com.bradmcevoy.http.Request;
-import com.bradmcevoy.http.Resource;
 import com.bradmcevoy.http.Request.Method;
+import com.bradmcevoy.http.exceptions.BadRequestException;
+import com.bradmcevoy.http.exceptions.NotAuthorizedException;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  *
  */
-public class AnimoResource implements Resource {
+public class AnimoResource implements GetableResource {
 	
 	Relationship r;
 	
@@ -44,7 +58,12 @@ public class AnimoResource implements Resource {
 	 */
 	@Override
 	public String getUniqueId() {
-		return String.valueOf( r.getId() );
+		Transaction tx = AnimoGraph.beginTx();
+		try {
+			return String.valueOf( r.getId() );
+		} finally {
+			tx.finish();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -52,7 +71,12 @@ public class AnimoResource implements Resource {
 	 */
 	@Override
 	public String getName() {
-		return String.valueOf( r.getId() );
+		Transaction tx = AnimoGraph.beginTx();
+		try {
+			return THE.getInstance().name(r);
+		} finally {
+			tx.finish();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -96,6 +120,43 @@ public class AnimoResource implements Resource {
 	@Override
 	public String checkRedirect(Request request) {
 		// No redirects
+		return null;
+	}
+
+	@Override
+	public void sendContent(OutputStream out, Range range,
+			Map<String, String> params, String contentType) throws IOException,
+			NotAuthorizedException, BadRequestException {
+		
+		Transaction tx = AnimoGraph.beginTx();
+		try {
+			XMLOutputFactory factory = XMLOutputFactory.newInstance();
+	        XMLStreamWriter writer = factory.createXMLStreamWriter(out);
+	        
+	        StAXGraphSerializer serializer = new StAXGraphSerializer(writer);
+	        serializer.serialize(r);
+	        
+		} catch (XMLStreamException e) {
+			throw new IOException(e);
+		} finally {
+			tx.finish();
+		}
+	}
+
+	@Override
+	public Long getMaxAgeSeconds(Auth auth) {
+		// caching not allowed
+		return null;
+	}
+
+	@Override
+	public String getContentType(String accepts) {
+		return "application/xml";
+	}
+
+	@Override
+	public Long getContentLength() {
+		// unknown
 		return null;
 	}
 

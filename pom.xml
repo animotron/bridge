@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.animotron</groupId>
 	<artifactId>bridge</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>Animo bridge</name>
 
 	<developers>
@@ -24,14 +24,15 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.animotron</groupId>
-			<artifactId>eXist</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<artifactId>core</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
 			<version>${jettyVersion}</version>
 		</dependency>
+		<!-- WebDAV -->
 		<dependency>
 			<groupId>com.ettrema</groupId>
 			<artifactId>milton-api</artifactId>
@@ -42,6 +43,7 @@
 			<artifactId>javaee-api</artifactId>
 			<version>6.0</version>
 		</dependency>
+		<!-- logger -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>

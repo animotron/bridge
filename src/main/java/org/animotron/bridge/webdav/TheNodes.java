@@ -48,9 +48,12 @@ public class TheNodes extends AResource implements CollectionResource, Resolvabl
 
 	@Override
 	public Resource child(String childName) {
+		//remove ".xml"
+		String name = childName.substring(1, childName.length() - 4);
+
 		Transaction tx = AnimoGraph.beginTx();
 		try {
-			Relationship r = THE.getInstance().relationship(childName);
+			Relationship r = THE.getInstance().relationship(name);
 			if (r == null)
 				return null;
 			

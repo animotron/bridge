@@ -18,7 +18,7 @@
 
 	<properties>
 		<!-- <jettyVersion>8.0.0.M2</jettyVersion> -->
-		<jettyVersion>7.4.0.v20110414</jettyVersion>
+		<jettyVersion>7.4.2.v20110526</jettyVersion>
 	</properties>
 
 	<dependencies>
@@ -27,22 +27,7 @@
 			<artifactId>core</artifactId>
 			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-server</artifactId>
-			<version>${jettyVersion}</version>
-		</dependency>
 		<!-- WebDAV -->
-		<dependency>
-			<groupId>com.ettrema</groupId>
-			<artifactId>milton-api</artifactId>
-			<version>1.5.4</version>
-		</dependency>
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>6.0</version>
-		</dependency>
 		<!-- logger -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -53,6 +38,28 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ettrema</groupId>
+			<artifactId>milton-api</artifactId>
+			<version>1.5.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ettrema</groupId>
+			<artifactId>milton-servlet</artifactId>
+			<version>1.5.4</version>
+		</dependency>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>6.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<version>${jettyVersion}</version>
 		</dependency>
 	</dependencies>
 

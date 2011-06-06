@@ -59,6 +59,7 @@ public class AnimoCollectionResource implements
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<? extends Resource> getChildren() {
 		// TODO Auto-generated method stub

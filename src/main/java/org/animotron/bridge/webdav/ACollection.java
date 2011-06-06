@@ -21,7 +21,6 @@ package org.animotron.bridge.webdav;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
@@ -57,7 +56,7 @@ public class ACollection extends AResource implements CollectionResource {
 
 	@Override
 	public Date getCreateDate() {
-		// TODO Auto-generated method stub
+		// unknown
 		return null;
 	}
 }

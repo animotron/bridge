@@ -18,8 +18,6 @@
  */
 package org.animotron.bridge.webdav;
 
-import org.animotron.graph.AnimoGraph;
-
 import com.bradmcevoy.common.Path;
 import com.bradmcevoy.http.Resource;
 import com.bradmcevoy.http.ResourceFactory;

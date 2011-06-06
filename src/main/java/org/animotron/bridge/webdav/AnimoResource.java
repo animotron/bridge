@@ -27,7 +27,7 @@ import javax.xml.stream.*;
 
 import org.animotron.graph.AnimoGraph;
 import org.animotron.graph.GraphOperation;
-import org.animotron.graph.stax.StAXGraphSerializer;
+import org.animotron.graph.GraphSerializer;
 import org.animotron.operator.THE;
 import org.neo4j.graphdb.Relationship;
 
@@ -40,7 +40,7 @@ import com.bradmcevoy.http.exceptions.NotAuthorizedException;
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  *
  */
-public class AnimoResource implements GetableResource {
+public class AnimoResource implements GetableResource, PropFindableResource {
 	
 	Relationship r;
 	
@@ -69,7 +69,7 @@ public class AnimoResource implements GetableResource {
 		return AnimoGraph.execute( new GraphOperation<String>() {
 			@Override
 			public String execute() {
-				return THE.getInstance().name(r);
+				return THE.getInstance().name(r) + ".xml";
 			}
 		});
 	}
@@ -128,11 +128,7 @@ public class AnimoResource implements GetableResource {
 				@Override
 				public XMLStreamException execute() {
 					try {
-						XMLOutputFactory factory = XMLOutputFactory.newInstance();
-				        XMLStreamWriter writer = factory.createXMLStreamWriter(out);
-				        
-				        StAXGraphSerializer serializer = new StAXGraphSerializer(writer);
-				        serializer.serialize(r);
+						GraphSerializer.serialize(r, out);
 				        
 				        return null;
 					} catch (XMLStreamException e) {
@@ -157,6 +153,12 @@ public class AnimoResource implements GetableResource {
 
 	@Override
 	public Long getContentLength() {
+		// unknown
+		return null;
+	}
+
+	@Override
+	public Date getCreateDate() {
 		// unknown
 		return null;
 	}

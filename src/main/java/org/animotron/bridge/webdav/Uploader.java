@@ -40,6 +40,7 @@ public class Uploader extends AResource implements CollectionResource, Resolvabl
 		return new UploadResource(childName);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<? extends Resource> getChildren() {
 		return java.util.Collections.EMPTY_LIST;

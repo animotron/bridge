@@ -24,6 +24,7 @@ import java.util.UUID;
 import javolution.util.FastList;
 
 import org.animotron.graph.AnimoGraph;
+import org.animotron.graph.RelationshipTypes;
 import org.animotron.operator.THE;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
@@ -62,11 +63,12 @@ public class TheNodes extends AResource implements CollectionResource, Resolvabl
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<? extends Resource> getChildren() {
 		Transaction tx = AnimoGraph.beginTx();
 		try {
-			Node node = THE.getInstance().NODE();
+			Node node = AnimoGraph.getOrCreateNode(AnimoGraph.getROOT(), RelationshipTypes.THE);
 			
 			List<AnimoResource> children = new FastList<AnimoResource>();
 			

@@ -21,11 +21,11 @@ package org.animotron.bridge.webdav;
 import java.io.InputStream;
 import java.util.Date;
 
-import javax.xml.stream.*;
+import javax.xml.stream.XMLStreamException;
 
 import org.animotron.graph.AnimoGraph;
+import org.animotron.graph.GraphBuilder;
 import org.animotron.graph.GraphOperation;
-import org.animotron.graph.stax.StAXGraphBuilder;
 
 import com.bradmcevoy.common.Path;
 import com.bradmcevoy.http.*;
@@ -109,24 +109,19 @@ public class UploadResource implements ReplaceableResource {
 
 	@Override
 	public void replaceContent(final InputStream in, Long length) {
-		XMLStreamException e = 
-			AnimoGraph.execute( new GraphOperation<XMLStreamException>() {
-				@Override
-				public XMLStreamException execute() {
-					try {
-						XMLInputFactory factory = XMLInputFactory.newInstance();
-				        XMLStreamReader reader = factory.createXMLStreamReader(in);
-				        
-				        StAXGraphBuilder builder = new StAXGraphBuilder(reader);
-				        builder.build();
-				        
-				        return null;
-					} catch (XMLStreamException e) {
-						e.printStackTrace();
-						return e;
-					}
+		AnimoGraph.execute( new GraphOperation<XMLStreamException>() {
+			@Override
+			public XMLStreamException execute() {
+				try {
+					GraphBuilder.build(in);
+			        
+			        return null;
+				} catch (XMLStreamException e) {
+					e.printStackTrace();
+					return e;
 				}
-			});
+			}
+		});
 	}
 
 }

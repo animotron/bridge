@@ -35,8 +35,10 @@ public class JettyHttpServer {
 
     public void start() {
     	
+    	//initialize animo
     	new AnimoGraph("data");
     	
+    	//setup servlet container
         jetty = new Server(jettyPort);
         jetty.setStopAtShutdown(true);
         
@@ -44,10 +46,10 @@ public class JettyHttpServer {
         context.setContextPath("/");
         jetty.setHandler(context);
  
-        context.addServlet(new ServletHolder(new WebDAVServlet()),"/*");
+        context.addServlet(new ServletHolder(new AnimoServlet()),"/*");
+        context.addServlet(new ServletHolder(new WebDAVServlet()),"/webdav/*");
         
-        jetty.addBean(new WebDAVServlet());
-
+        // ... and start it up
         try {
             jetty.start();
         } catch (Exception e) {

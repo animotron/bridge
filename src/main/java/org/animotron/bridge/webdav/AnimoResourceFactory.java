@@ -45,7 +45,8 @@ public class AnimoResourceFactory implements ResourceFactory {
 	 */
 	@Override
 	public Resource getResource(String host, String url) {
-		Path path = Path.path(url);
+		// remove '/webdav'
+		Path path = Path.path(url.substring(7));
 		
 		//Session session = sessionFactory.openSession();
 		

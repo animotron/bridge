@@ -27,7 +27,6 @@
 			<artifactId>core</artifactId>
 			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
-		<!-- WebDAV -->
 		<!-- logger -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -39,6 +38,7 @@
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.6.1</version>
 		</dependency>
+		<!-- WebDAV -->
 		<dependency>
 			<groupId>com.ettrema</groupId>
 			<artifactId>milton-api</artifactId>

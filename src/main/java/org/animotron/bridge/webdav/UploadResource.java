@@ -24,11 +24,13 @@ import java.util.Date;
 import javax.xml.stream.XMLStreamException;
 
 import org.animotron.graph.AnimoGraph;
-import org.animotron.graph.GraphBuilder;
+import org.animotron.graph.CommonGraphBuilder;
 import org.animotron.graph.GraphOperation;
 
 import com.bradmcevoy.common.Path;
-import com.bradmcevoy.http.*;
+import com.bradmcevoy.http.Auth;
+import com.bradmcevoy.http.ReplaceableResource;
+import com.bradmcevoy.http.Request;
 import com.bradmcevoy.http.Request.Method;
 
 /**
@@ -113,7 +115,7 @@ public class UploadResource implements ReplaceableResource {
 			@Override
 			public XMLStreamException execute() {
 				try {
-					GraphBuilder.build(in);
+					CommonGraphBuilder.build(in);
 			        
 			        return null;
 				} catch (XMLStreamException e) {

@@ -19,12 +19,20 @@
 package org.animotron.bridge;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStream;
+import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.stream.XMLStreamException;
+
+import org.animotron.Statements;
+import org.animotron.graph.GraphBuilder;
+import org.animotron.graph.GraphSerializer;
+import org.animotron.operator.AN;
+import org.neo4j.graphdb.Relationship;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -36,14 +44,56 @@ public class AnimoServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
+		AnimoRequest request = new AnimoRequest(req.getRequestURI());
+		//String name = req.getParameter("name");
+		
+		Relationship r = request.getRelationship();
+		
 		res.setContentType("text/html");
-		PrintWriter out = res.getWriter();
+		OutputStream out = res.getOutputStream();
+		
+		try {
+			GraphSerializer.serialize(r, out);
+		} catch (XMLStreamException e) {
+			e.printStackTrace();
+			throw new IOException(e);
+		}
+	}
 
-		String name = req.getParameter("name");
-		out.println("<HTML>");
-		out.println("<HEAD><TITLE>Hello, " + name + "</TITLE></HEAD>");
-		out.println("<BODY>");
-		out.println("Hello, " + name);
-		out.println("</BODY></HTML>");
+	private static AN op = AN.getInstance();
+	
+	class AnimoRequest extends GraphBuilder {
+
+		
+		public AnimoRequest(String uri) {
+			String[] parts = uri.split("/");
+			System.out.println(Arrays.toString(parts));
+			
+
+			startDocument();
+			for (String part : parts) {
+				if (part.isEmpty()) continue;
+				
+				String prefix, ns, name;
+				
+				String[] s = part.split(":", 1);
+				if (s.length == 1) {
+					prefix = op.name();
+					ns = op.namespace();
+					name = s[0];
+				} else {
+					prefix = s[0];
+					ns = Statements.prefix(prefix).namespace();
+					name = part.substring(prefix.length());
+				}
+
+				start(prefix, ns, name, null);
+			}
+			for (String part : parts) {
+				if (part.isEmpty()) continue;
+				end();
+			}
+			endDocument();
+		}
 	}
 }

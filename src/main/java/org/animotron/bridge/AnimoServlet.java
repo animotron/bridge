@@ -70,7 +70,7 @@ public class AnimoServlet extends HttpServlet {
 			System.out.println(Arrays.toString(parts));
 			
 
-			startDocument();
+			startGraph();
 			for (String part : parts) {
 				if (part.isEmpty()) continue;
 				
@@ -93,7 +93,7 @@ public class AnimoServlet extends HttpServlet {
 				if (part.isEmpty()) continue;
 				end();
 			}
-			endDocument();
+			endGraph();
 		}
 	}
 }

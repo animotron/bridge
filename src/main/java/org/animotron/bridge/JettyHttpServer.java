@@ -36,7 +36,7 @@ public class JettyHttpServer {
     public void start() {
     	
     	//initialize animo
-    	new AnimoGraph("data");
+    	AnimoGraph.startDB("data");
     	
     	//setup servlet container
         jetty = new Server(jettyPort);

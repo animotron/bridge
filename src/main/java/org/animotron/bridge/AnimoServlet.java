@@ -60,7 +60,7 @@ public class AnimoServlet extends HttpServlet {
 		}
 	}
 
-	private static AN op = AN.getInstance();
+	private static AN op = AN._;
 	
 	class AnimoRequest extends GraphBuilder {
 

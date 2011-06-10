@@ -69,7 +69,7 @@ public class AnimoResource implements GetableResource, PropFindableResource {
 		return AnimoGraph.execute( new GraphOperation<String>() {
 			@Override
 			public String execute() {
-				return THE.getInstance().name(r) + ".xml";
+				return THE._.name(r) + ".xml";
 			}
 		});
 	}

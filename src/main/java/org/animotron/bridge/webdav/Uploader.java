@@ -79,6 +79,8 @@ public class Uploader extends AResource implements CollectionResource, Resolvabl
 		String name = path.getFirst();
 		
 		Resource child = child(name);
+		if (child == null) return null;
+		
 		path = path.getStripFirst();
 		if (path.getStripFirst().getLength() == 0)
 			return child;

@@ -18,19 +18,15 @@
  */
 package org.animotron.bridge.webdav;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.xml.stream.XMLStreamException;
+import org.animotron.graph.*;
 
-import org.animotron.graph.AnimoGraph;
-import org.animotron.graph.CommonGraphBuilder;
-import org.animotron.graph.GraphOperation;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
+import javolution.util.*;
 
 import com.bradmcevoy.common.Path;
 import com.bradmcevoy.http.CollectionResource;
@@ -97,14 +93,14 @@ public class Uploader extends AResource implements CollectionResource, Resolvabl
 
 	@Override
 	public void replaceContent(final InputStream in, Long length) {
-		AnimoGraph.execute( new GraphOperation<XMLStreamException>() {
+		AnimoGraph.execute( new GraphOperation<IOException>() {
 			@Override
-			public XMLStreamException execute() {
+			public IOException execute() {
 				try {
-					CommonGraphBuilder.build(in);
+					CommonGraphBuilder.build(in, name);
 			        
 			        return null;
-				} catch (XMLStreamException e) {
+				} catch (IOException e) {
 					e.printStackTrace();
 					return e;
 				}

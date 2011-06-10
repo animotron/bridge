@@ -18,42 +18,97 @@
  */
 package org.animotron.bridge.webdav;
 
+import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
+import javax.xml.stream.XMLStreamException;
+
+import org.animotron.graph.AnimoGraph;
+import org.animotron.graph.CommonGraphBuilder;
+import org.animotron.graph.GraphOperation;
+
+import javolution.util.FastList;
+import javolution.util.FastMap;
 
 import com.bradmcevoy.common.Path;
 import com.bradmcevoy.http.CollectionResource;
+import com.bradmcevoy.http.MakeCollectionableResource;
+import com.bradmcevoy.http.ReplaceableResource;
 import com.bradmcevoy.http.Resource;
+import com.bradmcevoy.http.exceptions.ConflictException;
+import com.bradmcevoy.http.exceptions.NotAuthorizedException;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  *
  */
-public class Uploader extends AResource implements CollectionResource, Resolvable {
+public class Uploader extends AResource implements CollectionResource, Resolvable, MakeCollectionableResource, ReplaceableResource {
 	
 	public Uploader() {
 		super(UUID.randomUUID().toString(), "upld");
 	}
 
-	@Override
-	public Resource child(String childName) {
-		return new UploadResource(childName);
+	private Uploader(String name) {
+		super(UUID.randomUUID().toString(), name);
 	}
 
-	@SuppressWarnings("unchecked")
+	private Map<String, Uploader> children = new FastMap<String, Uploader>(); 
+	
+	public Uploader newChild(String childName) {
+		Uploader r = children.get(childName);
+		if (r != null) return r;
+
+		r = new Uploader(childName);
+		children.put(childName, r);
+		
+		return r;
+	}
+
+	@Override
+	public Resource child(String childName) {
+		return children.get(childName);
+	}
+
 	@Override
 	public List<? extends Resource> getChildren() {
-		return java.util.Collections.EMPTY_LIST;
+		return new FastList<Resource>(children.values());
 	}
 
 	@Override
 	public Resource resolve(Path path) {
-		return child(path.getName());
-//		String name = path.getFirst();
-//		
-//		if (path.getStripFirst().getLength() == 0)
-//			return child(name);
-//
-//		return null;
+		System.out.println("Uploader name = "+name+" path "+path);
+//		return child(path.getName());
+		String name = path.getFirst();
+		
+		Resource child = child(name);
+		path = path.getStripFirst();
+		if (path.getStripFirst().getLength() == 0)
+			return child;
+
+		return ((Uploader) child).resolve(path);
+	}
+
+	@Override
+	public CollectionResource createCollection(String newName) throws NotAuthorizedException, ConflictException {
+		return (CollectionResource) newChild(newName);
+	}
+
+	@Override
+	public void replaceContent(final InputStream in, Long length) {
+		AnimoGraph.execute( new GraphOperation<XMLStreamException>() {
+			@Override
+			public XMLStreamException execute() {
+				try {
+					CommonGraphBuilder.build(in);
+			        
+			        return null;
+				} catch (XMLStreamException e) {
+					e.printStackTrace();
+					return e;
+				}
+			}
+		});
 	}
 }

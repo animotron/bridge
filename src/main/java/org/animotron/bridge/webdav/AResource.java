@@ -31,7 +31,7 @@ import com.bradmcevoy.http.Request.Method;
  */
 public class AResource implements PropFindableResource {
 	
-	private String id, name;
+	protected String id, name;
 	
 	public AResource(String id, String name) {
 		this.id = id;

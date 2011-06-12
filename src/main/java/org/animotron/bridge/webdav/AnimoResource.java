@@ -18,20 +18,25 @@
  */
 package org.animotron.bridge.webdav;
 
+import static org.animotron.graph.AnimoGraph.execute;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.Map;
 
-import javax.xml.stream.*;
+import javax.xml.stream.XMLStreamException;
 
-import org.animotron.graph.AnimoGraph;
 import org.animotron.graph.GraphOperation;
 import org.animotron.graph.GraphSerializer;
 import org.animotron.operator.THE;
 import org.neo4j.graphdb.Relationship;
 
-import com.bradmcevoy.http.*;
+import com.bradmcevoy.http.Auth;
+import com.bradmcevoy.http.GetableResource;
+import com.bradmcevoy.http.PropFindableResource;
+import com.bradmcevoy.http.Range;
+import com.bradmcevoy.http.Request;
 import com.bradmcevoy.http.Request.Method;
 import com.bradmcevoy.http.exceptions.BadRequestException;
 import com.bradmcevoy.http.exceptions.NotAuthorizedException;
@@ -53,7 +58,7 @@ public class AnimoResource implements GetableResource, PropFindableResource {
 	 */
 	@Override
 	public String getUniqueId() {
-		return AnimoGraph.execute( new GraphOperation<String>() {
+		return execute( new GraphOperation<String>() {
 			@Override
 			public String execute() {
 				return String.valueOf( r.getId() );
@@ -66,7 +71,7 @@ public class AnimoResource implements GetableResource, PropFindableResource {
 	 */
 	@Override
 	public String getName() {
-		return AnimoGraph.execute( new GraphOperation<String>() {
+		return execute( new GraphOperation<String>() {
 			@Override
 			public String execute() {
 				return THE._.name(r) + ".xml";
@@ -124,7 +129,7 @@ public class AnimoResource implements GetableResource, PropFindableResource {
 			NotAuthorizedException, BadRequestException {
 		
 		XMLStreamException e = 
-			AnimoGraph.execute( new GraphOperation<XMLStreamException>() {
+			execute( new GraphOperation<XMLStreamException>() {
 				@Override
 				public XMLStreamException execute() {
 					try {

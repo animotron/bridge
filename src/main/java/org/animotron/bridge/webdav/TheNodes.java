@@ -18,15 +18,18 @@
  */
 package org.animotron.bridge.webdav;
 
+import static org.animotron.graph.AnimoGraph.beginTx;
+import static org.animotron.graph.AnimoGraph.getOrCreateNode;
+import static org.animotron.graph.AnimoGraph.getROOT;
+import static org.neo4j.graphdb.Direction.OUTGOING;
+
 import java.util.List;
 import java.util.UUID;
 
 import javolution.util.FastList;
 
-import org.animotron.graph.AnimoGraph;
 import org.animotron.graph.RelationshipTypes;
 import org.animotron.operator.THE;
-import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.NotFoundException;
 import org.neo4j.graphdb.Relationship;
@@ -51,7 +54,7 @@ public class TheNodes extends AResource implements CollectionResource, Resolvabl
 		//remove ".xml"
 		String name = childName.substring(0, childName.length() - 4);
 
-		Transaction tx = AnimoGraph.beginTx();
+		Transaction tx = beginTx();
 		try {
 			Relationship r = THE._.relationship(name);
 			if (r == null)
@@ -69,13 +72,13 @@ public class TheNodes extends AResource implements CollectionResource, Resolvabl
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<? extends Resource> getChildren() {
-		Transaction tx = AnimoGraph.beginTx();
+		Transaction tx = beginTx();
 		try {
-			Node node = AnimoGraph.getOrCreateNode(AnimoGraph.getROOT(), RelationshipTypes.THE);
+			Node node = getOrCreateNode(getROOT(), RelationshipTypes.THE);
 			
 			List<AnimoResource> children = new FastList<AnimoResource>();
 			
-			for (Relationship r : node.getRelationships(Direction.OUTGOING)) {
+			for (Relationship r : node.getRelationships(OUTGOING)) {
 				children.add(new AnimoResource(r));
 			}
 			return children;

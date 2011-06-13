@@ -18,9 +18,7 @@
  */
 package org.animotron.bridge.webdav;
 
-import static org.animotron.graph.AnimoGraph.beginTx;
-import static org.animotron.graph.AnimoGraph.getOrCreateNode;
-import static org.animotron.graph.AnimoGraph.getROOT;
+import static org.animotron.graph.AnimoGraph.*;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.List;
@@ -65,7 +63,7 @@ public class TheNodes extends AResource implements CollectionResource, Resolvabl
 		} catch (NotFoundException e) {
 			return null;
 		} finally {
-			tx.finish();
+			finishTx(tx);
 		}
 	}
 
@@ -85,7 +83,7 @@ public class TheNodes extends AResource implements CollectionResource, Resolvabl
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 		} finally {
-			tx.finish();
+			finishTx(tx);
 		}
 
 		return java.util.Collections.EMPTY_LIST;

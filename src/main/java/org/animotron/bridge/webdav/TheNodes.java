@@ -53,7 +53,7 @@ public class TheNodes extends AResource implements CollectionResource, Resolvabl
 
 		Transaction tx = AnimoGraph.beginTx();
 		try {
-			Relationship r = THE._.relationship(name);
+			Relationship r = THE._.get(name);
 			if (r == null)
 				return null;
 			

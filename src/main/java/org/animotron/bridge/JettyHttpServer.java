@@ -18,8 +18,9 @@
  */
 package org.animotron.bridge;
 
+import static org.animotron.graph.AnimoGraph.startDB;
+
 import org.animotron.bridge.webdav.WebDAVServlet;
-import org.animotron.graph.AnimoGraph;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -36,7 +37,7 @@ public class JettyHttpServer {
     public void start() {
     	
     	//initialize animo
-    	AnimoGraph.startDB("data");
+    	startDB("data");
     	
     	//setup servlet container
         jetty = new Server(jettyPort);

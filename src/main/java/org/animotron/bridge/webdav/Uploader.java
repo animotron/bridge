@@ -29,7 +29,7 @@ import java.util.UUID;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
-import org.animotron.graph.CommonGraphBuilder;
+import org.animotron.graph.CommonBuilder;
 import org.animotron.graph.GraphOperation;
 
 import com.bradmcevoy.common.Path;
@@ -103,7 +103,7 @@ public class Uploader extends AResource implements CollectionResource, Resolvabl
 			@Override
 			public IOException execute() {
 				try {
-					CommonGraphBuilder.build(in, name);
+					CommonBuilder.build(in, name);
 			        
 			        return null;
 				} catch (IOException e) {

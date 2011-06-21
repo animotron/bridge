@@ -18,8 +18,6 @@
  */
 package org.animotron.bridge.webdav;
 
-import static org.animotron.graph.AnimoGraph.beginTx;
-import static org.animotron.graph.AnimoGraph.finishTx;
 import static org.animotron.graph.AnimoGraph.getOrCreateNode;
 import static org.animotron.graph.AnimoGraph.getROOT;
 import static org.neo4j.graphdb.Direction.OUTGOING;
@@ -32,9 +30,7 @@ import javolution.util.FastList;
 import org.animotron.graph.RelationshipTypes;
 import org.animotron.operator.THE;
 import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.NotFoundException;
 import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.Transaction;
 
 import com.bradmcevoy.common.Path;
 import com.bradmcevoy.http.CollectionResource;
@@ -55,41 +51,25 @@ public class TheNodes extends AResource implements CollectionResource, Resolvabl
 		//remove ".xml"
 		String name = childName.substring(0, childName.length() - 4);
 
-		Transaction tx = beginTx();
-		try {
-			Relationship r = THE._.get(name);
-			if (r == null)
-				return null;
-			
-			return new AnimoResource(r);
-		
-		} catch (NotFoundException e) {
+		Relationship r = THE._.get(name);
+		if (r == null)
 			return null;
-		} finally {
-			finishTx(tx);
-		}
+		
+		return new AnimoResource(r);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<? extends Resource> getChildren() {
-		Transaction tx = beginTx();
-		try {
-			Node node = getOrCreateNode(getROOT(), RelationshipTypes.THE);
-			
-			List<AnimoResource> children = new FastList<AnimoResource>();
-			
-			for (Relationship r : node.getRelationships(OUTGOING)) {
-				children.add(new AnimoResource(r));
-			}
-			return children;
-		} catch (NotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			finishTx(tx);
+		Node node = getOrCreateNode(getROOT(), RelationshipTypes.THE);
+		
+		List<AnimoResource> children = new FastList<AnimoResource>();
+		
+		for (Relationship r : node.getRelationships(OUTGOING)) {
+			children.add(new AnimoResource(r));
 		}
-
-		return java.util.Collections.EMPTY_LIST;
+		
+		return children;
 	}
 
 	@Override

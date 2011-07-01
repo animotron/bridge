@@ -50,9 +50,12 @@ public class JettyHttpServer {
         context.addServlet(new ServletHolder(new AnimoServlet()),"/*");
         context.addServlet(new ServletHolder(new WebDAVServlet()),"/webdav/*");
         
+        context.getSecurityHandler().setLoginService(new AnimoLoginService());
+        
         // ... and start it up
         try {
             jetty.start();
+            jetty.join();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

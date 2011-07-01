@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.stream.XMLStreamException;
 
 import org.animotron.Statements;
+import org.animotron.exception.EBuilderTerminated;
 import org.animotron.graph.GraphBuilder;
 import org.animotron.graph.GraphSerializer;
 import org.animotron.operator.AN;
@@ -44,7 +45,12 @@ public class AnimoServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-		AnimoRequest request = new AnimoRequest(req.getRequestURI());
+		AnimoRequest request;
+		try {
+			request = new AnimoRequest(req.getRequestURI());
+		} catch (EBuilderTerminated e) {
+			throw new IOException(e);
+		}
 		//String name = req.getParameter("name");
 		
 		Relationship r = request.getRelationship();
@@ -65,7 +71,7 @@ public class AnimoServlet extends HttpServlet {
 	class AnimoRequest extends GraphBuilder {
 
 		
-		public AnimoRequest(String uri) {
+		public AnimoRequest(String uri) throws EBuilderTerminated {
 			String[] parts = uri.split("/");
 			System.out.println(Arrays.toString(parts));
 			

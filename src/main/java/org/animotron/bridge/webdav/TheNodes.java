@@ -58,7 +58,6 @@ public class TheNodes extends AResource implements CollectionResource, Resolvabl
 		return new AnimoResource(r);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<? extends Resource> getChildren() {
 		Node node = getOrCreateNode(getROOT(), RelationshipTypes.THE);

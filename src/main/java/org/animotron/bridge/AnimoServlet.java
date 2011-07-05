@@ -30,6 +30,7 @@ import javax.xml.stream.XMLStreamException;
 
 import org.animotron.Statements;
 import org.animotron.exception.EBuilderTerminated;
+import org.animotron.graph.CommonBuilder;
 import org.animotron.graph.GraphBuilder;
 import org.animotron.graph.GraphSerializer;
 import org.animotron.operator.AN;
@@ -42,22 +43,10 @@ import org.neo4j.graphdb.Relationship;
 public class AnimoServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 7276574723383015880L;
-
-	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
-		AnimoRequest request;
-		try {
-			request = new AnimoRequest(req.getRequestURI());
-		} catch (EBuilderTerminated e) {
-			throw new IOException(e);
-		}
-		//String name = req.getParameter("name");
-		
-		Relationship r = request.getRelationship();
-		
+	
+	private void writeResponse(Relationship r, HttpServletResponse res) throws IOException {
 		res.setContentType("text/html");
 		OutputStream out = res.getOutputStream();
-		
 		try {
 			GraphSerializer.serialize(r, out);
 		} catch (XMLStreamException e) {
@@ -66,16 +55,30 @@ public class AnimoServlet extends HttpServlet {
 		}
 	}
 
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		try {
+			Relationship r = new AnimoRequest(req.getRequestURI()).getRelationship();
+			writeResponse(r, res);
+		} catch (EBuilderTerminated e) {
+			throw new IOException(e);
+		}
+	}
+
+	@Override
+	public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		Relationship r = CommonBuilder.build(req.getInputStream(), req.getRequestURI());
+		writeResponse(r, res);
+	}
+	
 	private static AN op = AN._;
 	
 	class AnimoRequest extends GraphBuilder {
-
 		
 		public AnimoRequest(String uri) throws EBuilderTerminated {
 			String[] parts = uri.split("/");
 			System.out.println(Arrays.toString(parts));
 			
-
 			startGraph();
 			for (String part : parts) {
 				if (part.isEmpty()) continue;
@@ -100,6 +103,9 @@ public class AnimoServlet extends HttpServlet {
 				end();
 			}
 			endGraph();
+			
 		}
+		
 	}
+	
 }

@@ -58,7 +58,7 @@ public class AnimoServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		try {
-			Relationship r = new AnimoRequest(req.getRequestURI()).getRelationship();
+			AnimoRequest r = new AnimoRequest(req.getRequestURI());
 			writeResponse(r, res);
 		} catch (EBuilderTerminated e) {
 			throw new IOException(e);

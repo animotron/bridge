@@ -18,7 +18,7 @@
  */
 package org.animotron.bridge;
 
-import static org.animotron.Expression._;
+import static org.animotron.Expression.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,6 +36,8 @@ import org.animotron.exception.EBuilderTerminated;
 import org.animotron.graph.CommonBuilder;
 import org.animotron.operator.AN;
 import org.animotron.operator.THE;
+import org.animotron.operator.relation.HAVE;
+import org.animotron.operator.relation.USE;
 import org.animotron.serializer.ResultSerializer;
 import org.neo4j.graphdb.Relationship;
 
@@ -61,10 +63,19 @@ public class AnimoServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		try {
-			AnimoRequest r = new AnimoRequest(req.getRequestURI());
+			//AnimoRequest r = new AnimoRequest(req.getRequestURI());
+			new Expression(
+    			_(THE._, "request", //TODO: make uniq?
+    				_(HAVE._, "uri", text(req.getRequestURI())),
+    				_(HAVE._, "method", text("GET")),
+    				_(HAVE._, "host", text("localhost")),
+    				_(USE._, "theme-concrete"), //why do we need this two here? theme def @test-site & layout @root-service
+    				_(USE._, "root-layout")
+    			)
+    		);
 			
 	        Expression s = new Expression(
-                _(THE._, "s", _(AN._, "service", _(AN._, AN._.name(r)), _(AN._, "test-site")))
+                _(THE._, "s", _(AN._, "service", _(AN._, "request"), _(AN._, "test-site")))
             );
 
 			writeResponse(s, res);

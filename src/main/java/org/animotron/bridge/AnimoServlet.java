@@ -18,22 +18,12 @@
  */
 package org.animotron.bridge;
 
-import static org.animotron.Expression.*;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Arrays;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.animotron.AbstractExpression;
 import org.animotron.Expression;
 import org.animotron.Statements;
 import org.animotron.exception.EBuilderTerminated;
 import org.animotron.graph.builder.CommonBuilder;
+import org.animotron.graph.serializer.ResultSerializer;
 import org.animotron.operator.AN;
 import org.animotron.operator.THE;
 import org.animotron.operator.compare.WITH;
@@ -41,10 +31,19 @@ import org.animotron.operator.query.ANY;
 import org.animotron.operator.query.GET;
 import org.animotron.operator.relation.HAVE;
 import org.animotron.operator.relation.USE;
-import org.animotron.graph.serializer.ResultSerializer;
 import org.neo4j.graphdb.Relationship;
 
-import com.ctc.wstx.stax.WstxOutputFactory;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Arrays;
+
+import static org.animotron.Expression._;
+import static org.animotron.Expression.text;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -59,11 +58,11 @@ public class AnimoServlet extends HttpServlet {
 		OutputStream out = res.getOutputStream();
 		try {
 			ResultSerializer.serialize(r, out);
-		} catch (InterruptedException e) {
+        } catch (XMLStreamException e) {
 			e.printStackTrace();
 			throw new IOException(e);
-		}
-	}
+        }
+    }
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {

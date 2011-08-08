@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<the:it-working xmlns:is="animo/relation/is" xmlns:have="animo/relation/have" xmlns:an="animo/reference" xmlns:use="animo/relation/use" xmlns:the="animo/instance">
+	<is:root-content/>
+    <have:title>Welcome to Animo</have:title>
+    <have:content>It is working</have:content>
+</the:it-working>

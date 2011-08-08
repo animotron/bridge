@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <the:html xmlns:is="animo/relation/is" xmlns:any="animo/query/any" xmlns:an="animo/reference" xmlns:the="animo/instance">
-    <is:html-serialization/>
-    <an:html-serialization>
-        <an:html-composition>
-            <an:layout>
-                <any:theme/>
-            </an:layout>
-        </an:html-composition>
-    </an:html-serialization>
+	<an:html-composition/>
 </the:html>

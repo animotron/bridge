@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<the:nothing xmlns:is="animo/relation/is" xmlns:have="animo/relation/have" xmlns:an="animo/reference" xmlns:use="animo/relation/use" xmlns:the="animo/instance">
-    <an:html>
-        <an:not-available/>
-        <!--do:xquery> 
-            responuse:set-status-code(404)
-        </do:xquery-->
-    </an:html>
-</the:nothing>

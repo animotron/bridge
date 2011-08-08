@@ -3,9 +3,7 @@
     <is:service/>
     <have:uri>/</have:uri>
     <an:html>
-        <have:content>
-            <any:root-service/>
-        </have:content>
+		<any:root-service/>
         <use:root-layout/>
     </an:html>
 </the:root-service>

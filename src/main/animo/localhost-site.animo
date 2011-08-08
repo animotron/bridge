@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<the:localhost-site xmlns:is="animo/relation/is" xmlns:the="animo/instance" xmlns:have="animo/relation/have" xmlns:use="animo/relation/use">
+    <is:site/>
+    <have:server-name>localhost</have:server-name>
+    <use:it-working/>
+</the:localhost-site>

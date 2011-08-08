@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<the:not-available xmlns:is="animo/relation/is"
+	xmlns:get="animo/query/extract" xmlns:have="animo/relation/have"
+	xmlns:an="animo/reference" xmlns:ptrn="animo/pattern" xmlns:the="animo/instance">
+	<is:root-service />
+	<have:title>
+		<ptrn:language>
+			<have:lang-en>Nothing</have:lang-en>
+			<have:lang-ru>Ничего</have:lang-ru>
+		</ptrn:language>
+	</have:title>
+	<have:content xmlns="http://www.w3.org/1999/xhtml">
+		<ptrn:language>
+			<have:lang-en>
+				Resource <strong><get:request-uri/></strong> is not available
+			</have:lang-en>
+			<have:lang-ru>
+				Ресурс <strong><get:request-uri/></strong> не доступен
+			</have:lang-ru>
+		</ptrn:language>
+	</have:content>
+</the:not-available>

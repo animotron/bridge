@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<the:content-layout xmlns:is="animo/relation/is" xmlns:the="animo/instance">
+    <is:layout/>
+</the:content-layout>

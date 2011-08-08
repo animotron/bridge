@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<the:content-service xmlns:is="animo/relation/is" xmlns:have="animo/relation/have" xmlns:any="animo/query/any" xmlns:an="animo/reference" xmlns:use="animo/relation/use" xmlns:the="animo/instance">
+    <is:service/>
+    <have:uri>/content</have:uri>
+    <an:html>
+        <have:content>
+            <any:content/>
+        </have:content>
+        <use:content-layout/>
+    </an:html>
+</the:content-service>

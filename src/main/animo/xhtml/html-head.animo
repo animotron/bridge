@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<the:html-head xmlns="http://www.w3.org/1999/xhtml" xmlns:do="animo/perform" xmlns:the="animo/instance" xmlns:get="animo/query/extract">
+    <head>
+		<title><get:title/></title>
+		<meta name="keywords" content="get:keywords"/>
+		<meta name="description" content="get:description"/>
+            
+		<link rel="stylesheet" type="text/css" href="get:uri get:css"/>
+		<style type="text/css"><get:css/></style>
+
+		<script type="text/javascript" src="get:uri get:script"/>
+        <script type="text/javascript"><get:script/></script>
+    </head>
+</the:html-head>

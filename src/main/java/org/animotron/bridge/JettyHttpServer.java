@@ -20,6 +20,10 @@ package org.animotron.bridge;
 
 import static org.animotron.graph.AnimoGraph.startDB;
 
+import java.io.IOException;
+
+import javax.xml.stream.XMLStreamException;
+
 import org.animotron.bridge.webdav.WebDAVServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -34,10 +38,12 @@ public class JettyHttpServer {
 	private Server jetty;
     private int jettyPort = 8080;
 
-    public void start() {
+    public void start() throws XMLStreamException, IOException {
     	
     	//initialize animo
     	startDB("data");
+    	
+    	FSBridge.load("src/main/animo/");
     	
     	//setup servlet container
         jetty = new Server(jettyPort);
@@ -70,7 +76,7 @@ public class JettyHttpServer {
         }
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws XMLStreamException, IOException {
     	JettyHttpServer server = new JettyHttpServer();
     	
     	server.start();

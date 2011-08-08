@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<the:html-composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ic="animo/connection" xmlns:is="animo/relation/is" xmlns:get="animo/query/extract" xmlns:have="animo/relation/have" xmlns:an="animo/reference" xmlns:the="animo/instance" xmlns:all="animo/query/all">
+    <is:composition/>
+    <an:html-part-composition>
+        <have:content>
+            <html>
+                <an:html-head>
+                    <have:css>
+                        <all:css/>
+                    </have:css>
+                    <have:script>
+                        <all:script/>
+                    </have:script>
+                </an:html-head>
+                <body>
+                    <get:content/>
+                </body>
+            </html>
+        </have:content>
+    </an:html-part-composition>
+</the:html-composition>

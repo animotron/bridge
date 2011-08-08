@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<the:html-part xmlns:is="animo/relation/is" xmlns:have="animo/relation/have" xmlns:an="animo/reference" xmlns:the="animo/instance">
+    <is:html-serialization/>
+    <an:html-serialization>
+        <have:content>
+            <an:html-part-composition/>
+        </have:content>
+    </an:html-serialization>
+</the:html-part>

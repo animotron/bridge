@@ -28,7 +28,7 @@ import java.util.Map;
 import javax.xml.stream.XMLStreamException;
 
 import org.animotron.graph.GraphOperation;
-import org.animotron.graph.GraphSerializer;
+import org.animotron.graph.serializer.GraphSerializer;
 import org.animotron.operator.THE;
 import org.neo4j.graphdb.Relationship;
 

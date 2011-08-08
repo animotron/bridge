@@ -29,7 +29,7 @@ import java.util.UUID;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
-import org.animotron.graph.CommonBuilder;
+import org.animotron.graph.builder.CommonBuilder;
 import org.animotron.graph.GraphOperation;
 
 import com.bradmcevoy.common.Path;

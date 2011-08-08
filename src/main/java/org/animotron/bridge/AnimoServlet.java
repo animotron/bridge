@@ -36,10 +36,15 @@ import org.animotron.exception.EBuilderTerminated;
 import org.animotron.graph.builder.CommonBuilder;
 import org.animotron.operator.AN;
 import org.animotron.operator.THE;
+import org.animotron.operator.compare.WITH;
+import org.animotron.operator.query.ANY;
+import org.animotron.operator.query.GET;
 import org.animotron.operator.relation.HAVE;
 import org.animotron.operator.relation.USE;
 import org.animotron.graph.serializer.ResultSerializer;
 import org.neo4j.graphdb.Relationship;
+
+import com.ctc.wstx.stax.WstxOutputFactory;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -64,19 +69,26 @@ public class AnimoServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		try {
 			//AnimoRequest r = new AnimoRequest(req.getRequestURI());
-			Expression request = new Expression(
-				_(HAVE._, "uri", text(req.getRequestURI())),
-				_(HAVE._, "method", text("GET")),
-				_(HAVE._, "host", text("localhost")),
-				_(USE._, "theme-concrete"), //why do we need this two here? theme def @test-site & layout @root-service
-				_(USE._, "root-layout")
+			new Expression(
+				_(THE._, "request",
+					_(HAVE._, "uri", text(req.getRequestURI())),
+					_(HAVE._, "method", text("GET")),
+					_(HAVE._, "host", text("localhost")),
+					_(USE._, "theme-concrete"), //why do we need this two here? theme def @test-site & layout @root-service
+					_(USE._, "root-layout")
+				)
     		);
 			
 	        Expression s = new Expression(
-                _(THE._, "s", _(AN._, "service", _(AN._, THE._.name(request)), _(AN._, "test-site")))
+                _(THE._, "s", 
+            		_(ANY._, "service",
+        				_(WITH._, "uri", _(GET._, "uri")),
+        				_(AN._, "request"), 
+        				_(AN._, "localhost-site"))
+    				)
             );
 
-			writeResponse(s, res);
+	        writeResponse(s, res);
 		} catch (EBuilderTerminated e) {
 			throw new IOException(e);
 		}

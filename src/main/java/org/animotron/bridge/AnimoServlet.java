@@ -18,6 +18,8 @@
  */
 package org.animotron.bridge;
 
+import static org.animotron.Expression._;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
@@ -26,14 +28,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.stream.XMLStreamException;
 
 import org.animotron.AbstractExpression;
+import org.animotron.Expression;
 import org.animotron.Statements;
 import org.animotron.exception.EBuilderTerminated;
 import org.animotron.graph.CommonBuilder;
-import org.animotron.graph.GraphSerializer;
 import org.animotron.operator.AN;
+import org.animotron.operator.THE;
+import org.animotron.serializer.ResultSerializer;
 import org.neo4j.graphdb.Relationship;
 
 /**
@@ -48,8 +51,8 @@ public class AnimoServlet extends HttpServlet {
 		res.setContentType("text/html");
 		OutputStream out = res.getOutputStream();
 		try {
-			GraphSerializer.serialize(r, out);
-		} catch (XMLStreamException e) {
+			ResultSerializer.serialize(r, out);
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 			throw new IOException(e);
 		}
@@ -59,7 +62,12 @@ public class AnimoServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		try {
 			AnimoRequest r = new AnimoRequest(req.getRequestURI());
-			writeResponse(r, res);
+			
+	        Expression s = new Expression(
+                _(THE._, "s", _(AN._, "service", _(AN._, AN._.name(r)), _(AN._, "test-site")))
+            );
+
+			writeResponse(s, res);
 		} catch (EBuilderTerminated e) {
 			throw new IOException(e);
 		}

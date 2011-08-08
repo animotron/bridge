@@ -73,7 +73,7 @@ public class AnimoServlet extends HttpServlet {
     		);
 			
 	        Expression s = new Expression(
-                _(THE._, "s", _(AN._, "service", _(AN._, AN._.name(request)), _(AN._, "test-site")))
+                _(THE._, "s", _(AN._, "service", _(AN._, THE._.name(request)), _(AN._, "test-site")))
             );
 
 			writeResponse(s, res);

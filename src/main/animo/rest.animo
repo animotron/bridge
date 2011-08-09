@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<the:rest xmlns:an="animo/reference"
+          xmlns:any="animo/query/any"
+          xmlns:the="animo/instance"
+          xmlns:get="animo/query/extract"
+          xmlns:with="animo/compare/with">
+    <any:service>
+        <with:uri><get:uri/></with:uri>
+        <!--any:site><with:server-name><get:host/></with:server-name></any:site-->
+        <an:localhost-site/>
+    </any:service>
+</the:rest>

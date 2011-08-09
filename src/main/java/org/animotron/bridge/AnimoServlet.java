@@ -23,15 +23,9 @@ import org.animotron.Expression;
 import org.animotron.Statements;
 import org.animotron.exception.EBuilderTerminated;
 import org.animotron.graph.builder.CommonBuilder;
-import org.animotron.graph.serializer.AnimoResultSerializer;
 import org.animotron.graph.serializer.ResultSerializer;
 import org.animotron.operator.AN;
-import org.animotron.operator.THE;
-import org.animotron.operator.compare.WITH;
-import org.animotron.operator.query.ANY;
-import org.animotron.operator.query.GET;
 import org.animotron.operator.relation.HAVE;
-import org.animotron.operator.relation.USE;
 import org.neo4j.graphdb.Relationship;
 
 import javax.servlet.ServletException;
@@ -68,18 +62,11 @@ public class AnimoServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		try {
-			//AnimoRequest r = new AnimoRequest(req.getRequestURI());
-			Expression r = new Expression(
-                _(HAVE._, "uri", text(req.getRequestURI())),
-                _(HAVE._, "method", text("GET")),
-                _(HAVE._, "host", text("localhost"))
-    		);
-
 	        Expression s = new Expression(
-                _(ANY._, "service",
-                    _(WITH._, "uri", _(GET._, "uri")),
-                    _(AN._, "localhost-site"),
-                    _(AN._, THE._.name(r))
+                _(AN._, "rest",
+                    _(HAVE._, "uri", text(req.getRequestURI())),
+                    _(HAVE._, "method", text("GET")),
+                    _(HAVE._, "host", text("localhost"))
                 )
             );
 

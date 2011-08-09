@@ -3,6 +3,10 @@
                                 xmlns:the="animo/instance"
                                 xmlns:get="animo/query/extract">
     <is:root-layout/>
-    <div id="title"><get:title/></div>
-    <div id="content"><get:content/></div>
+    <h1><get:title/></h1>
+    <p><get:content/></p>
+    <ul>
+        <li>Host: "<strong><get:host/></strong>"</li>
+        <li>URI: "<strong><get:uri/></strong>"</li>
+    </ul>
 </the:theme-concrete-root-layout>

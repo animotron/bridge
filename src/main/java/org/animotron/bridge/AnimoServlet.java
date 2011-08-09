@@ -69,21 +69,17 @@ public class AnimoServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		try {
 			//AnimoRequest r = new AnimoRequest(req.getRequestURI());
-			new Expression(
-				_(THE._, "request",
-					_(HAVE._, "uri", text(req.getRequestURI())),
-					_(HAVE._, "method", text("GET")),
-					_(HAVE._, "host", text("localhost")),
-					_(USE._, "theme-concrete"), //why do we need this two here? theme def @test-site & layout @root-service
-					_(USE._, "root-layout")
-				)
+			Expression r = new Expression(
+                _(HAVE._, "uri", text(req.getRequestURI())),
+                _(HAVE._, "method", text("GET")),
+                _(HAVE._, "host", text("localhost"))
     		);
-			
+
 	        Expression s = new Expression(
                 _(ANY._, "service",
                     _(WITH._, "uri", _(GET._, "uri")),
-                    _(AN._, "request"),
-                    _(AN._, "localhost-site")
+                    _(AN._, "localhost-site"),
+                    _(AN._, THE._.name(r))
                 )
             );
 

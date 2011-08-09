@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <the:root-layout xmlns:is="animo/relation/is" xmlns:the="animo/instance">
     <is:layout/>
+    <p>Default layout</p>
 </the:root-layout>

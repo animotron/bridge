@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<the:theme-concrete-root-layout xmlns:is="animo/relation/is" xmlns:have="animo/relation/have" xmlns:an="animo/reference" xmlns:any="animo/query/any" xmlns:use="animo/relation/use" xmlns:the="animo/instance" xmlns:get="animo/query/extract">
+<the:theme-concrete-root-layout xmlns:is="animo/relation/is"
+                                xmlns:the="animo/instance"
+                                xmlns:get="animo/query/extract">
     <is:root-layout/>
-    <have:content>
-    	<div id="title"><get:title/></div>
-    	<div id="content"><get:content/></div>
-    </have:content>
+    <div id="title"><get:title/></div>
+    <div id="content"><get:content/></div>
 </the:theme-concrete-root-layout>

@@ -23,6 +23,7 @@ import org.animotron.Expression;
 import org.animotron.Statements;
 import org.animotron.exception.EBuilderTerminated;
 import org.animotron.graph.builder.CommonBuilder;
+import org.animotron.graph.serializer.AnimoResultSerializer;
 import org.animotron.graph.serializer.ResultSerializer;
 import org.animotron.operator.AN;
 import org.animotron.operator.THE;
@@ -57,7 +58,7 @@ public class AnimoServlet extends HttpServlet {
 		res.setContentType("text/html");
 		OutputStream out = res.getOutputStream();
 		try {
-			ResultSerializer.serialize(r, out);
+            ResultSerializer.serialize(r, out);
         } catch (XMLStreamException e) {
 			e.printStackTrace();
 			throw new IOException(e);
@@ -79,12 +80,11 @@ public class AnimoServlet extends HttpServlet {
     		);
 			
 	        Expression s = new Expression(
-                _(THE._, "s", 
-            		_(ANY._, "service",
-        				_(WITH._, "uri", _(GET._, "uri")),
-        				_(AN._, "request"), 
-        				_(AN._, "localhost-site"))
-    				)
+                _(ANY._, "service",
+                    _(WITH._, "uri", _(GET._, "uri")),
+                    _(AN._, "request"),
+                    _(AN._, "localhost-site")
+                )
             );
 
 	        writeResponse(s, res);

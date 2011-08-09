@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<the:html xmlns:is="animo/relation/is" xmlns:any="animo/query/any" xmlns:an="animo/reference" xmlns:the="animo/instance">
-	<an:html-composition/>
-</the:html>

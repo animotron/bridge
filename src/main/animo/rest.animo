@@ -7,6 +7,5 @@
     <any:service>
         <with:uri><get:uri/></with:uri>
         <any:site><with:server-name><get:host/></with:server-name></any:site>
-        <!--an:localhost-site/-->
     </any:service>
 </the:rest>

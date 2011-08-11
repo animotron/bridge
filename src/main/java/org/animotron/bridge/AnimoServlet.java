@@ -19,13 +19,12 @@
 package org.animotron.bridge;
 
 import org.animotron.AbstractExpression;
-import org.animotron.Expression;
-import org.animotron.Statements;
 import org.animotron.exception.EBuilderTerminated;
 import org.animotron.graph.builder.CommonBuilder;
 import org.animotron.graph.serializer.ResultSerializer;
-import org.animotron.operator.AN;
+import org.animotron.operator.query.ANY;
 import org.animotron.operator.relation.HAVE;
+import org.animotron.operator.relation.USE;
 import org.neo4j.graphdb.Relationship;
 
 import javax.servlet.ServletException;
@@ -35,10 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
-
-import static org.animotron.Expression._;
-import static org.animotron.Expression.text;
+import java.util.Enumeration;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -62,15 +58,8 @@ public class AnimoServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		try {
-	        Expression s = new Expression(
-                _(AN._, "rest",
-                    _(HAVE._, "uri", text(req.getRequestURI())),
-                    _(HAVE._, "method", text("GET")),
-                    _(HAVE._, "host", text("localhost"))
-                )
-            );
-
-	        writeResponse(s, res);
+	        AnimoRequest a = new AnimoRequest(req);
+	        writeResponse(a, res);
 		} catch (EBuilderTerminated e) {
 			throw new IOException(e);
 		}
@@ -82,37 +71,55 @@ public class AnimoServlet extends HttpServlet {
 		writeResponse(r, res);
 	}
 	
-	private static AN op = AN._;
-	
 	class AnimoRequest extends AbstractExpression {
 		
-		public AnimoRequest(String uri) throws EBuilderTerminated {
-			String[] parts = uri.split("/");
-			System.out.println(Arrays.toString(parts));
-			
-			startGraph();
-			for (String part : parts) {
-				if (part.isEmpty()) continue;
-				
-				String prefix, ns, name;
-				
-				String[] s = part.split(":", 1);
-				if (s.length == 1) {
-					prefix = op.name();
-					ns = op.namespace();
-					name = s[0];
-				} else {
-					prefix = s[0];
-					ns = Statements.prefix(prefix).namespace();
-					name = part.substring(prefix.length());
-				}
+		public AnimoRequest(HttpServletRequest req) throws EBuilderTerminated {
 
-				start(prefix, ns, name, null);
-			}
+            startGraph();
+
+            start(ANY._, "resource");
+
+            start(USE._, "nothing");
+            end();
+
+            String uri = req.getRequestURI();
+			String[] parts = uri.split("/");
+
+            boolean isRoot = true;
 			for (String part : parts) {
 				if (part.isEmpty()) continue;
-				end();
+				start(USE._, part);
+                end();
+                isRoot = false;
 			}
+
+            if (isRoot) {
+                start(USE._, "root");
+                end();
+            }
+
+            Enumeration names = req.getParameterNames();
+            while (names.hasMoreElements()) {
+                String name = (String) names.nextElement();
+                parts = name.split(":");
+                if (parts.length > 1) {
+                    if (USE._.name().equals(parts[0])) {
+                        start(USE._, parts[1]);
+                    } else {
+                        start(HAVE._, parts[1]);
+                    }
+                } else {
+                    start(HAVE._, name);
+                }
+                for  (String value : req.getParameterValues(name)) {
+                    start(value);
+                    end();
+                }
+                end();
+            }
+
+            end();
+
 			endGraph();
 			
 		}

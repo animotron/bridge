@@ -19,15 +19,11 @@
 package org.animotron.bridge;
 
 import org.animotron.AbstractExpression;
-import org.animotron.Expression;
 import org.animotron.exception.EBuilderTerminated;
 import org.animotron.graph.builder.CommonBuilder;
 import org.animotron.graph.serializer.ResultSerializer;
 import org.animotron.operator.AN;
-import org.animotron.operator.THE;
-import org.animotron.operator.compare.WITH;
 import org.animotron.operator.query.ANY;
-import org.animotron.operator.query.GET;
 import org.animotron.operator.relation.HAVE;
 import org.animotron.operator.relation.USE;
 import org.neo4j.graphdb.Relationship;
@@ -40,8 +36,6 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
-
-import static org.animotron.Expression._;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -78,25 +72,6 @@ public class AnimoServlet extends HttpServlet {
 		writeResponse(r, res);
 	}
 	
-    static {
-
-        try {
-
-            new Expression(
-                _(THE._, "current-site",
-                    _(ANY._, "site",
-                        _(WITH._, "server-name",
-                            _(GET._, "host")
-                        )
-                    )
-                )
-            );
-
-        } catch (EBuilderTerminated eBuilderTerminated) {
-            eBuilderTerminated.printStackTrace();
-        }
-    }
-
 	private class AnimoRequest extends AbstractExpression {
 		
 		public AnimoRequest(HttpServletRequest req) throws EBuilderTerminated {

@@ -3,6 +3,7 @@
                   xmlns:an="animo/reference" xmlns:any="animo/query/any"
                   xmlns:use="animo/relation/use" xmlns:the="animo/instance">
     <is:service/>
+    <is:root/>
     <have:uri>/</have:uri>
     <an:html>
 		<any:root-content/>

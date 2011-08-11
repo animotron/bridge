@@ -4,7 +4,6 @@
                   xmlns:use="animo/relation/use" xmlns:the="animo/instance">
     <is:service/>
     <is:root/>
-    <have:uri>/</have:uri>
     <an:html>
 		<any:root-content/>
         <use:root-layout/>

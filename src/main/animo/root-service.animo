@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<the:root-service xmlns:is="animo/relation/is" xmlns:have="animo/relation/have"
-                  xmlns:an="animo/reference" xmlns:any="animo/query/any"
-                  xmlns:use="animo/relation/use" xmlns:the="animo/instance">
+<the:root-service xmlns:is="animo/relation/is"
+                  xmlns:an="animo/reference"
+                  xmlns:any="animo/query/any"
+                  xmlns:use="animo/relation/use"
+                  xmlns:the="animo/instance">
     <is:service/>
     <is:root/>
     <an:html>

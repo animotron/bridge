@@ -19,10 +19,15 @@
 package org.animotron.bridge;
 
 import org.animotron.AbstractExpression;
+import org.animotron.Expression;
 import org.animotron.exception.EBuilderTerminated;
 import org.animotron.graph.builder.CommonBuilder;
 import org.animotron.graph.serializer.ResultSerializer;
+import org.animotron.operator.AN;
+import org.animotron.operator.THE;
+import org.animotron.operator.compare.WITH;
 import org.animotron.operator.query.ANY;
+import org.animotron.operator.query.GET;
 import org.animotron.operator.relation.HAVE;
 import org.animotron.operator.relation.USE;
 import org.neo4j.graphdb.Relationship;
@@ -36,6 +41,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
 
+import static org.animotron.Expression._;
+
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * 
@@ -43,7 +50,7 @@ import java.util.Enumeration;
 public class AnimoServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 7276574723383015880L;
-	
+
 	private void writeResponse(Relationship r, HttpServletResponse res) throws IOException {
 		res.setContentType("text/html");
 		OutputStream out = res.getOutputStream();
@@ -71,54 +78,81 @@ public class AnimoServlet extends HttpServlet {
 		writeResponse(r, res);
 	}
 	
-	class AnimoRequest extends AbstractExpression {
+    static {
+
+        try {
+
+            new Expression(
+                _(THE._, "current-site",
+                    _(ANY._, "site",
+                        _(WITH._, "server-name",
+                            _(GET._, "host")
+                        )
+                    )
+                )
+            );
+
+        } catch (EBuilderTerminated eBuilderTerminated) {
+            eBuilderTerminated.printStackTrace();
+        }
+    }
+
+	private class AnimoRequest extends AbstractExpression {
 		
 		public AnimoRequest(HttpServletRequest req) throws EBuilderTerminated {
 
             startGraph();
 
-            start(ANY._, "resource");
+                start(ANY._, "resource");
 
-            start(USE._, "nothing");
-            end();
+                    start(AN._, "current-site");
 
-            String uri = req.getRequestURI();
-			String[] parts = uri.split("/");
+                        start(USE._, "nothing");
+                        end();
 
-            boolean isRoot = true;
-			for (String part : parts) {
-				if (part.isEmpty()) continue;
-				start(USE._, part);
-                end();
-                isRoot = false;
-			}
+                        String uri = req.getRequestURI();
+                        String[] parts = uri.split("/");
 
-            if (isRoot) {
-                start(USE._, "root");
-                end();
-            }
+                        boolean isRoot = true;
+                        for (String part : parts) {
+                            if (part.isEmpty()) continue;
+                            start(USE._, part);
+                            end();
+                            isRoot = false;
+                        }
 
-            Enumeration names = req.getParameterNames();
-            while (names.hasMoreElements()) {
-                String name = (String) names.nextElement();
-                parts = name.split(":");
-                if (parts.length > 1) {
-                    if (USE._.name().equals(parts[0])) {
-                        start(USE._, parts[1]);
-                    } else {
-                        start(HAVE._, parts[1]);
-                    }
-                } else {
-                    start(HAVE._, name);
-                }
-                for  (String value : req.getParameterValues(name)) {
-                    start(value);
+                        if (isRoot) {
+                            start(USE._, "root");
+                            end();
+                        }
+
+                        Enumeration names = req.getParameterNames();
+                        while (names.hasMoreElements()) {
+                            String name = (String) names.nextElement();
+                            parts = name.split(":");
+                            if (parts.length > 1) {
+                                if (USE._.name().equals(parts[0])) {
+                                    start(USE._, parts[1]);
+                                } else {
+                                    start(HAVE._, parts[1]);
+                                }
+                            } else {
+                                start(HAVE._, name);
+                            }
+                            for  (String value : req.getParameterValues(name)) {
+                                start(value);
+                                end();
+                            }
+                            end();
+                        }
+
+                        start(HAVE._, "host");
+                            start(req.getServerName());
+                            end();
+                        end();
                     end();
-                }
-                end();
-            }
 
-            end();
+                end();
 
 			endGraph();
 			

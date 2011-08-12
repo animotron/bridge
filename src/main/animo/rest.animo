@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<the:rest xmlns:an="animo/reference"
+          xmlns:any="animo/query/any"
+          xmlns:the="animo/instance"
+          xmlns:ptrn="animo/pattern"
+          xmlns:have="animo/relation/have">
+    <any:service>
+        <ptrn:resource>
+            <have:empty><an:empty-service><an:current-site/></an:empty-service></have:empty>
+            <have:resource><any:resource><an:current-site/></any:resource></have:resource>
+        </ptrn:resource>
+    </any:service>
+</the:rest>

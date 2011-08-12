@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<the:empty-layout xmlns:is="animo/relation/is"
+                  xmlns:get="animo/query/extract"
+                  xmlns:the="animo/instance">
+    <is:layout/>
+    <h1><get:title/></h1>
+    <p><get:content/></p>
+</the:empty-layout>

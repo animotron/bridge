@@ -147,7 +147,7 @@ public class AnimoServlet extends HttpServlet {
 
                 startGraph();
                     start(AN._, "rest");
-                        start(USE._, "empty");
+                        start(USE._, "not-found");
                         end();
                         makeRequest(req);
                     end();

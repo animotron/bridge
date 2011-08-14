@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<the:not-found xmlns:is="animo/relation/is"
+<the:resource-not-found xmlns:is="animo/relation/is"
                xmlns:get="animo/query/extract"
                xmlns:have="animo/relation/have"
                xmlns:the="animo/instance">
 	<is:not-found-content/>
     <have:title>Not found!</have:title>
     <have:content>Can't find the resource <strong>"<get:uri/>"</strong></have:content>
-</the:not-found>
+</the:resource-not-found>

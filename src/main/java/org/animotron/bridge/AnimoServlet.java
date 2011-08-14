@@ -113,7 +113,7 @@ public class AnimoServlet extends HttpServlet {
 
 		public AnimoRequest(HttpServletRequest req) throws EBuilderTerminated {
 
-            super(true);
+            super(false);
 
             try {
 

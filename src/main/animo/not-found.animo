@@ -3,7 +3,7 @@
                xmlns:get="animo/query/extract"
                xmlns:have="animo/relation/have"
                xmlns:the="animo/instance">
-	<is:empty-content/>
+	<is:not-found-content/>
     <have:title>Not found!</have:title>
     <have:content>Can't find the resource <strong>"<get:uri/>"</strong></have:content>
 </the:not-found>

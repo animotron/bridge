@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<the:empty-service xmlns:is="animo/relation/is"
+<the:not-found-service xmlns:is="animo/relation/is"
                    xmlns:an="animo/reference"
                    xmlns:any="animo/query/any"
                    xmlns:use="animo/relation/use"
                    xmlns:the="animo/instance"
                    xmlns:have="animo/relation/have">
     <is:service/>
-    <is:empty/>
+    <is:not-found/>
     <have:status>404</have:status>
     <an:html>
-		<any:empty-content/>
-        <use:empty-layout/>
+		<any:not-found-content/>
+        <use:not-found-layout/>
     </an:html>
-</the:empty-service>
+</the:not-found-service>

@@ -79,38 +79,6 @@ public class AnimoServlet extends HttpServlet {
 	
 	private class AnimoRequest extends AbstractExpression {
 
-        private void makeRequest (HttpServletRequest req) {
-
-            Enumeration names = req.getParameterNames();
-
-            while (names.hasMoreElements()) {
-
-                String name = (String) names.nextElement();
-                String[] parts = name.split(":");
-
-                if (parts.length > 1) {
-                    if (USE._.name().equals(parts[0])) {
-                        start(USE._, parts[1]);
-                    } else {
-                        start(HAVE._, parts[1]);
-                    }
-                } else {
-                    start(HAVE._, name);
-                }
-                for  (String value : req.getParameterValues(name)) {
-                    start(value);
-                    end();
-                }
-                end();
-            }
-
-            start(HAVE._, "host");
-                start(req.getServerName());
-                end();
-            end();
-
-        }
-
 		public AnimoRequest(HttpServletRequest req) throws EBuilderTerminated {
 
             super(false);
@@ -137,7 +105,33 @@ public class AnimoServlet extends HttpServlet {
                             end();
                         }
 
-                        makeRequest(req);
+                        Enumeration names = req.getParameterNames();
+
+                        while (names.hasMoreElements()) {
+
+                            String name = (String) names.nextElement();
+                            parts = name.split(":");
+
+                            if (parts.length > 1) {
+                                if (USE._.name().equals(parts[0])) {
+                                    start(USE._, parts[1]);
+                                } else {
+                                    start(HAVE._, parts[1]);
+                                }
+                            } else {
+                                start(HAVE._, name);
+                            }
+                            for  (String value : req.getParameterValues(name)) {
+                                start(value);
+                                end();
+                            }
+                            end();
+                        }
+
+                        start(HAVE._, "host");
+                            start(req.getServerName());
+                            end();
+                        end();
 
                     end();
 
@@ -149,7 +143,10 @@ public class AnimoServlet extends HttpServlet {
                     start(AN._, "rest");
                         start(USE._, "not-found");
                         end();
-                        makeRequest(req);
+                        start(HAVE._, "host");
+                            start(req.getServerName());
+                            end();
+                        end();
                     end();
                 endGraph();
 

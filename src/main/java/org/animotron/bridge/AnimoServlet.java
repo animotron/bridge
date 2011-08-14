@@ -20,6 +20,7 @@ package org.animotron.bridge;
 
 import org.animotron.AbstractExpression;
 import org.animotron.exception.EBuilderTerminated;
+import org.animotron.exception.ENotFound;
 import org.animotron.graph.builder.CommonBuilder;
 import org.animotron.graph.serializer.ResultSerializer;
 import org.animotron.operator.AN;
@@ -67,65 +68,95 @@ public class AnimoServlet extends HttpServlet {
 
 	@Override
 	public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		Relationship r = CommonBuilder.build(req.getInputStream(), req.getRequestURI());
-		writeResponse(r, res);
+        Relationship r = null;
+        try {
+            r = CommonBuilder.build(req.getInputStream(), req.getRequestURI());
+        } catch (EBuilderTerminated e) {
+            throw new ServletException(e);
+        }
+        writeResponse(r, res);
 	}
 	
 	private class AnimoRequest extends AbstractExpression {
-		
+
+        private void makeRequest (HttpServletRequest req) {
+
+            Enumeration names = req.getParameterNames();
+
+            while (names.hasMoreElements()) {
+
+                String name = (String) names.nextElement();
+                String[] parts = name.split(":");
+
+                if (parts.length > 1) {
+                    if (USE._.name().equals(parts[0])) {
+                        start(USE._, parts[1]);
+                    } else {
+                        start(HAVE._, parts[1]);
+                    }
+                } else {
+                    start(HAVE._, name);
+                }
+                for  (String value : req.getParameterValues(name)) {
+                    start(value);
+                    end();
+                }
+                end();
+            }
+
+            start(HAVE._, "host");
+                start(req.getServerName());
+                end();
+            end();
+
+        }
+
 		public AnimoRequest(HttpServletRequest req) throws EBuilderTerminated {
 
-            startGraph();
+            super(true);
 
-                start(AN._, "rest");
+            try {
 
-                    String uri = req.getRequestURI();
-                    String[] parts = uri.split("/");
+                startGraph();
 
-                    boolean isRoot = true;
-                    for (String part : parts) {
-                        if (part.isEmpty()) continue;
-                        start(USE._, part);
-                        end();
-                        isRoot = false;
-                    }
+                    start(AN._, "rest");
 
-                    if (isRoot) {
-                        start(USE._, "root");
-                        end();
-                    }
+                        String uri = req.getRequestURI();
+                        String[] parts = uri.split("/");
 
-                    Enumeration names = req.getParameterNames();
-                    while (names.hasMoreElements()) {
-                        String name = (String) names.nextElement();
-                        parts = name.split(":");
-                        if (parts.length > 1) {
-                            if (USE._.name().equals(parts[0])) {
-                                start(USE._, parts[1]);
-                            } else {
-                                start(HAVE._, parts[1]);
-                            }
-                        } else {
-                            start(HAVE._, name);
+                        boolean isRoot = true;
+                        for (String part : parts) {
+                            if (part.isEmpty()) continue;
+                            start(USE._, part);
+                            end();
+                            isRoot = false;
                         }
-                        for  (String value : req.getParameterValues(name)) {
-                            start(value);
+
+                        if (isRoot) {
+                            start(USE._, "root");
                             end();
                         }
-                        end();
-                    }
 
-                    start(HAVE._, "host");
-                        start(req.getServerName());
-                        end();
+                        makeRequest(req);
+
                     end();
 
-                end();
+                endGraph();
 
-			endGraph();
-			
+            } catch (ENotFound e) {
+
+                startGraph();
+                    start(AN._, "rest");
+                        start(USE._, "nothing");
+                        end();
+                        makeRequest(req);
+                    end();
+                endGraph();
+
+            }
+
 		}
-		
+
 	}
 	
 }

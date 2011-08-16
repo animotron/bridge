@@ -36,9 +36,7 @@ public class AnimoResourceFactory implements ResourceFactory {
 	
 	//private final SessionFactory sessionFactory;
 	
-	public AnimoResourceFactory() {
-		System.out.println("running AnimoResourceFactory");
-	}
+	public AnimoResourceFactory() {}
 
 	/* (non-Javadoc)
 	 * @see com.bradmcevoy.http.ResourceFactory#getResource(java.lang.String, java.lang.String)

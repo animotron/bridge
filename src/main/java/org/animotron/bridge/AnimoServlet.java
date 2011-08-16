@@ -43,6 +43,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.Statement;
 import java.util.Enumeration;
 
 import static org.animotron.Expression._;
@@ -172,7 +173,7 @@ public class AnimoServlet extends HttpServlet {
 
     private static class WebSerializer {
 
-        public static void serialize(Relationship r, HttpServletResponse res) throws IOException {
+        public static void serialize(final Relationship r, HttpServletResponse res) throws IOException {
 
             res.setContentType("text/html");
             OutputStream out = res.getOutputStream();
@@ -181,18 +182,32 @@ public class AnimoServlet extends HttpServlet {
 
                 String mime = getMimeType(r);
 
-                PipedInput pipe = new PipedInput();
+                final PipedInput pipe = new PipedInput();
 
+                Executor.execute(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            GraphHandler handler = null;
+                            try {
+                                handler = new PipedGraphHandler(new PipedOutput(pipe));
+                                GraphAnimoResultTraverser._.traverse(handler, r);
+                            } catch (InterruptedException e) {
+                                try {
+                                    pipe.close();
+                                } catch (IOException e1) {
+                                    e1.printStackTrace();
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                );
 
-                Executor.
-                Runnable thread = new Runnable() {
-                }
-
-                GraphHandler handler = new PipedGraphHandler(new PipedOutput(pipe));
-                GraphAnimoResultTraverser._.traverse(handler, r);
-
-                for (Object i : pipe) {
-
+                for (Object o : pipe) {
+                    Statement s = (Statement) o;
+                    Relationship op = (Relationship) pipe.read();
                 }
 
             } catch (EBuilderTerminated e) {

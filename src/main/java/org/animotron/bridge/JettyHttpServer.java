@@ -25,6 +25,7 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 
 import org.animotron.bridge.webdav.WebDAVServlet;
+import org.animotron.exception.EBuilderTerminated;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -38,7 +39,7 @@ public class JettyHttpServer {
 	private Server jetty;
     private int jettyPort = 8080;
 
-    public void start() throws XMLStreamException, IOException {
+    public void start() throws XMLStreamException, IOException, EBuilderTerminated {
     	
     	//initialize animo
     	startDB("data");
@@ -76,7 +77,7 @@ public class JettyHttpServer {
         }
     }
     
-    public static void main(String[] args) throws XMLStreamException, IOException {
+    public static void main(String[] args) throws XMLStreamException, IOException, EBuilderTerminated {
     	JettyHttpServer server = new JettyHttpServer();
     	
     	server.start();

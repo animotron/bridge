@@ -58,12 +58,15 @@ public class AnimoServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		long startTime = System.currentTimeMillis();
 		try {
 	        AnimoRequest a = new AnimoRequest(req);
 	        writeResponse(a, res);
 		} catch (EBuilderTerminated e) {
 			throw new IOException(e);
 		}
+		
+		System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}
 
 	@Override

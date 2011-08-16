@@ -19,11 +19,20 @@
 package org.animotron.bridge;
 
 import org.animotron.AbstractExpression;
+import org.animotron.Executor;
+import org.animotron.Expression;
 import org.animotron.exception.EBuilderTerminated;
 import org.animotron.exception.ENotFound;
 import org.animotron.graph.builder.CommonBuilder;
-import org.animotron.graph.serializer.ResultSerializer;
+import org.animotron.graph.handler.GraphHandler;
+import org.animotron.graph.handler.PipedGraphHandler;
+import org.animotron.graph.serializer.StringResultSerializer;
+import org.animotron.graph.traverser.GraphAnimoResultTraverser;
+import org.animotron.io.PipedInput;
+import org.animotron.io.PipedOutput;
 import org.animotron.operator.AN;
+import org.animotron.operator.THE;
+import org.animotron.operator.query.GET;
 import org.animotron.operator.relation.HAVE;
 import org.animotron.operator.relation.USE;
 import org.neo4j.graphdb.Relationship;
@@ -32,10 +41,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
+
+import static org.animotron.Expression._;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -46,14 +56,7 @@ public class AnimoServlet extends HttpServlet {
 	private static final long serialVersionUID = 7276574723383015880L;
 
 	private void writeResponse(Relationship r, HttpServletResponse res) throws IOException {
-		res.setContentType("text/html");
-		OutputStream out = res.getOutputStream();
-		try {
-            ResultSerializer.serialize(r, out);
-        } catch (XMLStreamException e) {
-			e.printStackTrace();
-			throw new IOException(e);
-        }
+        WebSerializer.serialize(r, res);
     }
 
 	@Override
@@ -166,5 +169,52 @@ public class AnimoServlet extends HttpServlet {
 		}
 
 	}
+
+    private static class WebSerializer {
+
+        public static void serialize(Relationship r, HttpServletResponse res) throws IOException {
+
+            res.setContentType("text/html");
+            OutputStream out = res.getOutputStream();
+
+            try {
+
+                String mime = getMimeType(r);
+
+                PipedInput pipe = new PipedInput();
+
+
+                Executor.
+                Runnable thread = new Runnable() {
+                }
+
+                GraphHandler handler = new PipedGraphHandler(new PipedOutput(pipe));
+                GraphAnimoResultTraverser._.traverse(handler, r);
+
+                for (Object i : pipe) {
+
+                }
+
+            } catch (EBuilderTerminated e) {
+                new IOException(e);
+            } catch (InterruptedException e) {
+                new IOException(e);
+            }
+
+
+        }
+
+        private static String getMimeType(Relationship r) throws EBuilderTerminated, InterruptedException {
+            String m =  StringResultSerializer.serialize(
+                new Expression(
+                    _(GET._, "mime-type",
+                        _(AN._, THE._.name(r))
+                    )
+                )
+            );
+            return "".equals(m) ? "aplication/animo+xml" : m;
+        }
+
+    }
 	
 }

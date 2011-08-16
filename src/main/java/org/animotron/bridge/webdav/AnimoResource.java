@@ -25,8 +25,6 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.Map;
 
-import javax.xml.stream.XMLStreamException;
-
 import org.animotron.graph.GraphOperation;
 import org.animotron.graph.serializer.GraphSerializer;
 import org.animotron.operator.THE;
@@ -128,21 +126,21 @@ public class AnimoResource implements GetableResource, PropFindableResource {
 			Map<String, String> params, String contentType) throws IOException,
 			NotAuthorizedException, BadRequestException {
 		
-		XMLStreamException e = 
-			execute( new GraphOperation<XMLStreamException>() {
+		IOException e = 
+			execute( new GraphOperation<IOException>() {
 				@Override
-				public XMLStreamException execute() {
+				public IOException execute() {
 					try {
 						GraphSerializer.serialize(r, out);
 				        
 				        return null;
-					} catch (XMLStreamException e) {
+					} catch (IOException e) {
 						return e;
 					}
 				}
 			});
 			
-		if (e != null) throw new IOException(e);
+		if (e != null) throw e;
 	}
 
 	@Override

@@ -50,7 +50,7 @@ public class AnimoServlet extends HttpServlet {
 		OutputStream out = res.getOutputStream();
 		try {
             ResultSerializer.serialize(r, out);
-        } catch (XMLStreamException e) {
+        } catch (IOException e) {
 			e.printStackTrace();
 			throw new IOException(e);
         }

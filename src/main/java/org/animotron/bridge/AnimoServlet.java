@@ -132,6 +132,10 @@ public class AnimoServlet extends HttpServlet {
                             start(req.getServerName());
                             end();
                         end();
+                        start(HAVE._, "uri");
+                            start(req.getRequestURI());
+                            end();
+                        end();
 
                     end();
 
@@ -145,6 +149,10 @@ public class AnimoServlet extends HttpServlet {
                         end();
                         start(HAVE._, "host");
                             start(req.getServerName());
+                            end();
+                        end();
+                        start(HAVE._, "uri");
+                            start(req.getRequestURI());
                             end();
                         end();
                     end();

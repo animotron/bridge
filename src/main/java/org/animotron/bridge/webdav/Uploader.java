@@ -29,7 +29,7 @@ import java.util.UUID;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
-import org.animotron.exception.EBuilderTerminated;
+import org.animotron.exception.AnimoException;
 import org.animotron.graph.builder.CommonBuilder;
 import org.animotron.graph.GraphOperation;
 
@@ -110,7 +110,7 @@ public class Uploader extends AResource implements CollectionResource, Resolvabl
 				} catch (IOException e) {
 					e.printStackTrace();
 					return e;
-				} catch (EBuilderTerminated e) {
+				} catch (AnimoException e) {
 					e.printStackTrace();
 					return new IOException(e);
 				}

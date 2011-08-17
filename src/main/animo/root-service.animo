@@ -7,7 +7,7 @@
     <is:service/>
     <is:root/>
     <an:html>
-		<any:root-content/>
+        <any:root-content/>
         <use:root-layout/>
     </an:html>
 </the:root-service>

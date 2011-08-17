@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <the:html xmlns:any="animo/query/any"
           xmlns:the="animo/instance"
+          xmlns:have="animo/relation/have"
           xmlns:get="animo/query/extract">
-    <html>
-        <head>
-            <title><get:title/></title>
-            <!--
-            <meta name="keywords" content="get:keywords"/>
-            <meta name="description" content="get:description"/>
+    <have:mime-type>text/html</have:mime-type>
+    <have:content>
+        <html>
+            <head>
+                <title><get:title/></title>
+                <!--
+                <meta name="keywords" content="get:keywords"/>
+                <meta name="description" content="get:description"/>
 
-            <link rel="stylesheet" type="text/css" href="get:uri get:css"/>
-            <style type="text/css"><get:css/></style>
+                <link rel="stylesheet" type="text/css" href="get:uri get:css"/>
+                <style type="text/css"><get:css/></style>
 
-            <script type="text/javascript" src="get:uri get:script"/>
-            <script type="text/javascript"><get:script/></script>
-            -->
-        </head>
-        <body>
-            <any:layout/>
-        </body>
-    </html>
+                <script type="text/javascript" src="get:uri get:script"/>
+                <script type="text/javascript"><get:script/></script>
+                -->
+            </head>
+            <body>
+                <any:layout/>
+            </body>
+        </html>
+    </have:content>
 </the:html>

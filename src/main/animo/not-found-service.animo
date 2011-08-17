@@ -9,7 +9,7 @@
     <is:not-found/>
     <have:status>404</have:status>
     <an:html>
-		<any:not-found-content/>
+        <any:not-found-content/>
         <use:not-found-layout/>
     </an:html>
 </the:not-found-service>

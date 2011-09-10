@@ -1,8 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<the:it-working xmlns:is="animo/relation/is"
-                xmlns:have="animo/relation/have"
-                xmlns:the="animo/instance">
-	<is:root-content/>
-    <have:title>Welcome to Animo</have:title>
-    <have:content>It is working!</have:content>
-</the:it-working>
+the it-working
+	(is root-content)
+    (have title     "Welcome to Animo")
+    (have content   "It is working!")

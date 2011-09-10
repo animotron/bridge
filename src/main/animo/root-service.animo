@@ -1,13 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<the:root-service xmlns:is="animo/relation/is"
-                  xmlns:an="animo/reference"
-                  xmlns:any="animo/query/any"
-                  xmlns:use="animo/relation/use"
-                  xmlns:the="animo/instance">
-    <is:service/>
-    <is:root/>
-    <an:html>
-        <any:root-content/>
-        <use:root-layout/>
-    </an:html>
-</the:root-service>
+the root-service
+    (is service)
+    (is root)
+    (html
+        (any root-content)
+        (use root-layout))

@@ -1,8 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<the:not-found-layout xmlns:is="animo/relation/is"
-                  xmlns:get="animo/query/extract"
-                  xmlns:the="animo/instance">
-    <is:layout/>
-    <h1><get:title/></h1>
-    <p><get:content/></p>
-</the:not-found-layout>
+the not-found-layout
+    (is layout)
+    ("<h1>" get title "</h1>"
+     "<p>"  get content "</p>")

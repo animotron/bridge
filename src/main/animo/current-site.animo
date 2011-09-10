@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<the:current-site xmlns:any="animo/query/any" xmlns:the="animo/instance"
-          xmlns:get="animo/query/extract" xmlns:with="animo/compare/with">
-        <any:site><with:server-name><get:host/></with:server-name></any:site>
-</the:current-site>
+the current-site
+    any site
+        with server-name get host

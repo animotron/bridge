@@ -1,8 +1,2 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<the:rest xmlns:an="animo/reference"
-          xmlns:any="animo/query/any"
-          xmlns:the="animo/instance">
-    <any:resource>
-        <an:current-site/>
-    </any:resource>
-</the:rest>
+the rest
+    any resource current-site

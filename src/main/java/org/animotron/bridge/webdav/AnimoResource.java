@@ -18,26 +18,21 @@
  */
 package org.animotron.bridge.webdav;
 
-import static org.animotron.graph.AnimoGraph.execute;
+import com.bradmcevoy.http.*;
+import com.bradmcevoy.http.Request.Method;
+import com.bradmcevoy.http.exceptions.BadRequestException;
+import com.bradmcevoy.http.exceptions.NotAuthorizedException;
+import org.animotron.graph.GraphOperation;
+import org.animotron.graph.serializer.AnimoSerializer;
+import org.animotron.statement.operator.THE;
+import org.neo4j.graphdb.Relationship;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.Map;
 
-import org.animotron.graph.GraphOperation;
-import org.animotron.graph.serializer.GraphSerializer;
-import org.animotron.operator.THE;
-import org.neo4j.graphdb.Relationship;
-
-import com.bradmcevoy.http.Auth;
-import com.bradmcevoy.http.GetableResource;
-import com.bradmcevoy.http.PropFindableResource;
-import com.bradmcevoy.http.Range;
-import com.bradmcevoy.http.Request;
-import com.bradmcevoy.http.Request.Method;
-import com.bradmcevoy.http.exceptions.BadRequestException;
-import com.bradmcevoy.http.exceptions.NotAuthorizedException;
+import static org.animotron.graph.AnimoGraph.execute;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -72,7 +67,7 @@ public class AnimoResource implements GetableResource, PropFindableResource {
 		return execute( new GraphOperation<String>() {
 			@Override
 			public String execute() {
-				return THE._.name(r) + ".xml";
+				return THE._.name(r) + ".animo";
 			}
 		});
 	}
@@ -131,7 +126,7 @@ public class AnimoResource implements GetableResource, PropFindableResource {
 				@Override
 				public IOException execute() {
 					try {
-						GraphSerializer.serialize(r, out);
+						AnimoSerializer.serialize(r, out);
 				        
 				        return null;
 					} catch (IOException e) {

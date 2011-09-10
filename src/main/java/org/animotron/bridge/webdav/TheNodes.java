@@ -18,23 +18,21 @@
  */
 package org.animotron.bridge.webdav;
 
-import static org.animotron.graph.AnimoGraph.getOrCreateNode;
-import static org.animotron.graph.AnimoGraph.getROOT;
-import static org.neo4j.graphdb.Direction.OUTGOING;
+import com.bradmcevoy.common.Path;
+import com.bradmcevoy.http.CollectionResource;
+import com.bradmcevoy.http.Resource;
+import javolution.util.FastList;
+import org.animotron.graph.RelationshipTypes;
+import org.animotron.statement.operator.THE;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
 
 import java.util.List;
 import java.util.UUID;
 
-import javolution.util.FastList;
-
-import org.animotron.graph.RelationshipTypes;
-import org.animotron.operator.THE;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
-
-import com.bradmcevoy.common.Path;
-import com.bradmcevoy.http.CollectionResource;
-import com.bradmcevoy.http.Resource;
+import static org.animotron.graph.AnimoGraph.getOrCreateNode;
+import static org.animotron.graph.AnimoGraph.getROOT;
+import static org.neo4j.graphdb.Direction.OUTGOING;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>

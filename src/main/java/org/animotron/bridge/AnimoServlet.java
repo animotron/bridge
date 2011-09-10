@@ -20,22 +20,23 @@ package org.animotron.bridge;
 
 import org.animotron.AbstractExpression;
 import org.animotron.Expression;
-import org.animotron.Statement;
 import org.animotron.exception.AnimoException;
 import org.animotron.exception.EBuilderTerminated;
 import org.animotron.exception.ENotFound;
 import org.animotron.graph.builder.CommonBuilder;
 import org.animotron.graph.handler.BinaryGraphHandler;
-import org.animotron.graph.serializer.ResultSerializer;
 import org.animotron.graph.serializer.StringResultSerializer;
-import org.animotron.graph.traverser.GraphAnimoResultTraverser;
+import org.animotron.graph.serializer.XMLResultSerializer;
+import org.animotron.graph.traverser.AnimoResultTraverser;
 import org.animotron.io.PipedInput;
 import org.animotron.manipulator.Evaluator;
-import org.animotron.operator.AN;
-import org.animotron.operator.THE;
-import org.animotron.operator.query.GET;
-import org.animotron.operator.relation.HAVE;
-import org.animotron.operator.relation.USE;
+import org.animotron.manipulator.PFlow;
+import org.animotron.statement.Statement;
+import org.animotron.statement.operator.AN;
+import org.animotron.statement.operator.THE;
+import org.animotron.statement.query.GET;
+import org.animotron.statement.relation.HAVE;
+import org.animotron.statement.relation.USE;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 
@@ -195,7 +196,7 @@ public class AnimoServlet extends HttpServlet {
                 if (content != null) {
 
                     res.setContentType(mimes == null ? "application/xml" :mimes);
-                    ResultSerializer.serialize(r, content, out);
+                    XMLResultSerializer.serialize(r, content, out);
 
                 } else {
 
@@ -203,17 +204,17 @@ public class AnimoServlet extends HttpServlet {
 
                     final boolean[] isNotFound = {true};
 
-                    GraphAnimoResultTraverser._.traverse(
+                    AnimoResultTraverser._.traverse(
                         new BinaryGraphHandler(out){
                             @Override
-                            public void start(Statement statement, Relationship r) throws IOException {
+                            public void start(Statement statement, Relationship r, int level, boolean isOne) throws IOException {
                                 Node n = r.getEndNode();
                                 if (BIN.has(n)) {
                                     isNotFound[0] = false;
                                     write(n, out);
                                 }
                             }
-                        }, r
+                        }, r, r
                     );
 
                     if (isNotFound[0])
@@ -235,7 +236,7 @@ public class AnimoServlet extends HttpServlet {
                     _(AN._, THE._.name(r))
                 )
             );
-            PipedInput pipe = Evaluator._.execute(r, get);
+            PipedInput pipe = Evaluator._.execute(new PFlow(Evaluator._, r, get), get);
             for (Object o : pipe) {
                 pipe.close();
                 return (Relationship) o;

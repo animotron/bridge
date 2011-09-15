@@ -1,4 +1,4 @@
 the not-found-layout
     (is layout)
-    ("<h1>" get title "</h1>"
-     "<p>"  get content "</p>")
+    (\h1 get title)
+    (\p get content)

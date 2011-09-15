@@ -1,8 +1,7 @@
 the theme-concrete-root-layout
     (is root-layout)
-    ("<h1>" get title "</h1>"
-     "<p>" get content "</p>"
-    "<ul>"
-        "<li>" "Host: " "<strong>" get host "</strong>" "</li>"
-        "<li>" "URI: " "<strong>" get uri "</strong>" "</li>"
-    "</ul>")
+    (\h1 get title)
+    (\p get content)
+    (\ul
+        (\li ("Host: ") (\strong get host))
+        (\li ("URI: ")  (\strong get uri)))

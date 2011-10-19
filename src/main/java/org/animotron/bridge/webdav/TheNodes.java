@@ -22,7 +22,6 @@ import com.bradmcevoy.common.Path;
 import com.bradmcevoy.http.CollectionResource;
 import com.bradmcevoy.http.Resource;
 import javolution.util.FastList;
-import org.animotron.graph.RelationshipTypes;
 import org.animotron.statement.operator.THE;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
@@ -58,7 +57,7 @@ public class TheNodes extends AResource implements CollectionResource, Resolvabl
 
 	@Override
 	public List<? extends Resource> getChildren() {
-		Node node = getOrCreateNode(getROOT(), RelationshipTypes.THE);
+		Node node = getOrCreateNode(getROOT(), THE._);
 		
 		List<AnimoResource> children = new FastList<AnimoResource>();
 		

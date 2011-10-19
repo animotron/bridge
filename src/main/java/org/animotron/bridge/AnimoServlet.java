@@ -190,26 +190,17 @@ public class AnimoServlet extends HttpServlet {
     private static class WebSerializer {
 
         public static void serialize(final Relationship r, HttpServletResponse res) throws Exception {
-
             final OutputStream out = res.getOutputStream();
-
             try {
-
                 Relationship mime =  get(r, "mime-type");
                 Relationship content = get(r, "content");
                 String mimes = StringResultSerializer.serialize(mime);
-
                 if (content != null) {
-
-                    res.setContentType(mimes == null ? "application/xml" :mimes);
+                    res.setContentType(mimes == null ? "application/xml" : mimes);
                     XMLResultSerializer.serialize(content, out);
-
                 } else {
-
                     res.setContentType(mimes == null ? "application/octet-stream" :mimes);
-
                     final boolean[] isNotFound = {true};
-
                     //UNDERSTAND: why it here?
                     AnimoResultTraverser._.traverse(
                         new BinaryGraphHandler(out){
@@ -223,11 +214,9 @@ public class AnimoServlet extends HttpServlet {
                             }
                         }, new PFlow(Evaluator._, r), r
                     );
-
                     if (isNotFound[0])
                          throw new AnimoException(null, "Resource not found"); //TODO: replace null by ?
                 }
-
             } catch (ENotFound e) {
                 throw e;
             } catch (EBuilderTerminated e) {
@@ -238,7 +227,7 @@ public class AnimoServlet extends HttpServlet {
         }
 
         private static Relationship get(Relationship r, String have) throws Exception {
-            Expression get =  new JExpression(
+            Expression get = new JExpression(
                 _(GET._, have,
                     _(AN._, THE._.reference(r))
                 )

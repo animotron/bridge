@@ -197,12 +197,12 @@ public class AnimoServlet extends HttpServlet {
 
                 Relationship mime =  get(r, "mime-type");
                 Relationship content = get(r, "content");
-                String mimes = StringResultSerializer.serialize(new PFlow(null, r), mime);
+                String mimes = StringResultSerializer.serialize(mime);
 
                 if (content != null) {
 
                     res.setContentType(mimes == null ? "application/xml" :mimes);
-                    XMLResultSerializer.serialize(new PFlow(null, r), content, out);
+                    XMLResultSerializer.serialize(content, out);
 
                 } else {
 
@@ -210,6 +210,7 @@ public class AnimoServlet extends HttpServlet {
 
                     final boolean[] isNotFound = {true};
 
+                    //UNDERSTAND: why it here?
                     AnimoResultTraverser._.traverse(
                         new BinaryGraphHandler(out){
                             @Override
@@ -220,7 +221,7 @@ public class AnimoServlet extends HttpServlet {
                                     write(n, out);
                                 }
                             }
-                        }, new PFlow(null, r), r
+                        }, new PFlow(Evaluator._, r), r
                     );
 
                     if (isNotFound[0])

@@ -18,21 +18,6 @@
  */
 package org.animotron.bridge.webdav;
 
-import static org.animotron.graph.AnimoGraph.execute;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
-
-import org.animotron.exception.AnimoException;
-import org.animotron.graph.builder.CommonBuilder;
-import org.animotron.graph.GraphOperation;
-
 import com.bradmcevoy.common.Path;
 import com.bradmcevoy.http.CollectionResource;
 import com.bradmcevoy.http.MakeCollectionableResource;
@@ -40,6 +25,14 @@ import com.bradmcevoy.http.ReplaceableResource;
 import com.bradmcevoy.http.Resource;
 import com.bradmcevoy.http.exceptions.ConflictException;
 import com.bradmcevoy.http.exceptions.NotAuthorizedException;
+import javolution.util.FastList;
+import javolution.util.FastMap;
+import org.animotron.expression.CommonExpression;
+
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -100,21 +93,10 @@ public class Uploader extends AResource implements CollectionResource, Resolvabl
 
 	@Override
 	public void replaceContent(final InputStream in, Long length) {
-		execute( new GraphOperation<IOException>() {
-			@Override
-			public IOException execute() {
-				try {
-					CommonBuilder.build(in, name);
-			        
-			        return null;
-				} catch (IOException e) {
-					e.printStackTrace();
-					return e;
-				} catch (AnimoException e) {
-					e.printStackTrace();
-					return new IOException(e);
-				}
-			}
-		});
-	}
+        try {
+            new CommonExpression(in, name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

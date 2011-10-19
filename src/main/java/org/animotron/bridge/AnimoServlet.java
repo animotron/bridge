@@ -18,12 +18,14 @@
  */
 package org.animotron.bridge;
 
-import org.animotron.AbstractExpression;
-import org.animotron.Expression;
 import org.animotron.exception.AnimoException;
 import org.animotron.exception.EBuilderTerminated;
 import org.animotron.exception.ENotFound;
-import org.animotron.graph.builder.CommonBuilder;
+import org.animotron.expression.AbstractExpression;
+import org.animotron.expression.CommonExpression;
+import org.animotron.expression.Expression;
+import org.animotron.expression.JExpression;
+import org.animotron.graph.builder.FastGraphBuilder;
 import org.animotron.graph.handler.BinaryGraphHandler;
 import org.animotron.graph.serializer.StringResultSerializer;
 import org.animotron.graph.serializer.XMLResultSerializer;
@@ -48,8 +50,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
 
-import static org.animotron.Expression._;
 import static org.animotron.Properties.BIN;
+import static org.animotron.expression.JExpression._;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -67,136 +69,140 @@ public class AnimoServlet extends HttpServlet {
         } catch (ENotFound e) {
             try {
                 writeResponse(new AnimoNotFound(req), res);
-            } catch (AnimoException eBuilderTerminated) {
+            } catch (Exception eBuilderTerminated) {
                 throw new IOException(e);
             }
-        } catch (AnimoException e) {
-			throw new IOException(e);
-		}
-		
-		System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
+		} catch (Exception e) {
+            throw new IOException(e);
+        }
+        System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}
 
 	@Override
 	public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         Relationship r = null;
         try {
-            r = CommonBuilder.build(req.getInputStream(), req.getRequestURI());
+            r = new CommonExpression(req.getInputStream(), req.getRequestURI());
             writeResponse(r, res);
-        } catch (AnimoException e) {
+        } catch (Exception e) {
             throw new ServletException(e);
         }
 	}
 	
-	private void writeResponse(Relationship r, HttpServletResponse res) throws IOException, AnimoException {
+	private void writeResponse(Relationship r, HttpServletResponse res) throws Exception {
         WebSerializer.serialize(r, res);
     }
 
-    private class AnimoRequest extends AbstractExpression {
-
-        public AnimoRequest(HttpServletRequest req) throws AnimoException {
-
-            super(false);
-
-            startGraph();
-
-                start(AN._, "rest");
-
-                    String uri = req.getRequestURI();
-                    String[] parts = uri.split("/");
-
-                    boolean isRoot = true;
-                    for (String part : parts) {
-                        if (part.isEmpty()) continue;
-                        start(USE._, part);
-                        end();
-                        isRoot = false;
-                    }
-
-                    if (isRoot) {
-                        start(USE._, "root");
-                        end();
-                    }
-
-                    Enumeration<?> names = req.getParameterNames();
-
-                    while (names.hasMoreElements()) {
-
-                        String name = (String) names.nextElement();
-                        parts = name.split(":");
-
-                        if (parts.length > 1) {
-                            if (USE._.name().equals(parts[0])) {
-                                start(USE._, parts[1]);
-                            } else {
-                                start(HAVE._, parts[1]);
-                            }
-                        } else {
-                            start(HAVE._, name);
-                        }
-                        for  (String value : req.getParameterValues(name)) {
-                            start(value);
-                            end();
-                        }
-                        end();
-                    }
-
-                    start(HAVE._, "host");
-                        start(req.getServerName());
-                        end();
-                    end();
-                    start(HAVE._, "uri");
-                        start(req.getRequestURI());
-                        end();
-                    end();
-
-                end();
-
-            endGraph();
-
+    private abstract class RequestExpression extends AbstractExpression {
+        protected final HttpServletRequest req;
+        public RequestExpression(HttpServletRequest req) throws AnimoException, IOException {
+            super(new FastGraphBuilder());
+            this.req = req;
         }
-
     }
 
-    private static class AnimoNotFound extends AbstractExpression {
+    private class AnimoRequest extends RequestExpression {
 
-        public AnimoNotFound(HttpServletRequest req) throws AnimoException {
-
-            startGraph();
-                start(AN._, "rest");
-                    start(USE._, "not-found");
-                    end();
-                    start(HAVE._, "host");
-                        start(req.getServerName());
-                        end();
-                    end();
-                    start(HAVE._, "uri");
-                        start(req.getRequestURI());
-                        end();
-                    end();
-                end();
-            endGraph();
-
+        public AnimoRequest(HttpServletRequest req) throws AnimoException, IOException {
+            super(req);
         }
 
+        @Override
+        public void build() throws Exception {
+            
+            builder.start(AN._, "rest");
+
+                String uri = req.getRequestURI();
+                String[] parts = uri.split("/");
+
+                boolean isRoot = true;
+                for (String part : parts) {
+                    if (part.isEmpty()) continue;
+                    builder.start(USE._, part);
+                    builder.end();
+                    isRoot = false;
+                }
+
+                if (isRoot) {
+                    builder.start(USE._, "root");
+                    builder.end();
+                }
+
+                Enumeration<?> names = req.getParameterNames();
+
+                while (names.hasMoreElements()) {
+
+                    String name = (String) names.nextElement();
+                    parts = name.split(":");
+
+                    if (parts.length > 1) {
+                        if (USE._.name().equals(parts[0])) {
+                            builder.start(USE._, parts[1]);
+                        } else {
+                            builder.start(HAVE._, parts[1]);
+                        }
+                    } else {
+                        builder.start(HAVE._, name);
+                    }
+                    for  (String value : req.getParameterValues(name)) {
+                        builder.start(value);
+                        builder.end();
+                    }
+                    builder.end();
+                }
+
+                builder.start(HAVE._, "host");
+                    builder.start(req.getServerName());
+                    builder.end();
+                builder.end();
+                builder.start(HAVE._, "uri");
+                    builder.start(req.getRequestURI());
+                    builder.end();
+                builder.end();
+
+            builder.end();
+        }
+    }
+
+    private class AnimoNotFound extends RequestExpression {
+
+        public AnimoNotFound(HttpServletRequest req) throws AnimoException, IOException {
+            super(req);
+        }
+
+        @Override
+        public void build() throws Exception {
+            builder.start(AN._, "rest");
+                builder.start(USE._, "not-found");
+                builder.end();
+                builder.start(HAVE._, "host");
+                    builder.start(req.getServerName());
+                    builder.end();
+                builder.end();
+                builder.start(HAVE._, "uri");
+                    builder.start(req.getRequestURI());
+                    builder.end();
+                builder.end();
+            builder.end();
+        }
     }
 
     private static class WebSerializer {
 
-        public static void serialize(final Relationship r, HttpServletResponse res) throws IOException, AnimoException {
+        public static void serialize(final Relationship r, HttpServletResponse res) throws Exception {
 
             final OutputStream out = res.getOutputStream();
 
             try {
 
-                Relationship mime = (Relationship) get(r, "mime-type");
-                Relationship content = (Relationship) get(r, "content");
-                String mimes = StringResultSerializer.serialize(r, mime);
+                Relationship mime =  get(r, "mime-type");
+                Relationship content = get(r, "content");
+                String mimes = StringResultSerializer.serialize(new PFlow(null, r), mime);
 
                 if (content != null) {
 
                     res.setContentType(mimes == null ? "application/xml" :mimes);
-                    XMLResultSerializer.serialize(r, content, out);
+                    XMLResultSerializer.serialize(new PFlow(null, r), content, out);
 
                 } else {
 
@@ -214,7 +220,7 @@ public class AnimoServlet extends HttpServlet {
                                     write(n, out);
                                 }
                             }
-                        }, r, r
+                        }, new PFlow(null, r), r
                     );
 
                     if (isNotFound[0])
@@ -230,13 +236,13 @@ public class AnimoServlet extends HttpServlet {
 
         }
 
-        private static Relationship get(Relationship r, String have) throws IOException, AnimoException {
-            Expression get =  new Expression(
+        private static Relationship get(Relationship r, String have) throws Exception {
+            Expression get =  new JExpression(
                 _(GET._, have,
-                    _(AN._, THE._.name(r))
+                    _(AN._, THE._.reference(r))
                 )
             );
-            PipedInput pipe = Evaluator._.execute(new PFlow(Evaluator._, r, get), get);
+            PipedInput pipe = Evaluator._.execute(new PFlow(Evaluator._, r), get);
             for (Object o : pipe) {
                 pipe.close();
                 return (Relationship) o;

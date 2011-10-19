@@ -67,7 +67,7 @@ public class AnimoResource implements GetableResource, PropFindableResource {
 		return execute( new GraphOperation<String>() {
 			@Override
 			public String execute() {
-				return THE._.name(r) + ".animo";
+				return THE._.reference(r) + ".animo";
 			}
 		});
 	}

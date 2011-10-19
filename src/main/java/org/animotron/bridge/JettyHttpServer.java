@@ -18,15 +18,12 @@
  */
 package org.animotron.bridge;
 
-import static org.animotron.graph.AnimoGraph.startDB;
-
-import java.io.IOException;
-
 import org.animotron.bridge.webdav.WebDAVServlet;
-import org.animotron.exception.AnimoException;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+
+import static org.animotron.graph.AnimoGraph.startDB;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -37,7 +34,7 @@ public class JettyHttpServer {
 	private Server jetty;
     private int jettyPort = 8080;
 
-    public void start() throws IOException, AnimoException {
+    public void start() throws Exception {
     	
     	//initialize animo
     	startDB("data");
@@ -75,7 +72,7 @@ public class JettyHttpServer {
         }
     }
     
-    public static void main(String[] args) throws IOException, AnimoException {
+    public static void main(String[] args) throws Exception {
     	JettyHttpServer server = new JettyHttpServer();
     	
     	server.start();

@@ -61,6 +61,13 @@
 			<artifactId>jetty-servlet</artifactId>
 			<version>${jettyVersion}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>httpunit</groupId>
+			<artifactId>httpunit</artifactId>
+			<version>1.7</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

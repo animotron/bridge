@@ -39,6 +39,7 @@ import org.animotron.statement.operator.THE;
 import org.animotron.statement.query.GET;
 import org.animotron.statement.relation.HAVE;
 import org.animotron.statement.relation.USE;
+import org.animotron.statement.value.STREAM;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 
@@ -50,7 +51,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
 
-import static org.animotron.Properties.BIN;
 import static org.animotron.expression.JExpression._;
 
 /**
@@ -60,6 +60,22 @@ import static org.animotron.expression.JExpression._;
 public class AnimoServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 7276574723383015880L;
+
+    private static final Node REST = reference("rest");
+    private static final Node MIME = reference("mime-type");
+    private static final Node URI = reference("uri");
+    private static final Node CONTENT = reference("content");
+    private static final Node NOTFOUND = reference("not-found");
+    private static final Node ROOT = reference("root");
+    private static final Node HOST = reference("host");
+
+    private static Node reference (String name) {
+        try {
+            return THE._.getOrCreate(name, true).getEndNode();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -80,37 +96,36 @@ public class AnimoServlet extends HttpServlet {
 
 	@Override
 	public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        Relationship r = null;
         try {
-            r = new CommonExpression(req.getInputStream(), req.getRequestURI());
-            writeResponse(r, res);
+            writeResponse(new CommonExpression(req.getInputStream(), req.getRequestURI()), res);
         } catch (Exception e) {
             throw new ServletException(e);
         }
 	}
 	
-	private void writeResponse(Relationship r, HttpServletResponse res) throws Exception {
-        WebSerializer.serialize(r, res);
+	private void writeResponse(Expression e, HttpServletResponse res) throws Exception {
+        WebSerializer.serialize(e, res);
     }
 
     private abstract class RequestExpression extends AbstractExpression {
         protected final HttpServletRequest req;
-        public RequestExpression(HttpServletRequest req) throws AnimoException, IOException {
+        public RequestExpression(HttpServletRequest req) throws Exception {
             super(new FastGraphBuilder());
             this.req = req;
+            builder.build(this);
         }
     }
 
     private class AnimoRequest extends RequestExpression {
 
-        public AnimoRequest(HttpServletRequest req) throws AnimoException, IOException {
+        public AnimoRequest(HttpServletRequest req) throws Exception {
             super(req);
         }
 
         @Override
         public void build() throws Exception {
             
-            builder.start(AN._, "rest");
+            builder.start(AN._, REST);
 
                 String uri = req.getRequestURI();
                 String[] parts = uri.split("/");
@@ -124,7 +139,7 @@ public class AnimoServlet extends HttpServlet {
                 }
 
                 if (isRoot) {
-                    builder.start(USE._, "root");
+                    builder.start(USE._, ROOT);
                     builder.end();
                 }
 
@@ -151,11 +166,11 @@ public class AnimoServlet extends HttpServlet {
                     builder.end();
                 }
 
-                builder.start(HAVE._, "host");
+                builder.start(HAVE._, HOST);
                     builder.start(req.getServerName());
                     builder.end();
                 builder.end();
-                builder.start(HAVE._, "uri");
+                builder.start(HAVE._, URI);
                     builder.start(req.getRequestURI());
                     builder.end();
                 builder.end();
@@ -166,20 +181,20 @@ public class AnimoServlet extends HttpServlet {
 
     private class AnimoNotFound extends RequestExpression {
 
-        public AnimoNotFound(HttpServletRequest req) throws AnimoException, IOException {
+        public AnimoNotFound(HttpServletRequest req) throws Exception {
             super(req);
         }
 
         @Override
         public void build() throws Exception {
-            builder.start(AN._, "rest");
-                builder.start(USE._, "not-found");
+            builder.start(AN._, REST);
+                builder.start(USE._, NOTFOUND);
                 builder.end();
-                builder.start(HAVE._, "host");
+                builder.start(HAVE._, HOST);
                     builder.start(req.getServerName());
                     builder.end();
                 builder.end();
-                builder.start(HAVE._, "uri");
+                builder.start(HAVE._, URI);
                     builder.start(req.getRequestURI());
                     builder.end();
                 builder.end();
@@ -189,30 +204,29 @@ public class AnimoServlet extends HttpServlet {
 
     private static class WebSerializer {
 
-        public static void serialize(final Relationship r, HttpServletResponse res) throws Exception {
+        public static void serialize(final Expression request, HttpServletResponse res) throws Exception {
             final OutputStream out = res.getOutputStream();
             try {
-                Relationship mime =  get(r, "mime-type");
-                Relationship content = get(r, "content");
+                Relationship mime =  get(request, MIME);
+                Relationship content = get(request, CONTENT);
                 String mimes = StringResultSerializer.serialize(mime);
                 if (content != null) {
                     res.setContentType(mimes == null ? "application/xml" : mimes);
                     XMLResultSerializer.serialize(content, out);
                 } else {
-                    res.setContentType(mimes == null ? "application/octet-stream" :mimes);
+                    res.setContentType(mimes == null ? "application/octet-stream" : mimes);
                     final boolean[] isNotFound = {true};
                     //UNDERSTAND: why it here?
                     AnimoResultTraverser._.traverse(
                         new BinaryGraphHandler(out){
                             @Override
                             public void start(Statement statement, Relationship r, int level, boolean isOne) throws IOException {
-                                Node n = r.getEndNode();
-                                if (BIN.has(n)) {
+                                if (statement instanceof STREAM) {
                                     isNotFound[0] = false;
-                                    write(n, out);
+                                    write(r.getEndNode(), out);
                                 }
                             }
-                        }, new PFlow(Evaluator._, r), r
+                        }, new PFlow(Evaluator._, request), request
                     );
                     if (isNotFound[0])
                          throw new AnimoException(null, "Resource not found"); //TODO: replace null by ?
@@ -226,13 +240,11 @@ public class AnimoServlet extends HttpServlet {
 
         }
 
-        private static Relationship get(Relationship r, String have) throws Exception {
+        private static Relationship get(Expression context, Node anything) throws Exception {
             Expression get = new JExpression(
-                _(GET._, have,
-                    _(AN._, THE._.reference(r))
-                )
+                _(GET._, anything, _(context))
             );
-            PipedInput pipe = Evaluator._.execute(new PFlow(Evaluator._, r), get);
+            PipedInput pipe = Evaluator._.execute(new PFlow(Evaluator._, context), get);
             for (Object o : pipe) {
                 pipe.close();
                 return (Relationship) o;

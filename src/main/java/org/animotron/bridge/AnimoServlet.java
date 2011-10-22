@@ -30,7 +30,6 @@ import org.animotron.graph.handler.BinaryGraphHandler;
 import org.animotron.graph.serializer.StringResultSerializer;
 import org.animotron.graph.serializer.XMLResultSerializer;
 import org.animotron.graph.traverser.AnimoResultTraverser;
-import org.animotron.io.PipedInput;
 import org.animotron.manipulator.Evaluator;
 import org.animotron.manipulator.PFlow;
 import org.animotron.statement.Statement;
@@ -86,9 +85,11 @@ public class AnimoServlet extends HttpServlet {
             try {
                 writeResponse(new AnimoNotFound(req), res);
             } catch (Exception eBuilderTerminated) {
+                e.printStackTrace();
                 throw new IOException(e);
             }
 		} catch (Exception e) {
+            e.printStackTrace();
             throw new IOException(e);
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
@@ -112,7 +113,6 @@ public class AnimoServlet extends HttpServlet {
         public RequestExpression(HttpServletRequest req) throws Exception {
             super(new FastGraphBuilder());
             this.req = req;
-            builder.build(this);
         }
     }
 
@@ -133,14 +133,12 @@ public class AnimoServlet extends HttpServlet {
                 boolean isRoot = true;
                 for (String part : parts) {
                     if (part.isEmpty()) continue;
-                    builder.start(USE._, part);
-                    builder.end();
+                    builder._(USE._, part);
                     isRoot = false;
                 }
 
                 if (isRoot) {
-                    builder.start(USE._, ROOT);
-                    builder.end();
+                    builder._(USE._, ROOT);
                 }
 
                 Enumeration<?> names = req.getParameterNames();
@@ -160,19 +158,16 @@ public class AnimoServlet extends HttpServlet {
                         builder.start(HAVE._, name);
                     }
                     for  (String value : req.getParameterValues(name)) {
-                        builder.start(value);
-                        builder.end();
+                        builder._(value);
                     }
                     builder.end();
                 }
 
                 builder.start(HAVE._, HOST);
-                    builder.start(req.getServerName());
-                    builder.end();
+                    builder._(req.getServerName());
                 builder.end();
                 builder.start(HAVE._, URI);
-                    builder.start(req.getRequestURI());
-                    builder.end();
+                    builder._(uri);
                 builder.end();
 
             builder.end();
@@ -188,15 +183,12 @@ public class AnimoServlet extends HttpServlet {
         @Override
         public void build() throws Exception {
             builder.start(AN._, REST);
-                builder.start(USE._, NOTFOUND);
-                builder.end();
+                builder._(USE._, NOTFOUND);
                 builder.start(HAVE._, HOST);
-                    builder.start(req.getServerName());
-                    builder.end();
+                    builder._(req.getServerName());
                 builder.end();
                 builder.start(HAVE._, URI);
-                    builder.start(req.getRequestURI());
-                    builder.end();
+                    builder._(req.getRequestURI());
                 builder.end();
             builder.end();
         }
@@ -207,14 +199,13 @@ public class AnimoServlet extends HttpServlet {
         public static void serialize(final Expression request, HttpServletResponse res) throws Exception {
             final OutputStream out = res.getOutputStream();
             try {
-                Relationship mime =  get(request, MIME);
-                Relationship content = get(request, CONTENT);
-                String mimes = StringResultSerializer.serialize(mime);
+                String mime = StringResultSerializer.serialize(get(request, MIME));
+                Relationship content = (Relationship) Evaluator._.execute(new PFlow(Evaluator._, request), get(request, CONTENT)).read();
                 if (content != null) {
-                    res.setContentType(mimes == null ? "application/xml" : mimes);
-                    XMLResultSerializer.serialize(content, out);
+                    res.setContentType(mime.isEmpty() ? "application/xml" : mime);
+                    XMLResultSerializer.serialize((Relationship) content, out);
                 } else {
-                    res.setContentType(mimes == null ? "application/octet-stream" : mimes);
+                    res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
                     final boolean[] isNotFound = {true};
                     //UNDERSTAND: why it here?
                     AnimoResultTraverser._.traverse(
@@ -240,17 +231,11 @@ public class AnimoServlet extends HttpServlet {
 
         }
 
-        private static Relationship get(Expression context, Node anything) throws Exception {
-            Expression get = new JExpression(
+        private static Expression get(Expression context, Node anything) {
+            return new JExpression(
                 _(GET._, anything, _(context))
             );
-            PipedInput pipe = Evaluator._.execute(new PFlow(Evaluator._, context), get);
-            for (Object o : pipe) {
-                pipe.close();
-                return (Relationship) o;
-            }
-            return null;
-        };
+        }
 
 
     }

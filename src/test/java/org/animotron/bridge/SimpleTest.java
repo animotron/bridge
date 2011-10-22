@@ -18,10 +18,10 @@
  */
 package org.animotron.bridge;
 
-import com.meterware.httpunit.GetMethodWebRequest;
-import com.meterware.httpunit.WebConversation;
-import com.meterware.httpunit.WebRequest;
-import com.meterware.httpunit.WebResponse;
+//import com.meterware.httpunit.GetMethodWebRequest;
+//import com.meterware.httpunit.WebConversation;
+//import com.meterware.httpunit.WebRequest;
+//import com.meterware.httpunit.WebResponse;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -54,10 +54,10 @@ public class SimpleTest {
 		
 		server.start();
 		
-		WebConversation wc = new WebConversation();
-	    WebRequest     req = new GetMethodWebRequest( "http://localhost:7770/" );
-	    WebResponse   resp = wc.getResponse( req );
-	    System.out.println(resp.toString());
+//		WebConversation wc = new WebConversation();
+//	    WebRequest     req = new GetMethodWebRequest( "http://localhost:7770/" );
+//	    WebResponse   resp = wc.getResponse( req );
+//	    System.out.println(resp.toString());
 
 		server.stop();
 	}

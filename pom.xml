@@ -17,8 +17,9 @@
 	</developers>
 
 	<properties>
-		<!-- <jettyVersion>8.0.0.M2</jettyVersion> -->
-		<jettyVersion>7.4.2.v20110526</jettyVersion>
+		<jettyVersion>8.0.3.v20111011</jettyVersion>
+		<!-- <jettyVersion>7.4.2.v20110526</jettyVersion> -->
+		<miltonVersion>1.6.2</miltonVersion>
 	</properties>
 
 	<dependencies>
@@ -42,13 +43,15 @@
 		<dependency>
 			<groupId>com.ettrema</groupId>
 			<artifactId>milton-api</artifactId>
-			<version>1.5.4</version>
+			<version>1.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ettrema</groupId>
 			<artifactId>milton-servlet</artifactId>
-			<version>1.5.4</version>
+			<version>${miltonVersion}</version>
 		</dependency>
+		<!-- servlet container -->
+		<!-- 
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
@@ -56,18 +59,21 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlet</artifactId>
 			<version>${jettyVersion}</version>
 		</dependency>
 		
+		<!-- 
 		<dependency>
 			<groupId>httpunit</groupId>
 			<artifactId>httpunit</artifactId>
 			<version>1.7</version>
 			<scope>test</scope>
 		</dependency>
+		 -->
 	</dependencies>
 
     <dependencyManagement>

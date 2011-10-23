@@ -202,10 +202,11 @@ public class AnimoServlet extends HttpServlet {
             try {
                 String mime = StringResultSerializer.serialize(get(request, MIME));
                 Expression get = get(request, CONTENT);
-                Iterator<Relationship> content = Evaluator._.execute(new PFlow(Evaluator._, get), get);
+                PFlow pf = new PFlow(Evaluator._, get);
+                Iterator<Relationship> content = Evaluator._.execute(pf, get);
                 if (content.hasNext()) {
                     res.setContentType(mime.isEmpty() ? "application/xml" : mime);
-                    XMLResultSerializer.serialize(content.next(), out);
+                    XMLResultSerializer.serialize(pf, content.next(), out);
                 } else {
                     res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
                     final boolean[] isNotFound = {true};

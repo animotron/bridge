@@ -19,7 +19,8 @@
 	<properties>
 		<jettyVersion>8.0.3.v20111011</jettyVersion>
 		<!-- <jettyVersion>7.4.2.v20110526</jettyVersion> -->
-		<miltonVersion>1.6.2</miltonVersion>
+        <miltonVersion>1.6.2</miltonVersion>
+        <slf4jVersion>1.6.1</slf4jVersion>
 	</properties>
 
 	<dependencies>
@@ -32,18 +33,18 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.6.1</version>
+			<version>${slf4jVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.6.1</version>
+			<version>${slf4jVersion}</version>
 		</dependency>
 		<!-- WebDAV -->
 		<dependency>
 			<groupId>com.ettrema</groupId>
 			<artifactId>milton-api</artifactId>
-			<version>1.6.2</version>
+			<version>${miltonVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ettrema</groupId>

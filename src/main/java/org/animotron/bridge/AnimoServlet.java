@@ -24,6 +24,7 @@ import org.animotron.expression.CommonExpression;
 import org.animotron.expression.Expression;
 import org.animotron.expression.JExpression;
 import org.animotron.graph.builder.FastGraphBuilder;
+import org.animotron.graph.serializer.StringResultSerializer;
 import org.animotron.graph.serializer.XMLResultSerializer;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.THE;
@@ -189,7 +190,7 @@ public class AnimoServlet extends HttpServlet {
         public static void serialize(final Expression request, HttpServletResponse res) throws Exception {
             final OutputStream out = res.getOutputStream();
 //            try {
-            String mime = "text/html";//StringResultSerializer.serialize(get(request, MIME));
+            String mime = StringResultSerializer.serialize(get(request, MIME));
             res.setContentType(mime.isEmpty() ? "application/xml" : mime);
             XMLResultSerializer.serialize(get(request, CONTENT), out);
 //                Expression get = get(request, CONTENT);

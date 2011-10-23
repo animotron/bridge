@@ -4,5 +4,7 @@ the html
         \html
             (\head
                 (\title get title))
+                (\meta (@name "keywords") (@content "get keywords"))
+                (\meta (@name "description") (@content "get description"))
             (\body
                 (any layout)))

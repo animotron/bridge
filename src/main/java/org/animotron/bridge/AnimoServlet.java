@@ -49,6 +49,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.Iterator;
 
 import static org.animotron.expression.JExpression._;
 
@@ -200,10 +201,11 @@ public class AnimoServlet extends HttpServlet {
             final OutputStream out = res.getOutputStream();
             try {
                 String mime = StringResultSerializer.serialize(get(request, MIME));
-                Relationship content = (Relationship) Evaluator._.execute(new PFlow(Evaluator._, request), get(request, CONTENT)).read();
-                if (content != null) {
+                Expression get = get(request, CONTENT);
+                Iterator<Relationship> content = Evaluator._.execute(new PFlow(Evaluator._, get), get);
+                if (content.hasNext()) {
                     res.setContentType(mime.isEmpty() ? "application/xml" : mime);
-                    XMLResultSerializer.serialize((Relationship) content, out);
+                    XMLResultSerializer.serialize(content.next(), out);
                 } else {
                     res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
                     final boolean[] isNotFound = {true};

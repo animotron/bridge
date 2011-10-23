@@ -3,8 +3,8 @@ the html
     (have content
         \html
             (\head
-                (\title get title))
+                (\title get title)
                 (\meta (@name "keywords") (@content "get keywords"))
-                (\meta (@name "description") (@content "get description"))
+                (\meta (@name "description") (@content "get description")))
             (\body
                 (any layout)))

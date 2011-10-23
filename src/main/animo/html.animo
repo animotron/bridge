@@ -1,5 +1,5 @@
 the html
-    (have mime-type text/html)
+    (have mime-type "text/html")
     (have content
         \html
             (\head

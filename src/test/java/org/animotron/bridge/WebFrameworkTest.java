@@ -82,7 +82,19 @@ public class WebFrameworkTest extends ATest {
                 "</body>" +
             "</html>");
         
-        JExpression ss = new JExpression(
+        s = new JExpression(
+                _(GET._, "mime-type",
+                    _(AN._, "rest",
+                        _(USE._, "root"),
+                        _(HAVE._, "uri", text("/favicon.ico")),
+                        _(HAVE._, "host", text("localhost"))
+                    )
+                )
+            );
+        //XXX:wrong
+        assertAnimoResult(s, "have mime-type \"text/html\"");
+
+        s = new JExpression(
                 _(GET._, "content",
                     _(AN._, "rest",
                         _(USE._, "root"),
@@ -91,6 +103,22 @@ public class WebFrameworkTest extends ATest {
                     )
                 )
             );
-        assertAnimoResult(ss, "");
+        //XXX:wrong
+        assertXMLResult(s,
+                "<html>" +
+                    "<head>" +
+                        "<title>Welcome to Animo</title>" +
+                        "<meta name=\"keywords\" content=\"get keywords\"/>" +
+                        "<meta name=\"description\" content=\"get description\"/>" +
+                    "</head>" +
+                    "<body>" +
+                        "<h1>Welcome to Animo</h1>" +
+                        "<p>It is working!</p>" +
+                        "<ul>" +
+                            "<li>Host: <strong>localhost</strong></li>" +
+                            "<li>URI: <strong>/</strong></li>" +
+                        "</ul>" +
+                    "</body>" +
+                "</html>");
     }
 }

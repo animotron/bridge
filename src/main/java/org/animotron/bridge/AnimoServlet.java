@@ -18,20 +18,29 @@
  */
 package org.animotron.bridge;
 
+import org.animotron.exception.AnimoException;
+import org.animotron.exception.EBuilderTerminated;
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.AbstractExpression;
 import org.animotron.expression.CommonExpression;
 import org.animotron.expression.Expression;
 import org.animotron.expression.JExpression;
 import org.animotron.graph.builder.FastGraphBuilder;
+import org.animotron.graph.handler.BinaryGraphHandler;
 import org.animotron.graph.serializer.StringResultSerializer;
 import org.animotron.graph.serializer.XMLResultSerializer;
+import org.animotron.graph.traverser.AnimoResultTraverser;
+import org.animotron.manipulator.Evaluator;
+import org.animotron.manipulator.PFlow;
+import org.animotron.statement.Statement;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.THE;
 import org.animotron.statement.query.GET;
 import org.animotron.statement.relation.HAVE;
 import org.animotron.statement.relation.USE;
+import org.animotron.statement.value.STREAM;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -40,6 +49,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.Iterator;
 
 import static org.animotron.expression.JExpression._;
 
@@ -189,39 +199,46 @@ public class AnimoServlet extends HttpServlet {
 
         public static void serialize(final Expression request, HttpServletResponse res) throws Exception {
             final OutputStream out = res.getOutputStream();
-//            try {
-            String mime = StringResultSerializer.serialize(get(request, MIME));
-            res.setContentType(mime.isEmpty() ? "application/xml" : mime);
-            XMLResultSerializer.serialize(get(request, CONTENT), out);
-//                Expression get = get(request, CONTENT);
-//                res.setContentType(mime.isEmpty() ? "application/xml" : mime);
-//                Iterator<Relationship> content = Evaluator._.execute(new PFlow(Evaluator._, get), get);
-//                if (content.hasNext()) {
-//                    res.setContentType(mime.isEmpty() ? "application/xml" : mime);
-//                    XMLResultSerializer.serialize(content.next(), out);
-//                } else {
-//                    res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
-//                    final boolean[] isNotFound = {true};
-//                    //UNDERSTAND: why it here?
-//                    AnimoResultTraverser._.traverse(
-//                        new BinaryGraphHandler(out){
-//                            @Override
-//                            public void start(Statement statement, Relationship r, int level, boolean isOne) throws IOException {
-//                                if (statement instanceof STREAM) {
-//                                    isNotFound[0] = false;
-//                                    write(r.getEndNode(), out);
-//                                }
-//                            }
-//                        }, new PFlow(Evaluator._, request), request
-//                    );
-//                    if (isNotFound[0])
-//                         throw new AnimoException(null, "Resource not found"); //TODO: replace null by ?
-//                }
-//            } catch (ENotFound e) {
-//                throw e;
-//            } catch (EBuilderTerminated e) {
-//                new IOException(e);
-//            }
+            try {
+            	String mime = StringResultSerializer.serialize(get(request, MIME));
+            	//res.setContentType(mime.isEmpty() ? "application/xml" : mime);
+            	//XMLResultSerializer.serialize(get(request, CONTENT), out);
+                Expression get = get(request, CONTENT);
+                //res.setContentType(mime.isEmpty() ? "application/xml" : mime);
+                
+                Iterator<Relationship[]> content = Evaluator._.execute(new PFlow(Evaluator._, get), get);
+                if (content.hasNext()) {
+                    res.setContentType(mime.isEmpty() ? "application/xml" : mime);
+                    PFlow pf = new PFlow(Evaluator._, get);
+                    Relationship[] vector = content.next();
+                    for (int i = 1; i < vector.length; i++) {
+                    	if (vector[i] != null)
+                    		pf.addContextPoint(vector[i]);
+                    }
+                    XMLResultSerializer.serialize(pf, vector[0], out);
+                } else {
+                    res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
+                    final boolean[] isNotFound = {true};
+                    //UNDERSTAND: why it here?
+                    AnimoResultTraverser._.traverse(
+                        new BinaryGraphHandler(out){
+                            @Override
+                            public void start(Statement statement, Relationship r, int level, boolean isOne) throws IOException {
+                                if (statement instanceof STREAM) {
+                                    isNotFound[0] = false;
+                                    write(r.getEndNode(), out);
+                                }
+                            }
+                        }, new PFlow(Evaluator._, request), request
+                    );
+                    if (isNotFound[0])
+                         throw new AnimoException(null, "Resource not found"); //TODO: replace null by ?
+                }
+            } catch (ENotFound e) {
+                throw e;
+            } catch (EBuilderTerminated e) {
+                new IOException(e);
+            }
         }
 
         private static Expression get(Expression context, Node anything) {

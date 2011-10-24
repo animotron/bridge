@@ -61,13 +61,13 @@ public class AnimoServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 7276574723383015880L;
 
-    private static final Node REST = reference("rest");
-    private static final Node MIME = reference("mime-type");
-    private static final Node URI = reference("uri");
-    private static final Node CONTENT = reference("content");
-    private static final Node NOTFOUND = reference("not-found");
-    private static final Node ROOT = reference("root");
-    private static final Node HOST = reference("host");
+    protected static final Node REST = reference("rest");
+    protected static final Node MIME = reference("mime-type");
+    protected static final Node URI = reference("uri");
+    protected static final Node CONTENT = reference("content");
+    protected static final Node NOTFOUND = reference("not-found");
+    protected static final Node ROOT = reference("root");
+    protected static final Node HOST = reference("host");
 
     private static Node reference (String name) {
         try {
@@ -117,7 +117,7 @@ public class AnimoServlet extends HttpServlet {
         }
     }
 
-    private class AnimoRequest extends RequestExpression {
+    protected class AnimoRequest extends RequestExpression {
 
         public AnimoRequest(HttpServletRequest req) throws Exception {
             super(req);
@@ -195,7 +195,7 @@ public class AnimoServlet extends HttpServlet {
         }
     }
 
-    private static class WebSerializer {
+    protected static class WebSerializer {
 
         public static void serialize(final Expression request, HttpServletResponse res) throws Exception {
             final OutputStream out = res.getOutputStream();
@@ -241,7 +241,7 @@ public class AnimoServlet extends HttpServlet {
             }
         }
 
-        private static Expression get(Expression context, Node anything) {
+        protected static Expression get(Expression context, Node anything) {
             return new JExpression(
                 _(GET._, anything, _(context))
             );

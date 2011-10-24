@@ -61,21 +61,23 @@ public class WebFrameworkTest extends ATest {
                         "(\\h1 have title \"Welcome to Animo\") " +
                         "(\\p have content \"It is working!\") " +
                         "(\\ul " +
-                            "(\\li (\"host: \\\"\") (\\strong have host \"localhost\") (\"\\\"\")) " +
-                            "(\\li (\"uri: \\\"\") (\\strong have uri \"/\") (\"\\\"\"))))");
+                            "(\\li (\"Host: \") (\\strong have host \"localhost\")) " +
+                            "(\\li (\"URI: \") (\\strong have uri \"/\"))))");
 
 
         assertXMLResult(s,
             "<html>" +
                 "<head>" +
                     "<title>Welcome to Animo</title>" +
+                    "<meta name=\"keywords\" content=\"get keywords\"/>" +
+                    "<meta name=\"description\" content=\"get description\"/>" +
                 "</head>" +
                 "<body>" +
                     "<h1>Welcome to Animo</h1>" +
                     "<p>It is working!</p>" +
                     "<ul>" +
-                        "<li>host: \"<strong>localhost</strong>\"</li>" +
-                        "<li>uri: \"<strong>/</strong>\"</li>" +
+                        "<li>Host: <strong>localhost</strong></li>" +
+                        "<li>URI: <strong>/</strong></li>" +
                     "</ul>" +
                 "</body>" +
             "</html>");

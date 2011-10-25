@@ -55,8 +55,8 @@ public class WebFrameworkTest extends ATest {
                 "\\html " +
                     "(\\head " +
                     	"(\\title have title \"Welcome to Animo\") " +
-                    	"(\\meta (@name \"keywords\") (@content \"get keywords\")) " +
-                    	"(\\meta (@name \"description\") (@content \"get description\"))) " +
+                    	"(\\meta (@name \"keywords\") (@content)) " +
+                    	"(\\meta (@name \"description\") (@content))) " +
                     "(\\body the theme-concrete-root-layout (is root-layout) " +
                         "(\\h1 have title \"Welcome to Animo\") " +
                         "(\\p have content \"It is working!\") " +
@@ -69,8 +69,8 @@ public class WebFrameworkTest extends ATest {
             "<html>" +
                 "<head>" +
                     "<title>Welcome to Animo</title>" +
-                    "<meta name=\"keywords\" content=\"get keywords\"/>" +
-                    "<meta name=\"description\" content=\"get description\"/>" +
+                    "<meta name=\"keywords\" content=\"\"/>" +
+                    "<meta name=\"description\" content=\"\"/>" +
                 "</head>" +
                 "<body>" +
                     "<h1>Welcome to Animo</h1>" +
@@ -83,16 +83,18 @@ public class WebFrameworkTest extends ATest {
             "</html>");
         
         s = new JExpression(
-                _(GET._, "mime-type",
-                    _(AN._, "favicon.ico",
-                        _(USE._, "root"),
-                        _(HAVE._, "uri", text("/favicon.ico")),
-                        _(HAVE._, "host", text("localhost"))
+                _(GET._, "type",
+                    _(GET._, "mime-type",
+                        _(AN._, "rest",
+                            _(USE._, "favicon.ico"),
+                            _(HAVE._, "uri", text("/favicon.ico")),
+                            _(HAVE._, "host", text("localhost"))
+                        )
                     )
                 )
             );
         //XXX:wrong
-        assertAnimoResult(s, "have mime-type \"text/html\"");
+        assertAnimoResult(s, "have type \"image/ico\"");
 
         //XXX:wrong
         assertXMLResult(s,

@@ -61,15 +61,16 @@ public class AnimoServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 7276574723383015880L;
 
-    protected static final Node REST = reference("rest");
-    protected static final Node MIME = reference("mime-type");
-    protected static final Node URI = reference("uri");
-    protected static final Node CONTENT = reference("content");
-    protected static final Node NOTFOUND = reference("not-found");
-    protected static final Node ROOT = reference("root");
-    protected static final Node HOST = reference("host");
+    protected static final Node REST = the("rest");
+    protected static final Node MIME = the("mime-type");
+    protected static final Node TYPE = the("type");
+    protected static final Node URI = the("uri");
+    protected static final Node CONTENT = the("content");
+    protected static final Node NOTFOUND = the("not-found");
+    protected static final Node ROOT = the("root");
+    protected static final Node HOST = the("host");
 
-    private static Node reference (String name) {
+    private static Node the(String name) {
         try {
             return THE._.getOrCreate(name, true).getEndNode();
         } catch (Exception e) {
@@ -200,12 +201,14 @@ public class AnimoServlet extends HttpServlet {
         public static void serialize(final Expression request, HttpServletResponse res) throws Exception {
             final OutputStream out = res.getOutputStream();
             try {
-            	String mime = StringResultSerializer.serialize(get(request, MIME));
+            	String mime = StringResultSerializer.serialize(
+                        new JExpression(
+                                _(GET._, TYPE, _(GET._, MIME, _(request)))
+                        )
+                );
             	//res.setContentType(mime.isEmpty() ? "application/xml" : mime);
             	//XMLResultSerializer.serialize(get(request, CONTENT), out);
-                Expression get = get(request, CONTENT);
-                //res.setContentType(mime.isEmpty() ? "application/xml" : mime);
-                
+                Expression get = new JExpression(_(GET._, CONTENT, _(request)));
                 Iterator<Relationship[]> content = Evaluator._.execute(new PFlow(Evaluator._, get), get);
                 if (content.hasNext()) {
                     res.setContentType(mime.isEmpty() ? "application/xml" : mime);
@@ -240,13 +243,6 @@ public class AnimoServlet extends HttpServlet {
                 new IOException(e);
             }
         }
-
-        protected static Expression get(Expression context, Node anything) {
-            return new JExpression(
-                _(GET._, anything, _(context))
-            );
-        }
-
 
     }
 	

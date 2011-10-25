@@ -18,14 +18,14 @@
  */
 package org.animotron.bridge;
 
+import junit.framework.Assert;
+import org.animotron.ATest;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import junit.framework.Assert;
-import org.animotron.ATest;
-import org.junit.Test;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -51,8 +51,8 @@ public class ServletTest extends ATest {
             "<html>" +
                 "<head>" +
                     "<title>Welcome to Animo</title>" +
-                    "<meta name=\"keywords\" content=\"get keywords\"/>" +
-                    "<meta name=\"description\" content=\"get description\"/>" +
+                    "<meta name=\"keywords\" content=\"\"/>" +
+                    "<meta name=\"description\" content=\"\"/>" +
                 "</head>" +
                 "<body>" +
                     "<h1>Welcome to Animo</h1>" +

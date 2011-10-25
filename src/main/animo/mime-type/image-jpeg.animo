@@ -3,4 +3,4 @@ the image-jpeg
     (is   image)
     (have type      "image/jpeg")
     (have name      "JPEG Image")
-    (have extension "jpg" "jpeg")
+    (have extension ("jpg") ("jpeg"))

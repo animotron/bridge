@@ -3,4 +3,4 @@ the image-tiff
     (is   image)
     (have type      "image/tiff")
     (have name      "TIF Image")
-    (have extension "tif" "tiff")
+    (have extension ("tif") ("tiff"))

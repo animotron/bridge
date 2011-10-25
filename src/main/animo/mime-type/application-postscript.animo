@@ -3,4 +3,4 @@ the application-postscript
     (is   application)
     (have type      "application/postscript")
     (have name      "PostScript Document")
-    (have extension "ps" "eps")
+    (have extension ("ps") ("eps"))

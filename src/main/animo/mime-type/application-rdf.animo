@@ -3,4 +3,4 @@ the application-rdf
     (is   application)
     (have type      "application/rdf")
     (have name      "RDF Document")
-    (have extension "rdf" "rdfs")
+    (have extension ("rdf") ("rdfs"))

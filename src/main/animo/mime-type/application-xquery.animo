@@ -3,4 +3,4 @@ the application-xquery
     (is   application)
     (have type      "application/xquery")
     (have name      "XQuery Script")
-    (have extension "xq" "xql" "xqm" "xquery" "xqy" "xqws")
+    (have extension ("xq") ("xql") ("xqm") ("xquery") ("xqy") ("xqws"))

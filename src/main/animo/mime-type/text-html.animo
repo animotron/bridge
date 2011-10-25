@@ -3,4 +3,4 @@ the text-html
     (is   text)
     (have type      "text/html")
     (have name      "HTML Document")
-    (have extension "htm" "html")
+    (have extension ("htm") ("html"))

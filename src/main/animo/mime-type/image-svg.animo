@@ -3,4 +3,4 @@ the image-svg
     (is   image)
     (have type      "image/svg+xml")
     (have name      "SVG Image")
-    (have extension "svg" "svgz")
+    (have extension ("svg") ("svgz"))

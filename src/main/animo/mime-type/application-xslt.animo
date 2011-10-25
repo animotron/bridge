@@ -3,4 +3,4 @@ the application-xslt
     (is   application)
     (have type      "application/xslt+xml")
     (have name      "XSL Document")
-    (have extension "xsl" "xslt")
+    (have extension ("xsl") ("xslt"))

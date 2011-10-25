@@ -18,12 +18,12 @@
  */
 package org.animotron.bridge;
 
-import java.io.IOException;
-
 import org.animotron.bridge.webdav.WebDAVServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+
+import java.io.IOException;
 
 import static org.animotron.graph.AnimoGraph.startDB;
 
@@ -46,8 +46,10 @@ public class JettyHttpServer {
     	
     	//initialize animo
     	startDB("data");
-    	
-    	FSBridge.load("src/main/animo/");
+
+//        if (!getSTART().hasRelationship(Direction.OUTGOING)) {
+    	    FSBridge.load("src/main/animo/");
+//        }
     	
     	//setup servlet container
         jetty = new Server(jettyPort);

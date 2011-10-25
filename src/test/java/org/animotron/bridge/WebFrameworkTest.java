@@ -84,7 +84,7 @@ public class WebFrameworkTest extends ATest {
         
         s = new JExpression(
                 _(GET._, "mime-type",
-                    _(AN._, "rest",
+                    _(AN._, "favicon.ico",
                         _(USE._, "root"),
                         _(HAVE._, "uri", text("/favicon.ico")),
                         _(HAVE._, "host", text("localhost"))
@@ -94,15 +94,6 @@ public class WebFrameworkTest extends ATest {
         //XXX:wrong
         assertAnimoResult(s, "have mime-type \"text/html\"");
 
-        s = new JExpression(
-                _(GET._, "content",
-                    _(AN._, "rest",
-                        _(USE._, "root"),
-                        _(HAVE._, "uri", text("/favicon.ico")),
-                        _(HAVE._, "host", text("localhost"))
-                    )
-                )
-            );
         //XXX:wrong
         assertXMLResult(s,
                 "<html>" +

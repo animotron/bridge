@@ -18,6 +18,11 @@
  */
 package org.animotron.bridge;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import junit.framework.Assert;
 import org.animotron.ATest;
 import org.junit.Test;
@@ -39,27 +44,8 @@ public class ServletTest extends ATest {
     	HttpRequest request = new HttpRequest("/","localhost");
     	HttpResponse response = new HttpResponse();
     	
-//    	Expression request = servlet.new AnimoRequest();
-//    	String mime = StringResultSerializer.serialize(AnimoServlet.WebSerializer.get(request, AnimoServlet.MIME));
-//    	assertTrue("".equals(mime));
-    	
     	servlet.doGet(request, response);
 
-//        assertAnimoResult(s,
-//            "have content " +
-//                "\\html " +
-//                    "(\\head " +
-//                    	"(\\title have title \"Welcome to Animo\") " +
-//                    	"(\\meta (@name \"keywords\") (@content \"get keywords\")) " +
-//                    	"(\\meta (@name \"description\") (@content \"get description\"))) " +
-//                    "(\\body the theme-concrete-root-layout (is root-layout) " +
-//                        "(\\h1 have title \"Welcome to Animo\") " +
-//                        "(\\p have content \"It is working!\") " +
-//                        "(\\ul " +
-//                            "(\\li (\"Host: \") (\\strong have host \"localhost\")) " +
-//                            "(\\li (\"URI: \") (\\strong have uri \"/\"))))");
-//
-//
         Assert.assertEquals(
             "<?xml version='1.0' encoding='UTF-8'?>" +
             "<html>" +
@@ -77,7 +63,7 @@ public class ServletTest extends ATest {
                     "</ul>" +
                 "</body>" +
             "</html>",
-            response.getResponse()
+            response.getResponseString()
         );
         
     	request = new HttpRequest("/favicon.ico","localhost");
@@ -85,7 +71,33 @@ public class ServletTest extends ATest {
 
     	servlet.doGet(request, response);
     	
-//        assertAnimoResult(ss, "");
+    	org.junit.Assert.assertArrayEquals(getBytesFromFile(new File("src/main/animo/favicon.ico")),response.getResponse());
+    }
+    
+    private byte[] getBytesFromFile(File file) throws IOException {
+    	InputStream is = new FileInputStream(file);
+
+        long length = file.length();
+
+        if (length > Integer.MAX_VALUE) {
+            throw new RuntimeException("File too big ["+file.getPath()+"]");
+        }
+
+        byte[] bytes = new byte[(int)length];
+
+        int offset = 0;
+        int numRead = 0;
+        while (offset < bytes.length
+               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+            offset += numRead;
+        }
+
+        if (offset < bytes.length) {
+            throw new IOException("Could not completely read file "+file.getName());
+        }
+
+        is.close();
+        return bytes;
     }
     
 }

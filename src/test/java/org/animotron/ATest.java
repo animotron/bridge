@@ -582,11 +582,15 @@ public abstract class ATest {
             out = new OutputStream();
 		}
 
-        public String getResponse() {
-        	return out.builder.toString();
+        public byte[] getResponse() {
+        	return out.bos.toByteArray();
         }
 
-		@Override
+        public String getResponseString() {
+        	return out.sb.toString();
+        }
+
+        @Override
 		public String getCharacterEncoding() {
 			// TODO Auto-generated method stub
 			return null;
@@ -769,11 +773,15 @@ public abstract class ATest {
 
     private class OutputStream extends ServletOutputStream {
 
-    	StringBuilder builder = new StringBuilder(1024);
+    	StringBuilder sb = new StringBuilder(1024);
+    	
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+		DataOutputStream dos = new DataOutputStream(bos);  
 
 		@Override
 		public void write(int b) throws IOException {
-			builder.append((char)b);
+			dos.write(b);
+			sb.append((char)b);
 		}
     }
 

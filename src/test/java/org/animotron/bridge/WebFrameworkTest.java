@@ -96,22 +96,5 @@ public class WebFrameworkTest extends ATest {
         //XXX:wrong
         assertAnimoResult(s, "have type \"image/ico\"");
 
-        //XXX:wrong
-        assertXMLResult(s,
-                "<html>" +
-                    "<head>" +
-                        "<title>Welcome to Animo</title>" +
-                        "<meta name=\"keywords\" content=\"get keywords\"/>" +
-                        "<meta name=\"description\" content=\"get description\"/>" +
-                    "</head>" +
-                    "<body>" +
-                        "<h1>Welcome to Animo</h1>" +
-                        "<p>It is working!</p>" +
-                        "<ul>" +
-                            "<li>Host: <strong>localhost</strong></li>" +
-                            "<li>URI: <strong>/</strong></li>" +
-                        "</ul>" +
-                    "</body>" +
-                "</html>");
     }
 }

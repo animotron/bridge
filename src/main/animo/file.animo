@@ -1,2 +1,3 @@
 the file
-    is resource
+    (is resource)
+    (ic mime-type any mime-type with extension self extension)

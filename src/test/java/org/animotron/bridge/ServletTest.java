@@ -66,13 +66,29 @@ public class ServletTest extends ATest {
             response.getResponseString()
         );
         
-    	request = new HttpRequest("/favicon.ico","localhost");
-    	response = new HttpResponse();
+    	for (int i = 0; i < 1; i++) {
+	        request = new HttpRequest("/","localhost");
+	    	response = new HttpResponse();
+	
+	    	servlet.doGet(request, response);
+    	}
+    	
+    }
+    
+    @Test
+    public void testBinay() throws Exception {
+    	FSBridge.load("src/main/animo/");
+    	
+    	AnimoServlet servlet = new AnimoServlet();
+    	
+    	HttpRequest request = new HttpRequest("/favicon.ico","localhost");
+    	HttpResponse response = new HttpResponse();
 
     	servlet.doGet(request, response);
     	
     	org.junit.Assert.assertArrayEquals(getBytesFromFile(new File("src/main/animo/favicon.ico")),response.getResponse());
     }
+    
     
     private byte[] getBytesFromFile(File file) throws IOException {
     	InputStream is = new FileInputStream(file);

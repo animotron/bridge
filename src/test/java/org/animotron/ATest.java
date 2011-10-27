@@ -264,7 +264,7 @@ public abstract class ATest {
     	shutdownDB();
     }
 
-        protected class HttpRequest implements HttpServletRequest {
+    protected class HttpRequest implements HttpServletRequest {
 
     	String requestURI;
     	String serverName;
@@ -276,61 +276,51 @@ public abstract class ATest {
 
 		@Override
 		public Object getAttribute(String name) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public Enumeration getAttributeNames() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getCharacterEncoding() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public int getContentLength() {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
 		@Override
 		public String getContentType() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public ServletInputStream getInputStream() throws IOException {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getParameter(String name) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public Locale getLocale() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public Enumeration getLocales() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public Map getParameterMap() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -341,19 +331,16 @@ public abstract class ATest {
 
 		@Override
 		public String[] getParameterValues(String name) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getProtocol() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getScheme() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -364,152 +351,120 @@ public abstract class ATest {
 
 		@Override
 		public int getServerPort() {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
 		@Override
 		public BufferedReader getReader() throws IOException {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getRemoteAddr() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getRemoteHost() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public void setAttribute(String name, Object o) {
-			// TODO Auto-generated method stub
-
-		}
+		public void setAttribute(String name, Object o) {}
 
 		@Override
-		public void removeAttribute(String name) {
-			// TODO Auto-generated method stub
-
-		}
+		public void removeAttribute(String name) {}
 
 		@Override
 		public boolean isSecure() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
 		public RequestDispatcher getRequestDispatcher(String path) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getRealPath(String path) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public void setCharacterEncoding(String arg0)
-				throws UnsupportedEncodingException {
-			// TODO Auto-generated method stub
-
-		}
+		public void setCharacterEncoding(String arg0) throws UnsupportedEncodingException {}
 
 		@Override
 		public String getAuthType() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public Cookie[] getCookies() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public long getDateHeader(String name) {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
 		@Override
 		public String getHeader(String name) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public Enumeration getHeaders(String name) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public Enumeration getHeaderNames() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public int getIntHeader(String name) {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
 		@Override
 		public String getMethod() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getPathInfo() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getPathTranslated() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getContextPath() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getQueryString() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getRemoteUser() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public boolean isUserInRole(String role) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
 		public Principal getUserPrincipal() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -520,55 +475,46 @@ public abstract class ATest {
 
 		@Override
 		public StringBuffer getRequestURL() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getRequestedSessionId() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getServletPath() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public HttpSession getSession(boolean create) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public HttpSession getSession() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public boolean isRequestedSessionIdValid() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
 		public boolean isRequestedSessionIdFromCookie() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
 		public boolean isRequestedSessionIdFromURL() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
 		public boolean isRequestedSessionIdFromUrl() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
@@ -579,8 +525,16 @@ public abstract class ATest {
         OutputStream out;
 
         public HttpResponse() throws IOException {
-            out = new OutputStream();
+            this(true);
 		}
+        
+        public HttpResponse(boolean fantom) throws IOException {
+        	if (fantom)
+        		out = new FantomOutputStream();
+        	else
+        		out = new OutputStream();
+		}
+
 
         public byte[] getResponse() {
         	return out.bos.toByteArray();
@@ -592,7 +546,6 @@ public abstract class ATest {
 
         @Override
 		public String getCharacterEncoding() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -603,171 +556,105 @@ public abstract class ATest {
 
 		@Override
 		public PrintWriter getWriter() throws IOException {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public int getBufferSize() {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
 		@Override
-		public void flushBuffer() throws IOException {
-			// TODO Auto-generated method stub
-
-		}
+		public void flushBuffer() throws IOException {}
 
 		@Override
 		public boolean isCommitted() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
-		public void reset() {
-			// TODO Auto-generated method stub
-
-		}
+		public void reset() {}
 
 		@Override
 		public Locale getLocale() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public void resetBuffer() {
-			// TODO Auto-generated method stub
-
-		}
+		public void resetBuffer() {}
 
 		@Override
-		public void setContentLength(int len) {
-			// TODO Auto-generated method stub
-
-		}
+		public void setContentLength(int len) {}
 
 		@Override
-		public void setContentType(String type) {
-			// TODO Auto-generated method stub
-
-		}
+		public void setContentType(String type) {}
 
 		@Override
-		public void setBufferSize(int size) {
-			// TODO Auto-generated method stub
-
-		}
+		public void setBufferSize(int size) {}
 
 		@Override
-		public void setLocale(Locale loc) {
-			// TODO Auto-generated method stub
-
-		}
+		public void setLocale(Locale loc) {}
 
 		@Override
-		public void addCookie(Cookie cookie) {
-			// TODO Auto-generated method stub
-
-		}
+		public void addCookie(Cookie cookie) {}
 
 		@Override
 		public boolean containsHeader(String name) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
 		public String encodeURL(String url) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String encodeRedirectURL(String url) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String encodeUrl(String url) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String encodeRedirectUrl(String url) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public void sendError(int sc, String msg) throws IOException {
-			// TODO Auto-generated method stub
-
-		}
+		public void sendError(int sc, String msg) throws IOException {}
 
 		@Override
-		public void sendError(int sc) throws IOException {
-			// TODO Auto-generated method stub
-
-		}
+		public void sendError(int sc) throws IOException {}
 
 		@Override
-		public void sendRedirect(String location) throws IOException {
-			// TODO Auto-generated method stub
-
-		}
+		public void sendRedirect(String location) throws IOException {}
 
 		@Override
-		public void setDateHeader(String name, long date) {
-			// TODO Auto-generated method stub
-
-		}
+		public void setDateHeader(String name, long date) {}
 
 		@Override
-		public void addDateHeader(String name, long date) {
-			// TODO Auto-generated method stub
-
-		}
+		public void addDateHeader(String name, long date) {}
 
 		@Override
-		public void setHeader(String name, String value) {
-			// TODO Auto-generated method stub
-
-		}
+		public void setHeader(String name, String value) {}
 
 		@Override
-		public void addHeader(String name, String value) {
-			// TODO Auto-generated method stub
-
-		}
+		public void addHeader(String name, String value) {}
 
 		@Override
-		public void setIntHeader(String name, int value) {
-			// TODO Auto-generated method stub
-
-		}
+		public void setIntHeader(String name, int value) {}
 
 		@Override
-		public void addIntHeader(String name, int value) {
-			// TODO Auto-generated method stub
-
-		}
+		public void addIntHeader(String name, int value) {}
 
 		@Override
-		public void setStatus(int sc) {
-			// TODO Auto-generated method stub
-
-		}
+		public void setStatus(int sc) {}
 
 		@Override
-		public void setStatus(int sc, String sm) {
-			// TODO Auto-generated method stub
-
-		}
+		public void setStatus(int sc, String sm) {}
 
     }
 
@@ -782,6 +669,12 @@ public abstract class ATest {
 		public void write(int b) throws IOException {
 			dos.write(b);
 			sb.append((char)b);
+		}
+    }
+    
+    private class FantomOutputStream extends OutputStream {
+		public void write(int b) throws IOException {
+			;
 		}
     }
 

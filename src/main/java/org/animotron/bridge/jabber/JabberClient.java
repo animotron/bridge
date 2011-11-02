@@ -18,59 +18,192 @@
  */
 package org.animotron.bridge.jabber;
 
-import java.util.Collection;
+import static org.animotron.graph.AnimoGraph.startDB;
 
+import java.io.IOException;
+import java.util.Map;
+
+import javolution.util.FastMap;
+
+import org.animotron.bridge.FSBridge;
+import org.animotron.expression.AnimoExpression;
+import org.animotron.graph.AnimoGraph;
+import org.animotron.graph.serializer.AnimoPrettyResultSerializer;
+import org.animotron.statement.operator.THE;
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Packet;
+import org.jivesoftware.smack.packet.Presence;
+import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.neo4j.graphdb.Node;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  *
  */
-public class JabberClient implements MessageListener {
+public class JabberClient implements MessageListener, ChatManagerListener, PacketListener {
 	
-	XMPPConnection connection;
-	
-	public JabberClient() throws XMPPException {
-		ConnectionConfiguration config = 
-				new ConnectionConfiguration("talk.google.com", 
-								5222, 
-								"gmail.com");
-		connection = new XMPPConnection(config);
-		connection.connect();
-		connection.login("login", "psswd");
-		
-		Roster roster = connection.getRoster();
-		Collection<RosterEntry> entries = roster.getEntries();
-		 
-		System.out.println("\n\n" + entries.size() + " buddy(ies):");
-		for(RosterEntry r:entries) {
-			System.out.println(r.getUser());
+	static {
+    	//initialize animo
+    	startDB("data");
+
+    	try {
+		    FSBridge.load("src/main/animo/");
+		    FSBridge.load("etc/");
+    	} catch (Exception e) {
 		}
-		
-		Chat chat = connection.getChatManager().createChat("somebody@gmail.com", this);
-		chat.sendMessage("ready...");
 	}
 	
+	//private Node I = THE._("animotron@gmail.com");
+	
+	XMPPConnection connection;
+	Map<String, MultiUserChat> chats = new FastMap<String, MultiUserChat>();
+	
+	public JabberClient() throws XMPPException, IOException {
+
+		ConnectionConfiguration config = 
+			new ConnectionConfiguration(
+				getHost(), 
+				Integer.valueOf(getPort()), 
+				getServiceName()
+			);
+		connection = new XMPPConnection(config);
+		connection.connect();
+		connection.login(getUsername(), getPassword());
+		
+		connection.getChatManager().addChatListener(this);
+		
+		Presence presence = new Presence(Presence.Type.available);
+		presence.setPriority(10);
+		connection.sendPacket(presence);
+		
+	}
+	
+	protected String getHost() {
+		return "talk.google.com";
+	}
+
+	protected String getPort() {
+		return "5222";
+	}
+
+	protected String getServiceName() {
+		return "gmail.com";
+	}
+
+	protected String getUsername() {
+		return "";
+	}
+	
+	protected String getPassword() {
+		return "";
+	}
+
 	public void disconnect() {
 		connection.disconnect();
 	}
 	
 	@Override
 	public void processMessage(Chat chat, Message message) {
-		System.out.println(message.getBody());
+		System.out.println("from = "+message.getFrom());
+		System.out.println("body = "+message.getBody());
+		
+		if (message.getType() == Message.Type.error)
+			return;
+		
 		try {
-			chat.sendMessage("get: "+message.getBody());
+			if (message.getFrom().endsWith("groupchat.google.com")) {
+				System.out.println("joining...");
+				MultiUserChat muc = new MultiUserChat(connection, message.getFrom());
+				muc.join(getUsername(), getPassword());
+				muc.addMessageListener(this);
+				chats.put(message.getFrom(), muc);
+				return;
+			} else {
+				String msg = processMessage(message, false);
+				if (msg != null) {
+					chat.sendMessage( msg );
+
+					Presence presence = new Presence(Presence.Type.available);
+					presence.setPriority(10);
+					connection.sendPacket(presence);
+				}
+			}
 		} catch (XMPPException e) {
+		}
+	}
+
+	@Override
+	public void chatCreated(Chat chat, boolean createdLocally) {
+		System.out.println("chatCreated "+chat.getParticipant());
+		if (!chat.getListeners().contains(this))
+			chat.addMessageListener(this);
+		try {
+			chat.sendMessage("Hello");
+		} catch (XMPPException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void processPacket(Packet packet) {
+		if (packet instanceof Message) { 
+			Message message = (Message)packet;
+	
+			System.out.println("GET PACKET");
+			System.out.println("from = "+message.getFrom());
+			System.out.println("body = "+message.getBody());
+			System.out.println("type = "+message.getType());
+			
+			if (message.getType() == Message.Type.error)
+				return;
+	
+			String key = message.getFrom();
+			key = key.substring(0, key.lastIndexOf('/'));
+			MultiUserChat muc = chats.get(key);
+			
+			if (muc != null && !message.getFrom().endsWith(getUsername())) {
+				if (message.getType() == Message.Type.groupchat)
+					try {
+						String msg = processMessage(message, true);
+						if (msg != null)
+							muc.sendMessage( msg );
+					} catch (XMPPException e) {
+					}
+			}
+		}
+	}
+	
+	private String processMessage(Message message, boolean åxpectCall) {
+		System.out.println("Thread "+message.getThread());
+		String msg = message.getBody();
+		
+		AnimoExpression op = null;
+		if (åxpectCall) {
+			if (msg.substring(0,3).toLowerCase().equals("ann"))
+				op = new AnimoExpression(msg.substring(4));
+			else
+				return null;
+		} else
+			op = new AnimoExpression(msg);
+
+        try {
+			return AnimoPrettyResultSerializer._.serialize(op);
+
+        } catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
 		}
 	}
 
 	public static void main(String[] args) throws Exception {
 		JabberClient client = new JabberClient();
 		
-		Thread.sleep(60*1000);
+		Thread.sleep(12*60*60*1000);
 		
 		client.disconnect();
+		
+		AnimoGraph.shutdownDB();
 		
 	}
 }

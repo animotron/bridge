@@ -176,14 +176,14 @@ public class JabberClient implements MessageListener, ChatManagerListener, Packe
 		}
 	}
 	
-	private String processMessage(Message message, boolean åxpectCall) {
+	private String processMessage(Message message, boolean expectCall) {
 		System.out.println("Thread "+message.getThread());
 		String msg = message.getBody();
 		
 		boolean sendResult = true;
 		
 		Relationship op = null;
-		if (åxpectCall) {
+		if (expectCall) {
 			if (msg.substring(0,4).toLowerCase().equals("anna")) {
 				op = THE._.get(msg.substring(5).trim());
 				sendResult = false;

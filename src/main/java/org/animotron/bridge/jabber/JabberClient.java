@@ -29,6 +29,7 @@ import org.animotron.bridge.FSBridge;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.graph.AnimoGraph;
 import org.animotron.graph.serializer.AnimoPrettyResultSerializer;
+import org.animotron.graph.serializer.AnimoPrettySerializer;
 import org.animotron.statement.operator.THE;
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.packet.Message;
@@ -36,6 +37,7 @@ import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -92,7 +94,7 @@ public class JabberClient implements MessageListener, ChatManagerListener, Packe
 	}
 
 	protected String getUsername() {
-		return "";
+		return "animotron@gmail.com";
 	}
 	
 	protected String getPassword() {
@@ -178,17 +180,26 @@ public class JabberClient implements MessageListener, ChatManagerListener, Packe
 		System.out.println("Thread "+message.getThread());
 		String msg = message.getBody();
 		
-		AnimoExpression op = null;
+		boolean sendResult = true;
+		
+		Relationship op = null;
 		if (åxpectCall) {
-			if (msg.substring(0,3).toLowerCase().equals("ann"))
+			if (msg.substring(0,4).toLowerCase().equals("anna")) {
+				op = THE._.get(msg.substring(5).trim());
+				sendResult = false;
+				
+			} else if (msg.substring(0,3).toLowerCase().equals("ann")) {
 				op = new AnimoExpression(msg.substring(4));
-			else
+			} else
 				return null;
 		} else
 			op = new AnimoExpression(msg);
 
         try {
-			return AnimoPrettyResultSerializer._.serialize(op);
+        	if (!sendResult)
+        		return AnimoPrettySerializer._.serialize(op);
+        	else
+        		return AnimoPrettyResultSerializer._.serialize(op);
 
         } catch (Exception e) {
 			e.printStackTrace();

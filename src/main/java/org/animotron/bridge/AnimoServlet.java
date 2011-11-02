@@ -18,6 +18,7 @@
  */
 package org.animotron.bridge;
 
+import org.animotron.cache.FileCache;
 import org.animotron.exception.AnimoException;
 import org.animotron.exception.EBuilderTerminated;
 import org.animotron.exception.ENotFound;
@@ -201,10 +202,11 @@ public class AnimoServlet extends HttpServlet {
         public static void serialize(final Expression request, HttpServletResponse res) throws Exception {
             final OutputStream out = res.getOutputStream();
             try {
-            	String mime = StringResultSerializer.serialize(
+            	String mime = StringResultSerializer._.serialize(
                         new JExpression(
                                 _(GET._, TYPE, _(GET._, MIME, _(request)))
-                        )
+                        ),
+                        FileCache._
                 );
             	//res.setContentType(mime.isEmpty() ? "application/xml" : mime);
             	//XMLResultSerializer.serialize(get(request, CONTENT), out);
@@ -218,7 +220,7 @@ public class AnimoServlet extends HttpServlet {
                     	if (vector[i] != null)
                     		pf.addContextPoint(vector[i]);
                     }
-                    XMLResultSerializer.serialize(pf, vector[0], out);
+                    XMLResultSerializer._.serialize(pf, vector[0], out, FileCache._);
                 } else {
                     res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
                     final boolean[] isNotFound = {true};

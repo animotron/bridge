@@ -43,7 +43,7 @@ public class ServletTest extends ATest {
     	
     	HttpRequest request = new HttpRequest("/","localhost");
     	HttpResponse response = new HttpResponse();
-    	
+
     	servlet.doGet(request, response);
 
         Assert.assertEquals(
@@ -66,10 +66,9 @@ public class ServletTest extends ATest {
             response.getResponseString()
         );
         
-    	for (int i = 0; i < 1; i++) {
+    	for (int i = 0; i < 1000; i++) {
 	        request = new HttpRequest("/","localhost");
 	    	response = new HttpResponse();
-	
 	    	servlet.doGet(request, response);
     	}
     	

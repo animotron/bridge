@@ -79,6 +79,8 @@
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-http:8.0.3.v20111011" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:8.0.3.v20111011" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:8.0.3.v20111011" level="project" />
+    <orderEntry type="library" name="Maven: org.igniterealtime.smack:smack:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.igniterealtime.smack:smackx:3.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
   </component>
 </module>

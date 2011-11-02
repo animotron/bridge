@@ -126,7 +126,7 @@ public class AnimoResource implements GetableResource, PropFindableResource {
 				@Override
 				public IOException execute() {
 					try {
-						AnimoSerializer.serialize(r, out);
+						AnimoSerializer._.serialize(r, out);
 				        
 				        return null;
 					} catch (IOException e) {

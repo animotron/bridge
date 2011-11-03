@@ -62,22 +62,14 @@ public class AnimoServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 7276574723383015880L;
 
-    protected static final Node REST = the("rest");
-    protected static final Node MIME = the("mime-type");
-    protected static final Node TYPE = the("type");
-    protected static final Node URI = the("uri");
-    protected static final Node CONTENT = the("content");
-    protected static final Node NOTFOUND = the("not-found");
-    protected static final Node ROOT = the("root");
-    protected static final Node HOST = the("host");
-
-    private static Node the(String name) {
-        try {
-            return THE._.getOrCreate(name, true).getEndNode();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+    protected static final Node REST = THE._("rest");
+    protected static final Node MIME = THE._("mime-type");
+    protected static final Node TYPE = THE._("type");
+    protected static final Node URI = THE._("uri");
+    protected static final Node CONTENT = THE._("content");
+    protected static final Node NOTFOUND = THE._("not-found");
+    protected static final Node ROOT = THE._("root");
+    protected static final Node HOST = THE._("host");
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {

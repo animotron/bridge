@@ -45,11 +45,12 @@ public class JettyHttpServer {
     public void start() throws IOException {
     	
     	//initialize animo
-    	startDB("data");
-
-//        if (!getSTART().hasRelationship(Direction.OUTGOING)) {
-    	    FSBridge.load("src/main/animo/");
-//        }
+    	if (startDB("data")) {
+    		//if (!getSTART().hasRelationship(Direction.OUTGOING)) {
+    			FSBridge.load("src/main/animo/");
+    			FSBridge.load("etc/");
+        	//}
+    	}
     	
     	//setup servlet container
         jetty = new Server(jettyPort);

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.animotron</groupId>
 	<artifactId>bridge</artifactId>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.0.5-SNAPSHOT</version>
 	<name>Animo bridge</name>
 
 	<developers>
@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>org.animotron</groupId>
 			<artifactId>core</artifactId>
-			<version>0.0.4-SNAPSHOT</version>
+			<version>0.0.5-SNAPSHOT</version>
 		</dependency>
 		<!-- logger -->
 		<dependency>
@@ -77,6 +77,13 @@
 			<groupId>org.igniterealtime.smack</groupId>
 			<artifactId>smackx</artifactId>
 			<version>3.2.1</version>
+		</dependency>
+		
+		<!-- OAuth -->
+		<dependency>
+			<groupId>org.scribe</groupId>
+			<artifactId>scribe</artifactId>
+			<version>1.2.3</version>
 		</dependency>
 		
 		<!-- 

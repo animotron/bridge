@@ -18,13 +18,7 @@
  */
 package org.animotron.bridge.jabber;
 
-import static org.animotron.graph.AnimoGraph.startDB;
-
-import java.io.IOException;
-import java.util.Map;
-
 import javolution.util.FastMap;
-
 import org.animotron.bridge.FSBridge;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.graph.AnimoGraph;
@@ -36,8 +30,12 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smackx.muc.MultiUserChat;
-import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+
+import java.io.IOException;
+import java.util.Map;
+
+import static org.animotron.graph.AnimoGraph.startDB;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -98,7 +96,7 @@ public class JabberClient implements MessageListener, ChatManagerListener, Packe
 	}
 	
 	protected String getPassword() {
-		return "";
+		return "S68lib16";
 	}
 
 	public void disconnect() {

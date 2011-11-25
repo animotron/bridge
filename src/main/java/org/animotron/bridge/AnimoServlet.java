@@ -31,8 +31,10 @@ import org.animotron.graph.handler.BinaryGraphHandler;
 import org.animotron.graph.serializer.StringResultSerializer;
 import org.animotron.graph.serializer.XMLResultSerializer;
 import org.animotron.graph.traverser.AnimoResultTraverser;
+import org.animotron.io.PipedInput;
 import org.animotron.manipulator.Evaluator;
 import org.animotron.manipulator.PFlow;
+import org.animotron.manipulator.QCAVector;
 import org.animotron.statement.Statement;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
@@ -51,7 +53,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
-import java.util.Iterator;
 
 import static org.animotron.expression.JExpression._;
 
@@ -212,16 +213,13 @@ public class AnimoServlet extends HttpServlet {
             	//res.setContentType(mime.isEmpty() ? "application/xml" : mime);
             	//XMLResultSerializer.serialize(get(request, CONTENT), out);
                 Expression get = new JExpression(_(GET._, CONTENT, _(request)));
-                Iterator<Relationship[]> content = Evaluator._.execute(new PFlow(Evaluator._, get), get);
+                PipedInput<QCAVector> content = Evaluator._.execute(new PFlow(Evaluator._, get), get);
                 if (content.hasNext()) {
+                    QCAVector vector = content.next();
                     res.setContentType(mime.isEmpty() ? "application/xml" : mime);
                     PFlow pf = new PFlow(Evaluator._, get);
-                    Relationship[] vector = content.next();
-                    for (int i = 1; i < vector.length; i++) {
-                    	if (vector[i] != null)
-                    		pf.addContextPoint(vector[i]);
-                    }
-                    XMLResultSerializer._.serialize(pf, vector[0], out, FileCache._);
+                    pf.addContextPoint(vector);
+                    XMLResultSerializer._.serialize(pf, vector, out, FileCache._);
                 } else {
                     res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
                     final boolean[] isNotFound = {true};

@@ -1,6 +1,6 @@
 the application-vnd.visio
-    (is   mime-type)
-    (is   application)
-    (have type      "application/vnd.visio")
-    (have name      "Microsoft Visio Document")
-    (have extension "vsd")
+    (mime-type)
+    (application)
+    (type      "application/vnd.visio")
+    (name      "Microsoft Visio Document")
+    (extension "vsd")

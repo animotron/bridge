@@ -1,6 +1,6 @@
 the html
-    (have mime-type text-html)
-    (have content
+    (mime-type text-html)
+    (content
         \html
             (\head
                 (\title get title)

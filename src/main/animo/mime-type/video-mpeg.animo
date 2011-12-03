@@ -1,6 +1,6 @@
 the video-mpeg
-    (is   mime-type)
-    (is   video)
-    (have type      "video/mpeg")
-    (have name      "MPEG Video")
-    (have extension ("mpg") ("mpeg"))
+    (mime-type)
+    (video)
+    (type      "video/mpeg")
+    (name      "MPEG Video")
+    (extension "mpg" "mpeg")

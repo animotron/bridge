@@ -1,6 +1,6 @@
 the image-x-bitmap
-    (is   mime-type)
-    (is   image)
-    (have type      "image/x-bitmap")
-    (have name      "X Bitmap Graphic")
-    (have extension "xbm")
+    (mime-type)
+    (image)
+    (type      "image/x-bitmap")
+    (name      "X Bitmap Graphic")
+    (extension "xbm")

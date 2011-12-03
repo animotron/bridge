@@ -1,7 +1,7 @@
 the not-found-service
-    (is service)
-    (is not-found)
-    (have status 404)
+    (service)
+    (not-found)
+    (status 404)
     (html
         (any not-found-content)
         (use not-found-layout))

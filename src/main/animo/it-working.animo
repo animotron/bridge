@@ -1,4 +1,4 @@
 the it-working
-	(is root-content)
-    (have title     "Welcome to Animo")
-    (have content   "It is working!")
+	(root-content)
+    (title   "Welcome to Animo")
+    (content "It working!")

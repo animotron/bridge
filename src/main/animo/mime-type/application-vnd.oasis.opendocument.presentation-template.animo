@@ -1,6 +1,6 @@
 the application-vnd.oasis.opendocument.presentation-template
-    (is   mime-type)
-    (is   application)
-    (have type      "application/vnd.oasis.opendocument.presentation-template")
-    (have name      "OpenOffice.org Presentation Model")
-    (have extension "otp")
+    (mime-type)
+    (application)
+    (type      "application/vnd.oasis.opendocument.presentation-template")
+    (name      "OpenOffice.org Presentation Model")
+    (extension "otp")

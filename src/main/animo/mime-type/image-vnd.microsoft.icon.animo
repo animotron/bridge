@@ -1,6 +1,6 @@
 the image-vnd.microsoft.icon
-    (is   mime-type)
-    (is   image)
-    (have type      "image/vnd.microsoft.icon")
-    (have name      "Icon Image")
-    (have extension "ico")
+    (mime-type)
+    (image)
+    (type      "image/vnd.microsoft.icon")
+    (name      "Icon Image")
+    (extension "ico")

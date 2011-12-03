@@ -1,6 +1,6 @@
 the application-x-javascript
-    (is   mime-type)
-    (is   application)
-    (have type      "application/x-javascript")
-    (have name      "JavaScript")
-    (have extension "js")
+    (mime-type)
+    (application)
+    (type      "application/x-javascript")
+    (name      "JavaScript")
+    (extension "js")

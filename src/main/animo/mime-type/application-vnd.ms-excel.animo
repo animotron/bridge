@@ -1,6 +1,6 @@
 the application-vnd.ms-excel
-    (is   mime-type)
-    (is   application)
-    (have type      "application/vnd.ms-excel")
-    (have name      "Microsoft Excel Document")
-    (have extension "xls")
+    (mime-type)
+    (application)
+    (type      "application/vnd.ms-excel")
+    (name      "Microsoft Excel Document")
+    (extension "xls")

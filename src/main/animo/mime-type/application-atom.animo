@@ -1,6 +1,6 @@
 the application-atom
-    (is   mime-type)
-    (is   application)
-    (have type      "application/atom+xml")
-    (have name      "Atom Feed Document")
-    (have extension "atom")
+    (mime-type)
+    (application)
+    (type      "application/atom+xml")
+    (name      "Atom Feed Document")
+    (extension "atom")

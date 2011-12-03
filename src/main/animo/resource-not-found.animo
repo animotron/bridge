@@ -1,4 +1,4 @@
 the resource-not-found
-	(is not-found-content)
-    (have title     "Not found!")
-    (have content   ("Can't find the resource ") (\strong get uri))
+	(not-found-content)
+    (title   "Not found!")
+    (content ("Can't find the resource ") (\strong get uri))

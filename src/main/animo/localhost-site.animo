@@ -1,5 +1,4 @@
 the localhost-site
-    (is   site)
-    (use  theme-concrete-root-layout)
-    (use  it-working)
-    (have server-name "localhost")
+    (site)
+    (server-name "localhost")
+    (use  theme-concrete-root-layout, it-working)

@@ -1,6 +1,6 @@
 the application-vnd.ms-word
-    (is   mime-type)
-    (is   application)
-    (have type      "application/vnd.ms-word")
-    (have name      "Microsoft Word Document")
-    (have extension "doc")
+    (mime-type)
+    (application)
+    (type      "application/vnd.ms-word")
+    (name      "Microsoft Word Document")
+    (extension "doc")

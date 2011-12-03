@@ -1,6 +1,6 @@
 the application-json
-    (is   mime-type)
-    (is   application)
-    (have type      "application/json")
-    (have name      "JSON")
-    (have extension "json")
+    (mime-type)
+    (application)
+    (type      "application/json")
+    (name      "JSON")
+    (extension "json")

@@ -1,6 +1,6 @@
 the root-service
-    (is service)
-    (is root)
+    (service)
+    (root)
     (html
         (any root-content)
         (use root-layout))

@@ -1,6 +1,6 @@
 the application-vnd.oasis.opendocument.text
-    (is   mime-type)
-    (is   application)
-    (have type      "application/vnd.oasis.opendocument.text")
-    (have name      "OpenOffice.org Formatted Text Document")
-    (have extension "odt")
+    (mime-type)
+    (application)
+    (type      "application/vnd.oasis.opendocument.text")
+    (name      "OpenOffice.org Formatted Text Document")
+    (extension "odt")

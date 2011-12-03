@@ -1,6 +1,6 @@
 the application-vnd.openxmlformats-officedocument.spreadsheetml.sheet
-    (is   mime-type)
-    (is   application)
-    (have type      "application/vnd.oasis.openxmlformats-officedocument.spreadsheetml.sheet")
-    (have name      "OOXML Spreadsheet")
-    (have extension "xlsx")
+    (mime-type)
+    (application)
+    (type      "application/vnd.oasis.openxmlformats-officedocument.spreadsheetml.sheet")
+    (name      "OOXML Spreadsheet")
+    (extension "xlsx")

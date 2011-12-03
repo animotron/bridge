@@ -40,7 +40,6 @@ import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 import org.animotron.statement.operator.THE;
 import org.animotron.statement.query.GET;
-import org.animotron.statement.relation.HAVE;
 import org.animotron.statement.relation.USE;
 import org.animotron.statement.value.STREAM;
 import org.neo4j.graphdb.Node;
@@ -151,10 +150,10 @@ public class AnimoServlet extends HttpServlet {
                         if (USE._.name().equals(parts[0])) {
                             builder.start(USE._, parts[1]);
                         } else {
-                            builder.start(HAVE._, parts[1]);
+                            builder.start(AN._, parts[1]);
                         }
                     } else {
-                        builder.start(HAVE._);
+                        builder.start(AN._);
                         builder._(REF._, name);
                     }
                     for  (String value : req.getParameterValues(name)) {
@@ -163,11 +162,11 @@ public class AnimoServlet extends HttpServlet {
                     builder.end();
                 }
 
-                builder.start(HAVE._);
+                builder.start(AN._);
                     builder._(REF._, HOST);
                     builder._(req.getServerName());
                 builder.end();
-                builder.start(HAVE._);
+                builder.start(AN._);
                     builder._(REF._, URI);
                     builder._(uri);
                 builder.end();
@@ -187,11 +186,11 @@ public class AnimoServlet extends HttpServlet {
             builder.start(AN._);
                 builder._(REF._, REST);
                 builder._(USE._, NOTFOUND);
-                builder.start(HAVE._);
+                builder.start(AN._);
                     builder._(REF._, URI);
                     builder._(req.getServerName());
                 builder.end();
-                builder.start(HAVE._);
+                builder.start(AN._);
                     builder._(REF._, URI);
                     builder._(req.getRequestURI());
                 builder.end();

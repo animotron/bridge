@@ -22,7 +22,6 @@ import org.animotron.ATest;
 import org.animotron.expression.JExpression;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.query.GET;
-import org.animotron.statement.relation.HAVE;
 import org.animotron.statement.relation.USE;
 import org.junit.Test;
 
@@ -44,8 +43,8 @@ public class WebFrameworkTest extends ATest {
             _(GET._, "content",
                 _(AN._, "rest",
                     _(USE._, "root"),
-                    _(HAVE._, "uri", text("/")),
-                    _(HAVE._, "host", text("localhost"))
+                    _(AN._, "uri", text("/")),
+                    _(AN._, "host", text("localhost"))
                 )
             )
         );
@@ -87,8 +86,8 @@ public class WebFrameworkTest extends ATest {
                     _(GET._, "mime-type",
                         _(AN._, "rest",
                             _(USE._, "favicon.ico"),
-                            _(HAVE._, "uri", text("/favicon.ico")),
-                            _(HAVE._, "host", text("localhost"))
+                            _(AN._, "uri", text("/favicon.ico")),
+                            _(AN._, "host", text("localhost"))
                         )
                     )
                 )

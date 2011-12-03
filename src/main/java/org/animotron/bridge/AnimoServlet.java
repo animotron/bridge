@@ -28,8 +28,7 @@ import org.animotron.expression.Expression;
 import org.animotron.expression.JExpression;
 import org.animotron.graph.builder.FastGraphBuilder;
 import org.animotron.graph.handler.BinaryGraphHandler;
-import org.animotron.graph.serializer.StringResultSerializer;
-import org.animotron.graph.serializer.XMLResultSerializer;
+import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.graph.traverser.AnimoResultTraverser;
 import org.animotron.io.PipedInput;
 import org.animotron.manipulator.Evaluator;
@@ -203,7 +202,7 @@ public class AnimoServlet extends HttpServlet {
         public static void serialize(final Expression request, HttpServletResponse res) throws Exception {
             final OutputStream out = res.getOutputStream();
             try {
-            	String mime = StringResultSerializer._.serialize(
+            	String mime = CachedSerializer.STRING.serialize(
                         new JExpression(
                                 _(GET._, TYPE, _(GET._, MIME, _(request)))
                         ),
@@ -218,7 +217,7 @@ public class AnimoServlet extends HttpServlet {
                     res.setContentType(mime.isEmpty() ? "application/xml" : mime);
                     PFlow pf = new PFlow(Evaluator._, get);
                     pf.addContextPoint(vector);
-                    XMLResultSerializer._.serialize(pf, vector, out, FileCache._);
+                    CachedSerializer.XML.serialize(pf, vector, out, FileCache._);
                 } else {
                     res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
                     final boolean[] isNotFound = {true};
@@ -243,7 +242,5 @@ public class AnimoServlet extends HttpServlet {
                 new IOException(e);
             }
         }
-
     }
-	
 }

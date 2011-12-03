@@ -23,7 +23,7 @@ import com.bradmcevoy.http.Request.Method;
 import com.bradmcevoy.http.exceptions.BadRequestException;
 import com.bradmcevoy.http.exceptions.NotAuthorizedException;
 import org.animotron.graph.GraphOperation;
-import org.animotron.graph.serializer.AnimoSerializer;
+import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.statement.operator.THE;
 import org.neo4j.graphdb.Relationship;
 
@@ -126,7 +126,7 @@ public class AnimoResource implements GetableResource, PropFindableResource {
 				@Override
 				public IOException execute() {
 					try {
-						AnimoSerializer._.serialize(r, out);
+						CachedSerializer.ANIMO.serialize(r, out);
 				        
 				        return null;
 					} catch (IOException e) {

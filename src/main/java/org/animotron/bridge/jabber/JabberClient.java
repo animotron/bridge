@@ -22,8 +22,7 @@ import javolution.util.FastMap;
 import org.animotron.bridge.FSBridge;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.graph.AnimoGraph;
-import org.animotron.graph.serializer.AnimoPrettyResultSerializer;
-import org.animotron.graph.serializer.AnimoPrettySerializer;
+import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.statement.operator.THE;
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.packet.Message;
@@ -96,7 +95,7 @@ public class JabberClient implements MessageListener, ChatManagerListener, Packe
 	}
 	
 	protected String getPassword() {
-		return "S68lib16";
+		return "";
 	}
 
 	public void disconnect() {
@@ -195,9 +194,9 @@ public class JabberClient implements MessageListener, ChatManagerListener, Packe
 
         try {
         	if (!sendResult)
-        		return AnimoPrettySerializer._.serialize(op);
+        		return CachedSerializer.PRETTY_ANIMO.serialize(op);
         	else
-        		return AnimoPrettyResultSerializer._.serialize(op);
+        		return CachedSerializer.PRETTY_ANIMO_RESULT.serialize(op);
 
         } catch (Exception e) {
 			e.printStackTrace();

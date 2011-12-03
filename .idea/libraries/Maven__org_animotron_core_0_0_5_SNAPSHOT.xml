@@ -7,6 +7,7 @@
       <root url="jar://$MAVEN_REPOSITORY$/org/animotron/core/0.0.5-SNAPSHOT/core-0.0.5-SNAPSHOT-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
+      <root url="file://$PROJECT_DIR$/../core/src/main/java" />
       <root url="jar://$MAVEN_REPOSITORY$/org/animotron/core/0.0.5-SNAPSHOT/core-0.0.5-SNAPSHOT-sources.jar!/" />
     </SOURCES>
   </library>

@@ -225,7 +225,7 @@ public class AnimoServlet extends HttpServlet {
                     AnimoResultTraverser._.traverse(
                         new BinaryGraphHandler(out){
                             @Override
-                            public void start(Statement statement, Relationship r, int level, boolean isOne, int pos, boolean isLast) throws IOException {
+                            public void start(Statement statement, Statement parent, Relationship r, int level, boolean isOne, int pos, boolean isLast) throws IOException {
                                 if (statement instanceof STREAM) {
                                     isNotFound[0] = false;
                                     write(r.getEndNode(), out);

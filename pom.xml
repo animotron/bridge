@@ -41,17 +41,6 @@
 			<artifactId>slf4j-simple</artifactId>
 			<version>${slf4jVersion}</version>
 		</dependency>
-		<!-- WebDAV -->
-		<dependency>
-			<groupId>com.ettrema</groupId>
-			<artifactId>milton-api</artifactId>
-			<version>${miltonVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.ettrema</groupId>
-			<artifactId>milton-servlet</artifactId>
-			<version>${miltonVersion}</version>
-		</dependency>
 		<!-- servlet container -->
 		<!-- 
 		<dependency>

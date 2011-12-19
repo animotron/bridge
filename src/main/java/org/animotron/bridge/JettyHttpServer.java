@@ -18,7 +18,6 @@
  */
 package org.animotron.bridge;
 
-import org.animotron.bridge.webdav.WebDAVServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -61,8 +60,7 @@ public class JettyHttpServer {
         jetty.setHandler(context);
  
         context.addServlet(new ServletHolder(new AnimoServlet()),"/*");
-        context.addServlet(new ServletHolder(new WebDAVServlet()),"/webdav/*");
-        
+
         //context.getSecurityHandler().setLoginService(new AnimoLoginService());
         
         // ... and start it up

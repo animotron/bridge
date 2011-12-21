@@ -40,44 +40,34 @@ public class WebFrameworkTest extends ATest {
     	FSBridge.load("src/test/animo/");
 
         JExpression s = new JExpression(
-            //_(GET._, "content",
+            _(GET._, "content",
                 _(AN._, "rest",
                     _(USE._, "root"),
                     _(AN._, "uri", value("/")),
                     _(AN._, "host", value("localhost"))
                 )
-            //)
+            )
         );
 
         assertAnimoResult(s,
-            "rest " +
-                "(the localhost-site " +
-                    "(site) " +
-                    "(server-name) " +
-                    "(use theme-concrete) " +
-                    "(use localhost)) " +
-                "(the it-working " +
-                    "(service resource) " +
-                    "(root) " +
-                    "(localhost) " +
-                    "(html " +
-                        "(mime-type) " +
-                        "(\\html " +
-                            "(\\head " +
-                                "(\\title title \"Welcome to Animo\") " +
-                                "(\\meta (@name \"keywords\") (@content)) " +
-                                "(\\meta (@name \"description\") (@content))) " +
-                            "(\\body " +
-                                "the theme-concrete-root-layout " +
-                                    "(layout) " +
-                                    "(theme-concrete) " +
-                                    "(root) " +
-                                    "(\\h1 title \"Welcome to Animo\") " +
-                                    "(\\p content \"It is working!\") " +
-                                    "(\\ul " +
-                                        "(\\li \"Host: \" (\\strong host \"localhost\")) " +
-                                        "(\\li \"URI: \" (\\strong uri \"/\"))))))).");
-
+            "content " +
+                "html " +
+                    "(mime-type) " +
+                    "(\\html " +
+                        "(\\head " +
+                            "(\\title title \"Welcome to Animo\") " +
+                            "(\\meta (@name \"keywords\") (@content)) " +
+                            "(\\meta (@name \"description\") (@content))) " +
+                        "(\\body " +
+                            "the theme-concrete-root-layout " +
+                                "(layout) " +
+                                "(theme-concrete) " +
+                                "(root) " +
+                                "(\\h1 title \"Welcome to Animo\") " +
+                                "(\\p content \"It is working!\") " +
+                                "(\\ul " +
+                                    "(\\li \"Host: \" (\\strong host \"localhost\")) " +
+                                    "(\\li \"URI: \" (\\strong uri \"/\"))))).");
 
         assertXMLResult(s,
             "<html>" +

@@ -37,31 +37,46 @@ public class WebFrameworkTest extends ATest {
     @Test
     public void test() throws Exception {
 
-    	FSBridge.load("src/main/animo/");
+    	FSBridge.load("src/test/animo/");
 
         JExpression s = new JExpression(
             //_(GET._, "content",
                 _(AN._, "rest",
                     _(USE._, "root"),
-                    _(AN._, "uri", text("/")),
-                    _(AN._, "host", text("localhost"))
+                    _(AN._, "uri", value("/")),
+                    _(AN._, "host", value("localhost"))
                 )
             //)
         );
 
         assertAnimoResult(s,
-            "have content " +
-                "\\html " +
-                    "(\\head " +
-                    	"(\\title have title \"Welcome to Animo\") " +
-                    	"(\\meta (@name \"keywords\") (@content)) " +
-                    	"(\\meta (@name \"description\") (@content))) " +
-                    "(\\body the theme-concrete-root-layout (is root-layout) " +
-                        "(\\h1 have title \"Welcome to Animo\") " +
-                        "(\\p have content \"It is working!\") " +
-                        "(\\ul " +
-                            "(\\li (\"Host: \") (\\strong have host \"localhost\")) " +
-                            "(\\li (\"URI: \") (\\strong have uri \"/\"))))");
+            "rest " +
+                "(the localhost-site " +
+                    "(site) " +
+                    "(server-name) " +
+                    "(use theme-concrete) " +
+                    "(use localhost)) " +
+                "(the it-working " +
+                    "(service resource) " +
+                    "(root) " +
+                    "(localhost) " +
+                    "(html " +
+                        "(mime-type) " +
+                        "(\\html " +
+                            "(\\head " +
+                                "(\\title title \"Welcome to Animo\") " +
+                                "(\\meta (@name \"keywords\") (@content)) " +
+                                "(\\meta (@name \"description\") (@content))) " +
+                            "(\\body " +
+                                "the theme-concrete-root-layout " +
+                                    "(layout) " +
+                                    "(theme-concrete) " +
+                                    "(root) " +
+                                    "(\\h1 title \"Welcome to Animo\") " +
+                                    "(\\p content \"It is working!\") " +
+                                    "(\\ul " +
+                                        "(\\li \"Host: \" (\\strong host \"localhost\")) " +
+                                        "(\\li \"URI: \" (\\strong uri \"/\"))))))).");
 
 
         assertXMLResult(s,
@@ -80,20 +95,32 @@ public class WebFrameworkTest extends ATest {
                     "</ul>" +
                 "</body>" +
             "</html>");
-        
+
         s = new JExpression(
                 _(GET._, "type",
-                    _(GET._, "mime-type",
-                        _(AN._, "rest",
-                            _(USE._, "favicon.ico"),
-                            _(AN._, "uri", text("/favicon.ico")),
-                            _(AN._, "host", text("localhost"))
+                        _(GET._, "mime-type",
+                                _(AN._, "rest",
+                                        _(USE._, "root"),
+                                        _(AN._, "uri", text("/")),
+                                        _(AN._, "host", text("localhost"))
+                                )
                         )
-                    )
                 )
-            );
-        //XXX:wrong
-        assertAnimoResult(s, "have type \"image/ico\"");
+        );
+        assertAnimoResult(s, "type \"text/html\".");
+
+        s = new JExpression(
+                _(GET._, "type",
+                        _(GET._, "mime-type",
+                                _(AN._, "rest",
+                                        _(USE._, "favicon.ico"),
+                                        _(AN._, "uri", text("/favicon.ico")),
+                                        _(AN._, "host", text("localhost"))
+                                )
+                        )
+                )
+        );
+        assertAnimoResult(s, "type \"image/ico\".");
 
     }
 }

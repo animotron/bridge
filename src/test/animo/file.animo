@@ -1,0 +1,3 @@
+the file
+    (resource)
+    (mime-type any mime-type with extension get extension)

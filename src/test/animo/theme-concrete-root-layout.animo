@@ -1,0 +1,7 @@
+the theme-concrete-root-layout
+    (layout, theme-concrete, root)
+    (\h1 get title)
+    (\p get content)
+    (\ul
+        (\li ("Host: ") (\strong get host))
+        (\li ("URI: ")  (\strong get uri)))

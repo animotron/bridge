@@ -1,10 +1,9 @@
 the html
     (mime-type text-html)
-    (content
-        \html
-            (\head
-                (\title get title)
-                (\meta (@name "keywords") (@content get keywords))
-                (\meta (@name "description") (@content get description)))
-            (\body
-                (any layout)))
+    (\html
+        (\head
+            (\title get title)
+            (\meta (@name "keywords") (@content get keywords))
+            (\meta (@name "description") (@content get description)))
+        (\body
+            (any layout)))

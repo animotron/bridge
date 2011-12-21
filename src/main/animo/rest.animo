@@ -1,2 +1,3 @@
 the rest
-    any resource current-site
+    (any site with server-name get host)
+    (any resource)

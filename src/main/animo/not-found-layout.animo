@@ -1,4 +1,0 @@
-the not-found-layout
-    (layout)
-    (\h1 get title)
-    (\p get content)

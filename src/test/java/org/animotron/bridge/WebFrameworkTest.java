@@ -40,13 +40,13 @@ public class WebFrameworkTest extends ATest {
     	FSBridge.load("src/main/animo/");
 
         JExpression s = new JExpression(
-            _(GET._, "content",
+            //_(GET._, "content",
                 _(AN._, "rest",
                     _(USE._, "root"),
                     _(AN._, "uri", text("/")),
                     _(AN._, "host", text("localhost"))
                 )
-            )
+            //)
         );
 
         assertAnimoResult(s,

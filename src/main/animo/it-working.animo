@@ -1,4 +1,5 @@
 the it-working
-	(root-content)
-    (title   "Welcome to Animo")
-    (content "It working!")
+	(service, root, localhost)
+    (html
+        (title   "Welcome to Animo")
+        (content "It working!"))

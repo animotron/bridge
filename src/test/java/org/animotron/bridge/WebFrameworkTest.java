@@ -25,7 +25,8 @@ import org.animotron.statement.query.GET;
 import org.animotron.statement.relation.USE;
 import org.junit.Test;
 
-import static org.animotron.expression.JExpression.*;
+import static org.animotron.expression.JExpression._;
+import static org.animotron.expression.JExpression.value;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -40,7 +41,7 @@ public class WebFrameworkTest extends ATest {
     	FSBridge.load("src/test/animo/");
 
         JExpression s = new JExpression(
-            _(GET._, "content",
+            _(GET._, "result",
                 _(AN._, "rest",
                     _(USE._, "root"),
                     _(AN._, "uri", value("/")),
@@ -50,24 +51,22 @@ public class WebFrameworkTest extends ATest {
         );
 
         assertAnimoResult(s,
-            "content " +
-                "html " +
-                    "(mime-type) " +
-                    "(\\html " +
-                        "(\\head " +
-                            "(\\title title \"Welcome to Animo\") " +
-                            "(\\meta (@name \"keywords\") (@content)) " +
-                            "(\\meta (@name \"description\") (@content))) " +
-                        "(\\body " +
-                            "the theme-concrete-root-layout " +
-                                "(layout) " +
-                                "(theme-concrete) " +
-                                "(root) " +
-                                "(\\h1 title \"Welcome to Animo\") " +
-                                "(\\p content \"It is working!\") " +
-                                "(\\ul " +
-                                    "(\\li \"Host: \" (\\strong host \"localhost\")) " +
-                                    "(\\li \"URI: \" (\\strong uri \"/\"))))).");
+            "result " +
+                "\\html " +
+                    "(\\head " +
+                        "(\\title title \"Welcome to Animo\") " +
+                        "(\\meta (@name \"keywords\") (@content)) " +
+                        "(\\meta (@name \"description\") (@content))) " +
+                    "(\\body " +
+                        "the theme-concrete-root-layout " +
+                            "(layout) " +
+                            "(theme-concrete) " +
+                            "(root) " +
+                            "(\\h1 title \"Welcome to Animo\") " +
+                            "(\\p content \"It is working!\") " +
+                            "(\\ul " +
+                                "(\\li \"Host: \" (\\strong host \"localhost\")) " +
+                                "(\\li \"URI: \" (\\strong uri \"/\")))).");
 
         assertXMLResult(s,
             "<html>" +
@@ -91,8 +90,8 @@ public class WebFrameworkTest extends ATest {
                         _(GET._, "mime-type",
                                 _(AN._, "rest",
                                         _(USE._, "root"),
-                                        _(AN._, "uri", text("/")),
-                                        _(AN._, "host", text("localhost"))
+                                        _(AN._, "uri", value("/")),
+                                        _(AN._, "host", value("localhost"))
                                 )
                         )
                 )
@@ -104,13 +103,14 @@ public class WebFrameworkTest extends ATest {
                         _(GET._, "mime-type",
                                 _(AN._, "rest",
                                         _(USE._, "favicon.ico"),
-                                        _(AN._, "uri", text("/favicon.ico")),
-                                        _(AN._, "host", text("localhost"))
+                                        _(AN._, "uri", value("/favicon.ico")),
+                                        _(AN._, "host", value("localhost"))
                                 )
                         )
                 )
         );
-        assertAnimoResult(s, "type \"image/ico\".");
+        assertAnimoResult(s, "type \"image/vnd.microsoft.icon\".");
 
     }
+
 }

@@ -1,6 +1,5 @@
 the text-html
-    (mime-type)
-    (text)
+    (mime-type, text)
     (type      "text/html")
     (name      "HTML Document")
     (extension "htm" "html")

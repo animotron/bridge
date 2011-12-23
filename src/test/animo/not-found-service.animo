@@ -1,5 +1,5 @@
 the not-found-service
-    (html, not-found, localhost)
+    (html-service, not-found, localhost)
     (status 404)
     (title   "Not found!")
     (content ("Can't find the resource ") (\strong get uri))

@@ -1,6 +1,5 @@
-the html
-    (service)
-    (mime-type text-html)
+the html-service
+    (service, text-html)
     (result \html
         (\head
             (\title get title)

@@ -91,7 +91,7 @@ public class JabberClient implements MessageListener, ChatManagerListener, Packe
 	}
 
 	protected String getUsername() {
-		return "animotron@gmail.com";
+		return "ann@animotron.org";
 	}
 	
 	protected String getPassword() {

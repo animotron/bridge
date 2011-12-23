@@ -19,7 +19,6 @@
 package org.animotron.bridge.jabber;
 
 import javolution.util.FastMap;
-import org.animotron.bridge.FSBridge;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.graph.AnimoGraph;
 import org.animotron.graph.serializer.CachedSerializer;
@@ -46,11 +45,11 @@ public class JabberClient implements MessageListener, ChatManagerListener, Packe
     	//initialize animo
     	startDB("data");
 
-    	try {
-		    FSBridge.load("src/main/animo/");
-		    FSBridge.load("etc/");
-    	} catch (Exception e) {
-		}
+//    	try {
+//		    FSBridge.load("src/main/animo/");
+//		    FSBridge.load("etc/");
+//    	} catch (Exception e) {
+//		}
 	}
 	
 	//private Node I = THE._("animotron@gmail.com");

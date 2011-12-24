@@ -1,4 +1,4 @@
-the application-vnd.oasis.opendocument.spreadsheet
+the application-vnd-oasis-opendocument-spreadsheet
     (mime-type)
     (application)
     (type      "application/vnd.oasis.opendocument.spreadsheet")

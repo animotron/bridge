@@ -66,7 +66,6 @@ public class JettyHttpServer {
         // ... and start it up
         try {
             jetty.start();
-            jetty.join();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -75,7 +74,6 @@ public class JettyHttpServer {
     public void stop() {
         try {
             jetty.stop();
-            jetty.join();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

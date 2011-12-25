@@ -1,5 +1,6 @@
 the html-service
-    (service, text-html)
+    (service)
+    (use text-html)
     (result \html
         (\head
             (\title get title)

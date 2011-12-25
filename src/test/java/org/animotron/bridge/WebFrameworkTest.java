@@ -39,8 +39,18 @@ public class WebFrameworkTest extends ATest {
     public void test() throws Exception {
 
     	FSBridge.load("src/test/animo/");
+    	JExpression s;
 
-        JExpression s = new JExpression(
+        s = new JExpression(
+            _(AN._, "rest",
+                _(USE._, "root"),
+                _(AN._, "uri", value("/")),
+                _(AN._, "host", value("localhost"))
+            )
+        );
+        assertAnimoResult(s, "rest (the localhost-site (site) (server-name) (use theme-concrete) (use localhost)) (the it-working (html-service (service resource) (use text-html) (result)) (root) (localhost) (title) (content)).");
+
+    	s = new JExpression(
             _(GET._, "result",
                 _(AN._, "rest",
                     _(USE._, "root"),
@@ -86,28 +96,48 @@ public class WebFrameworkTest extends ATest {
             "</html>");
 
         s = new JExpression(
-                _(GET._, "type",
-                        _(GET._, "mime-type",
-                                _(AN._, "rest",
-                                        _(USE._, "root"),
-                                        _(AN._, "uri", value("/")),
-                                        _(AN._, "host", value("localhost"))
-                                )
-                        )
+            _(GET._, "type",
+                _(GET._, "mime-type",
+                    _(AN._, "rest",
+                        _(USE._, "root"),
+                        _(AN._, "uri", value("/")),
+                        _(AN._, "host", value("localhost"))
+                    )
                 )
+            )
         );
         assertAnimoResult(s, "type \"text/html\".");
 
         s = new JExpression(
-                _(GET._, "type",
-                        _(GET._, "mime-type",
-                                _(AN._, "rest",
-                                        _(USE._, "favicon.ico"),
-                                        _(AN._, "uri", value("/favicon.ico")),
-                                        _(AN._, "host", value("localhost"))
-                                )
-                        )
+            _(AN._, "rest",
+                _(USE._, "favicon.ico"),
+                _(AN._, "uri", value("/favicon.ico")),
+                _(AN._, "host", value("localhost"))
+            )
+        );
+        assertAnimoResult(s, "rest (the localhost-site (site) (server-name) (use theme-concrete) (use localhost)) (the ed1e7377fac692253e213e7bf57f11a1781581328e7814bca9102c45d7ef3757 (file (resource) (the image-vnd-microsoft-icon (mime-type) (image) (type) (name) (extension))) (stream 52b798f0e91fc2b64bd4d7921c9f2836453616cfc4bf4e291161512ad4c810b9000000000000057e) (localhost) (favicon.ico) (name) (extension)).");
+
+        s = new JExpression(
+            _(GET._, "mime-type",
+                _(AN._, "rest",
+                    _(USE._, "favicon.ico"),
+                    _(AN._, "uri", value("/favicon.ico")),
+                    _(AN._, "host", value("localhost"))
                 )
+            )
+        );
+        assertAnimoResult(s, "the image-vnd-microsoft-icon (mime-type) (image) (type) (name) (extension).");
+
+        s = new JExpression(
+            _(GET._, "type",
+                _(GET._, "mime-type",
+                    _(AN._, "rest",
+                        _(USE._, "favicon.ico"),
+                        _(AN._, "uri", value("/favicon.ico")),
+                        _(AN._, "host", value("localhost"))
+                    )
+                )
+            )
         );
         assertAnimoResult(s, "type \"image/vnd.microsoft.icon\".");
 

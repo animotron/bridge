@@ -66,17 +66,11 @@ public class ServletTest extends ATest {
             response.getResponseString()
         );
         
-    	for (int i = 0; i < 1000; i++) {
-	        request = new HttpRequest("/","localhost");
-	    	response = new HttpResponse();
-	    	servlet.doGet(request, response);
-    	}
-    	
     }
     
     @Test
     public void testBinay() throws Exception {
-    	FSBridge.load("src/main/animo/");
+    	FSBridge.load("src/test/animo/");
     	
     	AnimoServlet servlet = new AnimoServlet();
     	
@@ -85,7 +79,7 @@ public class ServletTest extends ATest {
 
     	servlet.doGet(request, response);
     	
-    	org.junit.Assert.assertArrayEquals(getBytesFromFile(new File("src/main/animo/favicon.ico")),response.getResponse());
+    	org.junit.Assert.assertArrayEquals(getBytesFromFile(new File("src/test/animo/localhost/favicon.ico")),response.getResponse());
     }
     
     

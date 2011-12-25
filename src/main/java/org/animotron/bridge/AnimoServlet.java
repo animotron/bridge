@@ -66,8 +66,8 @@ public class AnimoServlet extends HttpServlet {
     protected static final Node MIME = THE._("mime-type");
     protected static final Node TYPE = THE._("type");
     protected static final Node URI = THE._("uri");
-    protected static final Node CONTENT = THE._("content");
-    protected static final Node NOTFOUND = THE._("not-found");
+    protected static final Node RESULT = THE._("result");
+    protected static final Node NOT_FOUND = THE._("not-found");
     protected static final Node ROOT = THE._("root");
     protected static final Node HOST = THE._("host");
 
@@ -184,7 +184,7 @@ public class AnimoServlet extends HttpServlet {
         public void build() throws Exception {
             builder.start(AN._);
                 builder._(REF._, REST);
-                builder._(USE._, NOTFOUND);
+                builder._(USE._, NOT_FOUND);
                 builder.start(AN._);
                     builder._(REF._, URI);
                     builder._(req.getServerName());
@@ -210,8 +210,8 @@ public class AnimoServlet extends HttpServlet {
                 );
             	//res.setContentType(mime.isEmpty() ? "application/xml" : mime);
             	//XMLResultSerializer.serialize(get(request, CONTENT), out);
-                Expression get = new JExpression(_(GET._, CONTENT, _(request)));
-                PipedInput<QCAVector> content = Evaluator._.execute(new PFlow(Evaluator._, get), get);
+                Expression get = new JExpression(_(GET._, RESULT, _(request)));
+                PipedInput<QCAVector> content = Evaluator._.execute(new PFlow(Evaluator._), get);
                 if (content.hasNext()) {
                     QCAVector vector = content.next();
                     res.setContentType(mime.isEmpty() ? "application/xml" : mime);

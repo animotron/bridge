@@ -1,6 +1,5 @@
 the image-gif
-    (mime-type)
-    (image)
+    (mime-type, image)
     (type      "image/gif")
     (name      "GIF Image")
     (extension "gif")

@@ -1,5 +1,4 @@
 the application-octet-stream
-    (mime-type)
-    (application)
+    (mime-type, application)
     (type      "application/octet-stream")
     (name      "Generic binary stream")

@@ -1,6 +1,5 @@
 the text-plain
-    (mime-type)
-    (text)
+    (mime-type, text)
     (type      "text/plain")
     (name      "Plain Text")
     (extension "txt" "text")

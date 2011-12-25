@@ -1,6 +1,5 @@
 the image-png
-    (mime-type)
-    (image)
+    (mime-type, image)
     (type      "image/png")
     (name      "PNG Image")
     (extension "png")

@@ -1,6 +1,6 @@
-the html
-    (mime-type text-html)
-    (\html
+the html-service
+    (service, text-html)
+    (result \html
         (\head
             (\title get title)
             (\meta (@name "keywords") (@content get keywords))

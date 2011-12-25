@@ -1,6 +1,5 @@
 the application-rdf
-    (mime-type)
-    (application)
+    (mime-type, application)
     (type      "application/rdf")
     (name      "RDF Document")
     (extension "rdf" "rdfs")

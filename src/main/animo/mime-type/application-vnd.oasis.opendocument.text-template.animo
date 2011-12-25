@@ -1,6 +1,5 @@
 the application-vnd-oasis-opendocument-text-template
-    (mime-type)
-    (application)
+    (mime-type, application)
     (type      "application/vnd.oasis.opendocument.text-template")
     (name      "OpenOffice.org Formatted Text Model")
     (extension "ott")

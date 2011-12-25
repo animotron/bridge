@@ -1,6 +1,5 @@
 the application-zip
-    (mime-type)
-    (application)
+    (mime-type, application)
     (type      "application/zip")
     (name      "ZIP Archive")
     (extension "zip")

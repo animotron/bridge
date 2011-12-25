@@ -1,6 +1,5 @@
 the image-jpeg
-    (mime-type)
-    (image)
+    (mime-type, image)
     (type      "image/jpeg")
     (name      "JPEG Image")
     (extension "jpg" "jpeg")

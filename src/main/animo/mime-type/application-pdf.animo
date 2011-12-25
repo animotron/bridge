@@ -1,6 +1,5 @@
 the application-pdf
-    (mime-type)
-    (application)
+    (mime-type, application)
     (type      "application/pdf")
     (name      "PDF (Adobe)")
     (extension "pdf")

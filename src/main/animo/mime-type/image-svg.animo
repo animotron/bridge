@@ -1,6 +1,5 @@
 the image-svg
-    (mime-type)
-    (image)
+    (mime-type, image)
     (type      "image/svg+xml")
     (name      "SVG Image")
     (extension "svg" "svgz")

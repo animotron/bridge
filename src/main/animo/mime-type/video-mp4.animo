@@ -1,6 +1,5 @@
 the video-mp4
-    (mime-type)
-    (video)
+    (mime-type, video)
     (type      "video/mp4")
     (name      "MP4 Video")
     (extension "mp4")

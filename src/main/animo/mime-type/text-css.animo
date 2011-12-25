@@ -1,6 +1,5 @@
 the text-css
-    (mime-type)
-    (text)
+    (mime-type, text)
     (type      "text/css")
     (name      "CSS stylesheet")
     (extension "css")

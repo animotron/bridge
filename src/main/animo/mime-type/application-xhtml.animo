@@ -1,6 +1,5 @@
 the application-xhtml
-    (mime-type)
-    (application)
+    (mime-type, application)
     (type      "application/xhtml+xml")
     (name      "XHTML Document")
     (extension "xhtml")

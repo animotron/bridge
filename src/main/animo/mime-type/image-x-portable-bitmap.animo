@@ -1,6 +1,5 @@
 the image-x-portable-bitmap
-    (mime-type)
-    (image)
+    (mime-type, image)
     (type      "image/x-portable-bitmap")
     (name      "PBM Bitmap Format")
     (extension "pbm")

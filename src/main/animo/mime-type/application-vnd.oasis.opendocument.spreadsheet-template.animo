@@ -1,6 +1,5 @@
 the application-vnd-oasis-opendocument-spreadsheet-template
-    (mime-type)
-    (application)
+    (mime-type, application)
     (type      "application/vnd.oasis.opendocument.spreadsheet-template")
     (name      "OpenOffice.org Spreadsheet Model")
     (extension "ots")

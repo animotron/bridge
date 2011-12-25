@@ -1,6 +1,5 @@
 the image-tiff
-    (mime-type)
-    (image)
+    (mime-type, image)
     (type      "image/tiff")
     (name      "TIF Image")
     (extension "tif" "tiff")

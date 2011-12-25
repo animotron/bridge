@@ -1,6 +1,5 @@
 the application-animo
-    (mime-type)
-    (application)
+    (mime-type, application)
     (type      "application/animo")
     (name      "Animo Document")
     (extension "animo")

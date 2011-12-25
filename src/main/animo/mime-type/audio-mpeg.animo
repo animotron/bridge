@@ -1,6 +1,5 @@
 the audio-mpeg
-    (mime-type)
-    (audio)
+    (mime-type, audio)
     (type      "audio/mpeg")
     (name      "MPEG Audio")
     (extension "mp2" "mp3" "mpga")

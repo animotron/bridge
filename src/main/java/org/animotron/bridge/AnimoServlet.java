@@ -186,7 +186,7 @@ public class AnimoServlet extends HttpServlet {
                 builder._(REF._, REST);
                 builder._(USE._, NOT_FOUND);
                 builder.start(AN._);
-                    builder._(REF._, URI);
+                    builder._(REF._, HOST);
                     builder._(req.getServerName());
                 builder.end();
                 builder.start(AN._);
@@ -208,8 +208,6 @@ public class AnimoServlet extends HttpServlet {
                         ),
                         FileCache._
                 );
-            	//res.setContentType(mime.isEmpty() ? "application/xml" : mime);
-            	//XMLResultSerializer.serialize(get(request, CONTENT), out);
                 Expression get = new JExpression(_(GET._, RESULT, _(request)));
                 PipedInput<QCAVector> content = Evaluator._.execute(new PFlow(Evaluator._), get);
                 if (content.hasNext()) {

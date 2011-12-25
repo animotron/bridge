@@ -1,6 +1,5 @@
 the application-vnd-openxmlformats-officedocument-presentationml-template
-    (mime-type)
-    (application)
+    (mime-type, application)
     (type      "application/vnd.oasis.openxmlformats-officedocument.presentationml.template")
     (name      "OOXML Presentation Template")
     (extension "potx")

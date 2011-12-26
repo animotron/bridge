@@ -20,18 +20,15 @@ package org.animotron;
 
 import com.ctc.wstx.stax.WstxOutputFactory;
 import junit.framework.Assert;
-import org.animotron.exception.AnimoException;
-import org.animotron.graph.GraphOperation;
-import org.animotron.graph.serializer.*;
+import org.animotron.graph.serializer.BinarySerializer;
+import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.manipulator.PFlow;
 import org.apache.log4j.helpers.NullEnumeration;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.index.IndexManager;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletInputStream;
@@ -42,9 +39,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.security.Principal;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.Map;
 
-import static org.animotron.graph.AnimoGraph.*;
+import static org.animotron.graph.AnimoGraph.shutdownDB;
+import static org.animotron.graph.AnimoGraph.startDB;
 import static org.junit.Assert.assertNotNull;
 
 
@@ -175,64 +175,9 @@ public abstract class ATest {
         System.out.println();
     }
 
-	//database cleaning (thanks to mh)
-    public Map<String, Object> cleanDb() {
-        return cleanDb(Long.MAX_VALUE);
-    }
-
-    public Map<String, Object> cleanDb(final long maxNodesToDelete) {
-        Map<String, Object> result = execute(new GraphOperation<Map<String, Object>>() {
-            @Override
-            public Map<String, Object> execute() throws AnimoException {
-                Map<String, Object> result = new HashMap<String, Object>();
-                clearIndex(result);
-                removeNodes(result,maxNodesToDelete);
-                return result;
-            }
-        });
-        initDB();
-        return result;
-    }
-
-    private void removeNodes(Map<String, Object> result, long maxNodesToDelete) {
-        Node refNode = getROOT();
-        long nodes = 0, relationships = 0;
-        for (Node node : getDb().getAllNodes()) {
-        	boolean delete = true;
-            for (Relationship rel : node.getRelationships()) {
-            	if (rel.getStartNode().equals(refNode))
-            		delete = false;
-            	else
-            		rel.delete();
-                relationships++;
-            }
-            if (delete && !refNode.equals(node)) {
-                node.delete();
-                nodes++;
-            }
-            if (nodes >= maxNodesToDelete) break;
-        }
-        result.put("maxNodesToDelete", maxNodesToDelete);
-        result.put("nodes", nodes);
-        result.put("relationships", relationships);
-
-    }
-
-    private void clearIndex(Map<String, Object> result) throws AnimoException {
-        IndexManager indexManager = getDb().index();
-        result.put("node-indexes", Arrays.asList(indexManager.nodeIndexNames()));
-        result.put("relationship-indexes", Arrays.asList(indexManager.relationshipIndexNames()));
-        for (String ix : indexManager.nodeIndexNames()) {
-            indexManager.forNodes(ix).delete();
-        }
-        for (String ix : indexManager.relationshipIndexNames()) {
-            indexManager.forRelationships(ix).delete();
-        }
-    }
-
     @Before
     public void setup() {
-    	cleanDb();
+        start();
     }
 
     @After
@@ -251,7 +196,7 @@ public abstract class ATest {
         }
         return dir.delete();
     }
-    
+
     @BeforeClass
     public static void start() {
     	deleteDir(new File(DATA_FOLDER));

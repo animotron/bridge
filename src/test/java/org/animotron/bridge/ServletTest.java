@@ -42,7 +42,7 @@ public class ServletTest extends ATest {
     	AnimoServlet servlet = new AnimoServlet();
     	
     	HttpRequest request = new HttpRequest("/","localhost");
-    	HttpResponse response = new HttpResponse();
+    	HttpResponse response = new HttpResponse(false);
 
     	servlet.doGet(request, response);
 
@@ -75,7 +75,7 @@ public class ServletTest extends ATest {
     	AnimoServlet servlet = new AnimoServlet();
     	
     	HttpRequest request = new HttpRequest("/favicon.ico","localhost");
-    	HttpResponse response = new HttpResponse();
+    	HttpResponse response = new HttpResponse(false);
 
     	servlet.doGet(request, response);
     	

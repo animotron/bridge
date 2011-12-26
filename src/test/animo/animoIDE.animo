@@ -1,0 +1,44 @@
+the animoIDE
+	(html-service, IDE, localhost)
+    (title   "AnimoIDE")
+    (content 
+		(@onload "init();")
+		(\div (@id "container"))
+
+		(\div 
+			(@id "left-container")
+			(\div 
+				(@class "text")
+				(\h4 "Animotron IDE")
+				"some text here"
+			)
+			(\div (@id "id-list"))
+			(\div 
+				(@style "text-align:center;")
+				(\a (@href "e.js") "See the Example Code")
+			)
+		)            
+
+		(\div 
+			(@id "center-container")
+    		(\div (@id "infovis"))
+		)    
+
+		(\div 
+			(@id "right-container")
+			(div (@id "inner-details"))
+		)
+
+		(\div (@id "log"))
+    )
+
+	\head
+		(\meta (@http-equiv "Content-Type") (@content "text/html; charset=UTF-8"))
+		(\title "RGraph - Tree Animation")
+
+		(\link (@type "text/css") (@href "/Jit/2.0.1/css/base.css") (@rel "stylesheet"))
+		(\link (@type "text/css") (@href "/Jit/2.0.1/css/RGraph.css") (@rel "stylesheet"))
+
+		(\script (@language "javascript") (@type "text/javascript") (@src "/Jit/2.0.1/jit-RGraph.js"))
+
+		(\script (@language "javascript") (@type "text/javascript") (@src "example1.js"))

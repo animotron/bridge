@@ -1,0 +1,4 @@
+the theme-concrete-root-layout
+    (layout, theme-concrete, animoIDE)
+    (\h1 get title)
+    (\p get content)

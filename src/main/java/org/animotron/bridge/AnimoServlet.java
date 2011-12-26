@@ -57,7 +57,6 @@ public class AnimoServlet extends HttpServlet {
     protected static final Node MIME = THE._("mime-type");
     protected static final Node TYPE = THE._("type");
     protected static final Node URI = THE._("uri");
-    protected static final Node RESULT = THE._("result");
     protected static final Node NOT_FOUND = THE._("not-found");
     protected static final Node ROOT = THE._("root");
     protected static final Node HOST = THE._("host");

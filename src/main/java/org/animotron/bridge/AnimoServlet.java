@@ -138,23 +138,11 @@ public class AnimoServlet extends HttpServlet {
                     builder._(USE._, ROOT);
                 }
 
-                Enumeration<?> names = req.getParameterNames();
-
+                Enumeration<String> names = req.getParameterNames();
                 while (names.hasMoreElements()) {
-
-                    String name = (String) names.nextElement();
-                    parts = name.split(":");
-
-                    if (parts.length > 1) {
-                        if (USE._.name().equals(parts[0])) {
-                            builder.start(USE._, parts[1]);
-                        } else {
-                            builder.start(AN._, parts[1]);
-                        }
-                    } else {
-                        builder.start(AN._);
-                        builder._(REF._, name);
-                    }
+                    String name = names.nextElement();
+                    builder.start(AN._);
+                    builder._(REF._, name);
                     for  (String value : req.getParameterValues(name)) {
                         builder._(value);
                     }
@@ -209,9 +197,9 @@ public class AnimoServlet extends HttpServlet {
                         FileCache._
                 );
                 Expression get = new JExpression(_(GET._, RESULT, _(request)));
-                PipedInput<QCAVector> content = Evaluator._.execute(new PFlow(Evaluator._), get);
-                if (content.hasNext()) {
-                    QCAVector vector = content.next();
+                PipedInput<QCAVector> result = Evaluator._.execute(get);
+                if (result.hasNext()) {
+                    QCAVector vector = result.next();
                     res.setContentType(mime.isEmpty() ? "application/xml" : mime);
                     PFlow pf = new PFlow(Evaluator._, get);
                     pf.addContextPoint(vector);

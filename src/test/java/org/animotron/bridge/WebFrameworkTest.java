@@ -114,4 +114,22 @@ public class WebFrameworkTest extends ATest {
 
     }
 
+    @Test
+    public void test_01() throws Exception {
+
+    	FSBridge.load("src/test/animo/");
+    	JExpression s;
+
+    	s = new JExpression(
+            _(GET._, "result",
+                _(AN._, "rest",
+                    _(USE._, "animoIDE"),
+                    _(AN._, "uri", value("/animoIDE")),
+                    _(AN._, "host", value("localhost"))
+                )
+            )
+        );
+        assertAnimoResult(s, "type \"image/vnd.microsoft.icon\".");
+    }
+    
 }

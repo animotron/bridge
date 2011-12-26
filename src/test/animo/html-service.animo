@@ -1,7 +1,7 @@
 the html-service
     (service)
     (text-html)
-    (result \html
+    (\html
         (\head
             (\title get title)
             (\meta (@name "keywords") (@content get keywords))

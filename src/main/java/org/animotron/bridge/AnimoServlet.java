@@ -20,28 +20,20 @@ package org.animotron.bridge;
 
 import org.animotron.cache.FileCache;
 import org.animotron.exception.AnimoException;
-import org.animotron.exception.EBuilderTerminated;
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.AbstractExpression;
 import org.animotron.expression.CommonExpression;
 import org.animotron.expression.Expression;
 import org.animotron.expression.JExpression;
 import org.animotron.graph.builder.FastGraphBuilder;
-import org.animotron.graph.handler.BinaryGraphHandler;
-import org.animotron.graph.traverser.AnimoResultTraverser;
-import org.animotron.io.PipedInput;
-import org.animotron.manipulator.Evaluator;
-import org.animotron.manipulator.PFlow;
-import org.animotron.manipulator.QCAVector;
-import org.animotron.statement.Statement;
+import org.animotron.graph.serializer.BinarySerializer;
+import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 import org.animotron.statement.operator.THE;
 import org.animotron.statement.query.GET;
 import org.animotron.statement.relation.USE;
-import org.animotron.statement.value.STREAM;
 import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -52,7 +44,6 @@ import java.io.OutputStream;
 import java.util.Enumeration;
 
 import static org.animotron.expression.JExpression._;
-import static org.animotron.graph.serializer.CachedSerializer.*;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -73,7 +64,6 @@ public class AnimoServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		System.out.println(req.getRequestURI());
 		long startTime = System.currentTimeMillis();
 		try {
 	        writeResponse(new AnimoRequest(req), res);
@@ -189,46 +179,69 @@ public class AnimoServlet extends HttpServlet {
     protected static class WebSerializer {
 
         public static void serialize(final Expression request, HttpServletResponse res) throws Exception {
-            final OutputStream out = res.getOutputStream();
+            OutputStream os = res.getOutputStream();
+            String mime = CachedSerializer.STRING.serialize(
+                    new JExpression(
+                            _(GET._, TYPE, _(GET._, MIME, _(request)))
+                    ),
+                    FileCache._
+            );
+            res.setContentType(mime.isEmpty() ? "application/xml" : mime);
             try {
-            	JExpression s = new JExpression(
-                        _(GET._, TYPE, _(GET._, MIME, _(request)))
-                );
-            	
-            	//System.out.println(ANIMO_RESULT.serialize(s));
-
-            	String mime = STRING.serialize(s, FileCache._);
-            	
-                Expression get = new JExpression(_(GET._, RESULT, _(request)));
-                PipedInput<QCAVector> result = Evaluator._.execute(get);
-                if (result.hasNext()) {
-                    QCAVector vector = result.next();
-                    res.setContentType(mime.isEmpty() ? "application/xml" : mime);
-                    PFlow pf = new PFlow(new PFlow(Evaluator._), vector);
-                    XML.serialize(pf, vector, out, FileCache._);
-                } else {
-                    res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
-                    final boolean[] isNotFound = {true};
-                    //UNDERSTAND: why it here?
-                    AnimoResultTraverser._.traverse(
-                        new BinaryGraphHandler(out){
-                            @Override
-                            public void start(Statement statement, Statement parent, Relationship r, int level, boolean isOne, int pos, boolean isLast) throws IOException {
-                                if (statement instanceof STREAM) {
-                                    isNotFound[0] = false;
-                                    write(r.getEndNode(), out);
-                                }
-                            }
-                        }, new PFlow(Evaluator._, request), request
-                    );
-                    if (isNotFound[0])
-                         throw new AnimoException(null, "Resource not found"); //TODO: replace null by ?
+                CachedSerializer.XML.serialize(request, os, FileCache._);
+            } catch (IOException e) {
+                OutputStreamWrapper osw = new OutputStreamWrapper(os);
+                res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
+                BinarySerializer._.serialize(request, osw);
+                if (osw.isEmpty()) {
+                    throw new AnimoException(null, "Resource not found");
                 }
-            } catch (ENotFound e) {
-                throw e;
-            } catch (EBuilderTerminated e) {
-                new IOException(e);
             }
         }
+
+        private static class OutputStreamWrapper extends OutputStream {
+
+            private OutputStream os;
+            private boolean empty = true;
+
+            public OutputStreamWrapper(OutputStream os) {
+                this.os = os;
+            }
+
+            @Override
+            public void write(int b) throws IOException{
+                os.write(b);
+                empty = false;
+            }
+
+            @Override
+            public void write(byte b[]) throws IOException {
+                os.write(b);
+                empty = false;
+            }
+
+            @Override
+            public void write(byte b[], int off, int len) throws IOException {
+                os.write(b, off, len);
+                empty = false;
+            }
+
+            @Override
+            public void flush() throws IOException {
+                os.flush();
+            }
+
+            @Override
+            public void close() throws IOException {
+                os.close();
+            }
+
+            public boolean isEmpty() {
+                return empty;
+            }
+
+        }
+
     }
+
 }

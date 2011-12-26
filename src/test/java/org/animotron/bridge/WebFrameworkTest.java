@@ -42,32 +42,33 @@ public class WebFrameworkTest extends ATest {
     	JExpression s;
 
     	s = new JExpression(
-            _(GET._, "result",
-                _(AN._, "rest",
-                    _(USE._, "root"),
-                    _(AN._, "uri", value("/")),
-                    _(AN._, "host", value("localhost"))
-                )
+            _(AN._, "rest",
+                _(USE._, "root"),
+                _(AN._, "uri", value("/")),
+                _(AN._, "host", value("localhost"))
             )
         );
 
         assertAnimoResult(s,
-            "result " +
-                "\\html " +
-                    "(\\head " +
-                        "(\\title title \"Welcome to Animo\") " +
-                        "(\\meta (@name \"keywords\") (@content)) " +
-                        "(\\meta (@name \"description\") (@content))) " +
-                    "(\\body " +
-                        "the theme-concrete-root-layout " +
-                            "(layout) " +
-                            "(theme-concrete) " +
-                            "(root) " +
-                            "(\\h1 title \"Welcome to Animo\") " +
-                            "(\\p content \"It is working!\") " +
-                            "(\\ul " +
-                                "(\\li \"Host: \" (\\strong host \"localhost\")) " +
-                                "(\\li \"URI: \" (\\strong uri \"/\")))).");
+            "rest " +
+                "(the localhost-site (site) (server-name) (theme-concrete) (localhost)) " +
+                "(the it-working " +
+                    "(html-service " +
+                            "(service resource) " +
+                            "(text-html (mime-type) (text) (type) (name) (extension)) " +
+                            "(\\html " +
+                                "(\\head " +
+                                    "(\\title title \"Welcome to Animo\") " +
+                                    "(\\meta (@name \"keywords\") (@content)) " +
+                                    "(\\meta (@name \"description\") (@content))) " +
+                                "(\\body " +
+                                    "the theme-concrete-root-layout " +
+                                        "(layout) (theme-concrete) (root) " +
+                                        "(\\h1 title \"Welcome to Animo\") " +
+                                        "(\\p content \"It is working!\") " +
+                                        "(\\ul " +
+                                            "(\\li \"Host: \" (\\strong host \"localhost\")) " +
+                                            "(\\li \"URI: \" (\\strong uri \"/\")))))) (root) (localhost) (title) (content)).");
 
         assertXMLResult(s,
             "<html>" +
@@ -121,12 +122,10 @@ public class WebFrameworkTest extends ATest {
     	JExpression s;
 
     	s = new JExpression(
-            _(GET._, "result",
-                _(AN._, "rest",
-                    _(USE._, "animoIDE"),
-                    _(AN._, "uri", value("/animoIDE")),
-                    _(AN._, "host", value("localhost"))
-                )
+            _(AN._, "rest",
+                _(USE._, "animoIDE"),
+                _(AN._, "uri", value("/animoIDE")),
+                _(AN._, "host", value("localhost"))
             )
         );
         assertAnimoResult(s, "type \"image/vnd.microsoft.icon\".");

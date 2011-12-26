@@ -28,7 +28,6 @@ import org.animotron.expression.Expression;
 import org.animotron.expression.JExpression;
 import org.animotron.graph.builder.FastGraphBuilder;
 import org.animotron.graph.handler.BinaryGraphHandler;
-import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.graph.traverser.AnimoResultTraverser;
 import org.animotron.io.PipedInput;
 import org.animotron.manipulator.Evaluator;
@@ -53,6 +52,7 @@ import java.io.OutputStream;
 import java.util.Enumeration;
 
 import static org.animotron.expression.JExpression._;
+import static org.animotron.graph.serializer.CachedSerializer.*;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -73,6 +73,7 @@ public class AnimoServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		System.out.println(req.getRequestURI());
 		long startTime = System.currentTimeMillis();
 		try {
 	        writeResponse(new AnimoRequest(req), res);
@@ -190,20 +191,21 @@ public class AnimoServlet extends HttpServlet {
         public static void serialize(final Expression request, HttpServletResponse res) throws Exception {
             final OutputStream out = res.getOutputStream();
             try {
-            	String mime = CachedSerializer.STRING.serialize(
-                        new JExpression(
-                                _(GET._, TYPE, _(GET._, MIME, _(request)))
-                        ),
-                        FileCache._
+            	JExpression s = new JExpression(
+                        _(GET._, TYPE, _(GET._, MIME, _(request)))
                 );
+            	
+            	//System.out.println(ANIMO_RESULT.serialize(s));
+
+            	String mime = STRING.serialize(s, FileCache._);
+            	
                 Expression get = new JExpression(_(GET._, RESULT, _(request)));
                 PipedInput<QCAVector> result = Evaluator._.execute(get);
                 if (result.hasNext()) {
                     QCAVector vector = result.next();
                     res.setContentType(mime.isEmpty() ? "application/xml" : mime);
-                    PFlow pf = new PFlow(Evaluator._, get);
-                    pf.addContextPoint(vector);
-                    CachedSerializer.XML.serialize(pf, vector, out, FileCache._);
+                    PFlow pf = new PFlow(new PFlow(Evaluator._), vector);
+                    XML.serialize(pf, vector, out, FileCache._);
                 } else {
                     res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
                     final boolean[] isNotFound = {true};

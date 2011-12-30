@@ -23,6 +23,7 @@ import org.animotron.expression.JExpression;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.query.GET;
 import org.animotron.statement.relation.USE;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.animotron.expression.JExpression._;
@@ -116,6 +117,7 @@ public class WebFrameworkTest extends ATest {
     }
 
     @Test
+    @Ignore //uncomplete
     public void test_01() throws Exception {
 
     	FSBridge.load("src/test/animo/");

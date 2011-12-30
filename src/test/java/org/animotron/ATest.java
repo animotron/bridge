@@ -20,6 +20,8 @@ package org.animotron;
 
 import com.ctc.wstx.stax.WstxOutputFactory;
 import junit.framework.Assert;
+
+import org.animotron.graph.AnimoGraph;
 import org.animotron.graph.serializer.BinarySerializer;
 import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.manipulator.PFlow;
@@ -178,7 +180,7 @@ public abstract class ATest {
         start();
     }
 
-    @After
+    //@After
     public void cleanup() {
         stop();
     }
@@ -198,8 +200,10 @@ public abstract class ATest {
 
     //@BeforeClass
     public static void start() {
-    	deleteDir(new File(DATA_FOLDER));
-        startDB(DATA_FOLDER);
+    	if (AnimoGraph.getDb() == null) {
+	    	deleteDir(new File(DATA_FOLDER));
+	        startDB(DATA_FOLDER);
+    	}
     }
 
     //@AfterClass

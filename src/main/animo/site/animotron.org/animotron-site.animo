@@ -1,0 +1,5 @@
+the animotron-site
+    (site)
+    (server-name "localhost" "animotron.org" "www.animotron.org")
+    (use theme-concrete)
+    (use animotron)

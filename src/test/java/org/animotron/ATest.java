@@ -18,15 +18,11 @@
  */
 package org.animotron;
 
-import com.ctc.wstx.stax.WstxOutputFactory;
 import junit.framework.Assert;
-
 import org.animotron.graph.AnimoGraph;
 import org.animotron.graph.serializer.BinarySerializer;
 import org.animotron.graph.serializer.CachedSerializer;
-import org.animotron.manipulator.PFlow;
 import org.apache.log4j.helpers.NullEnumeration;
-import org.junit.After;
 import org.junit.Before;
 import org.neo4j.graphdb.Relationship;
 
@@ -56,36 +52,6 @@ public abstract class ATest {
 
     public static final String DATA_FOLDER = "data-test";
 	
-	public static final WstxOutputFactory OUTPUT_FACTORY = new WstxOutputFactory();
-
-	protected void toConsole(PFlow ch) throws IOException {
-		//XXX: code
-//		if (instream == null) return;
-//		
-//		Object n; 
-//		while ((n = instream.read()) != null) {
-//			System.out.print(n.toString());
-//		} 
-	}
-
-	protected void toConsole(InputStream stream) throws IOException {
-		if (stream == null) return;
-		
-		char[] buffer = new char[1024]; 
-		try { 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8")); 
-
-			int n; 
-			while ((n = reader.read(buffer)) != -1) {
-				for (int i = 0; i < n; i++) {
-					System.out.print(buffer[i]);
-				}
-			} 
-		} finally { 
-			stream.close(); 
-		} 
-	}
-
 	protected void assertEquals(InputStream stream, String expecteds) throws IOException {
 		if (stream == null) return;
 		

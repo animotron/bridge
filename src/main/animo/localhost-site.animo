@@ -1,5 +1,0 @@
-the localhost-site
-    (site)
-    (server-name "localhost")
-    (use theme-concrete)
-    (use localhost)

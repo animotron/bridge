@@ -115,12 +115,19 @@ public class AnimoServlet extends HttpServlet {
                 builder._(REF._, REST);
 
                 String uri = req.getRequestURI();
-                String[] parts = uri.split("/");
 
                 boolean isRoot = true;
-                for (String part : parts) {
+                for (String part : uri.split("/")) {
                     if (part.isEmpty()) continue;
-                    builder._(USE._, part);
+                    String[] parts = part.split("\\.");
+                    if (parts.length > 0) {
+                        for(String sub : parts) {
+                            if (sub.isEmpty()) continue;
+                            builder._(USE._, sub);
+                        }
+                    } else {
+                        builder._(USE._, part);
+                    }
                     isRoot = false;
                 }
 
@@ -181,19 +188,26 @@ public class AnimoServlet extends HttpServlet {
             OutputStream os = res.getOutputStream();
             String mime = CachedSerializer.STRING.serialize(
                     new JExpression(
-                            _(GET._, TYPE, _(GET._, MIME, _(request)))
+//                            _(GET._, TYPE, _(GET._, MIME, _(request)))
+                            _(GET._, TYPE, _(request))
                     ),
                     FileCache._
             );
-            res.setContentType(mime.isEmpty() ? "application/xml" : mime);
-            try {
-                CachedSerializer.XML.serialize(request, os, FileCache._);
-            } catch (IOException e) {
-                OutputStreamWrapper osw = new OutputStreamWrapper(os);
-                res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
-                BinarySerializer._.serialize(request, osw);
-                if (osw.isEmpty()) {
-                    throw new AnimoException(null, "Resource not found");
+
+            if ("text/html".equals(mime)) {
+                res.setContentType("text/html");
+                CachedSerializer.HTML.serialize(request, os, FileCache._);
+            } else {
+                res.setContentType(mime.isEmpty() ? "application/xml" : mime);
+                try {
+                    CachedSerializer.XML.serialize(request, os, FileCache._);
+                } catch (IOException e) {
+                    OutputStreamWrapper osw = new OutputStreamWrapper(os);
+                    res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
+                    BinarySerializer._.serialize(request, osw);
+                    if (osw.isEmpty()) {
+                        throw new AnimoException(null, "Resource not found");
+                    }
                 }
             }
         }

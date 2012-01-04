@@ -1,9 +1,13 @@
 the html-service
-    (service, text-html)
-    (result \html
+    (service)
+    (mime-type text-html)
+    (\html
         (\head
             (\title get title)
             (\meta (@name "keywords") (@content get keywords))
-            (\meta (@name "description") (@content get description)))
-        (\body
-            (any layout)))
+            (\meta (@name "description") (@content get description))
+            (\link (@rel "shortcut icon") (@href (("/") (id any favicon))))
+            (each (prefer text-css) (\link (@rel "stylesheet/less") (@href (("/") (id this resource)))))
+            (each (prefer application-css) (\link (@rel "stylesheet") (@href (("/") (id this resource)))))
+            (each (prefer application-x-javascript) (\script @src (("/") (id this resource)))))
+        (\body any layout))

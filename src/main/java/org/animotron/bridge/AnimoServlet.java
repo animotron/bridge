@@ -22,7 +22,6 @@ import org.animotron.cache.FileCache;
 import org.animotron.exception.AnimoException;
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.AbstractExpression;
-import org.animotron.expression.CommonExpression;
 import org.animotron.expression.Expression;
 import org.animotron.expression.JExpression;
 import org.animotron.graph.builder.FastGraphBuilder;
@@ -51,8 +50,6 @@ import static org.animotron.expression.JExpression._;
  */
 public class AnimoServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 7276574723383015880L;
-
     protected static final Node REST = THE._("rest");
     protected static final Node MIME = THE._("mime-type");
     protected static final Node TYPE = THE._("type");
@@ -80,14 +77,14 @@ public class AnimoServlet extends HttpServlet {
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}
 
-	@Override
-	public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        try {
-            writeResponse(new CommonExpression(req.getInputStream(), req.getRequestURI()), res);
-        } catch (Exception e) {
-            throw new ServletException(e);
-        }
-	}
+//	@Override
+//	public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+//        try {
+//            writeResponse(new CommonExpression(req.getInputStream(), req.getRequestURI()), res);
+//        } catch (Exception e) {
+//            throw new ServletException(e);
+//        }
+//	}
 	
 	private void writeResponse(Expression e, HttpServletResponse res) throws Exception {
         WebSerializer.serialize(e, res);

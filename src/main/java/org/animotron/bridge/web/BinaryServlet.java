@@ -19,11 +19,12 @@
 package org.animotron.bridge.web;
 
 import org.animotron.cache.FileCache;
+import org.animotron.expression.BinaryExpression;
 import org.animotron.expression.JExpression;
 import org.animotron.graph.serializer.CachedSerializer;
-import org.animotron.statement.compare.WITH;
-import org.animotron.statement.query.ANY;
+import org.animotron.statement.operator.THE;
 import org.animotron.statement.query.GET;
+import org.neo4j.graphdb.Relationship;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -32,46 +33,30 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
 import static org.animotron.expression.JExpression._;
-import static org.animotron.expression.JExpression.value;
-import static org.animotron.graph.Nodes.*;
+import static org.animotron.graph.Nodes.TYPE;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class CommonServlet extends HttpServlet {
+public class BinaryServlet extends HttpServlet {
 
-    private static File folder;
-
-    public CommonServlet (String uri) {
-        folder = new File(uri);
-    }
-    
-    private String mime(File file) throws IOException {
-        String name = file.getName();
-        int index = name.lastIndexOf(".");
-        if (index > 0) {
-            String mime = CachedSerializer.STRING.serialize(
-                new JExpression(
-                    _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value(name.substring(index + 1)))))
-                ),
-                FileCache._
-            );
-            return mime.isEmpty() ? "application/octet-stream" : mime;
-        }
-        return "application/octet-stream";
+    private String mime(Relationship r) throws IOException {
+        String mime = CachedSerializer.STRING.serialize(new JExpression(_(GET._, TYPE, _(r))),FileCache._);
+        return mime.isEmpty() ? "application/octet-stream" : mime;
     }
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
 		try {
-            File file = new File(folder, req.getPathInfo());
+            String hash = req.getPathInfo().substring(1);
+            File file = BinaryExpression.getFile(hash);
             InputStream is = new FileInputStream(file);
             res.setContentLength((int) file.length());
             OutputStream os = res.getOutputStream();
-            res.setContentType(mime(file));
+            res.setContentType(mime(THE.__(hash)));
             byte [] buf = new byte[4096];
             int len;
             while((len=is.read(buf))>0) {

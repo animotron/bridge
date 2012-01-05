@@ -63,6 +63,7 @@ public class JettyHttpServer {
         jetty.setHandler(context);
 
         context.addServlet(new ServletHolder(new AnimoServlet()),"/*");
+        context.addServlet(new ServletHolder(new BinaryServlet()),"/binary/*");
         context.addServlet(new ServletHolder(new CommonServlet("common/")),"/common/*");
 
         //context.getSecurityHandler().setLoginService(new AnimoLoginService());

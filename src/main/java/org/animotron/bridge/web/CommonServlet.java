@@ -53,7 +53,7 @@ public class CommonServlet extends HttpServlet {
         if (index > 0) {
             String mime = CachedSerializer.STRING.serialize(
                 new JExpression(
-                    _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value(name.substring(index)))))
+                    _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value(name.substring(index + 1)))))
                 ),
                 FileCache._
             );

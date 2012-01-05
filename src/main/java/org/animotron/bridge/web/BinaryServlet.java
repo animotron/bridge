@@ -19,11 +19,14 @@
 package org.animotron.bridge.web;
 
 import org.animotron.cache.FileCache;
-import org.animotron.expression.BinaryExpression;
 import org.animotron.expression.JExpression;
+import org.animotron.graph.Properties;
 import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.statement.operator.THE;
 import org.animotron.statement.query.GET;
+import org.animotron.statement.value.STREAM;
+import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 
 import javax.servlet.ServletException;
@@ -51,12 +54,13 @@ public class BinaryServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
 		try {
-            String hash = req.getPathInfo().substring(1);
-            File file = BinaryExpression.getFile(hash);
+            Relationship r = THE._.get(req.getPathInfo().substring(1));
+            Node n = r.getEndNode().getSingleRelationship(STREAM._, Direction.OUTGOING).getEndNode();
+            File file = new File((String) Properties.VALUE.get(n));
             InputStream is = new FileInputStream(file);
             res.setContentLength((int) file.length());
             OutputStream os = res.getOutputStream();
-            res.setContentType(mime(THE.__(hash)));
+            res.setContentType(mime(r));
             byte [] buf = new byte[4096];
             int len;
             while((len=is.read(buf))>0) {

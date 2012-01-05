@@ -16,8 +16,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-package org.animotron.bridge;
+package org.animotron.bridge.web;
 
+import org.animotron.bridge.FSBridge;
+import org.animotron.bridge.FSMap;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -32,9 +34,9 @@ import static org.animotron.graph.AnimoGraph.startDB;
  */
 public class JettyHttpServer {
 
-	private Server jetty;
+    private Server jetty;
     private int jettyPort = 8080;
-    
+
     public JettyHttpServer() {}
 
 	public JettyHttpServer(int port) {
@@ -59,8 +61,9 @@ public class JettyHttpServer {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         jetty.setHandler(context);
- 
+
         context.addServlet(new ServletHolder(new AnimoServlet()),"/*");
+        context.addServlet(new ServletHolder(new CommonServlet("common/")),"/common/*");
 
         //context.getSecurityHandler().setLoginService(new AnimoLoginService());
         

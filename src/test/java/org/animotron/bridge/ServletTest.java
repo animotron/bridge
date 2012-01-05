@@ -20,6 +20,7 @@ package org.animotron.bridge;
 
 import junit.framework.Assert;
 import org.animotron.ATest;
+import org.animotron.bridge.web.AnimoServlet;
 import org.junit.Test;
 
 /**
@@ -32,7 +33,7 @@ public class ServletTest extends ATest {
     @Test
     public void test() throws Exception {
 
-    	FSBridge.load("src/test/animo/");
+    	FSBridge._.load("src/test/animo/", "/binary/");
     	
     	AnimoServlet servlet = new AnimoServlet();
     	

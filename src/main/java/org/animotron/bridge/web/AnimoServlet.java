@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-package org.animotron.bridge;
+package org.animotron.bridge.web;
 
 import org.animotron.cache.FileCache;
 import org.animotron.exception.AnimoException;
@@ -43,6 +43,8 @@ import java.io.OutputStream;
 import java.util.Enumeration;
 
 import static org.animotron.expression.JExpression._;
+import static org.animotron.graph.Nodes.TYPE;
+import static org.animotron.graph.Nodes.URI;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -51,9 +53,6 @@ import static org.animotron.expression.JExpression._;
 public class AnimoServlet extends HttpServlet {
 
     protected static final Node REST = THE._("rest");
-    protected static final Node MIME = THE._("mime-type");
-    protected static final Node TYPE = THE._("type");
-    protected static final Node URI = THE._("uri");
     protected static final Node NOT_FOUND = THE._("not-found");
     protected static final Node ROOT = THE._("root");
     protected static final Node HOST = THE._("host");
@@ -71,21 +70,11 @@ public class AnimoServlet extends HttpServlet {
                 throw new IOException(e);
             }
 		} catch (Exception e) {
-            e.printStackTrace();
             throw new IOException(e);
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}
 
-//	@Override
-//	public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-//        try {
-//            writeResponse(new CommonExpression(req.getInputStream(), req.getRequestURI()), res);
-//        } catch (Exception e) {
-//            throw new ServletException(e);
-//        }
-//	}
-	
 	private void writeResponse(Expression e, HttpServletResponse res) throws Exception {
         WebSerializer.serialize(e, res);
     }
@@ -185,7 +174,7 @@ public class AnimoServlet extends HttpServlet {
             OutputStream os = res.getOutputStream();
             String mime = CachedSerializer.STRING.serialize(
                     new JExpression(
-//                            _(GET._, TYPE, _(GET._, MIME, _(request)))
+//                            _(GET._, TYPE, _(GET._, MIME-TYPE, _(request)))
                             _(GET._, TYPE, _(request))
                     ),
                     FileCache._

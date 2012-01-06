@@ -16,63 +16,53 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-package org.animotron.bridge;
+package org.animotron.bridge.web;
 
+import junit.framework.Assert;
 import org.animotron.ATest;
+import org.animotron.bridge.FSBridge;
 import org.animotron.bridge.web.AnimoServlet;
 import org.junit.Test;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class ServletBinaryTest extends ATest {
+public class ServletTest extends ATest {
 
     @Test
     public void test() throws Exception {
+
     	FSBridge._.load("src/test/animo/", "/binary/");
     	
     	AnimoServlet servlet = new AnimoServlet();
     	
-    	HttpRequest request = new HttpRequest("/favicon.ico","localhost");
+    	HttpRequest request = new HttpRequest("/","localhost");
     	HttpResponse response = new HttpResponse(false);
 
     	servlet.doGet(request, response);
-    	
-    	org.junit.Assert.assertArrayEquals(getBytesFromFile(new File("src/test/animo/localhost/favicon.ico")),response.getResponse());
-    }
-    
-    
-    private byte[] getBytesFromFile(File file) throws IOException {
-    	InputStream is = new FileInputStream(file);
 
-        long length = file.length();
-
-        if (length > Integer.MAX_VALUE) {
-            throw new RuntimeException("File too big ["+file.getPath()+"]");
-        }
-
-        byte[] bytes = new byte[(int)length];
-
-        int offset = 0;
-        int numRead = 0;
-        while (offset < bytes.length
-               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-            offset += numRead;
-        }
-
-        if (offset < bytes.length) {
-            throw new IOException("Could not completely read file "+file.getName());
-        }
-
-        is.close();
-        return bytes;
+        Assert.assertEquals(
+            "<?xml version='1.0' encoding='UTF-8'?>" +
+            "<html>" +
+                "<head>" +
+                    "<title>Welcome to Animo</title>" +
+                    "<meta name=\"keywords\" content=\"\"/>" +
+                    "<meta name=\"description\" content=\"\"/>" +
+                "</head>" +
+                "<body>" +
+                    "<h1>Welcome to Animo</h1>" +
+                    "<p>It is working!</p>" +
+                    "<ul>" +
+                        "<li>Host: <strong>localhost</strong></li>" +
+                        "<li>URI: <strong>/</strong></li>" +
+                    "</ul>" +
+                "</body>" +
+            "</html>",
+            response.getResponseString()
+        );
+        
     }
     
 }

@@ -16,9 +16,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-package org.animotron.bridge;
+package org.animotron.bridge.web;
 
 import org.animotron.ATest;
+import org.animotron.bridge.FSBridge;
 import org.animotron.expression.JExpression;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.query.GET;

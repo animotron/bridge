@@ -67,7 +67,7 @@ public class BinaryServlet extends HttpServlet {
                 os.write(buf, 0, len);
             }
 		} catch (Exception e) {
-            throw new IOException(e);
+            ErrorHandler.doGet(req, res, ErrorHandler.NOT_FOUND);
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}

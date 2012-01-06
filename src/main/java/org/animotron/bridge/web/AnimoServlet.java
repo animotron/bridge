@@ -71,6 +71,7 @@ public class AnimoServlet extends HttpServlet {
                 throw new IOException(e);
             }
 		} catch (Exception e) {
+            e.printStackTrace();
             throw new IOException(e);
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
@@ -180,7 +181,6 @@ public class AnimoServlet extends HttpServlet {
                     ),
                     FileCache._
             );
-
             if ("text/html".equals(mime)) {
                 res.setContentType("text/html");
                 CachedSerializer.HTML.serialize(request, os, FileCache._);

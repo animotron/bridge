@@ -34,7 +34,7 @@ public class ServletTest extends ATest {
     @Test
     public void test() throws Exception {
 
-    	FSBridge._.load("src/test/animo/", "/binary/");
+    	FSBridge._.load("src/test/animo/", "/binary");
     	
     	AnimoServlet servlet = new AnimoServlet();
     	

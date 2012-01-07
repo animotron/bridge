@@ -1,5 +1,5 @@
 the localhost-site
     (site)
     (server-name "localhost")
-    (weak-use theme-concrete)
-    (weak-use localhost)
+    (use theme-concrete)
+    (use localhost)

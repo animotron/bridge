@@ -1,5 +1,4 @@
-the html-service
-    (service)
+the html
     (mime-type text-html)
     (\html
         (\head

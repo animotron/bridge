@@ -1,4 +1,5 @@
 the it-working
-	(html-service, root, animotron)
+	(service, html, root, animotron)
+	(uri "/")
     (title   "Welcome to Animo")
     (content "It is working!")

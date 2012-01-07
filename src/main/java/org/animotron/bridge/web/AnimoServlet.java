@@ -21,7 +21,6 @@ package org.animotron.bridge.web;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 import org.animotron.statement.operator.THE;
-import org.animotron.statement.relation.USE;
 import org.neo4j.graphdb.Node;
 
 import javax.servlet.ServletException;
@@ -30,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.regex.Pattern;
 
 import static org.animotron.bridge.web.WebSerializer.serialize;
 
@@ -55,7 +53,6 @@ public class AnimoServlet extends HttpServlet {
     protected static class AnimoRequest extends AbstractRequestExpression {
 
         protected static final Node REST = THE._("rest");
-        protected static final Node ROOT = THE._("root");
 
         public AnimoRequest(HttpServletRequest req) throws Exception {
             super(req);
@@ -65,24 +62,6 @@ public class AnimoServlet extends HttpServlet {
         public void build() throws Exception {
             builder.start(AN._);
                 builder._(REF._, REST);
-                String uri = getRequest().getRequestURI();
-                boolean isRoot = true;
-                for (String part : uri.split(Pattern.quote("/"))) {
-                    if (part.isEmpty()) continue;
-                    String[] parts = part.split(Pattern.quote("."));
-                    if (parts.length > 0) {
-                        for(String sub : parts) {
-                            if (sub.isEmpty()) continue;
-                            builder._(USE._, sub);
-                        }
-                    } else {
-                        builder._(USE._, part);
-                    }
-                    isRoot = false;
-                }
-                if (isRoot) {
-                    builder._(USE._, ROOT);
-                }
                 Enumeration<String> names = getRequest().getParameterNames();
                 while (names.hasMoreElements()) {
                     String name = names.nextElement();

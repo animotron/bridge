@@ -18,7 +18,6 @@
  */
 package org.animotron.bridge.web;
 
-import org.animotron.exception.ENotFound;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 import org.animotron.statement.operator.THE;
@@ -45,18 +44,10 @@ public class AnimoServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
-		try {
-	        serialize(new AnimoRequest(req), res);
-        } catch (ENotFound e) {
-            try {
-                ErrorHandler.doGet(req, res, ErrorHandler.NOT_FOUND);
-            } catch (Exception eBuilderTerminated) {
-                e.printStackTrace();
-                throw new IOException(e);
-            }
-		} catch (Exception e) {
-            e.printStackTrace();
-            throw new IOException(e);
+        try {
+            serialize(new AnimoRequest(req), res);
+        } catch (Exception e) {
+            ErrorHandler.doGet(req, res, ErrorHandler.NOT_FOUND);
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}

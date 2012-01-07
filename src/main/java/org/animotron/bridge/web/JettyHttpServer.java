@@ -48,8 +48,8 @@ public class JettyHttpServer {
     	//initialize animo
     	if (startDB("data")) {
     		//if (!getSTART().hasRelationship(Direction.OUTGOING)) {
-    			FSBridge._.load("animo/", "/binary/");
-                FSBridge._.load("etc/", "/binary/");
+    			FSBridge._.load("animo/", "/binary");
+                FSBridge._.load("etc/", "/binary");
                 FSMap._.load("common/", "/common");
         	//}
     	}

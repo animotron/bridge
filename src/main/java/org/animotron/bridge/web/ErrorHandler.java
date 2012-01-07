@@ -39,6 +39,7 @@ public class ErrorHandler {
 
 	public static void doGet(HttpServletRequest req, HttpServletResponse res, int status) {
 		long startTime = System.currentTimeMillis();
+        res.setStatus(status);
 		try {
             serialize(new AnimoRequest(req, status), res);
         } catch (Exception e) {

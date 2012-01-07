@@ -53,7 +53,7 @@ public class WebFrameworkTest extends ATest {
 
         assertAnimoResult(s,
             "rest " +
-                "(the localhost-site (site) (server-name) (theme-concrete) (localhost)) " +
+                "(the localhost-site (site) (server-name) (use theme-concrete) (use localhost)) " +
                 "(the it-working " +
                     "(html-service " +
                             "(service resource) " +
@@ -103,10 +103,23 @@ public class WebFrameworkTest extends ATest {
         assertAnimoResult(s, "type \"text/html\".");
 
         s = new JExpression(
+                _(AN._, "rest",
+                    //_(USE._, "favicon.ico"),
+                    _(USE._, "favicon"),
+                    _(USE._, "ico"),
+                    _(AN._, "uri", value("/favicon.ico")),
+                    _(AN._, "host", value("localhost"))
+                )
+            );
+        assertAnimoResult(s, "type \"image/vnd.microsoft.icon\".");
+
+        s = new JExpression(
             _(GET._, "type",
                 _(GET._, "mime-type",
                     _(AN._, "rest",
-                        _(USE._, "favicon.ico"),
+                        //_(USE._, "favicon.ico"),
+                        _(USE._, "favicon"),
+                        _(USE._, "ico"),
                         _(AN._, "uri", value("/favicon.ico")),
                         _(AN._, "host", value("localhost"))
                     )
@@ -114,7 +127,6 @@ public class WebFrameworkTest extends ATest {
             )
         );
         assertAnimoResult(s, "type \"image/vnd.microsoft.icon\".");
-
     }
 
     @Test

@@ -103,7 +103,7 @@ public class WebFrameworkTest extends ATest {
         assertAnimoResult(s, "type \"text/html\".");
 
         s = new JExpression(
-                _(GET._, "type",
+                _(GET._, "extension",
                         _(AN._, "rest",
                                 _(USE._, "favicon"),
                                 _(AN._, "uri", value("/favicon.ico")),
@@ -111,7 +111,18 @@ public class WebFrameworkTest extends ATest {
                         )
                 )
         );
-        assertAnimoResult(s, "type \"image/vnd.microsoft.icon\".");
+        assertAnimoResult(s, "extension \"ico\".");
+
+        s = new JExpression(
+                _(GET._, "mime-type",
+                        _(AN._, "rest",
+                                _(USE._, "favicon"),
+                                _(AN._, "uri", value("/favicon.ico")),
+                                _(AN._, "host", value("localhost"))
+                        )
+                )
+        );
+        assertAnimoResult(s, "mime-type image-vnd-microsoft-icon.");
 
         s = new JExpression(
                 _(GET._, "type",
@@ -125,6 +136,18 @@ public class WebFrameworkTest extends ATest {
                 )
         );
         assertAnimoResult(s, "type \"image/vnd.microsoft.icon\".");
+
+        s = new JExpression(
+                _(GET._, "type",
+                        _(AN._, "rest",
+                                _(USE._, "favicon"),
+                                _(AN._, "uri", value("/favicon.ico")),
+                                _(AN._, "host", value("localhost"))
+                        )
+                )
+        );
+        assertAnimoResult(s, "type \"image/vnd.microsoft.icon\".");
+
     }
 
     @Test

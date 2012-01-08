@@ -42,7 +42,6 @@ import static org.animotron.graph.Nodes.TYPE;
 class WebSerializer {
 
     public static void serialize(Expression request, HttpServletResponse res) throws IOException {
-        CachedSerializer.ANIMO_RESULT.serialize(request, System.out, FileCache._);
         OutputStream os = res.getOutputStream();
         String mime = CachedSerializer.STRING.serialize(
                 new JExpression(

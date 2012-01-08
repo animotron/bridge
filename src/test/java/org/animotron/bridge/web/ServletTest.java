@@ -1,27 +1,28 @@
 /*
- *  Copyright (C) 2011 The Animo Project
+ *  Copyright (C) 2011-2012 The Animo Project
  *  http://animotron.org
  *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public License
- *  as published by the Free Software Foundation; either version 3
- *  of the License, or (at your option) any later version.
+ *  This file is part of Animotron.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  Animotron is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of
+ *  the License, or (at your option) any later version.
+ *
+ *  Animotron is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU Lesser General Public License for more details.
+ *  GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *  You should have received a copy of
+ *  the GNU Affero General Public License along with Animotron.
+ *  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.animotron.bridge.web;
 
 import junit.framework.Assert;
 import org.animotron.ATest;
 import org.animotron.bridge.FSBridge;
-import org.animotron.bridge.web.AnimoServlet;
 import org.junit.Test;
 
 /**

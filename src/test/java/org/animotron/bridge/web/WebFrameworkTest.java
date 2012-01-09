@@ -22,15 +22,23 @@ package org.animotron.bridge.web;
 
 import org.animotron.ATest;
 import org.animotron.bridge.FSBridge;
+import org.animotron.cache.FileCache;
 import org.animotron.expression.JExpression;
+import org.animotron.graph.serializer.CachedSerializer;
+import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
+import org.animotron.statement.query.ANY;
 import org.animotron.statement.query.GET;
 import org.animotron.statement.relation.USE;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.animotron.expression.JExpression._;
 import static org.animotron.expression.JExpression.value;
+import static org.animotron.graph.Nodes.EXTENSION;
+import static org.animotron.graph.Nodes.MIME_TYPE;
+import static org.animotron.graph.Nodes.TYPE;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -150,6 +158,13 @@ public class WebFrameworkTest extends ATest {
         );
         assertAnimoResult(s, "type \"image/vnd.microsoft.icon\".");
 
+	    String mime = CachedSerializer.STRING.serialize(
+            new JExpression(
+                _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value("html"))))
+            ),
+            FileCache._
+        );
+	    Assert.assertEquals("text/html", mime);
     }
 
     @Test

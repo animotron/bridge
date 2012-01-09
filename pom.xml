@@ -18,7 +18,7 @@
 	</developers>
 
 	<properties>
-		<jettyVersion>8.0.3.v20111011</jettyVersion>
+		<jettyVersion>8.1.0.RC2</jettyVersion>
 		<!-- <jettyVersion>7.4.2.v20110526</jettyVersion> -->
         <miltonVersion>1.6.2</miltonVersion>
         <slf4jVersion>1.6.1</slf4jVersion>
@@ -57,6 +57,12 @@
 			<version>${jettyVersion}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-websocket</artifactId>
+			<version>${jettyVersion}</version>
+		</dependency>
+
 		<!-- Smack is an Open Source XMPP (Jabber) client -->
 		<dependency>
 			<groupId>org.igniterealtime.smack</groupId>

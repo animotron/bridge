@@ -68,11 +68,14 @@ public class CommonServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
+		InputStream is = null;
+		OutputStream os = null;
 		try {
             File file = new File(folder, req.getPathInfo());
-            InputStream is = new FileInputStream(file);
+            is = new FileInputStream(file);
             res.setContentLength((int) file.length());
-            OutputStream os = res.getOutputStream();
+            
+            os = res.getOutputStream();
             res.setContentType(mime(file));
             byte [] buf = new byte[4096];
             int len;
@@ -81,6 +84,9 @@ public class CommonServlet extends HttpServlet {
             }
 		} catch (Exception e) {
             ErrorHandler.doGet(req, res, ErrorHandler.NOT_FOUND);
+        } finally {
+        	if (os != null) os.close();
+            if (is != null) is.close();
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}

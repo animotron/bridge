@@ -144,7 +144,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>org.animotron.AnimoBridge</mainClass>
+					<mainClass>org.animotron.web.JettyHttpServer</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

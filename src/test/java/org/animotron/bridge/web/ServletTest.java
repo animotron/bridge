@@ -35,7 +35,7 @@ public class ServletTest extends ATest {
     @Test
     public void test() throws Exception {
 
-    	FSBridge._.load("src/test/animo/", "/binary");
+    	FSBridge._.load("src/test/animo/");
     	
     	AnimoServlet servlet = new AnimoServlet();
     	
@@ -45,7 +45,7 @@ public class ServletTest extends ATest {
     	servlet.doGet(request, response);
 
         Assert.assertEquals(
-            "<?xml version='1.0' encoding='UTF-8'?>" +
+            "<!DOCTYPE html>" +
             "<html>" +
                 "<head>" +
                     "<title>Welcome to Animo</title>" +

@@ -67,7 +67,7 @@ public class WebFrameworkTest extends ATest {
                 "(the it-working " +
                     "(html-service " +
                             "(service resource) " +
-                            "(text-html (mime-type) (text) (type) (name) (extension)) " +
+                            "(mime-type) " +
                             "(\\html " +
                                 "(\\head " +
                                     "(\\title title \"Welcome to Animo\") " +

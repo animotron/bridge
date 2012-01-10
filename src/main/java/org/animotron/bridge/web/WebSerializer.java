@@ -39,7 +39,7 @@ import static org.animotron.graph.Nodes.TYPE;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-class WebSerializer {
+public class WebSerializer {
 
     public static void serialize(Expression request, HttpServletResponse res) throws IOException {
         OutputStream os = res.getOutputStream();

@@ -4,4 +4,4 @@ the theme-concrete-root-layout
     (\p get content)
     (\ul
         (\li ("Host: ") (\strong get host))
-        (\li ("URI: ")  (\strong get uri)))
+        (\li ("URI: ")  (\strong get uriContext)))

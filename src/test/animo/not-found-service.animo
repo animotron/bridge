@@ -2,5 +2,5 @@ the not-found-service
     (html-service, not-found)
     (status 404)
     (title   "Not found!")
-    (content ("Can't find the resource ") (\strong get uri))
+    (content ("Can't find the resource ") (\strong get uriContext))
 

@@ -50,7 +50,7 @@ public class WebFrameworkTest extends ATest {
     @Test
     public void test() throws Exception {
 
-    	FSBridge._.load("src/test/animo/", "/binary");
+    	FSBridge._.load("src/test/animo/");
     	JExpression s;
 
     	s = new JExpression(
@@ -171,7 +171,7 @@ public class WebFrameworkTest extends ATest {
     @Ignore //uncomplete
     public void test_01() throws Exception {
 
-    	FSBridge._.load("src/test/animo/", "/binary/");
+    	FSBridge._.load("src/test/animo/");
     	JExpression s;
 
     	s = new JExpression(

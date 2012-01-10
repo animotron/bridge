@@ -20,14 +20,21 @@
  */
 package org.animotron.bridge.web;
 
+import org.animotron.bridge.AbstractFSBridge;
 import org.animotron.bridge.FSBridge;
-import org.animotron.bridge.FSMap;
+import org.animotron.exception.AnimoException;
+import org.animotron.expression.BinaryMapExpression;
+import org.animotron.graph.Nodes;
+import org.animotron.statement.operator.AN;
+import org.animotron.statement.operator.REF;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import java.io.File;
 import java.io.IOException;
 
+import static org.animotron.expression.Expression.__;
 import static org.animotron.graph.AnimoGraph.startDB;
 
 /**
@@ -50,9 +57,11 @@ public class JettyHttpServer {
     	//initialize animo
     	if (startDB("data")) {
     		//if (!getSTART().hasRelationship(Direction.OUTGOING)) {
-    			FSBridge._.load("animo/", "/binary");
-                FSBridge._.load("etc/", "/binary");
-                FSMap._.load("common/", "/common");
+    			FSBridge._.load("animo/");
+                FSBridge._.load("etc/");
+
+                new CommonResourcesMap ("/common").load("common/");
+
         	//}
     	}
     	
@@ -100,4 +109,57 @@ public class JettyHttpServer {
 			}
     	}
 	}
+
+    public class CommonResourcesMap extends AbstractFSBridge {
+
+        private String uriContext;
+
+        public CommonResourcesMap(String uriContext) {
+            this.uriContext = uriContext;
+        }
+
+        int root = 0;
+        
+        @Override
+        public void load(String path) throws IOException {
+            File f = new File(path);
+            if (f.isDirectory()) {
+                root = f.getPath().length();
+            }
+            super.load(path);
+        }
+        
+        @Override
+        protected void loadFile(final File file) throws IOException {
+            __(
+                    new BinaryMapExpression(file) {
+                        @Override
+                        protected void description() throws AnimoException, IOException {
+                            int index;
+                            String name = file.getName();
+                            index = name.lastIndexOf(".");
+                            if (index > 0) {
+                                String extension = name.substring(index + 1);
+                                builder.start(AN._);
+                                    builder._(REF._, extension);
+                                builder.end();
+                                index = name.indexOf(".");
+                                name = name.substring(0, index);
+                            }
+                            builder.start(AN._);
+                                builder._(REF._, name);
+                            builder.end();
+                            String uri = uriContext + file.getPath().substring(root);
+                            builder.start(AN._);
+                                builder._(REF._, Nodes.URI);
+                                builder._(uri);
+                            builder.end();
+                        }
+                        
+                    }
+            );
+        }
+        
+    }
+    
 }

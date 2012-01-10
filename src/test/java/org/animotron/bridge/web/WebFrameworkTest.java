@@ -26,7 +26,6 @@ import java.io.IOException;
 import org.animotron.ATest;
 import org.animotron.bridge.AbstractFSBridge;
 import org.animotron.bridge.FSBridge;
-import org.animotron.bridge.web.JettyHttpServer.CommonResourcesMap;
 import org.animotron.cache.FileCache;
 import org.animotron.exception.AnimoException;
 import org.animotron.expression.BinaryMapExpression;
@@ -40,7 +39,6 @@ import org.animotron.statement.query.ANY;
 import org.animotron.statement.query.GET;
 import org.animotron.statement.relation.USE;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.animotron.expression.Expression.__;

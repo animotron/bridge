@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Enumeration;
 
-import static org.animotron.bridge.web.WebSerialize.serialize;
+import static org.animotron.bridge.web.WebSerializer.serialize;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -40,6 +40,8 @@ import static org.animotron.bridge.web.WebSerialize.serialize;
  *
  */
 public class AnimoServlet extends HttpServlet {
+
+	private static final long serialVersionUID = -7842813965460705795L;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {

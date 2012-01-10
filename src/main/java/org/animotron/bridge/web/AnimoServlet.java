@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Enumeration;
 
-import static org.animotron.bridge.web.WebSerialize.serialize;
+import static org.animotron.bridge.web.WebSerializer.serialize;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>

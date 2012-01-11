@@ -20,9 +20,6 @@
  */
 package org.animotron.bridge.web;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.animotron.ATest;
 import org.animotron.bridge.AbstractFSBridge;
 import org.animotron.bridge.FSBridge;
@@ -41,12 +38,13 @@ import org.animotron.statement.relation.USE;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
+
 import static org.animotron.expression.Expression.__;
 import static org.animotron.expression.JExpression._;
 import static org.animotron.expression.JExpression.value;
-import static org.animotron.graph.Nodes.EXTENSION;
-import static org.animotron.graph.Nodes.MIME_TYPE;
-import static org.animotron.graph.Nodes.TYPE;
+import static org.animotron.graph.Nodes.*;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -58,7 +56,9 @@ public class WebFrameworkTest extends ATest {
     @Test
     public void test() throws Exception {
 
-    	FSBridge._.load("src/test/animo/");
+    	FSBridge._.load("src/test/resources/animo/");
+        new SiteResourcesBridge("/binary").load("src/test/resources/site/");
+
     	JExpression s;
 
     	s = new JExpression(

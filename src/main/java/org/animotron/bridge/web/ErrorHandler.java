@@ -22,8 +22,6 @@ package org.animotron.bridge.web;
 
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
-import org.animotron.statement.operator.THE;
-import org.neo4j.graphdb.Node;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,8 +50,8 @@ public class ErrorHandler {
 
     private static class AnimoRequest extends AbstractRequestExpression {
 
-        private static final Node REST_ERROR = THE._("rest-error");
-        private static final Node STATUS = THE._("status");
+        private static final String REST_ERROR = "rest-error";
+        private static final String STATUS = "status";
         private int status;
 
         public AnimoRequest(HttpServletRequest req, int status) throws Exception {

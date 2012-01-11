@@ -25,11 +25,8 @@ import org.animotron.expression.AbstractExpression;
 import org.animotron.graph.builder.FastGraphBuilder;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
-import org.animotron.statement.operator.THE;
-import org.neo4j.graphdb.Node;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 
 import static org.animotron.graph.Nodes.URI;
@@ -41,7 +38,7 @@ import static org.animotron.graph.Nodes.URI;
  */
 public abstract class AbstractRequestExpression extends AbstractExpression {
 
-    private static final Node HOST = THE._("host");
+    private static final String HOST = "host";
 
     private final HttpServletRequest req;
 

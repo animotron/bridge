@@ -26,7 +26,6 @@ import org.animotron.graph.serializer.CachedSerializer;
 import org.apache.log4j.helpers.NullEnumeration;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.neo4j.graphdb.Relationship;
 
 import javax.servlet.RequestDispatcher;
@@ -42,7 +41,8 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
 
-import static org.animotron.graph.AnimoGraph.*;
+import static org.animotron.graph.AnimoGraph.shutdownDB;
+import static org.animotron.graph.AnimoGraph.startDB;
 import static org.junit.Assert.assertNotNull;
 
 
@@ -169,9 +169,18 @@ public abstract class ATest {
         System.out.println();
     }
 
-    @BeforeClass
-    public static void clean() {
-        cleanDB(DATA_FOLDER);
+    private void deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            for (String aChildren : dir.list()) {
+                deleteDir(new File(dir, aChildren));
+            }
+        }
+        dir.delete();
+    }
+
+    public void cleanDB() {
+        shutdownDB();
+        deleteDir(new File(DATA_FOLDER));
     }
 
     @Before
@@ -182,7 +191,7 @@ public abstract class ATest {
 
     @After
     public void stop() {
-    	shutdownDB();
+        shutdownDB();
     }
 
     protected class HttpRequest implements HttpServletRequest {

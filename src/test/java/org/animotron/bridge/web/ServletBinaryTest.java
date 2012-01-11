@@ -21,7 +21,6 @@
 package org.animotron.bridge.web;
 
 import org.animotron.ATest;
-import org.animotron.bridge.FSBridge;
 import org.junit.Test;
 
 import java.io.File;
@@ -38,7 +37,7 @@ public class ServletBinaryTest extends ATest {
 
     @Test
     public void test() throws Exception {
-    	FSBridge._.load("src/test/animo/");
+        new SiteResourcesBridge("/binary").load("src/test/resources/site/");
     	
     	AnimoServlet servlet = new AnimoServlet();
     	
@@ -47,7 +46,7 @@ public class ServletBinaryTest extends ATest {
 
     	servlet.doGet(request, response);
     	
-    	org.junit.Assert.assertArrayEquals(getBytesFromFile(new File("src/test/animo/localhost/favicon.ico")),response.getResponse());
+    	org.junit.Assert.assertArrayEquals(getBytesFromFile(new File("src/test/resources/site/localhost/favicon.ico")),response.getResponse());
     }
     
     

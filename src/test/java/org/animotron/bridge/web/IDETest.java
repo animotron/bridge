@@ -20,44 +20,44 @@
  */
 package org.animotron.bridge.web;
 
-import junit.framework.Assert;
 import org.animotron.ATest;
 import org.animotron.bridge.FSBridge;
+import org.animotron.expression.JExpression;
+import org.animotron.statement.operator.AN;
+import org.animotron.statement.query.ANY;
+import org.animotron.statement.relation.USE;
 import org.junit.Test;
+
+import static org.animotron.expression.JExpression._;
+import static org.animotron.expression.JExpression.value;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class AnimoServletTest extends ATest {
+public class IDETest extends ATest {
 
     @Test
+    //@Ignore //uncomplete
     public void test() throws Exception {
-    	FSBridge._.load("src/test/resources/animo/");
-    	AnimoServlet servlet = new AnimoServlet();
-    	HttpRequest request = new HttpRequest("/","localhost");
-    	HttpResponse response = new HttpResponse(false);
-    	servlet.doGet(request, response);
-        Assert.assertEquals(
-            "<!DOCTYPE html>" +
-            "<html>" +
-                "<head>" +
-                    "<title>Welcome to Animo</title>" +
-                    "<meta name=\"keywords\" content=\"\"/>" +
-                    "<meta name=\"description\" content=\"\"/>" +
-                "</head>" +
-                "<body>" +
-                    "<h1>Welcome to Animo</h1>" +
-                    "<p>It is working!</p>" +
-                    "<ul>" +
-                        "<li>Host: <strong>localhost</strong></li>" +
-                        "<li>URI: <strong>/</strong></li>" +
-                    "</ul>" +
-                "</body>" +
-            "</html>",
-            response.getResponseString()
-        );
-    }
 
+		FSBridge._.load("animo/");
+        FSBridge._.load("apps/");
+
+        (new CommonResourcesMap("/common")).load("common/");
+
+    	JExpression s;
+
+    	s = new JExpression(
+            _(AN._, "html",
+                _(USE._, "animoIDE"),
+                _(ANY._, "application"),
+                _(AN._, "request-uri", value("/animoIDE")),
+                _(AN._, "host", value("localhost"))
+            )
+        );
+    	assertXMLResult(s, "type \"image/vnd.microsoft.icon\".");
+    }
+    
 }

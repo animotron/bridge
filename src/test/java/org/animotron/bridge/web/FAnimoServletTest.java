@@ -20,44 +20,41 @@
  */
 package org.animotron.bridge.web;
 
-import junit.framework.Assert;
 import org.animotron.ATest;
 import org.animotron.bridge.FSBridge;
 import org.junit.Test;
+
+import javax.servlet.ServletException;
+import java.io.File;
+import java.io.IOException;
+
+import static org.junit.Assert.assertArrayEquals;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class AnimoServletTest extends ATest {
+public class FAnimoServletTest extends ATest {
+
+    private void test(AnimoServlet servlet, String uri) throws IOException, ServletException {
+        HttpRequest request = new HttpRequest(uri, "localhost");
+        HttpResponse response = new HttpResponse(false);
+        servlet.doGet(request, response);
+        assertArrayEquals(getBytesFromFile(new File("src/test/resources/site/localhost/favicon.ico")), response.getResponse());
+    }
 
     @Test
     public void test() throws Exception {
-    	FSBridge._.load("src/test/resources/animo/");
-    	AnimoServlet servlet = new AnimoServlet();
-    	HttpRequest request = new HttpRequest("/","localhost");
-    	HttpResponse response = new HttpResponse(false);
-    	servlet.doGet(request, response);
-        Assert.assertEquals(
-            "<!DOCTYPE html>" +
-            "<html>" +
-                "<head>" +
-                    "<title>Welcome to Animo</title>" +
-                    "<meta name=\"keywords\" content=\"\"/>" +
-                    "<meta name=\"description\" content=\"\"/>" +
-                "</head>" +
-                "<body>" +
-                    "<h1>Welcome to Animo</h1>" +
-                    "<p>It is working!</p>" +
-                    "<ul>" +
-                        "<li>Host: <strong>localhost</strong></li>" +
-                        "<li>URI: <strong>/</strong></li>" +
-                    "</ul>" +
-                "</body>" +
-            "</html>",
-            response.getResponseString()
-        );
+        FSBridge._.load("src/test/resources/animo/");
+        new SiteResourcesBridge("/binary").load("src/test/resources/site/");
+        AnimoServlet servlet = new AnimoServlet();
+        test(servlet, "/favicon");
+        test(servlet, "/favicon/ico");
+        test(servlet, "/favicon.ico");
+        test(servlet, "/ico");
+        test(servlet, "/ico/favicon");
+        test(servlet, "/ico.favicon");
     }
 
 }

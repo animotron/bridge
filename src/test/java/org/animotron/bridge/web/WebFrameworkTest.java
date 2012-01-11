@@ -166,26 +166,4 @@ public class WebFrameworkTest extends ATest {
 	    Assert.assertEquals("text/html", mime);
     }
 
-    @Test
-    //@Ignore //uncomplete
-    public void test_01() throws Exception {
-
-		FSBridge._.load("animo/");
-        FSBridge._.load("apps/");
-
-        (new CommonResourcesMap("/common")).load("common/");
-
-    	JExpression s;
-
-    	s = new JExpression(
-            _(AN._, "html",
-                _(USE._, "animoIDE"),
-                _(ANY._, "application"),
-                _(AN._, "request-uri", value("/animoIDE")),
-                _(AN._, "host", value("localhost"))
-            )
-        );
-    	assertXMLResult(s, "type \"image/vnd.microsoft.icon\".");
-    }
-    
 }

@@ -26,6 +26,7 @@ import org.animotron.graph.serializer.CachedSerializer;
 import org.apache.log4j.helpers.NullEnumeration;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.neo4j.graphdb.Relationship;
 
 import javax.servlet.RequestDispatcher;
@@ -166,6 +167,11 @@ public abstract class ATest {
         Assert.assertEquals("", expected, bin);
         System.out.println(bin);
         System.out.println();
+    }
+
+    @BeforeClass
+    public static void clean() {
+        cleanDB(DATA_FOLDER);
     }
 
     @Before

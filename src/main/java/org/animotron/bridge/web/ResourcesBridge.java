@@ -52,5 +52,9 @@ public abstract class ResourcesBridge extends AbstractFSBridge {
         return file.getPath().substring(root);
     }
 
+    protected String uriContext() {
+        return uriContext;
+    }
+
 
 }

@@ -41,8 +41,6 @@ import static org.animotron.expression.Expression.__;
 */
 public class SiteResourcesBridge extends ResourcesBridge {
 
-    private String uriContext;
-
     public SiteResourcesBridge(String uriContext) {
         super(uriContext);
     }
@@ -60,7 +58,7 @@ public class SiteResourcesBridge extends ResourcesBridge {
                             DefaultDescription.create(builder, path(file));
                             builder.start(AN._);
                                 builder._(REF._, Nodes.URI);
-                                builder._(uriContext + "/" + id());
+                                builder._(uriContext() + "/" + id());
                             builder.end();
                         }
                     }

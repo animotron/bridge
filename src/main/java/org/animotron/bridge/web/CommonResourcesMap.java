@@ -37,8 +37,6 @@ import static org.animotron.expression.Expression.__;
  */
 public class CommonResourcesMap extends ResourcesBridge {
 
-    private String uriContext;
-
     public CommonResourcesMap(String uriContext) {
         super(uriContext);
     }
@@ -65,7 +63,7 @@ public class CommonResourcesMap extends ResourcesBridge {
                         builder.end();
                         builder.start(AN._);
                             builder._(REF._, Nodes.URI);
-                            builder._(uriContext + path(file));
+                            builder._(uriContext() + path(file));
                         builder.end();
                     }
                 }

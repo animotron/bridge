@@ -45,7 +45,7 @@ public class BinaryServletTest extends ATest {
         new SiteResourcesBridge(URI_CONTEXT).load("src/test/resources/site/");
         BinaryServlet servlet = new BinaryServlet();
         String uri = CachedSerializer.STRING.serialize(new AnimoExpression("get uri any favicon."));
-        HttpRequest request = new HttpRequest(uri,"localhost") {
+        HttpRequest request = new HttpRequest(uri, "localhost") {
             @Override
             public String getPathInfo() {
                 return getRequestURI().substring(URI_CONTEXT.length());

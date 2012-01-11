@@ -21,10 +21,10 @@
 package org.animotron;
 
 import junit.framework.Assert;
-import org.animotron.graph.AnimoGraph;
 import org.animotron.graph.serializer.BinarySerializer;
 import org.animotron.graph.serializer.CachedSerializer;
 import org.apache.log4j.helpers.NullEnumeration;
+import org.junit.After;
 import org.junit.Before;
 import org.neo4j.graphdb.Relationship;
 
@@ -41,8 +41,7 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
 
-import static org.animotron.graph.AnimoGraph.shutdownDB;
-import static org.animotron.graph.AnimoGraph.startDB;
+import static org.animotron.graph.AnimoGraph.*;
 import static org.junit.Assert.assertNotNull;
 
 
@@ -170,37 +169,12 @@ public abstract class ATest {
     }
 
     @Before
-    public void setup() {
-        start();
-    }
-
-    //@After
-    public void cleanup() {
-        stop();
-    }
-
-    public static boolean deleteDir(File dir) {
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            for (String aChildren : children) {
-                boolean success = deleteDir(new File(dir, aChildren));
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-        return dir.delete();
-    }
-
-    //@BeforeClass
     public static void start() {
-    	if (AnimoGraph.getDb() == null) {
-	    	deleteDir(new File(DATA_FOLDER));
-	        startDB(DATA_FOLDER);
-    	}
+        cleanDB(DATA_FOLDER);
+        startDB(DATA_FOLDER);
     }
 
-    //@AfterClass
+    @After
     public static void stop() {
     	shutdownDB();
     }
@@ -477,7 +451,7 @@ public abstract class ATest {
 		}
 
 
-        public byte[] getResponse() {
+        public byte[] getResponse() throws IOException {
         	return out.bos.toByteArray();
         }
 

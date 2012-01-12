@@ -54,15 +54,20 @@ public class BinaryServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		InputStream is = null;
+		OutputStream os = null;
 		long startTime = System.currentTimeMillis();
 		try {
             Relationship r = THE._.get(req.getPathInfo().substring(1));
             Node n = r.getEndNode().getSingleRelationship(STREAM._, Direction.OUTGOING).getEndNode();
+            
             File file = new File((String) Properties.VALUE.get(n));
-            InputStream is = new FileInputStream(file);
+            is = new FileInputStream(file);
             res.setContentLength((int) file.length());
-            OutputStream os = res.getOutputStream();
+            
+            os = res.getOutputStream();
             res.setContentType(mime(r));
+            
             byte [] buf = new byte[4096];
             int len;
             while((len=is.read(buf))>0) {
@@ -70,6 +75,9 @@ public class BinaryServlet extends HttpServlet {
             }
 		} catch (Exception e) {
             ErrorHandler.doGet(req, res, ErrorHandler.NOT_FOUND);
+        } finally {
+        	if (is == null) is.close();
+        	if (os == null) os.close();
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}

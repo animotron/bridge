@@ -47,7 +47,9 @@ import static org.animotron.graph.Nodes.TYPE;
  */
 public class BinaryServlet extends HttpServlet {
 
-    private String mime(Relationship r) throws IOException {
+	private static final long serialVersionUID = 6702513972501476806L;
+
+	private String mime(Relationship r) throws IOException {
         String mime = CachedSerializer.STRING.serialize(new JExpression(_(GET._, TYPE, _(r))),FileCache._);
         return mime.isEmpty() ? "application/octet-stream" : mime;
     }

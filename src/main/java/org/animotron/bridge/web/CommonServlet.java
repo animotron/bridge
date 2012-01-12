@@ -44,7 +44,9 @@ import static org.animotron.graph.Nodes.*;
  */
 public class CommonServlet extends HttpServlet {
 
-    private static File folder;
+	private static final long serialVersionUID = 274993368953562096L;
+
+	private static File folder;
 
     public CommonServlet (String uri) {
         folder = new File(uri);

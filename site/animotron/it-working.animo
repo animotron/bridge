@@ -1,5 +1,0 @@
-the it-working
-	(service, html, root, animotron)
-	(uri "/")
-    (title   "Welcome to Animo")
-    (content "It is working!")

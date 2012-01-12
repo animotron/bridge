@@ -20,15 +20,19 @@
  */
 package org.animotron.bridge.web;
 
+import org.animotron.exception.AnimoException;
+import org.animotron.exception.ENotFound;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
+import org.animotron.statement.relation.USE;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.animotron.bridge.web.WebSerializer.serialize;
 
@@ -54,27 +58,44 @@ public class AnimoServlet extends HttpServlet {
 
     protected static class AnimoRequest extends AbstractRequestExpression {
 
-        protected static final String REST = "rest";
+        private static final int MAX_PARTS_COUNT = 12;
+        private List<String> list = new ArrayList<String>(MAX_PARTS_COUNT);
+        private static final String ROOT = "root";
 
         public AnimoRequest(HttpServletRequest req) throws Exception {
             super(req);
+            String [] parts = req.getPathInfo().split("/");
+            if (parts.length > MAX_PARTS_COUNT) {
+                throw new ENotFound(this);
+            }
+            for (String part : parts) {
+                if (!part.isEmpty()) {
+                    if (list.contains(part)) {
+                        throw new ENotFound(this);
+                    }
+                    list.add(part);
+                }
+            }
         }
 
         @Override
-        public void build() throws Exception {
+        public void request() throws AnimoException, IOException {
             builder.start(AN._);
-                builder._(REF._, REST);
-                Enumeration<String> names = getRequest().getParameterNames();
-                while (names.hasMoreElements()) {
-                    String name = names.nextElement();
-                    builder.start(AN._);
-                    builder._(REF._, name);
-                    for  (String value : getRequest().getParameterValues(name)) {
-                        builder._(value);
+                if (list.isEmpty()) {
+                    builder._(REF._, ROOT);
+                } else {
+                    builder._(REF._, list.get(0));
+                    if (list.size() > 1) {
+                        for (int i = 1; i < list.size() - 1; i++) {
+                            builder.start(USE._);
+                                builder._(REF._, list.get(i));
+                            builder.end();
+                        }
+                        builder.start(AN._);
+                            builder._(REF._, list.get(list.size() - 1));
+                        builder.end();
                     }
-                    builder.end();
                 }
-                processRequest();
             builder.end();
         }
 

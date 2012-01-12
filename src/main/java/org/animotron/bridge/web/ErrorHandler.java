@@ -20,11 +20,15 @@
  */
 package org.animotron.bridge.web;
 
+import org.animotron.exception.AnimoException;
+import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
+import org.animotron.statement.query.ANY;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 import static org.animotron.bridge.web.WebSerializer.serialize;
 
@@ -50,8 +54,8 @@ public class ErrorHandler {
 
     private static class AnimoRequest extends AbstractRequestExpression {
 
-        private static final String REST_ERROR = "rest-error";
-        private static final String STATUS = "status";
+        private static final String ERROR_HANDLER = "error-handler";
+        private static final String CODE = "code";
         private int status;
 
         public AnimoRequest(HttpServletRequest req, int status) throws Exception {
@@ -60,14 +64,17 @@ public class ErrorHandler {
         }
 
         @Override
-        public void build() throws Exception {
-            builder.start(AN._);
-                builder._(REF._, REST_ERROR);
-                builder.start(AN._);
-                    builder._(REF._, STATUS);
+        public void request() throws AnimoException, IOException {
+            builder.start(ANY._);
+                builder._(REF._, ERROR_HANDLER);
+                builder.start(WITH._);
+                    builder._(REF._, CODE);
                     builder._(status);
                 builder.end();
-                processRequest();
+            builder.end();
+            builder.start(AN._);
+                builder._(REF._, CODE);
+                builder._(status);
             builder.end();
         }
 

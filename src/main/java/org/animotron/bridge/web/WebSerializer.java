@@ -21,6 +21,7 @@
 package org.animotron.bridge.web;
 
 import org.animotron.cache.FileCache;
+import org.animotron.exception.ENotFound;
 import org.animotron.expression.Expression;
 import org.animotron.expression.JExpression;
 import org.animotron.graph.serializer.BinarySerializer;
@@ -32,7 +33,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import static org.animotron.expression.JExpression._;
-import static org.animotron.graph.Nodes.TYPE;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -41,29 +41,34 @@ import static org.animotron.graph.Nodes.TYPE;
  */
 public class WebSerializer {
 
-    public static void serialize(Expression request, HttpServletResponse res) throws IOException {
+    public static final String TYPE = "type";
+    public static final String MIME_TYPE = "mime-type";
+
+    public static void serialize(Expression request, HttpServletResponse res) throws IOException, ENotFound {
         OutputStream os = res.getOutputStream();
         String mime = CachedSerializer.STRING.serialize(
                 new JExpression(
-//                            _(GET._, TYPE, _(GET._, MIME-TYPE, _(request)))
-                        _(GET._, TYPE, _(request))
+                        _(GET._, TYPE, _(GET._, MIME_TYPE, _(request)))
                 ),
                 FileCache._
         );
         if ("text/html".equals(mime)) {
             res.setContentType("text/html");
             CachedSerializer.HTML.serialize(request, os, FileCache._);
+            os.close();
         } else {
             res.setContentType(mime.isEmpty() ? "application/xml" : mime);
             try {
                 CachedSerializer.XML.serialize(request, os, FileCache._);
+                os.close();
             } catch (IOException e) {
                 OutputStreamWrapper osw = new OutputStreamWrapper(os);
                 res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
                 BinarySerializer._.serialize(request, osw);
                 if (osw.isEmpty()) {
-                    throw new IOException();
+                    throw new ENotFound(request);
                 }
+                osw.close();
             }
         }
     }

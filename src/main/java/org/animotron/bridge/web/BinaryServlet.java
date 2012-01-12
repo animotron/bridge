@@ -37,8 +37,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
+import static org.animotron.bridge.web.WebSerializer.*;
 import static org.animotron.expression.JExpression._;
-import static org.animotron.graph.Nodes.TYPE;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -49,7 +49,7 @@ public class BinaryServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 6702513972501476806L;
 
-	private String mime(Relationship r) throws IOException {
+    private String mime(Relationship r) throws IOException {
         String mime = CachedSerializer.STRING.serialize(new JExpression(_(GET._, TYPE, _(r))),FileCache._);
         return mime.isEmpty() ? "application/octet-stream" : mime;
     }

@@ -23,13 +23,15 @@ package org.animotron.bridge.web;
 import org.animotron.exception.AnimoException;
 import org.animotron.expression.AbstractExpression;
 import org.animotron.graph.builder.FastGraphBuilder;
+import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
+import org.animotron.statement.operator.THE;
+import org.animotron.statement.query.ANY;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-
-import static org.animotron.graph.Nodes.URI;
+import java.util.Enumeration;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -38,16 +40,31 @@ import static org.animotron.graph.Nodes.URI;
  */
 public abstract class AbstractRequestExpression extends AbstractExpression {
 
+    private static final String URI = "uri";
     private static final String HOST = "host";
+    private static final String SITE = "site";
+    private static final String SERVER_NAME = "server-name";
 
-    private final HttpServletRequest req;
+    protected final HttpServletRequest req;
 
     public AbstractRequestExpression(HttpServletRequest req) throws Exception {
-        super(new FastGraphBuilder());
+        super(new FastGraphBuilder(true));
         this.req = req;
     }
-    
-    protected void processRequest() throws AnimoException, IOException {
+
+    @Override
+    public void build() throws AnimoException, IOException {
+        builder.start(THE._);
+            request();
+            params();
+            site();
+            uri();
+        builder.end();
+    }
+
+    protected abstract void request() throws AnimoException, IOException;
+
+    private void uri() throws AnimoException, IOException {
         builder.start(AN._);
             builder._(REF._, HOST);
             builder._(req.getServerName());
@@ -58,8 +75,27 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
         builder.end();
     }
 
-    public HttpServletRequest getRequest() {
-        return req;
+    private final void site() throws AnimoException, IOException {
+        builder.start(ANY._);
+            builder._(REF._, SITE);
+            builder.start(WITH._);
+                builder._(REF._, SERVER_NAME);
+                builder._(req.getServerName());
+            builder.end();
+        builder.end();
+    }
+
+    private void params() throws AnimoException, IOException {
+        Enumeration<String> names = req.getParameterNames();
+        while (names.hasMoreElements()) {
+            String name = names.nextElement();
+            builder.start(AN._);
+            builder._(REF._, name);
+            for  (String value : req.getParameterValues(name)) {
+                builder._(value);
+            }
+            builder.end();
+        }
     }
 
 }

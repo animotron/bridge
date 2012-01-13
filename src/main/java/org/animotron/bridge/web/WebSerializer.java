@@ -45,21 +45,25 @@ public class WebSerializer {
     public static final String MIME_TYPE = "mime-type";
 
     public static void serialize(Expression request, HttpServletResponse res, Cache cache) throws IOException, ENotFound {
+        long startTime = System.currentTimeMillis();
         String mime = STRING.serialize(
                 new JExpression(
                         _(GET._, TYPE, _(GET._, MIME_TYPE, _(request)))
                 ),
                 cache
         );
+        System.out.println("Evaluate mime in "+(System.currentTimeMillis() - startTime));
         if (mime.isEmpty()) {
             throw new ENotFound(request);
         } else {
+            startTime = System.currentTimeMillis();
             OutputStream os = res.getOutputStream();
             res.setContentType(mime);
             CachedSerializer cs =
                     mime.equals("text/html") ? HTML : mime.endsWith("xml") ? XML : STRING;
             cs.serialize(request, os, cache);
             os.close();
+            System.out.println("Evaluate " + request.hashCode() + " in " + (System.currentTimeMillis() - startTime));
         }
     }
 

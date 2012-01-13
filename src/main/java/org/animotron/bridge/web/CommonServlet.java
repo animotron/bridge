@@ -57,12 +57,14 @@ public class CommonServlet extends HttpServlet {
         String name = file.getName();
         int index = name.lastIndexOf(".");
         if (index > 0) {
+            long startTime = System.currentTimeMillis();
             String mime = CachedSerializer.STRING.serialize(
                 new JExpression(
                     _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value(name.substring(index + 1)))))
                 ),
                 FileCache._
             );
+            System.out.println("Evaluate in "+(System.currentTimeMillis() - startTime));
             return mime.isEmpty() ? "application/octet-stream" : mime;
         }
         return "application/octet-stream";

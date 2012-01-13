@@ -50,7 +50,9 @@ public class BinaryServlet extends HttpServlet {
 	private static final long serialVersionUID = 6702513972501476806L;
 
     private String mime(Relationship r) throws IOException {
-        String mime = CachedSerializer.STRING.serialize(new JExpression(_(GET._, TYPE, _(r))),FileCache._);
+        long startTime = System.currentTimeMillis();
+        String mime = CachedSerializer.STRING.serialize(new JExpression(_(GET._, TYPE, _(r))), FileCache._);
+        System.out.println("Evaluate mime in "+(System.currentTimeMillis() - startTime));
         return mime.isEmpty() ? "application/octet-stream" : mime;
     }
 

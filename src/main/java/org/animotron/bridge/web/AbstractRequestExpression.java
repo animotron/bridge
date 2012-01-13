@@ -46,7 +46,7 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
     public static final String SERVER_NAME = "server-name";
     public static final String HTML_PAGE = "html-page";
     public static final String RESOURCE = "resource";
-
+    
     protected final HttpServletRequest req;
 
     public AbstractRequestExpression(HttpServletRequest req) throws Exception {

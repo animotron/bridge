@@ -1,5 +1,5 @@
 the application-xml
-    (mime-type, application)
+    (mime-type)
     (type      "application/xml")
     (name      "XML Document")
     (extension "xml")

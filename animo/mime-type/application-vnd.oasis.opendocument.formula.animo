@@ -1,5 +1,5 @@
 the application-vnd-oasis-opendocument-formula
-    (mime-type, application)
+    (mime-type)
     (type      "application/vnd.oasis.opendocument.formula")
     (name      "OpenOffice.org Formula")
     (extension "odf")

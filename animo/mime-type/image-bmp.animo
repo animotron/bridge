@@ -1,5 +1,5 @@
 the image-bmp
-    (mime-type, image)
+    (mime-type)
     (type      "image/bmp")
     (name      "Windows Bitmap Image")
     (extension "bmp")

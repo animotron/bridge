@@ -1,5 +1,5 @@
 the application-json
-    (mime-type, application)
+    (mime-type)
     (type      "application/json")
     (name      "JSON")
     (extension "json")

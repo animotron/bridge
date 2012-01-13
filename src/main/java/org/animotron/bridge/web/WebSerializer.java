@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import static org.animotron.expression.JExpression._;
+import static org.animotron.graph.serializer.CachedSerializer.*;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -44,7 +45,7 @@ public class WebSerializer {
     public static final String MIME_TYPE = "mime-type";
 
     public static void serialize(Expression request, HttpServletResponse res, Cache cache) throws IOException, ENotFound {
-        String mime = CachedSerializer.STRING.serialize(
+        String mime = STRING.serialize(
                 new JExpression(
                         _(GET._, TYPE, _(GET._, MIME_TYPE, _(request)))
                 ),
@@ -55,11 +56,8 @@ public class WebSerializer {
         } else {
             OutputStream os = res.getOutputStream();
             res.setContentType(mime);
-            CachedSerializer cs =   mime.equals("text/html")
-                                        ? CachedSerializer.HTML
-                                        : mime.endsWith("xml")
-                                            ? CachedSerializer.XML
-                                            : CachedSerializer.STRING;
+            CachedSerializer cs =
+                    mime.equals("text/html") ? HTML : mime.endsWith("xml") ? XML : STRING;
             cs.serialize(request, os, cache);
             os.close();
         }

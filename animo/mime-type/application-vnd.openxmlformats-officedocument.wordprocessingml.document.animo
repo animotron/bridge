@@ -1,5 +1,5 @@
 the application-vnd-openxmlformats-officedocument-wordprocessingml-document
-    (mime-type, application)
+    (mime-type)
     (type      "application/vnd.oasis.openxmlformats-officedocument.wordprocessingml.document")
     (name      "OOXML Text Document")
     (extension "docx")

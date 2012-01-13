@@ -1,5 +1,5 @@
 the application-vnd-openxmlformats-officedocument-presentationml-presentation
-    (mime-type, application)
+    (mime-type)
     (type      "application/vnd.oasis.openxmlformats-officedocument.presentationml.presentation")
     (name      "OOXML Presentation")
     (extension "pptx")

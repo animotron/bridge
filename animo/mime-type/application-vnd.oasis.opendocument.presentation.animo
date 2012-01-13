@@ -1,5 +1,5 @@
 the application-vnd-oasis-opendocument-presentation
-    (mime-type, application)
+    (mime-type)
     (type      "application/vnd.oasis.opendocument.presentation")
     (name      "OpenOffice.org Presentation")
     (extension "odp")

@@ -1,5 +1,5 @@
 the application-vnd-oasis-opendocument-graphics-template
-    (mime-type, application)
+    (mime-type)
     (type      "application/vnd.oasis.opendocument.graphics-template")
     (name      "OpenOffice.org Drawing Model")
     (extension "otg")

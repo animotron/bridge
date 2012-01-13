@@ -1,5 +1,5 @@
 the video-mpeg
-    (mime-type, video)
+    (mime-type)
     (type      "video/mpeg")
     (name      "MPEG Video")
     (extension "mpg" "mpeg")

@@ -1,5 +1,5 @@
 the application-vnd-openxmlformats-officedocument-spreadsheetml-template
-    (mime-type, application)
+    (mime-type)
     (type      "application/vnd.oasis.openxmlformats-officedocument.spreadsheetml.template")
     (name      "OOXML Spreadsheet Template")
     (extension "xltx")

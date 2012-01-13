@@ -1,5 +1,5 @@
 the application-postscript
-    (mime-type, application)
+    (mime-type)
     (type      "application/postscript")
     (name      "PostScript Document")
     (extension "ps" "eps")

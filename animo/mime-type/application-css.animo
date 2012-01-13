@@ -1,5 +1,5 @@
 the application-css
-    (mime-type, application)
+    (mime-type)
     (type      "text/css")
     (name      "LessCSS stylesheet")
     (extension "less")

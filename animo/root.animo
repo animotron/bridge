@@ -1,3 +1,3 @@
 the root
-    (use root)
-    (html any root)
+    (use root-layout)
+    (html-page any root-app)

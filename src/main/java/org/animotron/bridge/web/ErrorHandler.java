@@ -78,10 +78,7 @@ public class ErrorHandler {
                         builder._(status);
                     builder.end();
                 builder.end();
-                builder.start(AN._);
-                    builder._(REF._, CODE);
-                    builder._(status);
-                builder.end();
+                uri(); params();
             builder.end();
 
         }

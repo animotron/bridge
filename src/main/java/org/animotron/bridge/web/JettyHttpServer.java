@@ -50,8 +50,8 @@ public class JettyHttpServer {
     	if (startDB("data")) {
     		//if (!getSTART().hasRelationship(Direction.OUTGOING)) {
                 FSBridge._.load("animo/");
-                //FSBridge._.load("apps/");
-                //FSBridge._.load("etc/");
+                FSBridge._.load("apps/");
+                FSBridge._.load("etc/");
                 new SiteResourcesBridge("/binary").load("site/");
                 new CommonResourcesMap("/common").load("common/");
         	//}

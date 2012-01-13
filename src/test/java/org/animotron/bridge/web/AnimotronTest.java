@@ -57,7 +57,24 @@ public class AnimotronTest extends ATest {
 	    		)
 			)
         );
-    	assertXMLResult(s, "type \"image/vnd.microsoft.icon\".");
+    	assertXMLResult(s, 
+			"<?xml version='1.0' encoding='UTF-8'?>" +
+			"<html>" +
+				"<head>" +
+					"<title>Welcome to Animo</title>" +
+					"<meta name=\"keywords\" content=\"\"/>" +
+					"<meta name=\"description\" content=\"\"/>" +
+					"<link rel=\"shortcut icon\" href=\"\"/>" +
+				"</head>" +
+				"<body>" +
+					"<h1>Welcome to Animo</h1>" +
+					"<p>It is working!</p>" +
+					"<ul>" +
+						"<li>Host: <strong/></li>" +
+						"<li>URI: <strong/></li>" +
+					"</ul>" +
+				"</body>" +
+			"</html>");
     }
     
 }

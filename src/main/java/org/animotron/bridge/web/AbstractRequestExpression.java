@@ -57,14 +57,18 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
     @Override
     public void build() throws AnimoException, IOException {
         builder.start(LINK._);
-            site();
-            request();
+            builder.start(AN._);
+                context();
+                params();
+                uri();
+            builder.end();
+        site();
         builder.end();
     }
 
-    protected abstract void request() throws AnimoException, IOException;
+    protected abstract void context() throws AnimoException, IOException;
 
-    protected void uri() throws AnimoException, IOException {
+    private void uri() throws AnimoException, IOException {
         builder.start(AN._);
             builder._(REF._, HOST);
             builder._(req.getServerName());
@@ -75,7 +79,7 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
         builder.end();
     }
 
-    protected final void site() throws AnimoException, IOException {
+    private final void site() throws AnimoException, IOException {
         builder.start(ANY._);
             builder._(REF._, SITE);
             builder.start(WITH._);
@@ -85,7 +89,7 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
         builder.end();
     }
 
-    protected void params() throws AnimoException, IOException {
+    private void params() throws AnimoException, IOException {
         Enumeration<String> names = req.getParameterNames();
         while (names.hasMoreElements()) {
             String name = names.nextElement();

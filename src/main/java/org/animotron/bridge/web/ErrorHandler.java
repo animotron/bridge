@@ -22,7 +22,6 @@ package org.animotron.bridge.web;
 
 import org.animotron.exception.AnimoException;
 import org.animotron.statement.compare.WITH;
-import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 import org.animotron.statement.query.ANY;
 import org.animotron.statement.relation.USE;
@@ -65,22 +64,18 @@ public class ErrorHandler {
         }
 
         @Override
-        public void request() throws AnimoException, IOException {
-            builder.start(AN._);
+        public void context() throws AnimoException, IOException {
             builder._(REF._, HTML_PAGE);
-                builder.start(USE._);
-                    builder._(REF._, ERROR);
-                builder.end();
-                builder.start(ANY._);
-                    builder._(REF._, RESOURCE);
-                    builder.start(WITH._);
-                        builder._(REF._, CODE);
-                        builder._(status);
-                    builder.end();
-                builder.end();
-                uri(); params();
+            builder.start(USE._);
+                builder._(REF._, ERROR);
             builder.end();
-
+            builder.start(ANY._);
+                builder._(REF._, RESOURCE);
+                builder.start(WITH._);
+                    builder._(REF._, CODE);
+                    builder._(status);
+                builder.end();
+            builder.end();
         }
 
     }

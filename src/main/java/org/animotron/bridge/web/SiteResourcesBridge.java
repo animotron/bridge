@@ -24,7 +24,6 @@ import org.animotron.exception.AnimoException;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.BinaryExpression;
 import org.animotron.expression.DefaultDescription;
-import org.animotron.graph.Nodes;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 
@@ -33,6 +32,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static org.animotron.bridge.web.AbstractRequestExpression.URI;
 import static org.animotron.expression.Expression.__;
 
 /**
@@ -57,7 +57,7 @@ public class SiteResourcesBridge extends ResourcesBridge {
                         protected void description() throws AnimoException, IOException {
                             DefaultDescription.create(builder, path(file));
                             builder.start(AN._);
-                                builder._(REF._, Nodes.URI);
+                                builder._(REF._, URI);
                                 builder._(uriContext() + "/" + id());
                             builder.end();
                         }

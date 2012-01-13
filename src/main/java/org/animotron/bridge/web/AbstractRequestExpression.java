@@ -40,10 +40,10 @@ import java.util.Enumeration;
  */
 public abstract class AbstractRequestExpression extends AbstractExpression {
 
-    private static final String URI = "uri";
-    private static final String HOST = "host";
-    private static final String SITE = "site";
-    private static final String SERVER_NAME = "server-name";
+    public static final String URI = "uri";
+    public static final String HOST = "host";
+    public static final String SITE = "site";
+    public static final String SERVER_NAME = "server-name";
 
     protected final HttpServletRequest req;
 

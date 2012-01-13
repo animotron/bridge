@@ -22,13 +22,13 @@ package org.animotron.bridge.web;
 
 import org.animotron.exception.AnimoException;
 import org.animotron.expression.BinaryMapExpression;
-import org.animotron.graph.Nodes;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 
 import java.io.File;
 import java.io.IOException;
 
+import static org.animotron.bridge.web.AbstractRequestExpression.URI;
 import static org.animotron.expression.Expression.__;
 
 /**
@@ -62,7 +62,7 @@ public class CommonResourcesMap extends ResourcesBridge {
                             builder._(REF._, name);
                         builder.end();
                         builder.start(AN._);
-                            builder._(REF._, Nodes.URI);
+                            builder._(REF._, URI);
                             builder._(uriContext() + path(file));
                         builder.end();
                     }

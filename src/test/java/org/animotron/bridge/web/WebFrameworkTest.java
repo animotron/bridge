@@ -36,6 +36,7 @@ import org.junit.Test;
 import static org.animotron.expression.JExpression._;
 import static org.animotron.expression.JExpression.value;
 import static org.animotron.graph.Nodes.*;
+import static org.animotron.bridge.web.WebSerializer.*;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>

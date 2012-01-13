@@ -1,5 +1,5 @@
 the animoIDE-layout
-    (layout, animoIDE, root)
+    (layout, animoIDE)
     
     (\div 
     	(@class "ui-layout-north")

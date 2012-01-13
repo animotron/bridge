@@ -39,7 +39,6 @@ import static org.animotron.expression.JExpression.value;
 public class IDETest extends ATest {
 
     @Test
-    //@Ignore //uncomplete
     public void test() throws Exception {
 
 		FSBridge._.load("animo/");
@@ -50,12 +49,7 @@ public class IDETest extends ATest {
     	JExpression s;
 
     	s = new JExpression(
-            _(AN._, "html",
-                _(USE._, "animoIDE"),
-                _(ANY._, "application"),
-                _(AN._, "request-uri", value("/animoIDE")),
-                _(AN._, "host", value("localhost"))
-            )
+			_(AN._, "animoIDE")
         );
     	assertXMLResult(s, "type \"image/vnd.microsoft.icon\".");
     }

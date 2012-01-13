@@ -1,3 +1,0 @@
-the animoIDE-app
-	(application, animoIDE)
-    (use jquery-ui, jquery, ace)

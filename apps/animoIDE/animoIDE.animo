@@ -1,0 +1,7 @@
+the animoIDE
+    (html
+	    (use jquery-ui)
+	    (use jquery)
+	    (use ace)
+	    (use animoIDE)
+    )

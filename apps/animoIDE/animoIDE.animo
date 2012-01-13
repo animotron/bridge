@@ -1,7 +1,5 @@
 the animoIDE
+    (use animoIDE-layout)
     (html-page
-	    (use jquery-ui)
-	    (use jquery)
-	    (use ace)
-	    (use animoIDE-layout)
+	    weak-use jquery-ui, jquery, ace
     )

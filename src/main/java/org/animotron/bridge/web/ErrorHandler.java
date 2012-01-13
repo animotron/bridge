@@ -25,6 +25,7 @@ import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 import org.animotron.statement.query.ANY;
+import org.animotron.statement.relation.USE;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,7 +55,7 @@ public class ErrorHandler {
 
     private static class AnimoRequest extends AbstractRequestExpression {
 
-        private static final String ERROR_HANDLER = "error-handler";
+        private static final String ERROR = "error";
         private static final String CODE = "code";
         private int status;
 
@@ -65,17 +66,24 @@ public class ErrorHandler {
 
         @Override
         public void request() throws AnimoException, IOException {
-            builder.start(ANY._);
-                builder._(REF._, ERROR_HANDLER);
-                builder.start(WITH._);
+            builder.start(AN._);
+            builder._(REF._, HTML_PAGE);
+                builder.start(USE._);
+                    builder._(REF._, ERROR);
+                builder.end();
+                builder.start(ANY._);
+                    builder._(REF._, RESOURCE);
+                    builder.start(WITH._);
+                        builder._(REF._, CODE);
+                        builder._(status);
+                    builder.end();
+                builder.end();
+                builder.start(AN._);
                     builder._(REF._, CODE);
                     builder._(status);
                 builder.end();
             builder.end();
-            builder.start(AN._);
-                builder._(REF._, CODE);
-                builder._(status);
-            builder.end();
+
         }
 
     }

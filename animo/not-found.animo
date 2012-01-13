@@ -1,8 +1,6 @@
 the not-found
-    (error-handler)
+    (error, resource)
     (code 404)
-    (use error)
-    (html-page
-        (title   "Not found!")
-        (content ("Can't find the resource ") (\strong get uri)))
+    (title   "Not found!")
+    (content ("Can't find the resource ") (\strong get uri))
 

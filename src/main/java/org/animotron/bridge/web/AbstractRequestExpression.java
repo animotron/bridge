@@ -24,9 +24,9 @@ import org.animotron.exception.AnimoException;
 import org.animotron.expression.AbstractExpression;
 import org.animotron.graph.builder.FastGraphBuilder;
 import org.animotron.statement.compare.WITH;
+import org.animotron.statement.link.LINK;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
-import org.animotron.statement.operator.THE;
 import org.animotron.statement.query.ANY;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +44,8 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
     public static final String HOST = "host";
     public static final String SITE = "site";
     public static final String SERVER_NAME = "server-name";
+    public static final String HTML_PAGE = "html-page";
+    public static final String RESOURCE = "resource";
 
     protected final HttpServletRequest req;
 
@@ -54,7 +56,7 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
 
     @Override
     public void build() throws AnimoException, IOException {
-        builder.start(THE._);
+        builder.start(LINK._);
             request();
             params();
             site();

@@ -23,6 +23,7 @@ package org.animotron.bridge.web;
 import org.animotron.ATest;
 import org.animotron.bridge.FSBridge;
 import org.animotron.expression.JExpression;
+import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.query.ANY;
 import org.animotron.statement.relation.USE;
@@ -49,7 +50,12 @@ public class IDETest extends ATest {
     	JExpression s;
 
     	s = new JExpression(
-			_(AN._, "animoIDE")
+			_(
+				_(ANY._, "site",
+					_(WITH._, "server-name", value("localhost"))
+				),
+				_(AN._, "animoIDE")
+			)
         );
     	assertXMLResult(s, "type \"image/vnd.microsoft.icon\".");
     }

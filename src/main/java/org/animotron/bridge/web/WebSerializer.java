@@ -20,11 +20,10 @@
  */
 package org.animotron.bridge.web;
 
-import org.animotron.cache.FileCache;
+import org.animotron.cache.Cache;
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.Expression;
 import org.animotron.expression.JExpression;
-import org.animotron.graph.serializer.BinarySerializer;
 import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.statement.query.GET;
 
@@ -44,76 +43,26 @@ public class WebSerializer {
     public static final String TYPE = "type";
     public static final String MIME_TYPE = "mime-type";
 
-    public static void serialize(Expression request, HttpServletResponse res) throws IOException, ENotFound {
-        OutputStream os = res.getOutputStream();
+    public static void serialize(Expression request, HttpServletResponse res, Cache cache) throws IOException, ENotFound {
         String mime = CachedSerializer.STRING.serialize(
                 new JExpression(
                         _(GET._, TYPE, _(GET._, MIME_TYPE, _(request)))
                 ),
-                FileCache._
+                cache
         );
-        if ("text/html".equals(mime)) {
-            res.setContentType("text/html");
-            CachedSerializer.HTML.serialize(request, os, FileCache._);
-            os.close();
+        if (mime.isEmpty()) {
+            throw new ENotFound(request);
         } else {
-            res.setContentType(mime.isEmpty() ? "application/xml" : mime);
-            try {
-                CachedSerializer.XML.serialize(request, os, FileCache._);
-                os.close();
-            } catch (IOException e) {
-                OutputStreamWrapper osw = new OutputStreamWrapper(os);
-                res.setContentType(mime.isEmpty() ? "application/octet-stream" : mime);
-                BinarySerializer._.serialize(request, osw);
-                if (osw.isEmpty()) {
-                    throw new ENotFound(request);
-                }
-                osw.close();
-            }
-        }
-    }
-
-    private static class OutputStreamWrapper extends OutputStream {
-
-        private OutputStream os;
-        private boolean empty = true;
-
-        public OutputStreamWrapper(OutputStream os) {
-            this.os = os;
-        }
-
-        @Override
-        public void write(int b) throws IOException{
-            os.write(b);
-            empty = false;
-        }
-
-        @Override
-        public void write(byte b[]) throws IOException {
-            os.write(b);
-            empty = false;
-        }
-
-        @Override
-        public void write(byte b[], int off, int len) throws IOException {
-            os.write(b, off, len);
-            empty = false;
-        }
-
-        @Override
-        public void flush() throws IOException {
-            os.flush();
-        }
-
-        @Override
-        public void close() throws IOException {
+            OutputStream os = res.getOutputStream();
+            res.setContentType(mime);
+            CachedSerializer cs =   mime.equals("text/html")
+                                        ? CachedSerializer.HTML
+                                        : mime.endsWith("xml")
+                                            ? CachedSerializer.XML
+                                            : CachedSerializer.STRING;
+            cs.serialize(request, os, cache);
             os.close();
         }
-
-        public boolean isEmpty() {
-            return empty;
-        }
-
     }
 
 }

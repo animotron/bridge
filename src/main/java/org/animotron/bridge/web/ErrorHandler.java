@@ -20,6 +20,7 @@
  */
 package org.animotron.bridge.web;
 
+import org.animotron.cache.Cache;
 import org.animotron.exception.AnimoException;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.REF;
@@ -41,11 +42,11 @@ public class ErrorHandler {
     
     public final static int NOT_FOUND = 404;
 
-	public static void doGet(HttpServletRequest req, HttpServletResponse res, int status) {
+	public static void doGet(HttpServletRequest req, HttpServletResponse res, int status, Cache cache) {
 		long startTime = System.currentTimeMillis();
         res.setStatus(status);
 		try {
-            serialize(new AnimoRequest(req, status), res);
+            serialize(new AnimoRequest(req, status), res, cache);
         } catch (Exception e) {
             e.printStackTrace();
         }

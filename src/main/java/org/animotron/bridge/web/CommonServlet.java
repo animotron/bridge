@@ -86,7 +86,7 @@ public class CommonServlet extends HttpServlet {
                 os.write(buf, 0, len);
             }
 		} catch (Exception e) {
-            ErrorHandler.doGet(req, res, ErrorHandler.NOT_FOUND);
+            ErrorHandler.doGet(req, res, ErrorHandler.NOT_FOUND, null);
         } finally {
         	if (os != null) os.close();
             if (is != null) is.close();

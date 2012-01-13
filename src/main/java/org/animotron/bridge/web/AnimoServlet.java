@@ -81,31 +81,30 @@ public class AnimoServlet extends HttpServlet {
 
         @Override
         public void request() throws AnimoException, IOException {
-            if (list.isEmpty()) {
-                builder.start(AN._);
-                    builder._(REF._, HTML_PAGE);
-                    builder.start(USE._);
-                        builder._(REF._, ROOT);
-                    builder.end();
-                    builder.start(ANY._);
-                        builder._(REF._, RESOURCE);
-                    builder.end();
-                builder.end();
-            } else {
-                builder.start(AN._);
-                    builder._(REF._, list.get(0));
-                    if (list.size() > 1) {
-                        for (int i = 1; i < list.size() - 1; i++) {
-                            builder.start(USE._);
-                                builder._(REF._, list.get(i));
+            builder.start(AN._);
+                if (list.isEmpty()) {
+                        builder._(REF._, HTML_PAGE);
+                        builder.start(USE._);
+                            builder._(REF._, ROOT);
+                        builder.end();
+                        builder.start(ANY._);
+                            builder._(REF._, RESOURCE);
+                        builder.end();
+                } else {
+                        builder._(REF._, list.get(0));
+                        if (list.size() > 1) {
+                            for (int i = 1; i < list.size() - 1; i++) {
+                                builder.start(USE._);
+                                    builder._(REF._, list.get(i));
+                                builder.end();
+                            }
+                            builder.start(AN._);
+                                builder._(REF._, list.get(list.size() - 1));
                             builder.end();
                         }
-                        builder.start(AN._);
-                            builder._(REF._, list.get(list.size() - 1));
-                        builder.end();
-                    }
-                builder.end();
-            }
+                }
+                uri(); params();
+            builder.end();
         }
 
     }

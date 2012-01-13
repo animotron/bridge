@@ -50,7 +50,7 @@ public class AnimotronTest extends ATest {
 
     	s = new JExpression(
 			_(
-			    _(USE._, "root-layout"),
+			    _(USE._, "root"),
 			    _(USE._, "theme-concrete"),
 			    _(AN._, "html-page",
 		    		_(ANY._, "resource")

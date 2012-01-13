@@ -1,4 +1,4 @@
 the theme-concrete-error-layout
-    (error-layout, theme-concrete)
+    (error, layout, theme-concrete)
     (\h1 get title)
     (\p get content)

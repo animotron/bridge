@@ -1,4 +1,4 @@
-the animoIDE
+the animo-ide
     html-page
 	    (use animoIDE-layout)
         (weak-use jquery-ui, jquery, ace)

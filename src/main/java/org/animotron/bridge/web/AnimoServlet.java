@@ -92,11 +92,11 @@ public class AnimoServlet extends HttpServlet {
             } else {
                 builder._(REF._, list.get(0));
                 if (list.size() > 1) {
-                    for (int i = 1; i < list.size() - 1; i++) {
-                        builder.start(USE._);
+                    builder.start(USE._);
+                        for (int i = 1; i < list.size() - 1; i++) {
                             builder._(REF._, list.get(i));
-                        builder.end();
-                    }
+                        }
+                    builder.end();
                     builder.start(AN._);
                         builder._(REF._, list.get(list.size() - 1));
                     builder.end();

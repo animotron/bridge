@@ -1,4 +1,4 @@
 the it-working
-	(root-app, animotron)
+	(root, animotron, resource)
     (title   "Welcome to Animo")
     (content "It is working!")

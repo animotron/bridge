@@ -1,6 +1,6 @@
 the animoIDE-layout
-    (layout, animoIDE)
-    
+	(layout)
+
     (\div 
     	(@class "ui-layout-north")
         (\div 

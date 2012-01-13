@@ -43,13 +43,13 @@ public abstract class ResourcesBridge extends AbstractFSBridge {
     public void load(String path) throws IOException {
         File f = new File(path);
         if (f.isDirectory()) {
-            root = f.getPath().length();
+            root = f.toURI().toString().length();
         }
         super.load(path);
     }
     
     protected String path (File file) {
-        return file.getPath().substring(root);
+        return file.toURI().toString().substring(root);
     }
 
     protected String uriContext() {

@@ -1,3 +1,0 @@
-the root
-    (use root-layout)
-    (html-page any root-app)

@@ -52,8 +52,9 @@ public class JettyHttpServer {
                 FSBridge._.load("animo/");
                 FSBridge._.load("apps/");
                 FSBridge._.load("etc/");
-                new SiteResourcesBridge("/binary").load("site/");
-                new CommonResourcesMap("/common").load("common/");
+                new ResourcesBridge("/binary").load("site/");
+                new ResourcesMap("/common").load("common/");
+                new ResourcesMap("/theme").load("theme/");
         	//}
     	}
     	

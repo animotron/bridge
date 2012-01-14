@@ -20,41 +20,50 @@
  */
 package org.animotron.bridge.web;
 
-import org.animotron.bridge.AbstractFSBridge;
+import org.animotron.exception.AnimoException;
+import org.animotron.expression.AnimoExpression;
+import org.animotron.expression.BinaryExpression;
+import org.animotron.expression.DefaultDescription;
+import org.animotron.statement.operator.AN;
+import org.animotron.statement.operator.REF;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import static org.animotron.bridge.web.AbstractRequestExpression.URI;
+import static org.animotron.expression.Expression.__;
 
 /**
 * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
 *
 */
-public abstract class ResourcesBridge extends AbstractFSBridge {
-
-    private String uriContext;
+public class ResourcesBridge extends AbstractResourcesBridge {
 
     public ResourcesBridge(String uriContext) {
-        this.uriContext = uriContext;
+        super(uriContext);
     }
-
-    private int root = 0;
 
     @Override
-    public void load(String path) throws IOException {
-        File f = new File(path);
-        if (f.isDirectory()) {
-            root = f.toURI().toString().length();
+    protected void loadFile(final File file) throws IOException {
+        InputStream is = new FileInputStream(file);
+        if (file.getName().endsWith(".animo")) {
+            __(new AnimoExpression(is));
+        } else {
+            __(
+                    new BinaryExpression(is, true) {
+                        @Override
+                        protected void description() throws AnimoException, IOException {
+                            DefaultDescription.create(builder, path(file));
+                            builder.start(AN._);
+                                builder._(REF._, URI);
+                                builder._(uriContext + id());
+                            builder.end();
+                        }
+                    }
+            );
         }
-        super.load(path);
     }
-    
-    protected String path (File file) {
-        return file.toURI().toString().substring(root);
-    }
-
-    protected String uriContext() {
-        return uriContext;
-    }
-
 
 }

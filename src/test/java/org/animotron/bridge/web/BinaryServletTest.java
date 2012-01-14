@@ -42,7 +42,7 @@ public class BinaryServletTest extends ATest {
     @Test
     public void test() throws Exception {
         FSBridge._.load("src/test/resources/animo/");
-        new SiteResourcesBridge(URI_CONTEXT).load("src/test/resources/site/");
+        new ResourcesBridge(URI_CONTEXT).load("src/test/resources/site/");
         BinaryServlet servlet = new BinaryServlet();
         String uri = CachedSerializer.STRING.serialize(new AnimoExpression("get uri any favicon."));
         HttpRequest request = new HttpRequest(uri, "localhost") {

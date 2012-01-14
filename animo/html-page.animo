@@ -1,5 +1,6 @@
 the html-page
     (mime-type text-html)
+    (any theme)
     (\html
         (\head
             (\title get title)
@@ -9,4 +10,5 @@ the html-page
             (each (prefer less) (\link (@rel "stylesheet/less") (@href get uri)))
             (each (prefer css) (\link (@rel "stylesheet") (@href get uri)))
             (each (prefer js) (\script @src get uri)))
+
         (\body any layout))

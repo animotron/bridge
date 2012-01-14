@@ -47,7 +47,7 @@ public class FAnimoServletTest extends ATest {
     @Test
     public void test() throws Exception {
         FSBridge._.load("src/test/resources/animo/");
-        new SiteResourcesBridge("/binary").load("src/test/resources/site/");
+        new ResourcesBridge("/binary").load("src/test/resources/site/");
         AnimoServlet servlet = new AnimoServlet();
         test(servlet, "/favicon");
         test(servlet, "/favicon/ico");

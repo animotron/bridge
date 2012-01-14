@@ -45,7 +45,7 @@ public class AnimotronTest extends ATest {
 		FSBridge._.load("animo/");
         FSBridge._.load("site/");
 
-        (new CommonResourcesMap("/common")).load("common/");
+        (new ResourcesMap("/common")).load("common/");
 
     	JExpression s;
 

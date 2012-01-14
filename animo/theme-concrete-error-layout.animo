@@ -1,5 +1,0 @@
-the theme-concrete-error-layout
-    (error, layout, theme-concrete)
-    (\h1 get code)
-    (\h2 get title)
-    (\p get content)

@@ -26,7 +26,6 @@ import org.animotron.expression.JExpression;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.query.ANY;
-import org.animotron.statement.relation.USE;
 import org.junit.Test;
 
 import static org.animotron.expression.JExpression._;
@@ -45,7 +44,7 @@ public class IDETest extends ATest {
 		FSBridge._.load("animo/");
         FSBridge._.load("apps/");
 
-        (new CommonResourcesMap("/common")).load("common/");
+        (new ResourcesMap("/common")).load("common/");
 
     	JExpression s;
 

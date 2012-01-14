@@ -41,7 +41,7 @@ public class CommonServletTest extends ATest {
     @Test
     public void test() throws Exception {
         FSBridge._.load("src/test/resources/animo/");
-        new CommonResourcesMap(URI_CONTEXT).load(PATH);
+        new ResourcesMap(URI_CONTEXT).load(PATH);
     	CommonServlet servlet = new CommonServlet(PATH);
         HttpRequest request = new HttpRequest("/site/localhost/favicon.ico", "localhost"){
             @Override

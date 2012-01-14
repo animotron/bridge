@@ -1,5 +1,5 @@
-the theme-concrete-root-layout
-    (root, layout, theme-concrete)
+the default-root-layout
+    (default, root, layout)
     (\h1 get title)
     (\p get content)
     (\ul

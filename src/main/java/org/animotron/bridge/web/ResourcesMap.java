@@ -21,11 +21,13 @@
 package org.animotron.bridge.web;
 
 import org.animotron.exception.AnimoException;
+import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.BinaryMapExpression;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import static org.animotron.bridge.web.AbstractRequestExpression.URI;
@@ -35,39 +37,43 @@ import static org.animotron.expression.Expression.__;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class CommonResourcesMap extends ResourcesBridge {
+public class ResourcesMap extends AbstractResourcesBridge {
 
-    public CommonResourcesMap(String uriContext) {
+    public ResourcesMap(String uriContext) {
         super(uriContext);
     }
 
     @Override
     protected void loadFile(final File file) throws IOException {
-        __(
-                new BinaryMapExpression(file) {
-                    @Override
-                    protected void description() throws AnimoException, IOException {
-                        int index;
-                        String name = file.getName();
-                        index = name.lastIndexOf(".");
-                        if (index > 0) {
-                            String extension = name.substring(index + 1);
+        if (file.getName().endsWith(".animo")) {
+            __(new AnimoExpression(new FileInputStream(file)));
+        } else {
+            __(
+                    new BinaryMapExpression(file) {
+                        @Override
+                        protected void description() throws AnimoException, IOException {
+                            int index;
+                            String name = file.getName();
+                            index = name.lastIndexOf(".");
+                            if (index > 0) {
+                                String extension = name.substring(index + 1);
+                                builder.start(AN._);
+                                    builder._(REF._, extension);
+                                builder.end();
+                                index = name.indexOf(".");
+                                name = name.substring(0, index);
+                            }
                             builder.start(AN._);
-                                builder._(REF._, extension);
+                                builder._(REF._, name);
                             builder.end();
-                            index = name.indexOf(".");
-                            name = name.substring(0, index);
+                            builder.start(AN._);
+                                builder._(REF._, URI);
+                                builder._(uriContext + path(file));
+                            builder.end();
                         }
-                        builder.start(AN._);
-                            builder._(REF._, name);
-                        builder.end();
-                        builder.start(AN._);
-                            builder._(REF._, URI);
-                            builder._(uriContext() + path(file));
-                        builder.end();
                     }
-                }
-        );
+            );
+        }
     }
 
 }

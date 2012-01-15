@@ -64,6 +64,7 @@ public class AnimoServlet extends HttpServlet {
         try {
             serialize(new AnimoRequest(req), res, cache);
         } catch (Exception e) {
+            System.out.println(e);
             ErrorHandler.doGet(req, res, ErrorHandler.NOT_FOUND, cache);
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));

@@ -47,7 +47,8 @@ public class WebSerializer {
     public static void serialize(Expression request, HttpServletResponse res, Cache cache) throws IOException, ENotFound {
         String mime = STRING.serialize(
                 new JExpression(
-                        _(GET._, TYPE, _(GET._, MIME_TYPE, _(request)))
+                        _(GET._, TYPE, _(request))
+//                        _(GET._, TYPE, _(GET._, MIME_TYPE, _(request)))
                 ),
                 cache
         );

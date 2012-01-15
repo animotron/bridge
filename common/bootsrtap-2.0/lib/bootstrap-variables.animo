@@ -1,36 +1,36 @@
 the bootstrap-variables
 
-    (mime-type text-x-less)
+    (type "text/x-less")
 
-    (settings any theme-settings)
+    (theme-settings)
 
-    ("@linkColor: ")            (get link-color             get settings) (";")
+    ("@linkColor: ")            (get link-color) (";")
 
     ("@linkColorHover: darken(@linkColor, 15);")
 
-    ("@black: ")                (get black                  get settings) (";")
-    ("@grayDark: ")             (get gray-dark              get settings) (";")
-    ("@gray: ")                 (get gray                   get settings) (";")
-    ("@grayLight: ")            (get gray-light             get settings) (";")
-    ("@grayLighter: ")          (get gray-lighter           get settings) (";")
-    ("@white: ")                (get white                  get settings) (";")
+    ("@black: ")                (get black) (";")
+    ("@grayDark: ")             (get gray-dark) (";")
+    ("@gray: ")                 (get gray) (";")
+    ("@grayLight: ")            (get gray-light) (";")
+    ("@grayLighter: ")          (get gray-lighter) (";")
+    ("@white: ")                (get white) (";")
 
-    ("@blue: ")                 (get blue                   get settings) (";")
-    ("@blueDark: ")             (get blue-dark              get settings) (";")
-    ("@green: ")                (get green                  get settings) (";")
-    ("@red: ")                  (get red                    get settings) (";")
-    ("@yellow: ")               (get yellow                 get settings) (";")
-    ("@orange: ")               (get orange                 get settings) (";")
-    ("@pink: "                  (get pink                   get settings) (";")
-    ("@purple: ")               (get purple                 get settings) (";")
+    ("@blue: ")                 (get blue) (";")
+    ("@blueDark: ")             (get blue-dark) (";")
+    ("@green: ")                (get green) (";")
+    ("@red: ")                  (get red) (";")
+    ("@yellow: ")               (get yellow) (";")
+    ("@orange: ")               (get orange) (";")
+    ("@pink: "                  (get pink) (";")
+    ("@purple: ")               (get purple) (";")
 
-    ("@gridColumns: ")          (get grid-columns           get settings) (";")
-    ("@gridColumnWidth: ")      (get grid-column-width      get settings) (";")
-    ("@gridGutterWidth: ")      (get gutter-width           get settings) (";")
+    ("@gridColumns: ")          (get grid-columns) (";")
+    ("@gridColumnWidth: ")      (get grid-column-width) (";")
+    ("@gridGutterWidth: ")      (get gutter-width) (";")
 
     ("@siteWidth: (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1));")
 
-    ("@fluidSidebarWidth: ")    (get fluid-sidebar-width    get settings) (";")
+    ("@fluidSidebarWidth: ")    (get fluid-sidebar-width) (";")
 
     ("@zindexDropdown:      1000;")
     ("@zindexPopover:       1010;")
@@ -39,8 +39,8 @@ the bootstrap-variables
     ("@zindexModalBackdrop: 1040;")
     ("@zindexModal:         1050;")
 
-    ("@baseFontSize: ")         (get base-font              get settings) (";")
-    ("@baseFontFamily: ")       (get base-font-family       get settings) (";")
-    ("@baseLineHeight: ")       (get base-line-height       get settings) (";")
+    ("@baseFontSize: ")         (get base-font) (";")
+    ("@baseFontFamily: ")       (get base-font-family) (";")
+    ("@baseLineHeight: ")       (get base-line-height) (";")
 
-    ("@primaryButtonColor: ")   (get primary-color          get settings) (";")
+    ("@primaryButtonColor: ")   (get primary-color) (";")

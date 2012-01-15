@@ -1,0 +1,46 @@
+the bootstrap-variables
+
+    (mime-type text-x-less)
+
+    (settings any theme-settings)
+
+    ("@linkColor: ")            (get link-color             get settings) (";")
+
+    ("@linkColorHover: darken(@linkColor, 15);")
+
+    ("@black: ")                (get black                  get settings) (";")
+    ("@grayDark: ")             (get gray-dark              get settings) (";")
+    ("@gray: ")                 (get gray                   get settings) (";")
+    ("@grayLight: ")            (get gray-light             get settings) (";")
+    ("@grayLighter: ")          (get gray-lighter           get settings) (";")
+    ("@white: ")                (get white                  get settings) (";")
+
+    ("@blue: ")                 (get blue                   get settings) (";")
+    ("@blueDark: ")             (get blue-dark              get settings) (";")
+    ("@green: ")                (get green                  get settings) (";")
+    ("@red: ")                  (get red                    get settings) (";")
+    ("@yellow: ")               (get yellow                 get settings) (";")
+    ("@orange: ")               (get orange                 get settings) (";")
+    ("@pink: "                  (get pink                   get settings) (";")
+    ("@purple: ")               (get purple                 get settings) (";")
+
+    ("@gridColumns: ")          (get grid-columns           get settings) (";")
+    ("@gridColumnWidth: ")      (get grid-column-width      get settings) (";")
+    ("@gridGutterWidth: ")      (get gutter-width           get settings) (";")
+
+    ("@siteWidth: (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1));")
+
+    ("@fluidSidebarWidth: ")    (get fluid-sidebar-width    get settings) (";")
+
+    ("@zindexDropdown:      1000;")
+    ("@zindexPopover:       1010;")
+    ("@zindexTooltip:       1020;")
+    ("@zindexFixedNavbar:   1030;")
+    ("@zindexModalBackdrop: 1040;")
+    ("@zindexModal:         1050;")
+
+    ("@baseFontSize: ")         (get base-font              get settings) (";")
+    ("@baseFontFamily: ")       (get base-font-family       get settings) (";")
+    ("@baseLineHeight: ")       (get base-line-height       get settings) (";")
+
+    ("@primaryButtonColor: ")   (get primary-color          get settings) (";")

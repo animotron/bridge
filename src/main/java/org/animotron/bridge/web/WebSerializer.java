@@ -21,6 +21,7 @@
 package org.animotron.bridge.web;
 
 import org.animotron.cache.Cache;
+import org.animotron.cache.FileCache;
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.Expression;
 import org.animotron.expression.JExpression;
@@ -43,8 +44,9 @@ public class WebSerializer {
 
     public static final String TYPE = "type";
     public static final String MIME_TYPE = "mime-type";
+    private static Cache cache = FileCache._;
 
-    public static void serialize(Expression request, HttpServletResponse res, Cache cache) throws IOException, ENotFound {
+    public static void serialize(Expression request, HttpServletResponse res) throws IOException, ENotFound {
         String mime = STRING.serialize(
                 new JExpression(
                         _(GET._, TYPE, _(GET._, MIME_TYPE, _(request)))

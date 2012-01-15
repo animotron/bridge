@@ -42,7 +42,7 @@ public class CommonServletTest extends ATest {
     public void test() throws Exception {
         FSBridge._.load("src/test/resources/animo/");
         new ResourcesMap(URI_CONTEXT).load(PATH);
-    	CommonServlet servlet = new CommonServlet(PATH);
+    	MapServlet servlet = new MapServlet(PATH);
         HttpRequest request = new HttpRequest("/site/localhost/favicon.ico", "localhost"){
             @Override
             public String getPathInfo() {

@@ -20,8 +20,6 @@
  */
 package org.animotron.bridge.web;
 
-import org.animotron.cache.Cache;
-import org.animotron.cache.FileCache;
 import org.animotron.exception.AnimoException;
 import org.animotron.exception.ENotFound;
 import org.animotron.statement.operator.AN;
@@ -48,24 +46,14 @@ public class AnimoServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -7842813965460705795L;
     
-    private Cache cache;
-
-    public AnimoServlet () {
-        this(FileCache._);
-    }
-
-    public AnimoServlet (Cache cache) {
-        this.cache = cache;
-    }
-
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
         try {
-            serialize(new AnimoRequest(req), res, cache);
+            serialize(new AnimoRequest(req), res);
         } catch (Exception e) {
             System.out.println(e);
-            ErrorHandler.doGet(req, res, ErrorHandler.NOT_FOUND, cache);
+            ErrorHandler.doGet(req, res, ErrorHandler.NOT_FOUND);
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}

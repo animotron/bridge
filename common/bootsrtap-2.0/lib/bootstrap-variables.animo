@@ -1,8 +1,8 @@
 the bootstrap-variables
 
-    (type "text/x-less")
+    (mime-type text-x-less)
 
-    (default-theme-settings)
+    (any theme-settings)
 
     ("@linkColor: ")            (get link-color) ("; ")
 
@@ -26,7 +26,7 @@ the bootstrap-variables
 
     ("@gridColumns: ")          (get grid-columns) ("; ")
     ("@gridColumnWidth: ")      (get grid-column-width) ("; ")
-    ("@gridGutterWidth: ")      (get gutter-width) ("; ")
+    ("@gridGutterWidth: ")      (get grid-gutter-width) ("; ")
 
     ("@siteWidth: (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1)); ")
 
@@ -34,7 +34,7 @@ the bootstrap-variables
 
     ("@zindexDropdown: 1000; @zindexPopover: 1010; @zindexTooltip: 1020; @zindexFixedNavbar: 1030; @zindexModalBackdrop: 1040; @zindexModal: 1050; ")
 
-    ("@baseFontSize: ")         (get base-font) ("; ")
+    ("@baseFontSize: ")         (get base-font-size) ("; ")
     ("@baseFontFamily: ")       (get base-font-family) ("; ")
     ("@baseLineHeight: ")       (get base-line-height) ("; ")
 

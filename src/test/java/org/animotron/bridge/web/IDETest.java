@@ -49,14 +49,53 @@ public class IDETest extends ATest {
     	JExpression s;
 
     	s = new JExpression(
-			_(
-				_(ANY._, "site",
-					_(WITH._, "server-name", value("localhost"))
-				),
+//			_(
+//				_(ANY._, "site",
+//					_(WITH._, "server-name", value("localhost"))
+//				),
 				_(AN._, "animoIDE")
-			)
+//			)
         );
-    	assertXMLResult(s, "type \"image/vnd.microsoft.icon\".");
+    	assertXMLResult(s, 
+		"<html>" +
+			"<head>" +
+				"<title/>" +
+				"<meta name=\"keywords\" content=\"\"/><meta name=\"description\" content=\"\"/>" +
+				"<link rel=\"shortcut icon\" href=\"\"/>" +
+				"<script src=\"/common/ace-0.2.0/src/ace.js\"/>" +
+				"<script src=\"/common/ace-0.2.0/textarea/src/ace.js\"/>" +
+				"<script src=\"/common/jquery-1.7.1/jquery.min.js\"/>" +
+			"</head>" +
+			"<body>" +
+				"<div class=\"ui-layout-north\">" +
+					"<div id=\"header\">" +
+						"<div id=\"login-info\">" +
+							"<span id=\"user\"/>" +
+							"<a id=\"login\" href=\"#\">Login</a>" +
+						"</div>" +
+					"</div>" +
+				"</div>" +
+				"<div class=\"ui-layout-center\">" +
+					"<div class=\"editor-header\">" +
+						"<div class=\"menu\">" +
+							"<ul><li><a href=\"#\">File</a><ul><li><a href=\"#\" id=\"menu-file-open\">Open</a></li></ul></li></ul>" +
+						"</div>" +
+					"</div>" +
+					"<span id=\"toolbar\"/>" +
+					"<div id=\"tabs-container\">" +
+						"<ul id=\"tabs\"><button id=\"tab-prev\">Previous</button><button id=\"tab-next\">Next</button></ul>" +
+					"</div>" +
+					"<pre class=\"content\" id=\"editor\"/>" +
+					"<div id=\"status-bar\">" +
+						"<input id=\"search-box\" type=\"text\"/>" +
+						"<a href=\"#\"><id>error-status</id></a>" +
+					"</div>" +
+				"</div>" +
+				"<div id=\"outline-container\" class=\"ui-layout-west\">" +
+					"<h3>Outline</h3><ul id=\"outline\" class=\"content\"><li/></ul>" +
+				"</div>" +
+			"</body>" +
+		"</html>");
     }
     
 }

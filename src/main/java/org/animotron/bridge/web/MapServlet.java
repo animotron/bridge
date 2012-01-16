@@ -47,7 +47,7 @@ public class MapServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 274993368953562096L;
 
-	private static File folder;
+	private File folder;
 
     public MapServlet(String uri) {
         this.folder = new File(uri);

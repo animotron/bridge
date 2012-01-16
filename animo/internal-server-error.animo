@@ -1,0 +1,8 @@
+the not-found
+    (error, resource)
+    (code 500)
+    (title   "Internal Server Error!")
+    (message
+        ("The server encountered an unexpected condition which prevented it from fulfilling the request ")
+        (\strong get uri) ("."))
+

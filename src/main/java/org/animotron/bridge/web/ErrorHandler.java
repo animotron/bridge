@@ -22,6 +22,7 @@ package org.animotron.bridge.web;
 
 import org.animotron.exception.AnimoException;
 import org.animotron.statement.compare.WITH;
+import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 import org.animotron.statement.query.ANY;
 import org.animotron.statement.relation.USE;
@@ -29,6 +30,8 @@ import org.animotron.statement.relation.USE;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import static org.animotron.bridge.web.WebSerializer.serialize;
 
@@ -38,29 +41,37 @@ import static org.animotron.bridge.web.WebSerializer.serialize;
  *
  */
 public class ErrorHandler {
-    
+
     public final static int NOT_FOUND = 404;
+    public final static int INTERNAL_SERVER_ERROR = 500;
 
 	public static void doGet(HttpServletRequest req, HttpServletResponse res, int status) {
-		long startTime = System.currentTimeMillis();
+        doGet(req, res, status, null);
+	}
+
+    public static void doGet(HttpServletRequest req, HttpServletResponse res, int status, Exception x) {
+        long startTime = System.currentTimeMillis();
         res.setStatus(status);
-		try {
-            serialize(new AnimoRequest(req, status), res);
+        try {
+            serialize(new AnimoRequest(req, status, x), res);
         } catch (Exception e) {
             e.printStackTrace();
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
-	}
+    }
 
     private static class AnimoRequest extends AbstractRequestExpression {
 
+        private static final String STACK_TRACE = "stack-trace";
         private static final String ERROR = "error";
         private static final String CODE = "code";
+        private Exception x;
         private int status;
 
-        public AnimoRequest(HttpServletRequest req, int status) throws Exception {
+        public AnimoRequest(HttpServletRequest req, int status, Exception x) throws Exception {
             super(req);
             this.status = status;
+            this.x = x;
         }
 
         @Override
@@ -75,6 +86,15 @@ public class ErrorHandler {
                     builder._(REF._, CODE);
                     builder._(status);
                 builder.end();
+                if (x != null) {
+                    builder.start(AN._);
+                        builder._(REF._, STACK_TRACE);
+                        StringWriter sw = new StringWriter();
+                        PrintWriter pw = new PrintWriter(sw);
+                        x.printStackTrace(pw);
+                        builder._(sw.toString());
+                    builder.end();
+                }
             builder.end();
         }
 

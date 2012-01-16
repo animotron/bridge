@@ -2,4 +2,5 @@ the default-error-layout
     (default, error, layout)
     (\h1 get code)
     (\h2 get title)
-    (\p get content)
+    (\p get message)
+    (\p get stack-trace)

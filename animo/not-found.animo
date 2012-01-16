@@ -1,6 +1,0 @@
-the not-found
-    (error, resource)
-    (code 404)
-    (title   "Not found!")
-    (content ("Can't find the resource ") (\strong get uri))
-

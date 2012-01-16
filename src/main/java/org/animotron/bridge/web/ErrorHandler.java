@@ -21,6 +21,7 @@
 package org.animotron.bridge.web;
 
 import org.animotron.exception.AnimoException;
+import org.animotron.exception.ENotFound;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
@@ -43,15 +44,16 @@ public class ErrorHandler {
     public final static int NOT_FOUND = 404;
     public final static int INTERNAL_SERVER_ERROR = 500;
 
-	public static void doGet(HttpServletRequest req, HttpServletResponse res, int status) {
-        doGet(req, res, status, null);
-	}
-
-    public static void doGet(HttpServletRequest req, HttpServletResponse res, int status, Exception x) {
+    public static void doGet(HttpServletRequest req, HttpServletResponse res, Exception x) {
         long startTime = System.currentTimeMillis();
-        res.setStatus(status);
         try {
-            serialize(new AnimoRequest(req, status, x), res);
+            if (x instanceof ENotFound || x instanceof FileNotFoundException) {
+                res.setStatus(NOT_FOUND);
+                serialize(new AnimoRequest(req, NOT_FOUND, null), res);
+            } else {
+                res.setStatus(INTERNAL_SERVER_ERROR);
+                serialize(new AnimoRequest(req, INTERNAL_SERVER_ERROR, x), res);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

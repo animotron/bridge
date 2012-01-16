@@ -52,7 +52,7 @@ public class AnimoServlet extends HttpServlet {
         try {
             serialize(new AnimoRequest(req), res);
         } catch (Exception e) {
-            ErrorHandler.doGet(req, res, ErrorHandler.INTERNAL_SERVER_ERROR, e);
+            ErrorHandler.doGet(req, res, e);
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}

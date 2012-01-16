@@ -78,7 +78,7 @@ public class BridgeServlet extends HttpServlet {
                 os.write(buf, 0, len);
             }
 		} catch (Exception e) {
-            ErrorHandler.doGet(req, res, ErrorHandler.NOT_FOUND);
+            ErrorHandler.doGet(req, res, e);
         } finally {
         	if (is != null) is.close();
         	if (os != null) os.close();

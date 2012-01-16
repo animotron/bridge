@@ -1,4 +1,4 @@
-the not-found
+the internal-server-error
     (error, resource)
     (code 500)
     (title   "Internal Server Error!")

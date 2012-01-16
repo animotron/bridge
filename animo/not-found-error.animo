@@ -1,7 +1,7 @@
 the not-found
     (error, resource)
     (code 404)
-    (title   "Not found!")
+    (title   "Not found")
     (message
         ("The server has not found anything matching the request ")
         (\strong get uri) ("."))

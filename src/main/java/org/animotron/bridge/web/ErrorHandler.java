@@ -29,9 +29,7 @@ import org.animotron.statement.relation.USE;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 
 import static org.animotron.bridge.web.WebSerializer.serialize;
 
@@ -92,7 +90,11 @@ public class ErrorHandler {
                         StringWriter sw = new StringWriter();
                         PrintWriter pw = new PrintWriter(sw);
                         x.printStackTrace(pw);
-                        builder._(sw.toString());
+                        BufferedReader br = new BufferedReader(new StringReader(sw.toString()));
+                        String s;
+                        while ((s = br.readLine()) != null) {
+                            builder._(s);
+                        }
                     builder.end();
                 }
             builder.end();

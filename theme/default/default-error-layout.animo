@@ -3,4 +3,4 @@ the default-error-layout
     (\h1 get code)
     (\h2 get title)
     (\p get message)
-    (\p get stack-trace)
+    (\p each (get stack-trace) ((this stack-trace) (\br)))

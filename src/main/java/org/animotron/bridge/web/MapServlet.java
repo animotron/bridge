@@ -73,25 +73,21 @@ public class MapServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
-		InputStream is = null;
-		OutputStream os = null;
 		try {
             File file = new File(folder, req.getPathInfo());
-            is = new FileInputStream(file);
+            InputStream is = new FileInputStream(file);
             res.setContentLength((int) file.length());
-            
-            os = res.getOutputStream();
+            OutputStream os = res.getOutputStream();
             res.setContentType(mime(file));
             byte [] buf = new byte[4096];
             int len;
             while((len=is.read(buf))>0) {
                 os.write(buf, 0, len);
             }
+            is.close();
+            os.close();
 		} catch (Exception e) {
             ErrorHandler.doGet(req, res, e);
-        } finally {
-        	if (os != null) os.close();
-            if (is != null) is.close();
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}

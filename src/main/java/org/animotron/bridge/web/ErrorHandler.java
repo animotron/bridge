@@ -47,11 +47,11 @@ public class ErrorHandler {
     public static void doGet(HttpServletRequest req, HttpServletResponse res, Exception x) {
         long startTime = System.currentTimeMillis();
         try {
-            res.reset();
             if (x instanceof ENotFound || x instanceof FileNotFoundException) {
                 res.setStatus(NOT_FOUND);
                 serialize(new AnimoRequest(req, NOT_FOUND, null), res);
             } else {
+                res.reset();
                 res.setStatus(INTERNAL_SERVER_ERROR);
                 serialize(new AnimoRequest(req, INTERNAL_SERVER_ERROR, x), res);
             }

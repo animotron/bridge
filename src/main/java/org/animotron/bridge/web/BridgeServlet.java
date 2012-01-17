@@ -21,6 +21,7 @@
 package org.animotron.bridge.web;
 
 import org.animotron.cache.FileCache;
+import org.animotron.exception.ENotFound;
 import org.animotron.expression.JExpression;
 import org.animotron.graph.Properties;
 import org.animotron.graph.serializer.CachedSerializer;
@@ -58,30 +59,27 @@ public class BridgeServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		InputStream is = null;
-		OutputStream os = null;
 		long startTime = System.currentTimeMillis();
 		try {
             Relationship r = THE._.get(req.getPathInfo().substring(1));
+            if (r == null) {
+                throw new ENotFound(null);
+            }
             Node n = r.getEndNode().getSingleRelationship(STREAM._, Direction.OUTGOING).getEndNode();
-            
             File file = new File((String) Properties.VALUE.get(n));
-            is = new FileInputStream(file);
+            InputStream is = new FileInputStream(file);
             res.setContentLength((int) file.length());
-            
-            os = res.getOutputStream();
+            OutputStream os = res.getOutputStream();
             res.setContentType(mime(r));
-            
             byte [] buf = new byte[4096];
             int len;
             while((len=is.read(buf))>0) {
                 os.write(buf, 0, len);
             }
+            is.close();
+            os.close();
 		} catch (Exception e) {
             ErrorHandler.doGet(req, res, e);
-        } finally {
-        	if (is != null) is.close();
-        	if (os != null) os.close();
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}

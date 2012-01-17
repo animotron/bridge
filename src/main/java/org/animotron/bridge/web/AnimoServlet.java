@@ -120,6 +120,7 @@ public class AnimoServlet extends HttpServlet {
                     builder.end();
                 }
             }
+            // TODO add sorted request parametrs, headers, attributes, cookies and etc
         }
 
     }

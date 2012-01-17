@@ -25,10 +25,13 @@ import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.BinaryMapExpression;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
+import org.animotron.utils.MessageDigester;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.security.MessageDigest;
 
 import static org.animotron.bridge.web.AbstractRequestExpression.URI;
 import static org.animotron.expression.Expression.__;
@@ -53,6 +56,14 @@ public class ResourcesMap extends AbstractResourcesBridge {
                         @Override
                         protected void description() throws AnimoException, IOException {
                             int index;
+                            byte buf[] = new byte[1024 * 4];
+                            int len;
+                            InputStream is = new FileInputStream(file);
+                            MessageDigest md = MessageDigester.md();
+                            while((len=is.read(buf))>0) {
+                                md.update(buf,0,len);
+                            }
+                            is.close();
                             String name = file.getName();
                             index = name.lastIndexOf(".");
                             if (index > 0) {
@@ -68,7 +79,12 @@ public class ResourcesMap extends AbstractResourcesBridge {
                             builder.end();
                             builder.start(AN._);
                                 builder._(REF._, URI);
-                                builder._(uriContext + path(file));
+                                StringBuilder s = new StringBuilder(4);
+                                s.append(uriContext);
+                                s.append(path(file));
+                                s.append("?");
+                                s.append(MessageDigester.byteArrayToHex(md.digest()));
+                                builder._(s.toString());
                             builder.end();
                         }
                     }

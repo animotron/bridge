@@ -31,12 +31,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
+import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
+import static org.animotron.bridge.web.WebSerializer.MIME_TYPE;
+import static org.animotron.bridge.web.WebSerializer.TYPE;
 import static org.animotron.expression.JExpression._;
 import static org.animotron.expression.JExpression.value;
-import static org.animotron.graph.Nodes.*;
-import static org.animotron.bridge.web.WebSerializer.*;
+import static org.animotron.graph.Nodes.EXTENSION;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -73,23 +78,35 @@ public class MapServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
-		try {
-            File file = new File(folder, req.getPathInfo());
-            InputStream is = new FileInputStream(file);
-            res.setContentLength((int) file.length());
-            OutputStream os = res.getOutputStream();
-            res.setContentType(mime(file));
-            byte [] buf = new byte[4096];
-            int len;
-            while((len=is.read(buf))>0) {
-                os.write(buf, 0, len);
+        File file = new File(folder, req.getPathInfo());
+        long modified = file.lastModified();
+        long since = req.getDateHeader("If-Modified-Since");
+        if (since < modified) {
+            FileInputStream is = null;
+            try {
+                is = new FileInputStream(file);
+                res.setContentLength((int) file.length());
+                res.setDateHeader("Last-Modified", modified);
+                if (req.getParameterNames().hasMoreElements()) {
+                    res.setHeader("Cache-Control", "public, max-age=" + Integer.MAX_VALUE);
+                }
+                OutputStream os = res.getOutputStream();
+                res.setContentType(mime(file));
+                byte [] buf = new byte[4096];
+                int len;
+                while((len=is.read(buf))>0) {
+                    os.write(buf, 0, len);
+                }
+                os.close();
+            } catch (Exception e) {
+                ErrorHandler.doRequest(req, res, e);
+            } finally {
+                if (is != null) is.close();
             }
-            is.close();
-            os.close();
-		} catch (Exception e) {
-            ErrorHandler.doGet(req, res, e);
+        } else {
+            res.setStatus(SC_NOT_MODIFIED);
         }
-        System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
+        System.out.println("Generated in " + (System.currentTimeMillis() - startTime));
 	}
 
 }

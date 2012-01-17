@@ -32,6 +32,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
+import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static org.animotron.bridge.web.WebSerializer.serialize;
 
 /**
@@ -41,22 +43,30 @@ import static org.animotron.bridge.web.WebSerializer.serialize;
  */
 public class ErrorHandler {
 
-    public final static int NOT_FOUND = 404;
-    public final static int INTERNAL_SERVER_ERROR = 500;
-
-    public static void doGet(HttpServletRequest req, HttpServletResponse res, Exception x) {
+    public static void doRequest(HttpServletRequest req, HttpServletResponse res, Exception x) {
         long startTime = System.currentTimeMillis();
         try {
             if (x instanceof ENotFound || x instanceof FileNotFoundException) {
-                res.setStatus(NOT_FOUND);
-                serialize(new AnimoRequest(req, NOT_FOUND, null), res);
+                res.setStatus(SC_NOT_FOUND);
+                serialize(new AnimoRequest(req, SC_NOT_FOUND, null), res);
             } else {
                 res.reset();
-                res.setStatus(INTERNAL_SERVER_ERROR);
-                serialize(new AnimoRequest(req, INTERNAL_SERVER_ERROR, x), res);
+                res.setStatus(SC_INTERNAL_SERVER_ERROR);
+                serialize(new AnimoRequest(req, SC_INTERNAL_SERVER_ERROR, x), res);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
+    }
+
+    public static void doRequest(HttpServletRequest req, HttpServletResponse res, int status) {
+        long startTime = System.currentTimeMillis();
+        try {
+            res.setStatus(status);
+            serialize(new AnimoRequest(req, status, null), res);
+        } catch (Exception e) {
+            doRequest(req, res, e);
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
     }

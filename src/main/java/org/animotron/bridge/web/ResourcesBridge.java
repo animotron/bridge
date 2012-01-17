@@ -53,6 +53,12 @@ public class ResourcesBridge extends AbstractResourcesBridge {
         } else {
             __(
                     new BinaryExpression(is, true) {
+
+                        @Override
+                        protected String id () {
+                            return hash();
+                        }
+
                         @Override
                         protected void description() throws AnimoException, IOException {
                             DefaultDescription.create(builder, path(file));
@@ -61,6 +67,7 @@ public class ResourcesBridge extends AbstractResourcesBridge {
                                 builder._(uriContext + id());
                             builder.end();
                         }
+
                     }
             );
         }

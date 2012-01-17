@@ -22,6 +22,8 @@ package org.animotron.bridge.web;
 
 import org.animotron.exception.AnimoException;
 import org.animotron.exception.ENotFound;
+import org.animotron.expression.Expression;
+import org.animotron.graph.Properties;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 import org.animotron.statement.query.ANY;
@@ -33,9 +35,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
+import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
 import static org.animotron.bridge.web.WebSerializer.serialize;
+import static org.animotron.utils.MessageDigester.byteArrayToHex;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -49,12 +54,21 @@ public class AnimoServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
-        try {
-            serialize(new AnimoRequest(req), res);
-        } catch (Exception e) {
-            ErrorHandler.doGet(req, res, e);
+        Enumeration<String> etag = req.getHeaders("If-None-Match");
+        if (etag.hasMoreElements()) {
+            res.setStatus(SC_NOT_MODIFIED);
+            res.setHeader("ETag", etag.nextElement());
+        } else {
+            try {
+                Expression request = new AnimoRequest(req);
+                res.setHeader("ETag", byteArrayToHex((byte[]) Properties.HASH.get(request)));
+                res.setDateHeader("Last-Modified", startTime);
+                serialize(request, res);
+            } catch (Exception e) {
+                ErrorHandler.doRequest(req, res, e);
+            }
+            System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
         }
-        System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}
 
     protected static class AnimoRequest extends AbstractRequestExpression {

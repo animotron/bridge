@@ -37,9 +37,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.Enumeration;
 
-import static org.animotron.bridge.web.WebSerializer.*;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
+import static org.animotron.bridge.web.WebSerializer.TYPE;
 import static org.animotron.expression.JExpression._;
+import static org.animotron.utils.MessageDigester.byteArrayToHex;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -60,26 +63,37 @@ public class BridgeServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
-		try {
-            Relationship r = THE._.get(req.getPathInfo().substring(1));
-            if (r == null) {
-                throw new ENotFound(null);
+        Enumeration<String> etag = req.getHeaders("If-None-Match");
+        if (etag.hasMoreElements()) {
+            res.setStatus(SC_NOT_MODIFIED);
+            res.setHeader("ETag", etag.nextElement());
+        } else {
+            InputStream is = null;
+            try {
+                Relationship r = THE._.get(req.getPathInfo().substring(1));
+                if (r == null) {
+                    throw new ENotFound(null);
+                }
+                Node n = r.getEndNode().getSingleRelationship(STREAM._, Direction.OUTGOING).getEndNode();
+                File file = new File((String) Properties.VALUE.get(n));
+                is = new FileInputStream(file);
+                res.setContentLength((int) file.length());
+                res.setHeader("ETag", byteArrayToHex((byte[]) Properties.HASH.get(r)));
+                res.setDateHeader("Last-Modified", file.lastModified());
+                res.setHeader("Cache-Control", "public, max-age=" + Integer.MAX_VALUE);
+                res.setContentType(mime(r));
+                OutputStream os = res.getOutputStream();
+                byte [] buf = new byte[4096];
+                int len;
+                while((len=is.read(buf))>0) {
+                    os.write(buf, 0, len);
+                }
+                os.close();
+            } catch (Exception e) {
+                ErrorHandler.doRequest(req, res, e);
+            } finally {
+                if (is != null) is.close();
             }
-            Node n = r.getEndNode().getSingleRelationship(STREAM._, Direction.OUTGOING).getEndNode();
-            File file = new File((String) Properties.VALUE.get(n));
-            InputStream is = new FileInputStream(file);
-            res.setContentLength((int) file.length());
-            OutputStream os = res.getOutputStream();
-            res.setContentType(mime(r));
-            byte [] buf = new byte[4096];
-            int len;
-            while((len=is.read(buf))>0) {
-                os.write(buf, 0, len);
-            }
-            is.close();
-            os.close();
-		} catch (Exception e) {
-            ErrorHandler.doGet(req, res, e);
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}

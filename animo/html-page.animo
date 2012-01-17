@@ -4,8 +4,8 @@ the html-page
     (\html
         (\head
             (\title get title)
-            (\meta (@name "keywords") (@content get keywords))
-            (\meta (@name "description") (@content get description))
+            (each (get keywords) (\meta (@name "keywords") (@content this keywords)))
+            (each (get keywords) (\meta (@name "description") (@content this description)))
             (\link (@rel "shortcut icon") (@href get uri any favicon))
             (each (prefer less) (\link (@rel "stylesheet/less") (@href get uri)))
             (each (prefer css) (\link (@rel "stylesheet") (@href get uri)))

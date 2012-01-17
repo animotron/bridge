@@ -58,6 +58,7 @@ public class WebSerializer {
         } else {
             OutputStream os = res.getOutputStream();
             res.setContentType(mime);
+            res.setContentLength(-1);
             CachedSerializer cs =
                     mime.equals("text/html") ? HTML : mime.endsWith("xml") ? XML : STRING;
             cs.serialize(request, os, cache);

@@ -48,6 +48,7 @@ public class ErrorHandler {
         long startTime = System.currentTimeMillis();
         try {
             if (x instanceof ENotFound || x instanceof FileNotFoundException) {
+                res.reset();
                 res.setStatus(NOT_FOUND);
                 serialize(new AnimoRequest(req, NOT_FOUND, null), res);
             } else {

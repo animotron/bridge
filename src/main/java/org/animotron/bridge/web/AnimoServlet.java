@@ -23,7 +23,6 @@ package org.animotron.bridge.web;
 import org.animotron.exception.AnimoException;
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.Expression;
-import org.animotron.graph.Properties;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 import org.animotron.statement.query.ANY;
@@ -40,6 +39,8 @@ import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
 import static org.animotron.bridge.web.WebSerializer.serialize;
+import static org.animotron.graph.Properties.HASH;
+import static org.animotron.graph.Properties.MODIFIED;
 import static org.animotron.utils.MessageDigester.byteArrayToHex;
 
 /**
@@ -56,7 +57,7 @@ public class AnimoServlet extends HttpServlet {
 		long startTime = System.currentTimeMillis();
         try {
             Expression request = new AnimoRequest(req);
-            String hash = byteArrayToHex((byte[]) Properties.HASH.get(request));
+            String hash = byteArrayToHex((byte[]) HASH.get(request));
             Enumeration<String> etag = req.getHeaders("If-None-Match");
             while (etag.hasMoreElements()) {
                 if (hash.equals(etag)) {
@@ -65,7 +66,7 @@ public class AnimoServlet extends HttpServlet {
                 }
             }
             res.setHeader("ETag", hash);
-            res.setDateHeader("Last-Modified", startTime);
+            res.setDateHeader("Last-Modified", (Long) MODIFIED.get(request));
             res.setHeader("Cache-Control", "no-cache");
             serialize(request, res);
         } catch (Exception e) {

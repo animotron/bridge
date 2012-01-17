@@ -54,21 +54,24 @@ public class AnimoServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
-        Enumeration<String> etag = req.getHeaders("If-None-Match");
-        if (etag.hasMoreElements()) {
-            res.setStatus(SC_NOT_MODIFIED);
-            res.setHeader("ETag", etag.nextElement());
-        } else {
-            try {
-                Expression request = new AnimoRequest(req);
-                res.setHeader("ETag", byteArrayToHex((byte[]) Properties.HASH.get(request)));
-                res.setDateHeader("Last-Modified", startTime);
-                serialize(request, res);
-            } catch (Exception e) {
-                ErrorHandler.doRequest(req, res, e);
+        try {
+            Expression request = new AnimoRequest(req);
+            String hash = byteArrayToHex((byte[]) Properties.HASH.get(request));
+            Enumeration<String> etag = req.getHeaders("If-None-Match");
+            while (etag.hasMoreElements()) {
+                if (hash.equals(etag)) {
+                    res.setStatus(SC_NOT_MODIFIED);
+                    return;
+                }
             }
-            System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
+            res.setHeader("ETag", hash);
+            res.setDateHeader("Last-Modified", startTime);
+            res.setHeader("Cache-Control", "no-cache");
+            serialize(request, res);
+        } catch (Exception e) {
+            ErrorHandler.doRequest(req, res, e);
         }
+        System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}
 
     protected static class AnimoRequest extends AbstractRequestExpression {

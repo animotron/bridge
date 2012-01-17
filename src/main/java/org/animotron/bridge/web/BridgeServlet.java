@@ -66,7 +66,6 @@ public class BridgeServlet extends HttpServlet {
         Enumeration<String> etag = req.getHeaders("If-None-Match");
         if (etag.hasMoreElements()) {
             res.setStatus(SC_NOT_MODIFIED);
-            res.setHeader("ETag", etag.nextElement());
         } else {
             InputStream is = null;
             try {

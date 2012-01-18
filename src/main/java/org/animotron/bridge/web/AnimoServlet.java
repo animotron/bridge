@@ -57,22 +57,34 @@ public class AnimoServlet extends HttpServlet {
 		long startTime = System.currentTimeMillis();
         try {
             Expression request = new AnimoRequest(req);
-            String hash = byteArrayToHex((byte[]) HASH.get(request));
-            Enumeration<String> etag = req.getHeaders("If-None-Match");
-            while (etag.hasMoreElements()) {
-                if (hash.equals(etag)) {
-                    res.setStatus(SC_NOT_MODIFIED);
-                    return;
+            long modified = (Long) MODIFIED.get(request);
+            res.setDateHeader("Last-Modified", modified);
+            boolean isHTTP11 = req.getProtocol().endsWith("1.1");
+            if (isHTTP11) {
+                String hash = byteArrayToHex((byte[]) HASH.get(request));
+                res.setHeader("ETag", hash);
+                Enumeration<String> etag = req.getHeaders("If-None-Match");
+                while (etag.hasMoreElements()) {
+                    if (hash.equals(etag)) {
+                        res.setStatus(SC_NOT_MODIFIED);
+                        return;
+                    }
                 }
             }
-            res.setHeader("ETag", hash);
-            res.setDateHeader("Last-Modified", (Long) MODIFIED.get(request));
-            res.setHeader("Cache-Control", "no-cache");
-            serialize(request, res);
+            long since = req.getDateHeader("If-Modified-Since");
+            if (since < modified || since > startTime) {
+                if (isHTTP11) {
+                    res.setHeader("Cache-Control", "no-cache");
+                }
+                res.setDateHeader("Expires", modified);
+                serialize(request, res);
+            } else {
+                res.setStatus(SC_NOT_MODIFIED);
+            }
         } catch (Exception e) {
             ErrorHandler.doRequest(req, res, e);
         }
-        System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
+        System.out.println("Generated in " + (System.currentTimeMillis() - startTime));
 	}
 
     protected static class AnimoRequest extends AbstractRequestExpression {

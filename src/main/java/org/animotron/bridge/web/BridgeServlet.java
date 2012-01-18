@@ -23,7 +23,6 @@ package org.animotron.bridge.web;
 import org.animotron.cache.FileCache;
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.JExpression;
-import org.animotron.graph.Properties;
 import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.statement.operator.THE;
 import org.animotron.statement.query.GET;
@@ -42,6 +41,8 @@ import java.util.Enumeration;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
 import static org.animotron.bridge.web.WebSerializer.TYPE;
 import static org.animotron.expression.JExpression._;
+import static org.animotron.graph.Properties.HASH;
+import static org.animotron.graph.Properties.VALUE;
 import static org.animotron.utils.MessageDigester.byteArrayToHex;
 
 /**
@@ -63,23 +64,34 @@ public class BridgeServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
-        Enumeration<String> etag = req.getHeaders("If-None-Match");
-        if (etag.hasMoreElements()) {
-            res.setStatus(SC_NOT_MODIFIED);
-        } else {
-            InputStream is = null;
-            try {
-                Relationship r = THE._.get(req.getPathInfo().substring(1));
-                if (r == null) {
-                    throw new ENotFound(null);
+        InputStream is = null;
+        try {
+            Relationship r = THE._.get(req.getPathInfo().substring(1));
+            if (r == null) {
+                throw new ENotFound(null);
+            }
+            Node n = r.getEndNode().getSingleRelationship(STREAM._, Direction.OUTGOING).getEndNode();
+            File file = new File((String) VALUE.get(n));
+            is = new FileInputStream(file);
+            long modified = file.lastModified();
+            res.setDateHeader("Last-Modified", modified);
+            boolean isHTTP11 = req.getProtocol().endsWith("1.1");
+            if (isHTTP11) {
+                String hash = byteArrayToHex((byte[]) HASH.get(r));
+                res.setHeader("ETag", hash);
+                Enumeration<String> etag = req.getHeaders("If-None-Match");
+                if (etag.hasMoreElements()) {
+                    res.setStatus(SC_NOT_MODIFIED);
+                    return;
                 }
-                Node n = r.getEndNode().getSingleRelationship(STREAM._, Direction.OUTGOING).getEndNode();
-                File file = new File((String) Properties.VALUE.get(n));
-                is = new FileInputStream(file);
+            }
+            long since = req.getDateHeader("If-Modified-Since");
+            if (since < modified || since > startTime) {
                 res.setContentLength((int) file.length());
-                res.setHeader("ETag", byteArrayToHex((byte[]) Properties.HASH.get(r)));
-                res.setDateHeader("Last-Modified", file.lastModified());
-                res.setHeader("Cache-Control", "public, max-age=" + Integer.MAX_VALUE);
+                if (isHTTP11) {
+                    res.setHeader("Cache-Control", "public, max-age=" + Integer.MAX_VALUE);
+                }
+                res.setDateHeader("Expires", Integer.MAX_VALUE);
                 res.setContentType(mime(r));
                 OutputStream os = res.getOutputStream();
                 byte [] buf = new byte[4096];
@@ -88,11 +100,13 @@ public class BridgeServlet extends HttpServlet {
                     os.write(buf, 0, len);
                 }
                 os.close();
-            } catch (Exception e) {
-                ErrorHandler.doRequest(req, res, e);
-            } finally {
-                if (is != null) is.close();
+            } else {
+                res.setStatus(SC_NOT_MODIFIED);
             }
+        } catch (Exception e) {
+            ErrorHandler.doRequest(req, res, e);
+        } finally {
+            if (is != null) is.close();
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}

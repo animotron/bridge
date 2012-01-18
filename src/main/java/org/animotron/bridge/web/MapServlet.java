@@ -80,15 +80,16 @@ public class MapServlet extends HttpServlet {
 		long startTime = System.currentTimeMillis();
         File file = new File(folder, req.getPathInfo());
         long modified = file.lastModified();
+        res.setDateHeader("Last-Modified", modified);
         long since = req.getDateHeader("If-Modified-Since");
-        if (since < modified) {
+        if (since < modified || since > startTime) {
             FileInputStream is = null;
             try {
                 is = new FileInputStream(file);
                 res.setContentLength((int) file.length());
-                res.setDateHeader("Last-Modified", modified);
                 if (req.getParameterNames().hasMoreElements()) {
                     res.setHeader("Cache-Control", "public, max-age=" + Integer.MAX_VALUE);
+                    res.setDateHeader("Expires", Integer.MAX_VALUE);
                 }
                 OutputStream os = res.getOutputStream();
                 res.setContentType(mime(file));

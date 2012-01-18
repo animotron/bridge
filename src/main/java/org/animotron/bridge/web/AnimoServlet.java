@@ -65,7 +65,7 @@ public class AnimoServlet extends HttpServlet {
                 res.setHeader("ETag", hash);
                 Enumeration<String> etag = req.getHeaders("If-None-Match");
                 while (etag.hasMoreElements()) {
-                    if (hash.equals(etag)) {
+                    if (hash.equals(etag.nextElement())) {
                         res.setStatus(SC_NOT_MODIFIED);
                         return;
                     }

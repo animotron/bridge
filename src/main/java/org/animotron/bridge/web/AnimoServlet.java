@@ -54,7 +54,6 @@ public class AnimoServlet extends HttpServlet {
     
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		long startTime = System.currentTimeMillis();
         try {
             Expression request = new AnimoRequest(req);
             long modified = (Long) MODIFIED.get(request);
@@ -72,7 +71,7 @@ public class AnimoServlet extends HttpServlet {
                 }
             }
             long since = req.getDateHeader("If-Modified-Since");
-            if (since < modified || since > startTime) {
+            if (since < modified || since > System.currentTimeMillis()) {
                 if (isHTTP11) {
                     res.setHeader("Cache-Control", "no-cache");
                 }
@@ -84,7 +83,6 @@ public class AnimoServlet extends HttpServlet {
         } catch (Exception e) {
             ErrorHandler.doRequest(req, res, e);
         }
-        System.out.println("Generated in " + (System.currentTimeMillis() - startTime));
 	}
 
     protected static class AnimoRequest extends AbstractRequestExpression {

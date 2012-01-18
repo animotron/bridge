@@ -55,15 +55,12 @@ public class BridgeServlet extends HttpServlet {
 	private static final long serialVersionUID = 6702513972501476806L;
 
     private String mime(Relationship r) throws IOException {
-        long startTime = System.currentTimeMillis();
         String mime = CachedSerializer.STRING.serialize(new JExpression(_(GET._, TYPE, _(r))), FileCache._);
-        System.out.println("Evaluate mime in "+(System.currentTimeMillis() - startTime));
         return mime.isEmpty() ? "application/octet-stream" : mime;
     }
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		long startTime = System.currentTimeMillis();
         InputStream is = null;
         try {
             Relationship r = THE._.get(req.getPathInfo().substring(1));
@@ -86,7 +83,7 @@ public class BridgeServlet extends HttpServlet {
                 }
             }
             long since = req.getDateHeader("If-Modified-Since");
-            if (since < modified || since > startTime) {
+            if (since < modified || since > System.currentTimeMillis()) {
                 res.setContentLength((int) file.length());
                 if (isHTTP11) {
                     res.setHeader("Cache-Control", "public, max-age=" + Integer.MAX_VALUE);
@@ -108,7 +105,6 @@ public class BridgeServlet extends HttpServlet {
         } finally {
             if (is != null) is.close();
         }
-        System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
 	}
 
 }

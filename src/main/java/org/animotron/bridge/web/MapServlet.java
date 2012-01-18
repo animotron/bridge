@@ -62,14 +62,12 @@ public class MapServlet extends HttpServlet {
         String name = file.getName();
         int index = name.lastIndexOf(".");
         if (index > 0) {
-            long startTime = System.currentTimeMillis();
             String mime = CachedSerializer.STRING.serialize(
                 new JExpression(
                     _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value(name.substring(index + 1)))))
                 ),
                 FileCache._
             );
-            System.out.println("Evaluate in "+(System.currentTimeMillis() - startTime));
             return mime.isEmpty() ? "application/octet-stream" : mime;
         }
         return "application/octet-stream";
@@ -77,12 +75,11 @@ public class MapServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		long startTime = System.currentTimeMillis();
         File file = new File(folder, req.getPathInfo());
         long modified = file.lastModified();
         res.setDateHeader("Last-Modified", modified);
         long since = req.getDateHeader("If-Modified-Since");
-        if (since < modified || since > startTime) {
+        if (since < modified || since > System.currentTimeMillis()) {
             FileInputStream is = null;
             try {
                 is = new FileInputStream(file);
@@ -107,7 +104,6 @@ public class MapServlet extends HttpServlet {
         } else {
             res.setStatus(SC_NOT_MODIFIED);
         }
-        System.out.println("Generated in " + (System.currentTimeMillis() - startTime));
 	}
 
 }

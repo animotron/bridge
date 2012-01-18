@@ -21,7 +21,6 @@
 package org.animotron.bridge.web;
 
 import org.animotron.ATest;
-import org.animotron.expression.AnimoExpression;
 import org.junit.Test;
 
 import static org.animotron.expression.AnimoExpression.__;
@@ -117,7 +116,9 @@ public class BootstrapTest extends ATest {
         ""
         );
 
-        assertStringResult(new AnimoExpression("bootstrap-variables"), "");
+        assertStringResult(
+        		"bootstrap-variables",
+        		"@linkColor: #08c; @linkColorHover: darken(@linkColor, 15); @black: #000; @grayDark: #333; @gray: #555; @grayLight: #999; @grayLighter: #eee; @white: #fff; @blue: #049CDB; @blueDark: #0064CD; @green: #46a546; @red: #9d261d; @yellow: #ffc40d; @orange: #f89406; @pink: #c3325f; @purple: #7a43b6; @gridColumns: 12; @gridColumnWidth: 60px; @gridGutterWidth: 20px; @siteWidth: (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1)); @fluidSidebarWidth: 220px; @zindexDropdown: 1000; @zindexPopover: 1010; @zindexTooltip: 1020; @zindexFixedNavbar: 1030; @zindexModalBackdrop: 1040; @zindexModal: 1050; @baseFontSize: 13px; @baseFontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif; @baseLineHeight: 18px; @primaryButtonColor: @blue;");
     }
 
     @Test
@@ -203,7 +204,8 @@ public class BootstrapTest extends ATest {
         "    (\"@primaryButtonColor: \")   (get primary-color)"
         );
 
-        assertStringResult(new AnimoExpression("bootstrap-variables"), "");
+        assertStringResult("bootstrap-variables", 
+    		"@linkColor: #08c; @linkColorHover: darken(@linkColor, 15); @black: #000; @grayDark: #333; @gray: #555; @grayLight: #999; @grayLighter: #eee; @white: #fff; @blue: #049CDB; @blueDark: #0064CD; @green: #46a546; @red: #9d261d; @yellow: #ffc40d; @orange: #f89406; @pink: #c3325f; @purple: #7a43b6; @gridColumns: 12; @gridColumnWidth: 60px; @gridGutterWidth: 20px; @siteWidth: (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1)); @fluidSidebarWidth: 220px; @zindexDropdown: 1000; @zindexPopover: 1010; @zindexTooltip: 1020; @zindexFixedNavbar: 1030; @zindexModalBackdrop: 1040; @zindexModal: 1050; @baseFontSize: 13px; @baseFontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif; @baseLineHeight: 18px; @primaryButtonColor: @blue");
     }
 
     @Test
@@ -226,7 +228,7 @@ public class BootstrapTest extends ATest {
         "    (\"@primaryButtonColor: \")   (get primary-color) (\";\")"
         );
 
-        assertStringResult(new AnimoExpression("bootstrap-variables"), "@primaryButtonColor: @blue;");
+        assertStringResult("bootstrap-variables", "@primaryButtonColor: @blue;");
     }
 
     @Test
@@ -249,6 +251,6 @@ public class BootstrapTest extends ATest {
         "    ((\"@primaryButtonColor: \")   (get primary-color))"
         );
 
-        assertStringResult(new AnimoExpression("bootstrap-variables"), "@primaryButtonColor: @blue");
+        assertStringResult("bootstrap-variables", "@primaryButtonColor: @blue");
     }
 }

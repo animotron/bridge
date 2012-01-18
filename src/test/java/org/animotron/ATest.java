@@ -21,6 +21,8 @@
 package org.animotron;
 
 import junit.framework.Assert;
+
+import org.animotron.expression.AnimoExpression;
 import org.animotron.graph.serializer.BinarySerializer;
 import org.animotron.graph.serializer.CachedSerializer;
 import org.apache.log4j.helpers.NullEnumeration;
@@ -156,6 +158,10 @@ public abstract class ATest {
         th.start();
         assertEquals(in, "<?xml version='1.0' encoding='UTF-8'?>"+expected);
         System.out.println();
+    }
+
+    protected void assertStringResult(String op, String expected) throws IOException, InterruptedException {
+    	assertStringResult(new AnimoExpression(op), expected);
     }
 
     protected void assertStringResult(Relationship op, String expected) throws IOException, InterruptedException {

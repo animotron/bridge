@@ -37,171 +37,169 @@ public class BootstrapTest extends ATest {
 
         __(
         "the default-theme-settings\n" +
-        "\n" +
-        "    (default, theme-settings)\n" +
-        "\n" +
-        "    (link-color            \"#08c\")\n" +
-        "\n" +
-        "    (black                 \"#000\")\n" +
-        "    (gray-dark             \"#333\")\n" +
-        "    (gray                  \"#555\")\n" +
-        "    (gray-light            \"#999\")\n" +
-        "    (gray-lighter          \"#eee\")\n" +
-        "    (white                 \"#fff\")\n" +
-        "\n" +
-        "    (blue                  \"#049CDB\")\n" +
-        "    (blue-dark             \"#0064CD\")\n" +
-        "    (green                 \"#46a546\")\n" +
-        "    (red                   \"#9d261d\")\n" +
-        "    (yellow                \"#ffc40d\")\n" +
-        "    (orange                \"#f89406\")\n" +
-        "    (pink                  \"#c3325f\")\n" +
-        "    (purple                \"#7a43b6\")\n" +
-        "\n" +
-        "\n" +
-        "    (grid-columns          12)\n" +
-        "    (grid-column-width     \"60px\")\n" +
-        "    (grid-gutter-width     \"20px\")\n" +
-        "\n" +
-        "    (fluid-sidebar-width   \"220px\")\n" +
-        "\n" +
-        "    (base-font-size        \"13px\")\n" +
-        "    (base-font-family      \"'Helvetica Neue', Helvetica, Arial, sans-serif\")\n" +
-        "    (base-line-height      \"18px\")\n" +
-        "\n" +
-        "    (primary-color         \"@blue\")"
+
+	        "(default, theme-settings)\n" +
+	
+	        "(link-color            \"#08c\") " +
+	
+	        "(black                 \"#000\") " +
+	        "(gray-dark             \"#333\") " +
+	        "(gray                  \"#555\") " +
+	        "(gray-light            \"#999\") " +
+	        "(gray-lighter          \"#eee\") " +
+	        "(white                 \"#fff\") " +
+	
+	        "(blue                  \"#049CDB\") " +
+	        "(blue-dark             \"#0064CD\") " +
+	        "(green                 \"#46a546\") " +
+	        "(red                   \"#9d261d\") " +
+	        "(yellow                \"#ffc40d\") " +
+	        "(orange                \"#f89406\") " +
+	        "(pink                  \"#c3325f\") " +
+	        "(purple                \"#7a43b6\") " +
+	
+	        "(grid-columns          12) " +
+	        "(grid-column-width     \"60px\") " +
+	        "(grid-gutter-width     \"20px\") " +
+	
+	        "(fluid-sidebar-width   \"220px\") " +
+	
+	        "(base-font-size        \"13px\") " +
+	        "(base-font-family      \"'Helvetica Neue', Helvetica, Arial, sans-serif\")\n" +
+	        "(base-line-height      \"18px\") " +
+	
+	        "(primary-color         \"@blue\")"
         ,
 
         "the bootstrap-variables\n" +
-        "\n" +
-        "    (mime-type text-x-less)\n" +
-        "\n" +
-        "    (any theme-settings)\n" +
-        "\n" +
-        "    (\"@linkColor: \")            (get link-color) (\"; \")\n" +
-        "\n" +
-        "    (\"@linkColorHover: darken(@linkColor, 15); \")\n" +
-        "\n" +
-        "    (\"@black: \")                (get black) (\"; \")\n" +
-        "    (\"@grayDark: \")             (get gray-dark) (\"; \")\n" +
-        "    (\"@gray: \")                 (get gray) (\"; \")\n" +
-        "    (\"@grayLight: \")            (get gray-light) (\"; \")\n" +
-        "    (\"@grayLighter: \")          (get gray-lighter) (\"; \")\n" +
-        "    (\"@white: \")                (get white) (\"; \")\n" +
-        "\n" +
-        "    (\"@blue: \")                 (get blue) (\"; \")\n" +
-        "    (\"@blueDark: \")             (get blue-dark) (\"; \")\n" +
-        "    (\"@green: \")                (get green) (\"; \")\n" +
-        "    (\"@red: \")                  (get red) (\"; \")\n" +
-        "    (\"@yellow: \")               (get yellow) (\"; \")\n" +
-        "    (\"@orange: \")               (get orange) (\"; \")\n" +
-        "    (\"@pink: \")                  (get pink) (\"; \")\n" +
-        "    (\"@purple: \")               (get purple) (\"; \")\n" +
-        "\n" +
-        "    (\"@gridColumns: \")          (get grid-columns) (\"; \")\n" +
-        "    (\"@gridColumnWidth: \")      (get grid-column-width) (\"; \")\n" +
-        "    (\"@gridGutterWidth: \")      (get grid-gutter-width) (\"; \")\n" +
-        "\n" +
-        "    (\"@siteWidth: (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1)); \")\n" +
-        "\n" +
-        "    (\"@fluidSidebarWidth: \")    (get fluid-sidebar-width) (\"; \")\n" +
-        "\n" +
-        "    (\"@zindexDropdown: 1000; @zindexPopover: 1010; @zindexTooltip: 1020; @zindexFixedNavbar: 1030; @zindexModalBackdrop: 1040; @zindexModal: 1050; \")\n" +
-        "\n" +
-        "    (\"@baseFontSize: \")         (get base-font-size) (\"; \")\n" +
-        "    (\"@baseFontFamily: \")       (get base-font-family) (\"; \")\n" +
-        "    (\"@baseLineHeight: \")       (get base-line-height) (\"; \")\n" +
-        "\n" +
-        "    (\"@primaryButtonColor: \")   (get primary-color) (\";\")" +
+
+        	"(mime-type text-x-less)\n" +
+
+        	"(any theme-settings)\n" +
+
+        	"(ordered (\"@linkColor: \")            (get link-color) (\"; \") )" +
+
+        	"(ordered (\"@linkColorHover: darken(@linkColor, 15); \") )" +
+
+        	"(ordered (\"@black: \")                (get black) (\"; \") )" +
+        	"(ordered (\"@grayDark: \")             (get gray-dark) (\"; \") )" +
+        	"(ordered (\"@gray: \")                 (get gray) (\"; \") )" +
+        	"(ordered (\"@grayLight: \")            (get gray-light) (\"; \") )" +
+        	"(ordered (\"@grayLighter: \")          (get gray-lighter) (\"; \") )" +
+        	"(ordered (\"@white: \")                (get white) (\"; \") )" +
+
+        	"(ordered (\"@blue: \")                 (get blue) (\"; \") )" +
+        	"(ordered (\"@blueDark: \")             (get blue-dark) (\"; \") )" +
+        	"(ordered (\"@green: \")                (get green) (\"; \") )" +
+        	"(ordered (\"@red: \")                  (get red) (\"; \") )" +
+        	"(ordered (\"@yellow: \")               (get yellow) (\"; \") )" +
+        	"(ordered (\"@orange: \")               (get orange) (\"; \") )" +
+        	"(ordered (\"@pink: \")                 (get pink) (\"; \") )" +
+        	"(ordered (\"@purple: \")               (get purple) (\"; \") )" +
+
+        	"(ordered (\"@gridColumns: \")          (get grid-columns) (\"; \") )" +
+        	"(ordered (\"@gridColumnWidth: \")      (get grid-column-width) (\"; \") )" +
+        	"(ordered (\"@gridGutterWidth: \")      (get grid-gutter-width) (\"; \") )" +
+
+        	"(ordered (\"@siteWidth: (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1)); \") )" +
+
+        	"(ordered (\"@fluidSidebarWidth: \")    (get fluid-sidebar-width) (\"; \") )" +
+
+        	"(ordered (\"@zindexDropdown: 1000; @zindexPopover: 1010; @zindexTooltip: 1020; @zindexFixedNavbar: 1030; @zindexModalBackdrop: 1040; @zindexModal: 1050; \") )" +
+
+        	"(ordered (\"@baseFontSize: \")         (get base-font-size) (\"; \") )" +
+        	"(ordered (\"@baseFontFamily: \")       (get base-font-family) (\"; \") )" +
+        	"(ordered (\"@baseLineHeight: \")       (get base-line-height) (\"; \") )" +
+
+        	"(ordered (\"@primaryButtonColor: \")   (get primary-color) (\";\") )" +
         ""
         );
 
         assertStringResult(
-        		"bootstrap-variables",
-        		"@linkColor: #08c; @linkColorHover: darken(@linkColor, 15); @black: #000; @grayDark: #333; @gray: #555; @grayLight: #999; @grayLighter: #eee; @white: #fff; @blue: #049CDB; @blueDark: #0064CD; @green: #46a546; @red: #9d261d; @yellow: #ffc40d; @orange: #f89406; @pink: #c3325f; @purple: #7a43b6; @gridColumns: 12; @gridColumnWidth: 60px; @gridGutterWidth: 20px; @siteWidth: (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1)); @fluidSidebarWidth: 220px; @zindexDropdown: 1000; @zindexPopover: 1010; @zindexTooltip: 1020; @zindexFixedNavbar: 1030; @zindexModalBackdrop: 1040; @zindexModal: 1050; @baseFontSize: 13px; @baseFontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif; @baseLineHeight: 18px; @primaryButtonColor: @blue;");
+    		"bootstrap-variables",
+    		"@linkColor: #08c; @linkColorHover: darken(@linkColor, 15); @black: #000; @grayDark: #333; @gray: #555; @grayLight: #999; @grayLighter: #eee; @white: #fff; @blue: #049CDB; @blueDark: #0064CD; @green: #46a546; @red: #9d261d; @yellow: #ffc40d; @orange: #f89406; @pink: #c3325f; @purple: #7a43b6; @gridColumns: 12; @gridColumnWidth: 60px; @gridGutterWidth: 20px; @siteWidth: (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1)); @fluidSidebarWidth: 220px; @zindexDropdown: 1000; @zindexPopover: 1010; @zindexTooltip: 1020; @zindexFixedNavbar: 1030; @zindexModalBackdrop: 1040; @zindexModal: 1050; @baseFontSize: 13px; @baseFontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif; @baseLineHeight: 18px; @primaryButtonColor: @blue;");
     }
 
     @Test
     public void test_01() throws Exception {
 
         __(
-        "the default-theme-settings\n" +
-        "\n" +
-        "    (default, theme-settings)\n" +
-        "\n" +
-        "    (link-color            \"#08c\")\n" +
-        "\n" +
-        "    (black                 \"#000\")\n" +
-        "    (gray-dark             \"#333\")\n" +
-        "    (gray                  \"#555\")\n" +
-        "    (gray-light            \"#999\")\n" +
-        "    (gray-lighter          \"#eee\")\n" +
-        "    (white                 \"#fff\")\n" +
-        "\n" +
-        "    (blue                  \"#049CDB\")\n" +
-        "    (blue-dark             \"#0064CD\")\n" +
-        "    (green                 \"#46a546\")\n" +
-        "    (red                   \"#9d261d\")\n" +
-        "    (yellow                \"#ffc40d\")\n" +
-        "    (orange                \"#f89406\")\n" +
-        "    (pink                  \"#c3325f\")\n" +
-        "    (purple                \"#7a43b6\")\n" +
-        "\n" +
-        "\n" +
-        "    (grid-columns          12)\n" +
-        "    (grid-column-width     \"60px\")\n" +
-        "    (grid-gutter-width     \"20px\")\n" +
-        "\n" +
-        "    (fluid-sidebar-width   \"220px\")\n" +
-        "\n" +
-        "    (base-font-size        \"13px\")\n" +
-        "    (base-font-family      \"'Helvetica Neue', Helvetica, Arial, sans-serif\")\n" +
-        "    (base-line-height      \"18px\")\n" +
-        "\n" +
-        "    (primary-color         \"@blue\")"
+        "the default-theme-settings " +
+	
+	        "(default, theme-settings) " +
+	
+	        "(link-color            \"#08c\") " +
+	
+	        "(black                 \"#000\") " +
+	        "(gray-dark             \"#333\") " +
+	        "(gray                  \"#555\") " +
+	        "(gray-light            \"#999\") " +
+	        "(gray-lighter          \"#eee\") " +
+	        "(white                 \"#fff\") " +
+	
+	        "(blue                  \"#049CDB\") " +
+	        "(blue-dark             \"#0064CD\") " +
+	        "(green                 \"#46a546\") " +
+	        "(red                   \"#9d261d\") " +
+	        "(yellow                \"#ffc40d\") " +
+	        "(orange                \"#f89406\") " +
+	        "(pink                  \"#c3325f\") " +
+	        "(purple                \"#7a43b6\") " +
+	
+	        "(grid-columns          12) " +
+	        "(grid-column-width     \"60px\") " +
+	        "(grid-gutter-width     \"20px\") " +
+	
+	        "(fluid-sidebar-width   \"220px\") " +
+	
+	        "(base-font-size        \"13px\") " +
+	        "(base-font-family      \"'Helvetica Neue', Helvetica, Arial, sans-serif\") " +
+	        "(base-line-height      \"18px\") " +
+	
+	        "(primary-color         \"@blue\")"
         ,
 
-        "the bootstrap-variables\n" +
-        "\n" +
-        "    (mime-type text-x-less)\n" +
-        "\n" +
-        "    (any theme-settings)\n" +
-        "\n" +
-        "    (\"@linkColor: \")            (get link-color) (\"; \")\n" +
-        "\n" +
-        "    (\"@linkColorHover: darken(@linkColor, 15); \")\n" +
-        "\n" +
-        "    (\"@black: \")                (get black) (\"; \")\n" +
-        "    (\"@grayDark: \")             (get gray-dark) (\"; \")\n" +
-        "    (\"@gray: \")                 (get gray) (\"; \")\n" +
-        "    (\"@grayLight: \")            (get gray-light) (\"; \")\n" +
-        "    (\"@grayLighter: \")          (get gray-lighter) (\"; \")\n" +
-        "    (\"@white: \")                (get white) (\"; \")\n" +
-        "\n" +
-        "    (\"@blue: \")                 (get blue) (\"; \")\n" +
-        "    (\"@blueDark: \")             (get blue-dark) (\"; \")\n" +
-        "    (\"@green: \")                (get green) (\"; \")\n" +
-        "    (\"@red: \")                  (get red) (\"; \")\n" +
-        "    (\"@yellow: \")               (get yellow) (\"; \")\n" +
-        "    (\"@orange: \")               (get orange) (\"; \")\n" +
-        "    (\"@pink: \")                  (get pink) (\"; \")\n" +
-        "    (\"@purple: \")               (get purple) (\"; \")\n" +
-        "\n" +
-        "    (\"@gridColumns: \")          (get grid-columns) (\"; \")\n" +
-        "    (\"@gridColumnWidth: \")      (get grid-column-width) (\"; \")\n" +
-        "    (\"@gridGutterWidth: \")      (get grid-gutter-width) (\"; \")\n" +
-        "\n" +
-        "    (\"@siteWidth: (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1)); \")\n" +
-        "\n" +
-        "    (\"@fluidSidebarWidth: \")    (get fluid-sidebar-width) (\"; \")\n" +
-        "\n" +
-        "    (\"@zindexDropdown: 1000; @zindexPopover: 1010; @zindexTooltip: 1020; @zindexFixedNavbar: 1030; @zindexModalBackdrop: 1040; @zindexModal: 1050; \")\n" +
-        "\n" +
-        "    (\"@baseFontSize: \")         (get base-font-size) (\"; \")\n" +
-        "    (\"@baseFontFamily: \")       (get base-font-family) (\"; \")\n" +
-        "    (\"@baseLineHeight: \")       (get base-line-height) (\"; \")\n" +
-        "\n" +
-        "    (\"@primaryButtonColor: \")   (get primary-color)"
+        "the bootstrap-variables " +
+
+        "(mime-type text-x-less) " +
+
+        "(any theme-settings) " +
+
+        "(ordered (\"@linkColor: \")            (get link-color) (\"; \") )" +
+
+        "(ordered (\"@linkColorHover: darken(@linkColor, 15); \") )" +
+
+        "(ordered (\"@black: \")                (get black) (\"; \") )" +
+        "(ordered (\"@grayDark: \")             (get gray-dark) (\"; \") )" +
+        "(ordered (\"@gray: \")                 (get gray) (\"; \") )" +
+        "(ordered (\"@grayLight: \")            (get gray-light) (\"; \") )" +
+        "(ordered (\"@grayLighter: \")          (get gray-lighter) (\"; \") )" +
+        "(ordered (\"@white: \")                (get white) (\"; \") )" +
+
+		"(ordered (\"@blue: \")                 (get blue) (\"; \") )" +
+		"(ordered (\"@blueDark: \")             (get blue-dark) (\"; \") )" +
+		"(ordered (\"@green: \")                (get green) (\"; \") )" +
+		"(ordered (\"@red: \")                  (get red) (\"; \") )" +
+		"(ordered (\"@yellow: \")               (get yellow) (\"; \") )" +
+		"(ordered (\"@orange: \")               (get orange) (\"; \") )" +
+		"(ordered (\"@pink: \")                 (get pink) (\"; \") )" +
+		"(ordered (\"@purple: \")               (get purple) (\"; \") )" +
+		
+		"(ordered (\"@gridColumns: \")          (get grid-columns) (\"; \") )" +
+		"(ordered (\"@gridColumnWidth: \")      (get grid-column-width) (\"; \") )" +
+		"(ordered (\"@gridGutterWidth: \")      (get grid-gutter-width) (\"; \") )" +
+		
+		"(ordered (\"@siteWidth: (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1)); \") )" +
+		
+		"(ordered (\"@fluidSidebarWidth: \")    (get fluid-sidebar-width) (\"; \") )" +
+		
+		"(ordered (\"@zindexDropdown: 1000; @zindexPopover: 1010; @zindexTooltip: 1020; @zindexFixedNavbar: 1030; @zindexModalBackdrop: 1040; @zindexModal: 1050; \") )" +
+		
+		"(ordered (\"@baseFontSize: \")         (get base-font-size) (\"; \") )" +
+		"(ordered (\"@baseFontFamily: \")       (get base-font-family) (\"; \") )" +
+		"(ordered (\"@baseLineHeight: \")       (get base-line-height) (\"; \") )" +
+		
+		"(ordered (\"@primaryButtonColor: \")   (get primary-color) )"
         );
 
         assertStringResult("bootstrap-variables", 
@@ -212,20 +210,16 @@ public class BootstrapTest extends ATest {
     public void test_02() throws Exception {
 
         __(
-        "the default-theme-settings\n" +
-        "\n" +
-        "    (default, theme-settings)\n" +
-        "\n" +
-        "    (primary-color         \"@blue\")"
+        "the default-theme-settings " +
+        	"(default, theme-settings) " +
+        	"(primary-color         \"@blue\")"
         ,
 
         "the bootstrap-variables\n" +
-        "\n" +
-        "    (mime-type text-x-less)\n" +
-        "\n" +
-        "    (any theme-settings)\n" +
-        "\n" +
-        "    (\"@primaryButtonColor: \")   (get primary-color) (\";\")"
+        	"(mime-type text-x-less) " +
+        	"(any theme-settings) " +
+        
+        	"(ordered (\"@primaryButtonColor: \")   (get primary-color) (\";\") )"
         );
 
         assertStringResult("bootstrap-variables", "@primaryButtonColor: @blue;");
@@ -235,20 +229,15 @@ public class BootstrapTest extends ATest {
     public void test_03() throws Exception {
 
         __(
-        "the default-theme-settings\n" +
-        "\n" +
-        "    (default, theme-settings)\n" +
-        "\n" +
-        "    (primary-color         \"@blue\")"
+        "the default-theme-settings " +
+    		"(default, theme-settings) " +
+    		"(primary-color         \"@blue\")"
         ,
 
 		"the bootstrap-variables\n" +
-        "\n" +
-        "    (mime-type text-x-less)\n" +
-        "\n" +
-        "    (any theme-settings)\n" +
-        "\n" +
-        "    ((\"@primaryButtonColor: \")   (get primary-color))"
+			"(mime-type text-x-less)\n" +
+			"(any theme-settings)\n" +
+			"(ordered (\"@primaryButtonColor: \")   (get primary-color) )"
         );
 
         assertStringResult("bootstrap-variables", "@primaryButtonColor: @blue");

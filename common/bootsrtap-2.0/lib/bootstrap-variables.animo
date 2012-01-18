@@ -21,7 +21,7 @@ the bootstrap-variables
     ("@red: ")                  (get red) ("; ")
     ("@yellow: ")               (get yellow) ("; ")
     ("@orange: ")               (get orange) ("; ")
-    ("@pink: "                  (get pink) ("; ")
+    ("@pink: ")                 (get pink) ("; ")
     ("@purple: ")               (get purple) ("; ")
 
     ("@gridColumns: ")          (get grid-columns) ("; ")

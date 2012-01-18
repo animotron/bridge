@@ -96,7 +96,7 @@ public class BootstrapTest extends ATest {
         "    (\"@red: \")                  (get red) (\"; \")\n" +
         "    (\"@yellow: \")               (get yellow) (\"; \")\n" +
         "    (\"@orange: \")               (get orange) (\"; \")\n" +
-        "    (\"@pink: \"                  (get pink) (\"; \")\n" +
+        "    (\"@pink: \")                  (get pink) (\"; \")\n" +
         "    (\"@purple: \")               (get purple) (\"; \")\n" +
         "\n" +
         "    (\"@gridColumns: \")          (get grid-columns) (\"; \")\n" +
@@ -113,7 +113,8 @@ public class BootstrapTest extends ATest {
         "    (\"@baseFontFamily: \")       (get base-font-family) (\"; \")\n" +
         "    (\"@baseLineHeight: \")       (get base-line-height) (\"; \")\n" +
         "\n" +
-        "    (\"@primaryButtonColor: \")   (get primary-color) (\";\")"
+        "    (\"@primaryButtonColor: \")   (get primary-color) (\";\")" +
+        ""
         );
 
         assertStringResult(new AnimoExpression("bootstrap-variables"), "");
@@ -182,7 +183,7 @@ public class BootstrapTest extends ATest {
         "    (\"@red: \")                  (get red) (\"; \")\n" +
         "    (\"@yellow: \")               (get yellow) (\"; \")\n" +
         "    (\"@orange: \")               (get orange) (\"; \")\n" +
-        "    (\"@pink: \"                  (get pink) (\"; \")\n" +
+        "    (\"@pink: \")                  (get pink) (\"; \")\n" +
         "    (\"@purple: \")               (get purple) (\"; \")\n" +
         "\n" +
         "    (\"@gridColumns: \")          (get grid-columns) (\"; \")\n" +
@@ -245,7 +246,7 @@ public class BootstrapTest extends ATest {
         "\n" +
         "    (any theme-settings)\n" +
         "\n" +
-        "    (\"@primaryButtonColor: \")   (get primary-color)"
+        "    ((\"@primaryButtonColor: \")   (get primary-color))"
         );
 
         assertStringResult(new AnimoExpression("bootstrap-variables"), "@primaryButtonColor: @blue");

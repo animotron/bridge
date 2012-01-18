@@ -56,15 +56,16 @@ public class IDETest extends ATest {
 				_(AN._, "animoIDE")
 //			)
         );
+    	
+    	long time = System.currentTimeMillis();
     	assertXMLResult(s, 
 		"<html>" +
 			"<head>" +
 				"<title/>" +
-				"<meta name=\"keywords\" content=\"\"/><meta name=\"description\" content=\"\"/>" +
 				"<link rel=\"shortcut icon\" href=\"\"/>" +
-				"<script src=\"/common/ace-0.2.0/src/ace.js\"/>" +
-				"<script src=\"/common/ace-0.2.0/textarea/src/ace.js\"/>" +
-				"<script src=\"/common/jquery-1.7.1/jquery.min.js\"/>" +
+				"<script src=\"/common/ace-0.2.0/src/ace.js?ed2ca47b667f0cf978c4bcad33353a09c7f87d0c76540ba6ed277901b89b3965\"/>" +
+				"<script src=\"/common/ace-0.2.0/textarea/src/ace.js?6967de4fa08f2e5c9ed5aa77fc6f0847d8130f265018736a1ac1d264eeca7c87\"/>" +
+				"<script src=\"/common/jquery-1.7.1/jquery.min.js?88171413fc76dda23ab32baa17b11e4fff89141c633ece737852445f1ba6c1bd\"/>" +
 			"</head>" +
 			"<body>" +
 				"<div class=\"ui-layout-north\">" +
@@ -96,6 +97,7 @@ public class IDETest extends ATest {
 				"</div>" +
 			"</body>" +
 		"</html>");
+    	System.out.println("Done in "+(System.currentTimeMillis() - time));
     }
     
 }

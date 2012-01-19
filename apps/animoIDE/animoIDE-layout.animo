@@ -1,70 +1,22 @@
 the animoIDE-layout
+
 	(layout)
 
-    (\div 
-    	(@class "ui-layout-north")
-        (\div 
-        	(@id "header")
-            (\div 
-            	(@id "login-info")
-            	(\span @id "user")
-                (\a (@id "login") (@href "#") "Login")
-            )
+    (!-- "Navigation")
+    (\div (@class "navbar navbar-static")
+      (\div (@class "navbar-inner")
+        (\div (@class "container")
+          (\a (@class "brand") (@href "/") (get project-name))
+          (\span (@class "brand") "Animo IDE")
+          (!-- \ul (@class "nav")
+            (\li (@class "active") "Animo IDE")
+          )
+          (\form (@class "navbar-search")
+            (\input (@type "text") (@class "search-query pull-left") (@placeholder "Search"))
+          )
         )
+      )
     )
-    (\div 
-    	(@class "ui-layout-center")
-        (\div 
-        	(@class "editor-header")
-            (\div 
-            	(@class "menu")
-                	(\ul
-                        (\li
-                            (\a (@href "#") "File")
-                            (\ul
-                                (\li
-                                    (\a (@href "#") (@id "menu-file-open") "Open")
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            (\span 
-            	(@id "toolbar")>
-                (\span 
-                	(@class "options")
-                    (\label (@for "syntax") "Syntax: "
-                        (\select 
-                        	(@id "syntax")
-                            (\option (@value "xml") "XML")
-                            (\option (@value "html") "HTML")
-                            (\option (@value "javascript") "Javascript")
-                            (\option (@value "css") "CSS")
-                        )
-                    )
-                )
-                (\button (@id "open") "Open")
-                (\button (@id "close") "Close")
-                (\button (@id "run") "Run")
-            )
-            (\div 
-            	(@id "tabs-container")
-                (\ul (@id "tabs")
-                (\button (@id "tab-prev") "Previous")
-                (\button (@id "tab-next") "Next")
-            )
-        )
-        (\pre (@class "content") (@id "editor"))
-        (\div 
-        	(@id "status-bar") 
-            (\input (@id "search-box") (@type "text"))
-            (\a (@href "#") (\id "error-status"))
-        )
-    )
-    (\div (@id "outline-container") (@class "ui-layout-west")
-        (\h3 "Outline")
-        (\ul (@id "outline") (@class "content")
-            (\li)
-        )
-    )
+
+    (\div (@id "editor") "the foo (bar \"Hello world!\")")
+

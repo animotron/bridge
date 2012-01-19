@@ -1,4 +1,6 @@
 the animoIDE
     html-page
 	    (use animoIDE-layout)
-        (weak-use jquery, ace)
+	    (any js weak-use jquery)
+	    (any js weak-use ace)
+	    (any js weak-use animo-ide)

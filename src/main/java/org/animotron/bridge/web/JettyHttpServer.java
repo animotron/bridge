@@ -49,12 +49,13 @@ public class JettyHttpServer {
     	//initialize animo
     	if (startDB("data")) {
     		//if (!getSTART().hasRelationship(Direction.OUTGOING)) {
-                FSBridge._.load("animo/");
-                FSBridge._.load("apps/");
-                FSBridge._.load("etc/");
-                new ResourcesBridge("/binary").load("site/");
                 new ResourcesMap("/common").load("common/");
                 new ResourcesMap("/theme").load("theme/");
+                FSBridge._.load("animo/");
+                FSBridge._.load("etc/");
+                ResourcesBridge bin = new ResourcesBridge("/binary");
+                bin.load("apps/");
+                bin.load("site/");
         	//}
     	}
     	

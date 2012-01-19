@@ -20,13 +20,6 @@
  */
 package org.animotron.bridge.web;
 
-import org.animotron.cache.FileCache;
-import org.animotron.expression.JExpression;
-import org.animotron.graph.serializer.CachedSerializer;
-import org.animotron.statement.compare.WITH;
-import org.animotron.statement.query.ANY;
-import org.animotron.statement.query.GET;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,11 +30,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
-import static org.animotron.bridge.web.WebSerializer.MIME_TYPE;
-import static org.animotron.bridge.web.WebSerializer.TYPE;
-import static org.animotron.expression.JExpression._;
-import static org.animotron.expression.JExpression.value;
-import static org.animotron.graph.Nodes.EXTENSION;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -62,13 +50,7 @@ public class MapServlet extends HttpServlet {
         String name = file.getName();
         int index = name.lastIndexOf(".");
         if (index > 0) {
-            String mime = CachedSerializer.STRING.serialize(
-                new JExpression(
-                    _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value(name.substring(index + 1)))))
-                ),
-                FileCache._
-            );
-            return mime.isEmpty() ? "application/octet-stream" : mime;
+            return WebSerializer.mime(name.substring(index + 1));
         }
         return "application/octet-stream";
     }

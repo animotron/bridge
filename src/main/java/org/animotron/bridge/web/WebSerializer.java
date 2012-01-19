@@ -26,6 +26,8 @@ import org.animotron.exception.ENotFound;
 import org.animotron.expression.Expression;
 import org.animotron.expression.JExpression;
 import org.animotron.graph.serializer.CachedSerializer;
+import org.animotron.statement.compare.WITH;
+import org.animotron.statement.query.ANY;
 import org.animotron.statement.query.GET;
 
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +35,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import static org.animotron.expression.JExpression._;
+import static org.animotron.expression.JExpression.value;
+import static org.animotron.graph.Nodes.EXTENSION;
 import static org.animotron.graph.serializer.CachedSerializer.*;
 
 /**
@@ -63,6 +67,16 @@ public class WebSerializer {
                     mime.equals("text/html") ? HTML : mime.endsWith("xml") ? XML : STRING;
             cs.serialize(request, os, cache);
         }
+    }
+
+    public static String mime(String ext) throws IOException {
+        String mime = CachedSerializer.STRING.serialize(
+                new JExpression(
+                        _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value(ext))))
+                ),
+                FileCache._
+        );
+        return mime.isEmpty() ? "application/octet-stream" : mime;
     }
 
 }

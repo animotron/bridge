@@ -20,7 +20,6 @@
  */
 package org.animotron.bridge.web;
 
-import org.animotron.cache.FileCache;
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.JExpression;
 import org.animotron.graph.serializer.CachedSerializer;
@@ -39,8 +38,8 @@ import java.io.*;
 import java.util.Enumeration;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
-import static org.animotron.bridge.web.WebSerializer.TYPE;
 import static org.animotron.expression.JExpression._;
+import static org.animotron.graph.Nodes.EXTENSION;
 import static org.animotron.graph.Properties.HASH;
 import static org.animotron.graph.Properties.VALUE;
 import static org.animotron.utils.MessageDigester.byteArrayToHex;
@@ -55,8 +54,7 @@ public class BridgeServlet extends HttpServlet {
 	private static final long serialVersionUID = 6702513972501476806L;
 
     private String mime(Relationship r) throws IOException {
-        String mime = CachedSerializer.STRING.serialize(new JExpression(_(GET._, TYPE, _(r))), FileCache._);
-        return mime.isEmpty() ? "application/octet-stream" : mime;
+        return WebSerializer.mime(CachedSerializer.STRING.serialize(new JExpression(_(GET._, EXTENSION, _(r)))));
     }
 
 	@Override

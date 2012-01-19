@@ -83,12 +83,13 @@ public class BridgeServlet extends HttpServlet {
                 }
             }
             long since = req.getDateHeader("If-Modified-Since");
-            if (since < modified || since > System.currentTimeMillis()) {
+            long time = System.currentTimeMillis();
+            if (since < modified || since > time) {
                 res.setContentLength((int) file.length());
                 if (isHTTP11) {
-                    res.setHeader("Cache-Control", "public, max-age=" + Integer.MAX_VALUE);
+                    res.setHeader("Cache-Control", "public, max-age=" + (long) 365 * 24 * 60 * 60);
                 }
-                res.setDateHeader("Expires", Integer.MAX_VALUE);
+                res.setDateHeader("Expires", time + (long) 365 * 24 * 60 * 60 * 1000);
                 res.setContentType(mime(r));
                 OutputStream os = res.getOutputStream();
                 byte [] buf = new byte[4096];

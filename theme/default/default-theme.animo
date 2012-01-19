@@ -1,4 +1,3 @@
 the default-theme
     (default, theme)
-    (any less weak-use bootstrap)
-    (any js weak-use less)
+    (weak-use bootstrap, less-css)

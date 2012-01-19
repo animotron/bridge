@@ -20,3 +20,5 @@ the animoIDE-layout
 
     (\div (@id "editor") "the foo (bar \"Hello world!\")")
 
+    (\script "$(function(){$('#editor').ide});")
+

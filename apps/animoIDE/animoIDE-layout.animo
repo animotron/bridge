@@ -2,8 +2,15 @@ the animoIDE-layout
 
 	(layout)
 
+    (\style
+     "html, body {overflow: hidden;} "
+     "#editor {margin: 0; position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "
+     ".ace_editor {font-size: 16px} ")
+
+    (\script "$(function(){$('#editor').ide()});")
+
     (!-- "Navigation")
-    (\div (@class "navbar navbar-static")
+    (\div (@class "navbar navbar-fixed")
       (\div (@class "navbar-inner")
         (\div (@class "container")
           (\a (@class "brand") (@href "/") (get project-name))
@@ -19,6 +26,4 @@ the animoIDE-layout
     )
 
     (\div (@id "editor") "the foo (bar \"Hello world!\")")
-
-    (\script "$(function(){$('#editor').ide});")
 

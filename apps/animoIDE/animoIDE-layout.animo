@@ -7,7 +7,7 @@ the animoIDE-layout
      "#editor {margin: 0; position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "
      ".ace_editor {font-size: 16px} ")
 
-    (\script "$(function(){$('#editor').ide()});")
+    (\script "$(function(){$('#editor').ide.editor()});")
 
     (!-- "Navigation")
     (\div (@class "navbar navbar-fixed")
@@ -18,7 +18,7 @@ the animoIDE-layout
           (!-- \ul (@class "nav")
             (\li (@class "active") "Animo IDE")
           )
-          (\form (@class "navbar-search")
+          (\div (@class "navbar-search")
             (\input (@type "text") (@class "search-query pull-left") (@placeholder "Search"))
           )
         )

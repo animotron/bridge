@@ -25,5 +25,5 @@ the animoIDE-layout
       )
     )
 
-    (\div (@id "editor") "the foo (bar \"Hello world!\")")
+    (\div (@id "editor"))
 

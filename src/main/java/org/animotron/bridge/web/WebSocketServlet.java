@@ -64,7 +64,7 @@ public class WebSocketServlet extends HttpServlet {
 		});
 
 		factory.setBufferSize(4096);
-		factory.setMaxIdleTime(60000);
+		factory.setMaxIdleTime(10 * 60 * 1000);
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

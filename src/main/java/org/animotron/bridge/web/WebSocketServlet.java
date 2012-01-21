@@ -20,22 +20,22 @@
  */
 package org.animotron.bridge.web;
 
-import java.io.IOException;
-import java.util.Set;
+import org.animotron.graph.serializer.CachedSerializer;
+import org.animotron.statement.operator.THE;
+import org.eclipse.jetty.websocket.WebSocket;
+import org.eclipse.jetty.websocket.WebSocketFactory;
+import org.neo4j.graphdb.Relationship;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import javolution.util.FastSet;
-
-import org.eclipse.jetty.websocket.WebSocket;
-import org.eclipse.jetty.websocket.WebSocketFactory;
+import java.io.IOException;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
- * 
+ * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
+ *
  */
 public class WebSocketServlet extends HttpServlet {
 
@@ -53,25 +53,24 @@ public class WebSocketServlet extends HttpServlet {
 			}
 
 			public WebSocket doWebSocketConnect(HttpServletRequest request, String protocol) {
-				if ("animo-protocol".equals(protocol))
-					return new AnimoProtocol();
+				if ("src".equals(protocol))
+					return new SourceAnimoProtocol();
 				return null;
 			}
 		});
+
 		factory.setBufferSize(4096);
 		factory.setMaxIdleTime(60000);
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("ChatServlet "+request.getRequestURI());
-		
-		if (factory.acceptWebSocket(request, response))
+		if (factory.acceptWebSocket(request, response)) {
 			return;
-		
+        }
 		response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "Websocket only");
 	}
 
-	private class AnimoProtocol implements WebSocket.OnTextMessage {
+	private class SourceAnimoProtocol implements WebSocket.OnTextMessage {
 		Connection cnn;
 
 		public void onOpen(Connection connection) {
@@ -83,9 +82,14 @@ public class WebSocketServlet extends HttpServlet {
 
 		public void onMessage(String data) {
 			try {
-				cnn.sendMessage(data);
+                Relationship r = THE._.get(data);
+                if (r != null) {
+				    cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r));
+                }
 			} catch (IOException e) {
 			}
 		}
+
 	}
+
 }

@@ -5,9 +5,14 @@ the animoIDE-layout
     (\style
      "html, body {overflow: hidden;} "
      "#editor {margin: 0; position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "
-     ".ace_editor {font-size: 16px} ")
+     ".ace_editor {font-size: 16px}")
 
-    (\script "$(function(){$('#editor').ide.editor()});")
+    (\script "
+        $(function() {
+            $('#editor').ideEditor();
+            $('#search').ideSearch();
+        });
+    ")
 
     (!-- "Navigation")
     (\div (@class "navbar navbar-fixed")
@@ -19,7 +24,7 @@ the animoIDE-layout
             (\li (@class "active") "Animo IDE")
           )
           (\div (@class "navbar-search")
-            (\input (@type "text") (@class "search-query pull-left") (@placeholder "Search"))
+            (\input (@id "search") (@type "text") (@class "search-query pull-left") (@placeholder "Search"))
           )
         )
       )

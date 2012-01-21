@@ -20,6 +20,8 @@
  */
 package org.animotron.bridge.web;
 
+import org.animotron.expression.AnimoExpression;
+import org.animotron.expression.Expression;
 import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.statement.operator.THE;
 import org.eclipse.jetty.websocket.WebSocket;
@@ -53,8 +55,10 @@ public class WebSocketServlet extends HttpServlet {
 			}
 
 			public WebSocket doWebSocketConnect(HttpServletRequest request, String protocol) {
-				if ("src".equals(protocol))
-					return new SourceAnimoProtocol();
+                if ("src".equals(protocol))
+                    return new SourceAnimo();
+                if ("save".equals(protocol))
+                    return new SaveAnimo();
 				return null;
 			}
 		});
@@ -70,26 +74,54 @@ public class WebSocketServlet extends HttpServlet {
 		response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "Websocket only");
 	}
 
-	private class SourceAnimoProtocol implements WebSocket.OnTextMessage {
-		Connection cnn;
+    private class SourceAnimo implements WebSocket.OnTextMessage {
 
-		public void onOpen(Connection connection) {
-			cnn = connection;
-		}
+        Connection cnn;
 
-		public void onClose(int closeCode, String message) {
-		}
+        @Override
+        public void onOpen(Connection connection) {
+            cnn = connection;
+        }
 
-		public void onMessage(String data) {
-			try {
+        @Override
+        public void onClose(int closeCode, String message) {
+        }
+
+        @Override
+        public void onMessage(String data) {
+            try {
                 Relationship r = THE._.get(data);
                 if (r != null) {
-				    cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r));
+                    cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r));
                 }
-			} catch (IOException e) {
-			}
-		}
+            } catch (IOException e) {
+            }
+        }
 
-	}
+    }
+
+    private class SaveAnimo implements WebSocket.OnTextMessage {
+
+        Connection cnn;
+
+        @Override
+        public void onOpen(Connection connection) {
+            cnn = connection;
+        }
+
+        @Override
+        public void onClose(int closeCode, String message) {
+        }
+
+        @Override
+        public void onMessage(String data) {
+            try {
+                Expression e = new AnimoExpression(data);
+                cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(e));
+            } catch (IOException e) {
+            }
+        }
+
+    }
 
 }

@@ -1,6 +1,0 @@
-the ru-lang
-	(language)
-	(word 
-		(en-lang "english")
-		(ru-lang "русский")
-	)

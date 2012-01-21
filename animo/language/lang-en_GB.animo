@@ -1,0 +1,6 @@
+the lang-en_GB
+	(lang-en)
+	(word 
+		(lang-en "British English")
+		(lang-ru "британский английский")
+	)

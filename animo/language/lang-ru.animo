@@ -1,0 +1,6 @@
+the lang-ru
+	(language)
+	(word 
+		(lang-en "russian")
+		(lang-ru "русский")
+	)

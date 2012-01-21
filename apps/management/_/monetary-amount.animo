@@ -1,0 +1,5 @@
+the monetary-amount
+	(part
+		(number)
+		(currency)
+	)

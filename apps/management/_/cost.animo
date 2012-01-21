@@ -1,4 +1,6 @@
 the cost
+	(monetary-amount)
+	
 	(word 
 		(lang-en "cost")
 		(lang-ru "стоимость")
@@ -6,7 +8,10 @@ the cost
 	
 	(* (qty) (cost))
 	
-	(part
+	
+	(!--
+	"(part
 		(number)
 		(currency)
+	)"
 	)

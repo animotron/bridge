@@ -1,0 +1,6 @@
+the accounts-receivable
+	(word 
+		(lang-en "accounts receivable")
+		(lang-en "A/R")
+		(lang-ru "счет дебиторов")
+	)

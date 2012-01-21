@@ -1,0 +1,13 @@
+the general-journal
+	(word 
+		(lang-en "general journal")
+		(lang-ru "")
+	)
+	
+	(!-- "
+    The date of the transaction;
+    Titles of the accounts debited and credited (credited account is indented several spaces);
+    The amount of each debit and credit; and,
+    An explanation of the transaction also known as a Narration.
+    ")
+	

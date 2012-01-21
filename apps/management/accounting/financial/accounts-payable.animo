@@ -1,0 +1,6 @@
+the accounts-payable
+	(word 
+		(lang-en "accounts payable")
+		(lang-en "A/P")
+		(lang-ru "счет кредиторов")
+	)

@@ -1,0 +1,10 @@
+the monetary-transactions
+	(word 
+		(lang-en "monetary transactions")
+		(lang-ru "")
+	)
+	
+	(part
+		(debit-record)
+		(credit-record)
+	)

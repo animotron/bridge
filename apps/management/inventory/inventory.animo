@@ -1,0 +1,6 @@
+the inventory
+	(word 
+		(lang-en_US "inventory")
+		(lang-en_GB "stock")
+		(lang-ru "учёт товара и материала")
+	)

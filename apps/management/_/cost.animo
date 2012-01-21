@@ -1,0 +1,17 @@
+the cost
+	(monetary-amount)
+	
+	(word 
+		(lang-en "cost")
+		(lang-ru "стоимость")
+	)
+	
+	(* (qty) (cost))
+	
+	
+	(!--
+	"(part
+		(number)
+		(currency)
+	)"
+	)

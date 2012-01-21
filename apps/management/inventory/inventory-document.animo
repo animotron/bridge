@@ -1,0 +1,13 @@
+the inventory-document
+	(document)
+
+	(word 
+		(lang-en "warehouse document")
+		(lang-ru "складской документ")
+	)
+	
+	(part
+		(issue-party)
+		(receive-party)
+		(SKU)
+	)

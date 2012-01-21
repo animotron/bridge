@@ -1,0 +1,6 @@
+the balance-sheet
+	(word 
+		(lang-en "balance sheet")
+		(lang-en "statement of financial position")
+		(lang-ru "бухгалтерский баланс")
+	)

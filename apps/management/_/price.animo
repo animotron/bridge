@@ -1,0 +1,7 @@
+the price
+	(word 
+		(lang-en "price")
+		(lang-ru "цена")
+	)
+
+	(/ (cost) (qty))

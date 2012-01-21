@@ -1,0 +1,5 @@
+the currency
+	(word 
+		(lang-en "currency")
+		(lang-ru "валюта")
+	)

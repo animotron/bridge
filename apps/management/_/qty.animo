@@ -1,0 +1,12 @@
+the qty
+	(word 
+		(lang-en "quantity")
+		(lang-ru "количество")
+	)
+	
+	(/ (cost) (price))
+	
+	(part
+		(number)
+		(UoM)
+	)

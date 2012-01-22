@@ -22,11 +22,13 @@ package org.animotron.bridge.web;
 
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
+import org.animotron.graph.index.Order;
 import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.statement.operator.THE;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketFactory;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.index.IndexHits;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -57,9 +59,14 @@ public class WebSocketServlet extends HttpServlet {
 			public WebSocket doWebSocketConnect(HttpServletRequest request, String protocol) {
                 if ("src".equals(protocol))
                     return new SourceAnimo();
-                if ("save".equals(protocol))
+                
+                else if ("save".equals(protocol))
                     return new SaveAnimo();
-				return null;
+
+                else if ("graph".equals(protocol))
+                    return new AnimoGraph();
+				
+                return null;
 			}
 		});
 
@@ -74,10 +81,9 @@ public class WebSocketServlet extends HttpServlet {
 		response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "Websocket only");
 	}
 
-    private class SourceAnimo implements WebSocket.OnTextMessage {
-
+    abstract class OnTextMessage implements WebSocket.OnTextMessage {
         Connection cnn;
-
+    	
         @Override
         public void onOpen(Connection connection) {
             cnn = connection;
@@ -86,6 +92,9 @@ public class WebSocketServlet extends HttpServlet {
         @Override
         public void onClose(int closeCode, String message) {
         }
+    }
+
+	private class SourceAnimo extends OnTextMessage {
 
         @Override
         public void onMessage(String data) {
@@ -93,25 +102,38 @@ public class WebSocketServlet extends HttpServlet {
                 Relationship r = THE._.get(data);
                 if (r != null) {
                     cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r));
+                } else {
+                    //XXX: send error message
                 }
             } catch (IOException e) {
+            	//XXX: send error message, if it come from serializer
             }
         }
 
     }
 
-    private class SaveAnimo implements WebSocket.OnTextMessage {
+    private class AnimoGraph extends OnTextMessage {
 
-        Connection cnn;
+		@Override
+		public void onMessage(String data) {
+            Relationship r = THE._.get(data);
+            if (r == null) return; //XXX: send error message
+			
+            IndexHits<Relationship> hits = Order.queryDown(r.getEndNode());
+            try {
+            	for (Relationship rr : hits) {
+					cnn.sendMessage(rr.getType().name());
+            	}
+			} catch (IOException e) {
+            } finally {
+            	hits.close();
+            }
+            
+		}
+    	
+    }
 
-        @Override
-        public void onOpen(Connection connection) {
-            cnn = connection;
-        }
-
-        @Override
-        public void onClose(int closeCode, String message) {
-        }
+    private class SaveAnimo extends OnTextMessage {
 
         @Override
         public void onMessage(String data) {
@@ -119,9 +141,8 @@ public class WebSocketServlet extends HttpServlet {
                 Expression e = new AnimoExpression(data);
                 cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(e));
             } catch (IOException e) {
+            	//XXX: send error message
             }
         }
-
     }
-
 }

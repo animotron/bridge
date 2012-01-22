@@ -29,4 +29,8 @@ the animoIMS-layout
       )
     )
 
-    (\div (@id "workspace"))
+    (\div (@class "container")
+    	(\div (@class "row")
+    		(\div (@class "span16") (@id "workspace"))
+		)
+	)

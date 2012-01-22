@@ -5,8 +5,12 @@
 
     var commands = require("pilot/canon");
 
-    if (MozWebSocket) {
-        WebSocket = MozWebSocket;
+    if (window.MozWebSocket) {
+        window.WebSocket = window.MozWebSocket;
+    }
+
+    function reopenSocket() {
+        return this;
     }
 
     var uri = "ws://" + location.host + "/ws";
@@ -15,9 +19,11 @@
     src_s.onmessage = function (event) {
         editor.getSession().setValue(event.data);
     }
+    src_s.onclose = reopenSocket;
 
     var save_s = new WebSocket(uri, "save");
     save_s.onmessage = src_s.onmessage;
+    save_s.onclose = reopenSocket;
 
     $.fn.ideEditor = function() {
         var self = $(this);

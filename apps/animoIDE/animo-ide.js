@@ -9,8 +9,10 @@
         window.WebSocket = window.MozWebSocket;
     }
 
-    function reopenSocket() {
-        return this;
+    function onopen(event) {
+        setInterval(function() {
+              event.target.send("");
+        }, 5 * 60 * 1000);
     }
 
     var uri = "ws://" + location.host + "/ws";
@@ -19,11 +21,11 @@
     src_s.onmessage = function (event) {
         editor.getSession().setValue(event.data);
     }
-    src_s.onclose = reopenSocket;
+    src_s.onopen = onopen;
 
     var save_s = new WebSocket(uri, "save");
     save_s.onmessage = src_s.onmessage;
-    save_s.onclose = reopenSocket;
+    save_s.onopen = onopen;
 
     $.fn.ideEditor = function() {
         var self = $(this);

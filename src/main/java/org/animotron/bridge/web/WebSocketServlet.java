@@ -75,7 +75,7 @@ public class WebSocketServlet extends HttpServlet {
 		});
 
 		factory.setBufferSize(4096);
-		factory.setMaxIdleTime(10 * 60 * 1000);
+		factory.setMaxIdleTime(7 * 60 * 1000);
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -87,21 +87,20 @@ public class WebSocketServlet extends HttpServlet {
 
     abstract class OnTextMessage implements WebSocket.OnTextMessage {
         Connection cnn;
-    	
         @Override
         public void onOpen(Connection connection) {
             cnn = connection;
         }
-
         @Override
         public void onClose(int closeCode, String message) {
         }
     }
 
 	private class SourceAnimo extends OnTextMessage {
-
         @Override
         public void onMessage(String data) {
+            if (data.isEmpty())
+                return;
             try {
                 Relationship r = THE._.get(data);
                 if (r != null) {
@@ -113,16 +112,15 @@ public class WebSocketServlet extends HttpServlet {
             	//XXX: send error message, if it come from serializer
             }
         }
-
     }
 
     private class AnimoGraph extends OnTextMessage {
-
 		@Override
 		public void onMessage(String data) {
+            if (data.isEmpty())
+                return;
             Relationship r = THE._.get(data);
             if (r == null) return; //XXX: send error message
-			
             IndexHits<Relationship> hits = Order.queryDown(r.getEndNode());
             try {
             	for (Relationship rr : hits) {
@@ -132,9 +130,7 @@ public class WebSocketServlet extends HttpServlet {
             } finally {
             	hits.close();
             }
-            
 		}
-    	
     }
 
     private class AnimoIMS extends OnTextMessage {
@@ -152,9 +148,10 @@ public class WebSocketServlet extends HttpServlet {
     }
 
     private class SaveAnimo extends OnTextMessage {
-
         @Override
         public void onMessage(String data) {
+            if (data.isEmpty())
+                return;
             try {
                 Expression e = new AnimoExpression(data);
                 cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(e));
@@ -163,4 +160,5 @@ public class WebSocketServlet extends HttpServlet {
             }
         }
     }
+
 }

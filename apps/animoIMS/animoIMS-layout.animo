@@ -1,6 +1,10 @@
 the animoIMS-layout
 	(layout)
 
+    (\script @src get uri any jquery-min)
+    (\script @src get uri any kendo-all-min)
+    (\script @src get uri any animo-ims)
+
     (\style
      "html, body {overflow: hidden;} "
      "#workspace {margin: 0; position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "

@@ -1,4 +1,4 @@
 the animoIDE
     html-page
 	    (use animoIDE-layout)
-        (weak-use kendo-default-min)
+        (weak-use kendo-common-min, kendo-default-min)

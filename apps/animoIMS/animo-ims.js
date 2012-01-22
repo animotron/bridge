@@ -2,8 +2,6 @@
 
     var search;
 
-    var commands = require("pilot/canon");
-
     if (window.MozWebSocket) {
         window.WebSocket = window.MozWebSocket;
     }

@@ -33,7 +33,8 @@ import static org.animotron.graph.AnimoGraph.startDB;
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  *
  */
-public class JettyHttpServer {
+public class
+        JettyHttpServer {
 
     private Server jetty;
     private int jettyPort = 8080;
@@ -54,7 +55,8 @@ public class JettyHttpServer {
                 FSBridge._.load("animo/");
                 FSBridge._.load("etc/");
                 ResourcesBridge bin = new ResourcesBridge("/binary");
-                bin.load("apps/");
+                //bin.load("apps/");
+                new ResourcesMap("/apps").load("apps/");
                 bin.load("site/");
         	//}
     	}
@@ -71,6 +73,7 @@ public class JettyHttpServer {
         context.addServlet(new ServletHolder(new BridgeServlet()),"/binary/*");
         context.addServlet(new ServletHolder(new MapServlet("common/")),"/common/*");
         context.addServlet(new ServletHolder(new MapServlet("theme/")),"/theme/*");
+        context.addServlet(new ServletHolder(new MapServlet("apps/")),"/apps/*");
         context.addServlet(new ServletHolder(new WebSocketServlet()),"/ws/*");
         
         //context.getSecurityHandler().setLoginService(new AnimoLoginService());

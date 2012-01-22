@@ -52,6 +52,7 @@ public class WebSocketServlet extends HttpServlet {
 		// Create and configure WS factory
 		factory = new WebSocketFactory(new WebSocketFactory.Acceptor() {
 			public boolean checkOrigin(HttpServletRequest request, String origin) {
+				System.out.println("checkOrigin "+origin);
 				// Allow all origins
 				return true;
 			}
@@ -66,6 +67,9 @@ public class WebSocketServlet extends HttpServlet {
                 else if ("graph".equals(protocol))
                     return new AnimoGraph();
 				
+                else if ("animoIMS".equals(protocol))
+                    return new AnimoIMS();
+
                 return null;
 			}
 		});
@@ -129,6 +133,20 @@ public class WebSocketServlet extends HttpServlet {
             	hits.close();
             }
             
+		}
+    	
+    }
+
+    private class AnimoIMS extends OnTextMessage {
+
+		@Override
+		public void onMessage(String data) {
+			System.out.println("AnimoIMS "+data);
+            try {
+				cnn.sendMessage(CachedSerializer.HTML_PART.serialize(new AnimoExpression(data)));
+			} catch (IOException e) {
+            	//XXX: send error message, if it come from serializer
+			}
 		}
     	
     }

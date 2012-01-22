@@ -1,0 +1,5 @@
+the animoIMS
+
+    html-page
+	    (use animoIMS-layout)
+	    (weak-use jquery-min, kendo-all-min, kendo-default-min, animo-ims)

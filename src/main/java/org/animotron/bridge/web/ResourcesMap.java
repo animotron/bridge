@@ -25,6 +25,7 @@ import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.BinaryMapExpression;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
+import org.animotron.statement.operator.THE;
 import org.animotron.utils.MessageDigester;
 
 import java.io.File;
@@ -51,45 +52,69 @@ public class ResourcesMap extends AbstractResourcesBridge {
         if (file.getName().endsWith(".animo")) {
             __(new AnimoExpression(new FileInputStream(file)));
         } else {
-            __(
-                    new BinaryMapExpression(file) {
-                        @Override
-                        protected void description() throws AnimoException, IOException {
-                            int index;
-                            byte buf[] = new byte[1024 * 4];
-                            int len;
-                            InputStream is = new FileInputStream(file);
-                            MessageDigest md = MessageDigester.md();
-                            while((len=is.read(buf))>0) {
-                                md.update(buf,0,len);
-                            }
-                            is.close();
-                            String name = file.getName();
-                            index = name.lastIndexOf(".");
-                            if (index > 0) {
-                                String extension = name.substring(index + 1);
-                                builder.start(AN._);
-                                    builder._(REF._, extension);
-                                builder.end();
-                                index = name.indexOf(".");
-                                name = name.substring(0, index);
-                            }
-                            builder.start(AN._);
-                                builder._(REF._, name);
-                            builder.end();
-                            builder.start(AN._);
-                                builder._(REF._, URI);
-                                StringBuilder s = new StringBuilder(4);
-                                s.append(uriContext);
-                                s.append(path(file));
-                                s.append("?");
-                                s.append(MessageDigester.byteArrayToHex(md.digest()));
-                                builder._(s.toString());
-                            builder.end();
-                        }
-                    }
-            );
+            __(new MapExpression(file));
         }
+    }
+
+    private class MapExpression extends BinaryMapExpression {
+
+        private final File file;
+        private String id = null;
+        private String name = null;
+        private String extension = null;
+
+        public MapExpression(File file) {
+            super(file);
+            this.file = file;
+            name = file.getName();
+            int index = name.lastIndexOf(".");
+            if (index > 0) {
+                extension = name.substring(index + 1);
+                name = name.substring(0, index);
+            }
+            name = name.replace("\\.", "-");
+            if (THE._.get(name) == null) {
+                id = name;
+            }
+        }
+
+        @Override
+        protected String id() {
+            return id;
+        }
+
+        @Override
+        protected void description() throws AnimoException, IOException {
+            int index;
+            byte buf[] = new byte[1024 * 4];
+            int len;
+            InputStream is = new FileInputStream(file);
+            MessageDigest md = MessageDigester.md();
+            while((len=is.read(buf))>0) {
+                md.update(buf,0,len);
+            }
+            is.close();
+            if (extension != null) {
+                builder.start(AN._);
+                    builder._(REF._, extension);
+                builder.end();
+            }
+            if (id == null) {
+                builder.start(AN._);
+                    builder._(REF._, name);
+                builder.end();
+            }
+            builder.start(AN._);
+                builder._(REF._, URI);
+                StringBuilder s = new StringBuilder(4);
+                s.append(uriContext);
+                s.append(path(file));
+                s.append("?");
+                s.append(MessageDigester.byteArrayToHex(md.digest()));
+                builder._(s.toString());
+            builder.end();
+        }
+
     }
 
 }

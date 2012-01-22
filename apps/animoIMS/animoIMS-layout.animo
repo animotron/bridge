@@ -6,8 +6,7 @@ the animoIMS-layout
     (\script @src get uri any animo-ims)
 
     (\style
-     "html, body {overflow: hidden;} "
-     "#workspace {margin: 0; position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "
+     "body { padding-top: 60px; } "
     )
 
     (\script "
@@ -19,9 +18,8 @@ the animoIMS-layout
     (!-- "Navigation")
     (\div (@class "navbar navbar-fixed")
       (\div (@class "navbar-inner")
-        (\div (@class "container")
-          (\a (@class "brand") (@href "/") (get project-name))
-          (\span (@class "brand") "AnimoIMS")
+        (\div (@class "fluid-container")
+          (\a (@class "brand") (@href "/AnimoIMS") ("AnimoIMS"))
           (\div (@class "navbar-search")
             (\input (@id "search") (@type "text") (@class "search-query pull-left") (@placeholder "Search"))
           )
@@ -29,8 +27,18 @@ the animoIMS-layout
       )
     )
 
-    (\div (@class "container")
-    	(\div (@class "row")
-    		(\div (@class "span16") (@id "workspace"))
+	(\div (@class "fluid-container sidebar-left")
+		(\div (@class "fluid-sidebar")
+        	(\div (@class "well side-nav")
+          		(\h5 (@class "nav-label") "Sidebar")
+          		(\ul (@class "nav-group")
+            		(\li (@class "active") (\a (@class "nav-item") (@href "#") "Link"))
+        		)
+    		)
+		)
+	    (\div (@class "fluid-content")
+	    	(\div (@class "hero-unit")
+	    		(\div (@id "workspace"))
+			)
 		)
 	)

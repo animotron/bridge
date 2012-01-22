@@ -8,10 +8,5 @@ the cost
 	
 	(* (qty) (cost))
 	
-	
-	(!--
-	"(part
-		(number)
-		(currency)
-	)"
-	)
+	(number)
+	(currency)

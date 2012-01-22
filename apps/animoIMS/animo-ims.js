@@ -21,9 +21,7 @@
     $.fn.workspaceSearch = function () {
         search = $(this);
         search.keypress(function(event) {
-           	alert(search.val());
             if (event.which == 13) {
-            	alert(search.val());
                 ims_s.send(search.val());
             }
         });

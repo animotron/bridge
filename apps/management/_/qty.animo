@@ -6,7 +6,5 @@ the qty
 	
 	(/ (cost) (price))
 	
-	(part
-		(number)
-		(UoM)
-	)
+	(number)
+	(UoM)

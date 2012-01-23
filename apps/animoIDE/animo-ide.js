@@ -23,7 +23,7 @@
         }
     };
     socket.onopen = function (event) {
-        var id = window.location.search.split("&")[0].substr(1);
+        var id = window.location.hash.substr(1);
         socket.send(id == "" ? "new" : id);
         socket.onopen = onopen;
     };
@@ -98,7 +98,7 @@
     }
 
     function push(id) {
-        window.history.pushState(id, null, window.location.pathname + "?" + id);
+        window.history.pushState(id, null, window.location.pathname + "#" + id);
     }
 
     function append(id, content) {
@@ -150,7 +150,7 @@
         sinput = $(this)
         sinput.keypress(function(event) {
             if (event.which == 13) {
-                select(event.target.val());
+                select($(event.target).val());
             } else if (event.which == 0) {
                 strip.select()[0].editor.focus();
             }

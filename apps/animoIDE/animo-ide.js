@@ -151,7 +151,7 @@
         sinput.keypress(function(event) {
             if (event.which == 13) {
                 select(event.target.val());
-            } else if (event.which == 27) {
+            } else if (event.which == 0) {
                 strip.select()[0].editor.focus();
             }
         });

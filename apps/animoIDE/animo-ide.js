@@ -35,7 +35,7 @@
             );
 
             var ml = lang.arrayToMap(
-                ("\\ @ $ !-- !! [!CDATA[ ?? &#").split(" ")
+                ("\\ @ $ !-- !! [!CDATA[ ?? &# ( )").split(" ")
             );
 
             this.$rules = {
@@ -59,9 +59,6 @@
                     }, {
                         token : "string", // single line
                         regex : '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
-                    }, {
-                        token : "string", // symbol
-                        regex : "[:](?:[a-zA-Z]|\d)+"
                     }, {
                     token : "string.regexp", //Regular Expressions
                     regex : '/#"(?:\.|(\\\")|[^\""\n])*"/g'

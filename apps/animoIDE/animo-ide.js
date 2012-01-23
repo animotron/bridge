@@ -61,6 +61,22 @@
         }
     });
 
+    commands.addCommand({
+        name: 'close',
+        bindKey: {
+            win: 'Ctrl-W',
+            mac: 'Command-W',
+            sender: 'editor'
+        },
+        exec: function(env, args, request) {
+            var tab = strip.select();
+            window.history.back();
+            tab[0].socket.close();
+            strip.remove(tab);
+
+        }
+    });
+
     function title(data) {
         return data.split("\n")[0].split(" ")[1].split(".")[0];
     }
@@ -90,6 +106,7 @@
             }).get(0)
         );
         editor.getSession().setValue(content);
+        editor.focus();
         var socket = new WebSocket(uri, "save");
         socket.onmessage = function (event) {
             var id = title(event.data);
@@ -111,6 +128,7 @@
             },
             select : function(tab) {
                 push($(tab.item).attr("id"));
+                tab.item.editor.focus();
             }
         }).data("kendoTabStrip");
         return strip;

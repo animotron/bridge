@@ -1,6 +1,6 @@
 (function($){
 
-    var strip;
+    var strip, sinput;
 
     if (window.MozWebSocket) {
         window.WebSocket = window.MozWebSocket;
@@ -74,7 +74,18 @@
             window.history.back();
             tab[0].socket.close();
             strip.remove(tab);
+        }
+    });
 
+    commands.addCommand({
+        name: 'open',
+        bindKey: {
+            win: 'Ctrl-O',
+            mac: 'Command-O',
+            sender: 'editor'
+        },
+        exec: function(env, args, request) {
+            sinput.focus();
         }
     });
 
@@ -136,13 +147,13 @@
     };
 
     $.fn.ideSearch = function () {
-        var input = $(this)
-        input.keypress(function(event) {
+        sinput = $(this)
+        sinput.keypress(function(event) {
             if (event.which == 13) {
-                select(input.val());
+                select(event.target.val());
             }
         });
-        return input;
+        return sinput;
     };
 
 })(jQuery);

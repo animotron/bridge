@@ -23,10 +23,52 @@
     define('ace/mode/animo_highlight_rules', function(require, exports, module) {
 
         var oop = require("pilot/oop");
+        var lang = require("pilot/lang");
         var TextHighlightRules = require("ace/mode/text_highlight_rules").TextHighlightRules;
 
         var AnimoHighlightRules = function() {
-            this.$rules = new TextHighlightRules().getRules();
+
+            var operators = lang.arrayToMap(
+                ("the an any ~ all ~~ prefer get <~~ this ?is ?has " +
+                 "use weak-use with eq gt ge lt le ne not and or id 's " +
+                 "add delete set replace -> --> value qname ptrn").split(" ")
+            );
+
+            var ml = lang.arrayToMap(
+                ("\\ @ $ !-- !! [!CDATA[ ?? &#").split(" ")
+            );
+
+            this.$rules = {
+                "start" : [
+                    {
+                        token : "constant.numeric", // hex
+                        regex : "0[xX][0-9a-fA-F]+\\b"
+                    }, {
+                        token : "constant.numeric", // float
+                        regex : "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
+                    }, {
+                        token : function(value) {
+                            if (operators.hasOwnProperty(value))
+                                return "keyword";
+                            else if (ml.hasOwnProperty(value))
+                                return "constant.language";
+                            else
+                                return "identifier";
+                        },
+                        regex : "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
+                    }, {
+                        token : "string", // single line
+                        regex : '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
+                    }, {
+                        token : "string", // symbol
+                        regex : "[:](?:[a-zA-Z]|\d)+"
+                    }, {
+                    token : "string.regexp", //Regular Expressions
+                    regex : '/#"(?:\.|(\\\")|[^\""\n])*"/g'
+                    }
+                ]
+            };
+
         }
 
         oop.inherits(AnimoHighlightRules, TextHighlightRules);

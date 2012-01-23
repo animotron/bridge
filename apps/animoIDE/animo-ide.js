@@ -1,5 +1,39 @@
 (function($){
 
+    define("ace/mode/animo", function(require, exports, module) {
+
+        var oop = require("pilot/oop");
+        var TextMode = require("ace/mode/text").Mode;
+        var Tokenizer = require("ace/tokenizer").Tokenizer;
+        var AnimoHighlightRules = require("ace/mode/animo_highlight_rules").AnimoHighlightRules;
+
+        var Mode = function() {
+            this.$tokenizer = new Tokenizer(new AnimoHighlightRules().getRules());
+        };
+        oop.inherits(Mode, TextMode);
+
+        (function() {
+            // Extra logic goes here. (see below)
+        }).call(Mode.prototype);
+
+        exports.Mode = Mode;
+
+    });
+
+    define('ace/mode/animo_highlight_rules', function(require, exports, module) {
+
+        var oop = require("pilot/oop");
+        var TextHighlightRules = require("ace/mode/text_highlight_rules").TextHighlightRules;
+
+        var AnimoHighlightRules = function() {
+            this.$rules = new TextHighlightRules().getRules();
+        }
+
+        oop.inherits(AnimoHighlightRules, TextHighlightRules);
+        exports.AnimoHighlightRules = AnimoHighlightRules;
+
+    });
+
     var strip, sinput;
 
     if (window.MozWebSocket) {
@@ -48,7 +82,9 @@
         }, 5 * 60 * 1000);
     }
 
+    var AnimoMode = require("ace/mode/animo").Mode;
     var commands = require("pilot/canon");
+
     commands.addCommand({
         name: 'save',
         bindKey: {
@@ -89,6 +125,19 @@
         }
     });
 
+    commands.addCommand({
+        name: 'lookup',
+        bindKey: {
+            win: 'Ctrl-B',
+            mac: 'Command-B',
+            sender: 'editor'
+        },
+        exec: function(env, args, request) {
+            var tab = strip.select()[0];
+            socket.send("");
+        }
+    });
+
     function title(data) {
         return data.split("\n")[0].split(" ")[1].split(".")[0];
     }
@@ -117,6 +166,7 @@
                 overflow : "hidden"
             }).get(0)
         );
+        editor.getSession().setMode(new AnimoMode());
         editor.getSession().setValue(content);
         editor.focus();
         var socket = new WebSocket(uri, "save");

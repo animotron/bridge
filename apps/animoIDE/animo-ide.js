@@ -2,6 +2,51 @@
 
     var strip;
 
+    if (window.MozWebSocket) {
+        window.WebSocket = window.MozWebSocket;
+    }
+
+    window.addEventListener('popstate', function(event){
+        select(event.state);
+    }, false);
+
+    var uri = "ws://" + window.location.host + "/ws";
+
+    var socket = new WebSocket(uri, "src");
+    socket.onmessage = function (event) {
+        var id = title(event.data);
+        var tab = search(id);
+        if (tab.length == 0) {
+            append(id, event.data);
+        } else {
+            strip.select(tab);
+        }
+    };
+    socket.onopen = function (event) {
+        var id = window.location.search.split("&")[0].substr(1);
+        socket.send(id == "" ? "new" : id);
+        socket.onopen = onopen;
+    };
+
+    function open(id) {
+        socket.send(id);
+    }
+
+    function select(id) {
+        var tab = search(id)
+        if (tab.length == 0) {
+            open(id);
+        } else {
+            strip.select(tab);
+        }
+    }
+
+    function onopen(event) {
+        setInterval(function() {
+              event.target.send("");
+        }, 5 * 60 * 1000);
+    }
+
     var commands = require("pilot/canon");
     commands.addCommand({
         name: 'save',
@@ -16,18 +61,6 @@
         }
     });
 
-    if (window.MozWebSocket) {
-        window.WebSocket = window.MozWebSocket;
-    }
-
-    function onopen(event) {
-        setInterval(function() {
-              event.target.send("");
-        }, 5 * 60 * 1000);
-    }
-
-    var uri = "ws://" + location.host + "/ws";
-
     function title(data) {
         return data.split("\n")[0].split(" ")[1].split(".")[0];
     }
@@ -36,7 +69,12 @@
         return strip.tabGroup.children("#"+title);
     }
 
+    function push(id) {
+        window.history.pushState(id, null, window.location.pathname + "?" + id);
+    }
+
     function append(id, content) {
+        push(id);
         strip.append([{text : id}]);
         var tab = strip.tabGroup.children("li").last().attr({id : id});
         strip.select(tab);
@@ -70,35 +108,19 @@
                 open : {
                     effects: "none"
                 }
+            },
+            select : function(tab) {
+                push($(tab.item).attr("id"));
             }
         }).data("kendoTabStrip");
-        //editor = ace.edit(self.get(0));
-        append("new", "the new.");
         return strip;
     };
 
     $.fn.ideSearch = function () {
-        var socket = new WebSocket(uri, "src");
-        socket.onmessage = function (event) {
-            var id = title(event.data);
-            var tab = search(id);
-            if (tab.length == 0) {
-                append(id, event.data);
-            } else {
-                strip.select(tab);
-            }
-        };
-        socket.onopen = onopen;
         var input = $(this)
         input.keypress(function(event) {
             if (event.which == 13) {
-                var id = input.val();
-                var tab = search(id)
-                if (tab.length == 0) {
-                    socket.send(id);
-                } else {
-                    strip.select(tab);
-                }
+                select(input.val());
             }
         });
         return input;

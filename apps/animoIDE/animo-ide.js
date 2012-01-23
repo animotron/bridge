@@ -38,6 +38,7 @@
             open(id);
         } else {
             strip.select(tab);
+            tab[0].editor.focus();
         }
     }
 

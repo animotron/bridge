@@ -49,8 +49,14 @@
             this.$rules = {
                 "start" : [
                     {
-                        token : "constant.language",
-                        regex : "\\(|\\)|,."
+                        token : "punctuation.operator",
+                        regex : ",."
+                    }, {
+                        token : "paren.lparen",
+                        regex : "\\("
+                    }, {
+                        token : "paren.rparen",
+                        regex : "\\)"
                     }, {
                         token : "constant.numeric", // hex
                         regex : "0[xX][0-9a-fA-F]+\\b"
@@ -66,7 +72,7 @@
                                         prefix.hasOwnProperty(value[0]) ||
                                         prefix.hasOwnProperty(value.substr(0, 2))
                                     )
-                                return "constant.language";
+                                return "keyword.operator";
                             else
                                 return "identifier";
                         },

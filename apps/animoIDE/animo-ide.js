@@ -185,7 +185,23 @@
         },
         exec: function(env, args, request) {
             var tab = strip.select()[0];
-            socket.send("");
+            var pos = tab.editor.getCursorPosition();
+            var token = tab.editor.getSession().bgTokenizer.lines[pos.row].tokens;
+            var t = 0, n = 0, s = 0;
+            for (var i = 0; i < token.length; i++) {
+                n += token[i].value.length;
+                if (n > pos.column) {
+                    t = i;
+                    break;
+                }
+                s = n;
+            }
+            if (t > 0 && s == pos.column && token[t].type != "identifier") {
+                t--;
+            }
+            if (token[t].type == "identifier") {
+                socket.send(token[t].value);
+            }
         }
     });
 

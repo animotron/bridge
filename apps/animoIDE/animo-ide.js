@@ -29,18 +29,29 @@
         var AnimoHighlightRules = function() {
 
             var operators = lang.arrayToMap(
-                ("the an any ~ all ~~ prefer get <~~ this ?is ?has " +
+                ("the an any ~ all ~~ prefer get <~~ this ?is ?has each " +
                  "use weak-use with eq gt ge lt le ne not and or id 's " +
                  "add delete set replace -> --> value qname ptrn").split(" ")
             );
 
             var ml = lang.arrayToMap(
-                ("\\ @ $ !-- !! [!CDATA[ ?? &# ( )").split(" ")
+                ("\\ @ $ !-- !! [!CDATA[ ?? &# ").split(" ")
+            );
+
+            var prefix = lang.arrayToMap(
+                ("\\ @ $ &# ").split(" ")
+            );
+
+            var suffix = lang.arrayToMap(
+                ("'s ").split(" ")
             );
 
             this.$rules = {
                 "start" : [
                     {
+                        token : "constant.language",
+                        regex : "\\(|\\)"
+                    }, {
                         token : "constant.numeric", // hex
                         regex : "0[xX][0-9a-fA-F]+\\b"
                     }, {
@@ -50,18 +61,19 @@
                         token : function(value) {
                             if (operators.hasOwnProperty(value))
                                 return "keyword";
-                            else if (ml.hasOwnProperty(value))
+                            else if (
+                                        ml.hasOwnProperty(value) ||
+                                        prefix.hasOwnProperty(value[0]) ||
+                                        prefix.hasOwnProperty(value.substr(0, 2))
+                                    )
                                 return "constant.language";
                             else
                                 return "identifier";
                         },
-                        regex : "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
+                        regex : '[^"\\s\\(\\)]+'
                     }, {
-                        token : "string", // single line
+                        token : "string",
                         regex : '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
-                    }, {
-                    token : "string.regexp", //Regular Expressions
-                    regex : '/#"(?:\.|(\\\")|[^\""\n])*"/g'
                     }
                 ]
             };

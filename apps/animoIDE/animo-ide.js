@@ -50,7 +50,7 @@
                 "start" : [
                     {
                         token : "constant.language",
-                        regex : "\\(|\\)"
+                        regex : "\\(|\\)|,"
                     }, {
                         token : "constant.numeric", // hex
                         regex : "0[xX][0-9a-fA-F]+\\b"
@@ -110,8 +110,14 @@
     socket.onopen = function (event) {
         var id = window.location.hash.substr(1);
         socket.send(id == "" ? "new" : id);
-        socket.onopen = onopen;
+        onopen(event);
     };
+
+    function onopen(event) {
+        setInterval(function() {
+              event.target.send("");
+        }, 5 * 60 * 1000);
+    }
 
     function open(id) {
         socket.send(id);
@@ -125,12 +131,6 @@
             strip.select(tab);
             tab[0].editor.focus();
         }
-    }
-
-    function onopen(event) {
-        setInterval(function() {
-              event.target.send("");
-        }, 5 * 60 * 1000);
     }
 
     var AnimoMode = require("ace/mode/animo").Mode;

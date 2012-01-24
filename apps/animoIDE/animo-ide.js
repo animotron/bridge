@@ -73,7 +73,32 @@
                         regex : '[^,."\\s\\(\\)]+'
                     }, {
                         token : "string",
-                        regex : '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
+                        merge : "true",
+                        next  : "string",
+                        regex : '"'
+                    }
+                ],
+            "string" : [
+                    {
+                        token : "string",
+                        merge : "true",
+                        next  : "string",
+                        regex : '(?:(?:\\\\.)|(?:[^"\\\\]))+'
+                    }, {
+                        token : "string",
+                        merge : "true",
+                        next  : "string",
+                        regex : '[^"]+'
+                    }, {
+                        token : "string",
+                        merge : "true",
+                        next  : "string",
+                        regex : '[^"]+'
+                    }, {
+                        token : "string",
+                        merge : "true",
+                        next  : "start",
+                        regex : '.*?"'
                     }
                 ]
             };

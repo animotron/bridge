@@ -271,7 +271,7 @@
             } else if (event.keyCode == kendo.keys.ESC) {
                 strip.select()[0].editor.focus();
             }
-        }).focus(function(){$(this).select()});
+        }).focus(function(){sinput.select()});
         return sinput;
     };
 

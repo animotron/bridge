@@ -50,7 +50,7 @@
                 "start" : [
                     {
                         token : "constant.language",
-                        regex : "\\(|\\)|,"
+                        regex : "\\(|\\)|,."
                     }, {
                         token : "constant.numeric", // hex
                         regex : "0[xX][0-9a-fA-F]+\\b"

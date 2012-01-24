@@ -266,9 +266,9 @@
     $.fn.ideSearch = function () {
         sinput = $(this)
         sinput.keypress(function(event) {
-            if (event.which == 13) {
+            if (event.keyCode == kendo.keys.ENTER) {
                 select($(event.target).val());
-            } else if (event.which == 0) {
+            } else if (event.keyCode == kendo.keys.ESC) {
                 strip.select()[0].editor.focus();
             }
         });

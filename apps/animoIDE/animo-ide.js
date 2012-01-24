@@ -200,7 +200,7 @@
                 t--;
             }
             if (token[t].type == "identifier") {
-                socket.send(token[t].value);
+                select(token[t].value);
             }
         }
     });

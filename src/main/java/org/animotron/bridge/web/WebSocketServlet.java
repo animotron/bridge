@@ -213,7 +213,7 @@ public class WebSocketServlet extends HttpServlet {
                         cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r));
                         e = new JExpression(_(ALL._, r));
                     } else {
-                        e = new AnimoExpression(data.indexOf(" ") > 0 ? data : null);
+                        e = data.indexOf(" ") > 0 ? new AnimoExpression(data) : null;
                     }
                     if (e != null) {
                     	Pipe pipe = Evaluator._.execute(null, e);

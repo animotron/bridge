@@ -26,6 +26,7 @@ import org.animotron.expression.JExpression;
 import org.animotron.graph.AnimoGraph;
 import org.animotron.graph.index.Order;
 import org.animotron.graph.serializer.CachedSerializer;
+import org.animotron.io.Pipe;
 import org.animotron.manipulator.Evaluator;
 import org.animotron.manipulator.QCAVector;
 import org.animotron.statement.operator.THE;
@@ -215,7 +216,9 @@ public class WebSocketServlet extends HttpServlet {
                         e = new AnimoExpression(data.indexOf(" ") > 0 ? data : null);
                     }
                     if (e != null) {
-                        for (QCAVector v : Evaluator._.execute(null, e)) {
+                    	Pipe pipe = Evaluator._.execute(null, e);
+                    	QCAVector v;
+                        while ((v = pipe.take()) != null) {
                             sendThes(v.getClosest());
                         }
                     }

@@ -43,7 +43,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Iterator;
 
 import static org.animotron.expression.JExpression._;
@@ -187,13 +189,21 @@ public class WebSocketServlet extends HttpServlet {
     }
 
     private class SearchAnimo extends OnTextMessage {
-        
+
         private void sendThes (Relationship  r) throws IOException {
             if (r == null)
                 return;
             Iterator<Path> it = Utils.THES.traverse(r.getEndNode()).iterator();
             while(it.hasNext()) {
                 cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(it.next().lastRelationship()));
+            }
+        }
+
+        private void sendThes (Expression  e) throws IOException {
+            QCAVector v;
+            Pipe pipe = Evaluator._.execute(null, e);
+            while ((v = pipe.take()) != null) {
+                sendThes(v.getClosest());
             }
         }
 
@@ -208,18 +218,12 @@ public class WebSocketServlet extends HttpServlet {
             } catch (NumberFormatException nfe) {
                 Relationship r = THE._.get(data);
                 try {
-                    Expression e;
                     if (r != null) {
                         cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r));
-                        e = new JExpression(_(ALL._, r));
+                        sendThes(new JExpression(_(ALL._, r)));
                     } else {
-                        e = data.indexOf(" ") > 0 ? new AnimoExpression(data) : null;
-                    }
-                    if (e != null) {
-                    	Pipe pipe = Evaluator._.execute(null, e);
-                    	QCAVector v;
-                        while ((v = pipe.take()) != null) {
-                            sendThes(v.getClosest());
+                        if (data.indexOf(" ") > 0) {
+                            sendThes(new AnimoExpression(data));
                         }
                     }
                 } catch (IOException e) {

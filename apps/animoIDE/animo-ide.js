@@ -128,7 +128,8 @@
 
     var uri = "ws://" + window.location.host + "/ws";
 
-    var socket = new WebSocket(uri, "src");
+//    var socket = new WebSocket(uri, "src");
+    var socket = new WebSocket(uri, "search");
     socket.onmessage = function (event) {
         var id = title(event.data);
         var tab = search(id);

@@ -22,11 +22,19 @@ package org.animotron.bridge.web;
 
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
+import org.animotron.expression.JExpression;
+import org.animotron.graph.AnimoGraph;
 import org.animotron.graph.index.Order;
 import org.animotron.graph.serializer.CachedSerializer;
+import org.animotron.manipulator.Evaluator;
+import org.animotron.manipulator.QCAVector;
 import org.animotron.statement.operator.THE;
+import org.animotron.statement.operator.Utils;
+import org.animotron.statement.query.ALL;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketFactory;
+import org.neo4j.graphdb.NotFoundException;
+import org.neo4j.graphdb.Path;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.index.IndexHits;
 
@@ -34,7 +42,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
+import java.util.Iterator;
+
+import static org.animotron.expression.JExpression._;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -60,12 +71,15 @@ public class WebSocketServlet extends HttpServlet {
 			public WebSocket doWebSocketConnect(HttpServletRequest request, String protocol) {
                 if ("src".equals(protocol))
                     return new SourceAnimo();
-                
+
+                if ("search".equals(protocol))
+                    return new SearchAnimo();
+
                 else if ("save".equals(protocol))
                     return new SaveAnimo();
 
                 else if ("graph".equals(protocol))
-                    return new AnimoGraph();
+                    return new AnimoSubGraph();
 				
                 else if ("animoIMS".equals(protocol))
                     return new AnimoIMS();
@@ -94,6 +108,16 @@ public class WebSocketServlet extends HttpServlet {
         @Override
         public void onClose(int closeCode, String message) {
         }
+        public void sendError(Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            try {
+                cnn.sendMessage(sw.toString());
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
     }
 
 	private class SourceAnimo extends OnTextMessage {
@@ -109,12 +133,12 @@ public class WebSocketServlet extends HttpServlet {
                     //XXX: send error message
                 }
             } catch (IOException e) {
-            	//XXX: send error message, if it come from serializer
+            	sendError(e);
             }
         }
     }
 
-    private class AnimoGraph extends OnTextMessage {
+    private class AnimoSubGraph extends OnTextMessage {
 		@Override
 		public void onMessage(String data) {
             if (data.isEmpty())
@@ -156,9 +180,55 @@ public class WebSocketServlet extends HttpServlet {
                 Expression e = new AnimoExpression(data);
                 cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(e));
             } catch (IOException e) {
-            	//XXX: send error message
+                //XXX: send error message
             }
         }
     }
 
+    private class SearchAnimo extends OnTextMessage {
+        
+        private void sendThes (Relationship  r) throws IOException {
+            if (r == null)
+                return;
+            Iterator<Path> it = Utils.THES.traverse(r.getEndNode()).iterator();
+            while(it.hasNext()) {
+                cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(it.next().lastRelationship()));
+            }
+        }
+
+        @Override
+        public void onMessage(String data) {
+            if (data.isEmpty())
+                return;
+            data = data.trim();
+            try {
+                long rid = Long.valueOf(data);
+                sendThes(AnimoGraph.getDb().getRelationshipById(rid));
+            } catch (NumberFormatException nfe) {
+                Relationship r = THE._.get(data);
+                try {
+                    Expression e;
+                    if (r != null) {
+                        cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r));
+                        e = new JExpression(_(ALL._, r));
+                    } else {
+                        e = new AnimoExpression(data.indexOf(" ") > 0 ? data : null);
+                    }
+                    if (e != null) {
+                        for (QCAVector v : Evaluator._.execute(null, e)) {
+                            sendThes(v.getClosest());
+                        }
+                    }
+                } catch (IOException e) {
+                    sendError(e);
+                }
+            } catch (NotFoundException e) {
+                sendError(e);
+            } catch (IOException e) {
+                sendError(e);
+            }
+        }
+        
+    }
+    
 }

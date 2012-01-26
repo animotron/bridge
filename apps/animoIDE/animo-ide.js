@@ -295,8 +295,23 @@
     };
 
     $.fn.ideSearch = function () {
-        var close = true;
-        sinput = $(this);
+        var socket;
+        var close = false;
+        sinput = $(this).keypress(function(event) {
+           if (event.keyCode == kendo.keys.ESC) {
+                strip.select()[0].editor.focus();
+           }
+        }).blur(function(event){
+            if (close) {
+                sinput.popover("hide");
+                try {
+                    socket.close();
+                } catch (e) {}
+                close = true;
+            } else {
+                sinput.focus();
+            }
+        });
         var tip = $(sinput.popover({
             placement : "bottom",
             trigger   : "manual",
@@ -306,20 +321,6 @@
             overflow : "auto",
             maxHeight : "500px"
         });
-        sinput.keypress(function(event) {
-           if (event.keyCode == kendo.keys.ESC) {
-                strip.select()[0].editor.focus();
-           }
-        }).blur(function(event){
-            if (close) {
-                sinput.popover("hide");
-                socket.close();
-                close = true;
-            } else {
-                sinput.focus();
-            }
-        });
-        var socket;
         var value = "";
         setInterval(function(){
             var val = sinput.val();
@@ -327,15 +328,13 @@
                 setTimeout(function(){
                     var v = sinput.val();
                     if (v != "" && v == val) {
-                        list.html("Not found anything still");
-                        var first = true;
+                        list.html("");
                         sinput.popover("show");
+                        try {
+                            socket.close();
+                        } catch (e) {}
                         socket = new WebSocket(uri, "search");
                         socket.onmessage = function (event) {
-                            if (first) {
-                                list.html("");
-                                first = false;
-                            }
                             var id = getId(event.data);
                             var a = $("<div><a href='#" + id + "'>" + id + "</a><pre>" + event.data + "</pre></div>").click(function(event){
                                 select(id);
@@ -347,7 +346,9 @@
                             }).css({cursor : "pointer"});
                             list.append(a);
                         };
-                        socket.send(val);
+                        socket.onopen = function(){
+                            socket.send(val);
+                        }
                     }
                 }, 500);
                 value = val;

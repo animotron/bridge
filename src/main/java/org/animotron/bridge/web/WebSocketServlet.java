@@ -20,6 +20,7 @@
  */
 package org.animotron.bridge.web;
 
+import org.animotron.Executor;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
 import org.animotron.expression.JExpression;
@@ -34,7 +35,6 @@ import org.animotron.statement.operator.Utils;
 import org.animotron.statement.query.ALL;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketFactory;
-import org.neo4j.graphdb.NotFoundException;
 import org.neo4j.graphdb.Path;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.index.IndexHits;
@@ -192,52 +192,54 @@ public class WebSocketServlet extends HttpServlet {
 
         private Pipe pipe = null;
 
-        private void sendThes (Relationship  r) throws IOException {
-            if (r == null)
-                return;
-            Iterator<Path> it = Utils.THES.traverse(r.getEndNode()).iterator();
-            while(it.hasNext()) {
-                cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(it.next().lastRelationship()));
-            }
-        }
-
-        private void sendThes (Expression  e) throws IOException {
-            int i = 0;
-            QCAVector v;
-            pipe = Evaluator._.execute(null, e);
-            while ((v = pipe.take()) != null && i < 100) {
-                sendThes(v.getClosest());
-                i++;
-            }
-        }
-
         @Override
-        public void onMessage(String data) {
+        public void onMessage(final String data) {
+
             if (data.isEmpty())
                 return;
-            data = data.trim();
-            try {
-                long rid = Long.valueOf(data);
-                sendThes(AnimoGraph.getDb().getRelationshipById(rid));
-            } catch (NumberFormatException nfe) {
-                Relationship r = THE._.get(data);
-                try {
-                    if (r != null) {
-                        cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(r));
-                        sendThes(new JExpression(_(ALL._, r)));
-                    } else {
-                        if (data.indexOf(" ") > 0) {
-                            sendThes(new AnimoExpression(data));
-                        }
+            Executor.execute(new Runnable() {
+
+                private void sendThes (Relationship  r) throws IOException {
+                    if (r == null)
+                        return;
+                    Iterator<Path> it = Utils.THES.traverse(r.getEndNode()).iterator();
+                    while(it.hasNext()) {
+                        cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(it.next().lastRelationship()));
                     }
-                } catch (IOException e) {
-                    sendError(e);
                 }
-            } catch (NotFoundException e) {
-                sendError(e);
-            } catch (IOException e) {
-                sendError(e);
-            }
+
+                private void sendThes (Expression  e) throws IOException {
+                    int i = 0;
+                    QCAVector v;
+                    pipe = Evaluator._.execute(null, e);
+                    while ((v = pipe.take()) != null && i < 100) {
+                        sendThes(v.getClosest());
+                        i++;
+                    }
+                }
+
+                @Override
+                public void run() {
+                    String exp = data.trim();
+                    try {
+                        long rid = Long.valueOf(exp);
+                        sendThes(AnimoGraph.getDb().getRelationshipById(rid));
+                    } catch (NumberFormatException nfe) {
+                        Relationship r = THE._.get(exp);
+                        try {
+                            if (r != null) {
+                                cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(r));
+                                sendThes(new JExpression(_(ALL._, r)));
+                            } else {
+                                if (exp.indexOf(" ") > 0) {
+                                    sendThes(new AnimoExpression(exp));
+                                }
+                            }
+                        } catch (IOException e) {}
+                    } catch (IOException e) {}
+                }
+
+            });
         }
         
     }

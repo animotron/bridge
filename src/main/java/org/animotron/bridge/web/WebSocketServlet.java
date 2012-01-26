@@ -213,9 +213,6 @@ public class WebSocketServlet extends HttpServlet {
 
         @Override
         public void onMessage(String data) {
-            if (pipe != null) {
-                pipe.close();
-            }
             if (data.isEmpty())
                 return;
             data = data.trim();

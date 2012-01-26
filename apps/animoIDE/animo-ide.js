@@ -296,7 +296,6 @@
 
     $.fn.ideSearch = function () {
         var close = true;
-        var socket = new WebSocket(uri, "search");
         sinput = $(this);
         var tip = $(sinput.popover({
             placement : "bottom",
@@ -314,45 +313,46 @@
         }).blur(function(event){
             if (close) {
                 sinput.popover("hide");
+                socket.close();
                 close = true;
             } else {
                 sinput.focus();
             }
         });
+        var socket;
         var value = "";
-        var first = true;
         setInterval(function(){
             var val = sinput.val();
             if (val != value) {
                 setTimeout(function(){
                     var v = sinput.val();
                     if (v != "" && v == val) {
-                        list.html("<p>Not found anything still</p>");
+                        list.html("Not found anything still");
+                        var first = true;
                         sinput.popover("show");
+                        socket = new WebSocket(uri, "search");
+                        socket.onmessage = function (event) {
+                            if (first) {
+                                list.html("");
+                                first = false;
+                            }
+                            var id = getId(event.data);
+                            var a = $("<div><a href='#" + id + "'>" + id + "</a><pre>" + event.data + "</pre></div>").click(function(event){
+                                select(id);
+                            }).mouseenter(function(){
+                                close = false;
+                            }).mouseleave(function(){
+                                sinput.focus();
+                                close = true;
+                            }).css({cursor : "pointer"});
+                            list.append(a);
+                        };
                         socket.send(val);
-                        first = true;
                     }
                 }, 500);
                 value = val;
             }
         }, 300);
-        socket.onmessage = function (event) {
-            if (first) {
-                list.html("");
-                first = false;
-            }
-            var id = getId(event.data);
-            var a = $("<div><a href='#" + id + "'>" + id + "</a><pre>" + event.data + "</pre></div>").click(function(event){
-                select(id);
-            }).mouseenter(function(){
-                close = false;
-            }).mouseleave(function(){
-                sinput.focus();
-                close = true;
-            }).css({cursor : "pointer"});
-            list.append(a);
-        };
-        socket.onopen = onopen;
         return sinput;
     };
 

@@ -128,10 +128,9 @@
 
     var uri = "ws://" + window.location.host + "/ws";
 
-//    var socket = new WebSocket(uri, "src");
-    var socket = new WebSocket(uri, "search");
+    var socket = new WebSocket(uri, "src");
     socket.onmessage = function (event) {
-        var id = title(event.data);
+        var id = getId(event.data);
         var tab = search(id);
         if (tab.length == 0) {
             append(id, event.data);
@@ -237,7 +236,7 @@
         }
     });
 
-    function title(data) {
+    function getId(data) {
         return data.split("\n")[0].split(" ")[1].split(".")[0];
     }
 
@@ -270,7 +269,7 @@
         editor.focus();
         var socket = new WebSocket(uri, "save");
         socket.onmessage = function (event) {
-            var id = title(event.data);
+            var id = getId(event.data);
             tab.attr({id : id});
             tab.children("span").text(id);
             editor.getSession().setValue(event.data);
@@ -296,14 +295,64 @@
     };
 
     $.fn.ideSearch = function () {
-        sinput = $(this)
+        var close = true;
+        var socket = new WebSocket(uri, "search");
+        sinput = $(this);
+        var tip = $(sinput.popover({
+            placement : "bottom",
+            trigger   : "manual",
+            title     : "Searching...",
+            content   : "Not found anything"
+        }).data().popover.tip());
+        var list = tip.find(".inner").width(700).find("p").css({
+            overflow : "auto",
+            maxHeight : "500px"
+        });
         sinput.keypress(function(event) {
-            if (event.keyCode == kendo.keys.ENTER) {
-                select($(event.target).val());
-            } else if (event.keyCode == kendo.keys.ESC) {
+           if (event.keyCode == kendo.keys.ESC) {
                 strip.select()[0].editor.focus();
+           }
+        }).blur(function(event){
+            if (close) {
+                sinput.popover("hide");
+                close = true;
+            } else {
+                sinput.focus();
             }
-        }).focus(function(){sinput.select()});
+        });
+        var value = "";
+        var first = true;
+        setInterval(function(){
+            var val = sinput.val();
+            if (val != value) {
+                setTimeout(function(){
+                    var v = sinput.val();
+                    if (v != "" && v == val) {
+                        sinput.popover("show");
+                        socket.send(val);
+                        first = true;
+                    }
+                }, 500);
+                value = val;
+            }
+        }, 300);
+        socket.onmessage = function (event) {
+            if (first) {
+                list.html("");
+                first = false;
+            }
+            var id = getId(event.data);
+            var a = $("<div><a href='#" + id + "'>" + id + "</a><pre>" + event.data + "</pre></div>").click(function(event){
+                select(id);
+            }).mouseenter(function(){
+                close = false;
+            }).mouseleave(function(){
+                sinput.focus();
+                close = true;
+            }).css({cursor : "pointer"});
+            list.append(a);
+        };
+        socket.onopen = onopen;
         return sinput;
     };
 

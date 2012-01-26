@@ -195,15 +195,17 @@ public class WebSocketServlet extends HttpServlet {
                 return;
             Iterator<Path> it = Utils.THES.traverse(r.getEndNode()).iterator();
             while(it.hasNext()) {
-                cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(it.next().lastRelationship()));
+                cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(it.next().lastRelationship()));
             }
         }
 
         private void sendThes (Expression  e) throws IOException {
+            int i = 0;
             QCAVector v;
             Pipe pipe = Evaluator._.execute(null, e);
-            while ((v = pipe.take()) != null) {
+            while ((v = pipe.take()) != null && i < 100) {
                 sendThes(v.getClosest());
+                i++;
             }
         }
 
@@ -219,7 +221,7 @@ public class WebSocketServlet extends HttpServlet {
                 Relationship r = THE._.get(data);
                 try {
                     if (r != null) {
-                        cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r));
+                        cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(r));
                         sendThes(new JExpression(_(ALL._, r)));
                     } else {
                         if (data.indexOf(" ") > 0) {

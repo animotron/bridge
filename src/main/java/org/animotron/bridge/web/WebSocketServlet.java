@@ -190,6 +190,8 @@ public class WebSocketServlet extends HttpServlet {
 
     private class SearchAnimo extends OnTextMessage {
 
+        Thread thread = null;
+
         private void sendThes (Relationship  r) throws IOException {
             if (r == null)
                 return;
@@ -210,32 +212,41 @@ public class WebSocketServlet extends HttpServlet {
         }
 
         @Override
-        public void onMessage(String data) {
+        public void onMessage(final String data) {
+            if (thread != null) {
+                thread.interrupt();
+                thread = null;
+            }
             if (data.isEmpty())
                 return;
-            data = data.trim();
-            try {
-                long rid = Long.valueOf(data);
-                sendThes(AnimoGraph.getDb().getRelationshipById(rid));
-            } catch (NumberFormatException nfe) {
-                Relationship r = THE._.get(data);
-                try {
-                    if (r != null) {
-                        cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(r));
-                        sendThes(new JExpression(_(ALL._, r)));
-                    } else {
-                        if (data.indexOf(" ") > 0) {
-                            sendThes(new AnimoExpression(data));
+            thread = new Thread() {
+                @Override
+                public void run() {
+                    String exp = data.trim();
+                    try {
+                        long rid = Long.valueOf(exp);
+                        sendThes(AnimoGraph.getDb().getRelationshipById(rid));
+                    } catch (NumberFormatException nfe) {
+                        Relationship r = THE._.get(exp);
+                        try {
+                            if (r != null) {
+                                cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(r));
+                                sendThes(new JExpression(_(ALL._, r)));
+                            } else {
+                                if (exp.indexOf(" ") > 0) {
+                                    sendThes(new AnimoExpression(exp));
+                                }
+                            }
+                        } catch (IOException e) {
+                            sendError(e);
                         }
+                    } catch (NotFoundException e) {
+                        sendError(e);
+                    } catch (IOException e) {
+                        sendError(e);
                     }
-                } catch (IOException e) {
-                    sendError(e);
                 }
-            } catch (NotFoundException e) {
-                sendError(e);
-            } catch (IOException e) {
-                sendError(e);
-            }
+            };
         }
         
     }

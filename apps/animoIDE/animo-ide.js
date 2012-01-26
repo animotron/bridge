@@ -301,8 +301,7 @@
         var tip = $(sinput.popover({
             placement : "bottom",
             trigger   : "manual",
-            title     : "Searching...",
-            content   : "Not found anything"
+            title     : "Searching..."
         }).data().popover.tip());
         var list = tip.find(".inner").width(700).find("p").css({
             overflow : "auto",
@@ -328,6 +327,7 @@
                 setTimeout(function(){
                     var v = sinput.val();
                     if (v != "" && v == val) {
+                        list.html("<p>Not found anything still</p>");
                         sinput.popover("show");
                         socket.send(val);
                         first = true;

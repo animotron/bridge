@@ -116,14 +116,16 @@
 
     });
 
-    var editor, sinput, current;
+    var editor, sinput;
 
     if (window.MozWebSocket) {
         window.WebSocket = window.MozWebSocket;
     }
 
     window.addEventListener('popstate', function(event){
-        open(event.state);
+        if (event.state) {
+            open(event.state);
+        }
     });
 
     window.addEventListener('hashchange', function (event) {
@@ -137,7 +139,6 @@
         var id = getId(event.data);
         editor.getSession().setValue(event.data);
         editor.focus();
-        current = id;
     };
     socket.onopen = function (event) {
         var id = window.location.hash.substr(1);
@@ -152,9 +153,7 @@
     }
 
     function open(id) {
-        if (current != id) {
-            socket.send(id);
-        }
+        socket.send(id);
     }
 
     var AnimoMode = require("ace/mode/animo").Mode;
@@ -272,7 +271,9 @@
                             socket = new WebSocket(uri, "search");
                             socket.onmessage = function (event) {
                                 var id = getId(event.data);
-                                var a = $("<a href='#" + id + "'>" + id + "</a><pre>" + event.data + "</pre>")
+                                var target = editor.getSession().getUndoManager().hasUndo()
+                                                ? "target='_blank'" : "";
+                                var a = $("<a href='#" + id + "'" + target + ">" + id + "</a><pre>" + event.data + "</pre>")
                                         .mouseenter(function(){
                                             canClose= false;
                                         }).mouseleave(function(){

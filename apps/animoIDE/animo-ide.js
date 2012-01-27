@@ -296,18 +296,72 @@
 
     $.fn.ideSearch = function () {
         var socket;
-        var close = false;
+        var value = "";
+        var canClose = true;
+        var mustOpen = true;
         sinput = $(this).keypress(function(event) {
            if (event.keyCode == kendo.keys.ESC) {
                 strip.select()[0].editor.focus();
            }
+        }).one("focus", function(){
+            sinput.focus(function(){
+                if (mustOpen) {
+                    value = "";
+                };
+            });
+            setInterval(function(){
+                var val = sinput.val();
+                if (val != value) {
+                    try {
+                        socket.close();
+                    } catch (e) {}
+                    setTimeout(function(){
+                        var v = sinput.val();
+                        if (v == "") {
+                            sinput.popover("hide");
+                            mustOpen = true;
+                        } else if (v == val) {
+                            list.html("");
+                            if (mustOpen) {
+                                mustOpen = false;
+                                sinput.popover("show");
+                                var left = sinput.offset().left;
+                                var max = $(window).width() - 600;
+                                if (left > max) {
+                                    left = max / 2;
+                                } else {
+                                    tip.find(".arrow").css({left : sinput.width() / 2});
+                                }
+                                tip.css({left : left});
+                            }
+                            socket = new WebSocket(uri, "search");
+                            socket.onmessage = function (event) {
+                                var id = getId(event.data);
+                                var a = $("<div><a href='#" + id + "'>" + id + "</a><pre>" + event.data + "</pre></div>").click(function(event){
+                                    select(id);
+                                }).mouseenter(function(){
+                                    canClose= false;
+                                }).mouseleave(function(){
+                                    sinput.focus();
+                                    canClose= true;
+                                }).css({cursor : "pointer"});
+                                list.append(a);
+                            };
+                            socket.onopen = function(){
+                                socket.send(val);
+                            }
+                        }
+                    }, 300);
+                    value = val;
+                }
+            }, 100);
         }).blur(function(event){
-            if (close) {
+            if (canClose) {
                 sinput.popover("hide");
+                mustOpen = true;
                 try {
                     socket.close();
                 } catch (e) {}
-                close = true;
             } else {
                 sinput.focus();
             }
@@ -317,43 +371,13 @@
             trigger   : "manual",
             title     : "Searching..."
         }).data().popover.tip());
-        var list = tip.find(".inner").width(700).find("p").css({
+        var list = tip.find(".inner").width(600).find("p").css({
             overflow : "auto",
-            maxHeight : "500px"
+            maxHeight : "400px"
         });
-        var value = "";
-        setInterval(function(){
-            var val = sinput.val();
-            if (val != value) {
-                setTimeout(function(){
-                    var v = sinput.val();
-                    if (v != "" && v == val) {
-                        list.html("");
-                        sinput.popover("show");
-                        try {
-                            socket.close();
-                        } catch (e) {}
-                        socket = new WebSocket(uri, "search");
-                        socket.onmessage = function (event) {
-                            var id = getId(event.data);
-                            var a = $("<div><a href='#" + id + "'>" + id + "</a><pre>" + event.data + "</pre></div>").click(function(event){
-                                select(id);
-                            }).mouseenter(function(){
-                                close = false;
-                            }).mouseleave(function(){
-                                sinput.focus();
-                                close = true;
-                            }).css({cursor : "pointer"});
-                            list.append(a);
-                        };
-                        socket.onopen = function(){
-                            socket.send(val);
-                        }
-                    }
-                }, 500);
-                value = val;
-            }
-        }, 300);
+        $(window).resize(function(){
+            sinput.blur();
+        });
         return sinput;
     };
 

@@ -124,13 +124,20 @@
 
     window.addEventListener('popstate', function(event){
         open(event.state);
-    }, false);
+    });
+
+    window.addEventListener('hashchange', function (event) {
+        open(window.location.hash.substr(1));
+    });
 
     var uri = "ws://" + window.location.host + "/ws";
 
     var socket = new WebSocket(uri, "src");
     socket.onmessage = function (event) {
-        show(getId(event.data), event.data);
+        var id = getId(event.data);
+        editor.getSession().setValue(event.data);
+        editor.focus();
+        current = id;
     };
     socket.onopen = function (event) {
         var id = window.location.hash.substr(1);
@@ -209,17 +216,6 @@
         return data.split("\n")[0].split(" ")[1].split(".")[0];
     }
 
-    function push(id) {
-        window.history.pushState(id, null, window.location.pathname + "#" + id);
-    }
-
-    function show(id, content) {
-        push(id);
-        editor.getSession().setValue(content);
-        editor.focus();
-        current = id;
-    }
-
     $.fn.ideEditor = function() {
         self = $(this);
         editor = ace.edit(self.get(0));
@@ -276,15 +272,14 @@
                             socket = new WebSocket(uri, "search");
                             socket.onmessage = function (event) {
                                 var id = getId(event.data);
-                                var a = $("<div><a href='#" + id + "'>" + id + "</a><pre>" + event.data + "</pre></div>").click(function(event){
-                                    open(id);
-                                }).mouseenter(function(){
-                                    canClose= false;
-                                }).mouseleave(function(){
-                                    sinput.focus();
-                                    canClose= true;
-                                }).css({cursor : "pointer"});
-                                list.append(a);
+                                var a = $("<a href='#" + id + "'>" + id + "</a><pre>" + event.data + "</pre>")
+                                        .mouseenter(function(){
+                                            canClose= false;
+                                        }).mouseleave(function(){
+                                            sinput.focus();
+                                            canClose= true;
+                                        });
+                                        list.append(a);
                             };
                             socket.onopen = function(){
                                 socket.send(val);

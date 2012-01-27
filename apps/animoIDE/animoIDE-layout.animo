@@ -4,7 +4,6 @@ the animoIDE-layout
 
     (\script @src get uri any ace)
     (\script @src get uri any jquery-min)
-    (\script @src get uri any kendo-all-min)
     (\script @src get uri any bootstrap-tooltip)
     (\script @src get uri any bootstrap-popover)
     (\script @src get uri any animo-ide)

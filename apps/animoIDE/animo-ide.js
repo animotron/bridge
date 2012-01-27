@@ -116,27 +116,21 @@
 
     });
 
-    var strip, sinput;
+    var editor, sinput, current;
 
     if (window.MozWebSocket) {
         window.WebSocket = window.MozWebSocket;
     }
 
     window.addEventListener('popstate', function(event){
-        select(event.state);
+        open(event.state);
     }, false);
 
     var uri = "ws://" + window.location.host + "/ws";
 
     var socket = new WebSocket(uri, "src");
     socket.onmessage = function (event) {
-        var id = getId(event.data);
-        var tab = search(id);
-        if (tab.length == 0) {
-            append(id, event.data);
-        } else {
-            strip.select(tab);
-        }
+        show(getId(event.data), event.data);
     };
     socket.onopen = function (event) {
         var id = window.location.hash.substr(1);
@@ -151,16 +145,8 @@
     }
 
     function open(id) {
-        socket.send(id);
-    }
-
-    function select(id) {
-        var tab = search(id)
-        if (tab.length == 0) {
-            open(id);
-        } else {
-            strip.select(tab);
-            tab[0].editor.focus();
+        if (current != id) {
+            socket.send(id);
         }
     }
 
@@ -175,23 +161,7 @@
             sender: 'editor'
         },
         exec: function(env, args, request) {
-            var tab = strip.select()[0];
-            tab.socket.send(tab.editor.getSession().getValue());
-        }
-    });
-
-    commands.addCommand({
-        name: 'close',
-        bindKey: {
-            win: 'Ctrl-W',
-            mac: 'Command-W',
-            sender: 'editor'
-        },
-        exec: function(env, args, request) {
-            var tab = strip.select();
-            window.history.back();
-            tab[0].socket.close();
-            strip.remove(tab);
+            editor.socket.send(editor.getSession().getValue());
         }
     });
 
@@ -215,9 +185,8 @@
             sender: 'editor'
         },
         exec: function(env, args, request) {
-            var tab = strip.select()[0];
-            var pos = tab.editor.getCursorPosition();
-            var token = tab.editor.getSession().bgTokenizer.lines[pos.row].tokens;
+            var pos = editor.getCursorPosition();
+            var token = editor.getSession().bgTokenizer.lines[pos.row].tokens;
             var t = 0, n = 0, s = 0;
             for (var i = 0; i < token.length; i++) {
                 n += token[i].value.length;
@@ -231,7 +200,7 @@
                 t--;
             }
             if (token[t].type == "identifier") {
-                select(token[t].value);
+                open(token[t].value);
             }
         }
     });
@@ -240,58 +209,28 @@
         return data.split("\n")[0].split(" ")[1].split(".")[0];
     }
 
-    function search(title) {
-        return strip.tabGroup.children("#"+title);
-    }
-
     function push(id) {
         window.history.pushState(id, null, window.location.pathname + "#" + id);
     }
 
-    function append(id, content) {
+    function show(id, content) {
         push(id);
-        strip.append([{text : id}]);
-        var tab = strip.tabGroup.children("li").last().attr({id : id});
-        strip.select(tab);
-        var editor = ace.edit(
-            $(strip.contentElement(tab.index())).css({
-                position : "absolute",
-                top : 36, right : 0, bottom : 0, left : 0,
-                padding : 0, overflow : "hidden"
-            }).html("<div></div>").children().css({
-                position : "absolute",
-                top : 4, right : 4, bottom : 4, left : 4,
-                overflow : "hidden"
-            }).get(0)
-        );
-        editor.getSession().setMode(new AnimoMode());
         editor.getSession().setValue(content);
         editor.focus();
-        var socket = new WebSocket(uri, "save");
-        socket.onmessage = function (event) {
-            var id = getId(event.data);
-            tab.attr({id : id});
-            tab.children("span").text(id);
-            editor.getSession().setValue(event.data);
-        };
-        socket.onopen = onopen;
-        tab[0].socket = socket;
-        tab[0].editor = editor;
+        current = id;
     }
 
     $.fn.ideEditor = function() {
-        strip = $(this).kendoTabStrip({
-            animation : {
-                open : {
-                    effects: "none"
-                }
-            },
-            select : function(tab) {
-                push($(tab.item).attr("id"));
-                tab.item.editor.focus();
-            }
-        }).data("kendoTabStrip");
-        return strip;
+        self = $(this);
+        editor = ace.edit(self.get(0));
+        editor.getSession().setMode(new AnimoMode());
+        editor.socket = new WebSocket(uri, "save");
+        editor.socket.onmessage = function (event) {
+            current = getId(event.data);
+            editor.getSession().setValue(event.data);
+        };
+        editor.socket.onopen = onopen;
+        return self;
     };
 
     $.fn.ideSearch = function () {
@@ -300,8 +239,8 @@
         var canClose = true;
         var mustOpen = true;
         sinput = $(this).keypress(function(event) {
-           if (event.keyCode == kendo.keys.ESC) {
-                strip.select()[0].editor.focus();
+           if (event.keyCode == 37) {
+                editor.focus();
            }
         }).one("focus", function(){
             sinput.focus(function(){
@@ -338,7 +277,7 @@
                             socket.onmessage = function (event) {
                                 var id = getId(event.data);
                                 var a = $("<div><a href='#" + id + "'>" + id + "</a><pre>" + event.data + "</pre></div>").click(function(event){
-                                    select(id);
+                                    open(id);
                                 }).mouseenter(function(){
                                     canClose= false;
                                 }).mouseleave(function(){

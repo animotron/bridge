@@ -25,7 +25,6 @@ import org.animotron.cache.Cache;
 import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
-import org.animotron.expression.JExpression;
 import org.animotron.graph.AnimoGraph;
 import org.animotron.graph.index.Order;
 import org.animotron.graph.serializer.CachedSerializer;
@@ -34,7 +33,6 @@ import org.animotron.manipulator.Evaluator;
 import org.animotron.manipulator.QCAVector;
 import org.animotron.statement.operator.THE;
 import org.animotron.statement.operator.Utils;
-import org.animotron.statement.query.ALL;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketFactory;
 import org.neo4j.graphdb.Path;
@@ -49,8 +47,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
-
-import static org.animotron.expression.JExpression._;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -233,7 +229,7 @@ public class WebSocketServlet extends HttpServlet {
                         try {
                             if (r != null) {
                                 cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(r, cache));
-                                sendThes(new JExpression(_(ALL._, r)));
+                                //sendThes(new JExpression(_(ALL._, r)));
                             } else {
                                 if (exp.indexOf(" ") > 0) {
                                     sendThes(new AnimoExpression(exp));
@@ -242,10 +238,7 @@ public class WebSocketServlet extends HttpServlet {
                         } catch (IOException e) {}
                     } catch (IOException e) {}
                 }
-
             });
         }
-        
     }
-    
 }

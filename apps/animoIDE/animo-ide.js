@@ -116,129 +116,138 @@
 
     });
 
-    var editor, sinput;
-
     if (window.MozWebSocket) {
         window.WebSocket = window.MozWebSocket;
     }
 
-    window.addEventListener('popstate', function(event){
-        if (event.state) {
-            open(event.state);
-        }
-    });
-
-    window.addEventListener('hashchange', function (event) {
-        open(window.location.hash.substr(1));
-    });
-
+    var socket = [];
     var uri = "ws://" + window.location.host + "/ws";
 
-    var socket = new WebSocket(uri, "src");
-    socket.onmessage = function (event) {
-        var id = getId(event.data);
-        editor.getSession().setValue(event.data);
-        editor.focus();
-    };
-    socket.onopen = function (event) {
-        var id = window.location.hash.substr(1);
-        socket.send(id == "" ? "new" : id);
-        onopen(event);
-    };
-
-    function onopen(event) {
-        setInterval(function() {
-              event.target.send("");
-        }, 5 * 60 * 1000);
+    function close (socket) {
+        try {
+            socket.close();
+        } catch (e) {}
     }
 
-    function open(id) {
-        if (editor.getSession().getUndoManager().hasUndo()) {
-            window.open(window.location.pathname + "#" + id);
-        } else {
-            socket.send(id);
+    function send (message, protocol, onmessage) {
+        var s = socket[protocol];
+        try {
+            s.onmessage = onmessage;
+            s.sendMessage(message);
+        } catch (e) {
+            s = new WebSocket(uri, protocol);
+            socket[protocol] = s;
+            s.onmessage = onmessage;
+            s.onopen = function() {
+                s.send(message);
+            };
         }
     }
 
-    var AnimoMode = require("ace/mode/animo").Mode;
-    var commands = require("pilot/canon");
+    $.animoIDE = function(self, sinput, caption, list) {
 
-    commands.addCommand({
-        name: 'save',
-        bindKey: {
-            win: 'Ctrl-S',
-            mac: 'Command-S',
-            sender: 'editor'
-        },
-        exec: function(env, args, request) {
-            editor.socket.send(editor.getSession().getValue());
+        var editor;
+
+        window.addEventListener('popstate', function(event){
+            if (event.state) {
+                open(event.state);
+            }
+        });
+
+        window.addEventListener('hashchange', function (event) {
+            openLocation();
+        });
+
+        function openLocation() {
+            var id = window.location.hash.substr(1);
+            open(id == "" ? "new" : id);
         }
-    });
 
-    commands.addCommand({
-        name: 'open',
-        bindKey: {
-            win: 'Ctrl-O',
-            mac: 'Command-O',
-            sender: 'editor'
-        },
-        exec: function(env, args, request) {
-            sinput.focus();
+        function open(id) {
+            if (editor.getSession().getUndoManager().hasUndo()) {
+                window.open(window.location.pathname + "#" + id, "_blank");
+            } else {
+                send(id, "src", function (event) {
+                    var id = getId(event.data);
+                    editor.getSession().setValue(event.data);
+                    editor.focus();
+                });
+            }
         }
-    });
 
-    commands.addCommand({
-        name: 'lookup',
-        bindKey: {
-            win: 'Ctrl-B',
-            mac: 'Command-B',
-            sender: 'editor'
-        },
-        exec: function(env, args, request) {
-            var pos = editor.getCursorPosition();
-            var token = editor.getSession().bgTokenizer.lines[pos.row].tokens;
-            var t = 0, n = 0, s = 0;
-            for (var i = 0; i < token.length; i++) {
-                n += token[i].value.length;
-                if (n > pos.column) {
-                    t = i;
-                    break;
+        function getId(data) {
+            return data.split("\n")[0].split(" ")[1].split(".")[0];
+        }
+
+        var AnimoMode = require("ace/mode/animo").Mode;
+        var commands = require("pilot/canon");
+
+        commands.addCommand({
+            name: 'save',
+            bindKey: {
+                win: 'Ctrl-S',
+                mac: 'Command-S',
+                sender: 'editor'
+            },
+            exec: function(env, args, request) {
+                send(editor.getSession().getValue(), "save", function(event){
+                    current = getId(event.data);
+                    editor.getSession().setValue(event.data);
+                });
+            }
+        });
+
+        commands.addCommand({
+            name: 'open',
+            bindKey: {
+                win: 'Ctrl-O',
+                mac: 'Command-O',
+                sender: 'editor'
+            },
+            exec: function(env, args, request) {
+                sinput.focus();
+            }
+        });
+
+        commands.addCommand({
+            name: 'lookup',
+            bindKey: {
+                win: 'Ctrl-B',
+                mac: 'Command-B',
+                sender: 'editor'
+            },
+            exec: function(env, args, request) {
+                var pos = editor.getCursorPosition();
+                var token = editor.getSession().bgTokenizer.lines[pos.row].tokens;
+                var t = 0, n = 0, s = 0;
+                for (var i = 0; i < token.length; i++) {
+                    n += token[i].value.length;
+                    if (n > pos.column) {
+                        t = i;
+                        break;
+                    }
+                    s = n;
                 }
-                s = n;
+                if (t > 0 && s == pos.column && token[t].type != "identifier") {
+                    t--;
+                }
+                if (token[t].type == "identifier") {
+                    open(token[t].value);
+                }
             }
-            if (t > 0 && s == pos.column && token[t].type != "identifier") {
-                t--;
-            }
-            if (token[t].type == "identifier") {
-                open(token[t].value);
-            }
-        }
-    });
+        });
 
-    function getId(data) {
-        return data.split("\n")[0].split(" ")[1].split(".")[0];
-    }
-
-    $.fn.ideEditor = function() {
-        self = $(this);
         editor = ace.edit(self.get(0));
         editor.getSession().setMode(new AnimoMode());
-        editor.socket = new WebSocket(uri, "save");
-        editor.socket.onmessage = function (event) {
-            current = getId(event.data);
-            editor.getSession().setValue(event.data);
-        };
-        editor.socket.onopen = onopen;
-        return self;
-    };
+        openLocation();
 
-    $.fn.ideSearch = function () {
-        var socket;
         var value = "";
         var canClose = true;
         var mustOpen = true;
-        sinput = $(this).keypress(function(event) {
-           if (event.keyCode == 37) {
+
+        sinput.keypress(function(event) {
+           if (event.keyCode == 27) {
+                self.show();
                 editor.focus();
            }
         }).one("focus", function(){
@@ -248,45 +257,40 @@
                 };
             });
             setInterval(function(){
+                var count = 0;
                 var val = sinput.val();
                 if (val != value) {
-                    try {
-                        socket.close();
-                    } catch (e) {}
+                    close(socket["search"]);
                     setTimeout(function(){
                         var v = sinput.val();
                         if (v == "") {
-                            sinput.popover("hide");
+                            self.show();
                             mustOpen = true;
                         } else if (v == val) {
-                            list.html("");
+                            count = 0;
+                            caption.html("<h2>Searching...</h2><h6>Not found anything still</h6>");
+                            list.html("<ol></ol>");
                             if (mustOpen) {
                                 mustOpen = false;
-                                sinput.popover("show");
-                                var left = sinput.offset().left;
-                                var max = $(window).width() - 600;
-                                if (left > max) {
-                                    left = max / 2;
-                                } else {
-                                    tip.find(".arrow").css({left : sinput.width() / 2});
-                                }
-                                tip.css({left : left});
+                                self.hide();
                             }
-                            socket = new WebSocket(uri, "search");
-                            socket.onmessage = function (event) {
+                            send(val, "search", function(event){
+                                count++;
+                                caption.html("<h2>Searching...</h2><h6>Found " + count + "</h6>");
                                 var id = getId(event.data);
-                                var a = $("<a href='#" + id + "'>" + id + "</a><pre>" + event.data + "</pre>")
+                                var item = $("<li><p><a href='#" + id + "'>" + id + "</a></p><pre>" + event.data + "</pre></li>")
                                         .mouseenter(function(){
                                             canClose= false;
                                         }).mouseleave(function(){
                                             sinput.focus();
                                             canClose= true;
                                         });
-                                        list.append(a);
-                            };
-                            socket.onopen = function(){
-                                socket.send(val);
-                            }
+                                item.find("a").click(function(){
+                                    self.show();
+                                    editor.focus();
+                                });
+                                list.find("ol").append(item);
+                            });
                         }
                     }, 300);
                     value = val;
@@ -294,28 +298,14 @@
             }, 100);
         }).blur(function(event){
             if (canClose) {
-                sinput.popover("hide");
+                self.show();
                 mustOpen = true;
-                try {
-                    socket.close();
-                } catch (e) {}
+                close(socket["search"]);
             } else {
                 sinput.focus();
             }
         });
-        var tip = $(sinput.popover({
-            placement : "bottom",
-            trigger   : "manual",
-            title     : "Searching..."
-        }).data().popover.tip());
-        var list = tip.find(".inner").width(600).find("p").css({
-            overflow : "auto",
-            maxHeight : "400px"
-        });
-        $(window).resize(function(){
-            sinput.blur();
-        });
-        return sinput;
+
     };
 
 })(jQuery);

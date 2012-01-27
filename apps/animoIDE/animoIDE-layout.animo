@@ -2,23 +2,12 @@ the animoIDE-layout
 
 	(layout)
 
-    (\script @src get uri any ace)
-    (\script @src get uri any jquery-min)
-    (\script @src get uri any bootstrap-tooltip)
-    (\script @src get uri any bootstrap-popover)
-    (\script @src get uri any animo-ide)
-
     (\style
      "html, body {overflow: hidden;} "
-     "#editor {margin: 0; position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "
-     ".ace_editor {font-size: 16px}")
-
-    (\script "
-        $(function() {
-            $('#editor').ideEditor();
-            $('#search').ideSearch();
-        });
-    ")
+     "#editor, #content {margin: 0; position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "
+     "#editor {background-color: #fff;} "
+     "#content {overflow: auto; padding-top: 20px} "
+     ".ace_editor {font-size: 16px;}")
 
     (!-- "Navigation")
     (\div (@class "navbar navbar-fixed")
@@ -36,5 +25,22 @@ the animoIDE-layout
       )
     )
 
+    (\div (@id "content")
+      (\div (@class "container")
+        (\header) (\section) (\footer)
+      )
+    )
+
     (\div (@id "editor"))
 
+    (\script @src get uri any ace)
+    (\script @src get uri any jquery-min)
+    (\script @src get uri any bootstrap-tooltip)
+    (\script @src get uri any bootstrap-popover)
+    (\script @src get uri any animo-ide)
+
+    (\script "
+        $(function() {
+            $.animoIDE($('#editor'), $('#search'), $('header'), $('section'));
+        });
+    ")

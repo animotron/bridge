@@ -26,6 +26,7 @@ import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
 import org.animotron.graph.AnimoGraph;
+import org.animotron.graph.builder.FastGraphBuilder;
 import org.animotron.graph.index.Order;
 import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.io.Pipe;
@@ -92,7 +93,7 @@ public class WebSocketServlet extends HttpServlet {
 		});
 
 		factory.setBufferSize(4096);
-		factory.setMaxIdleTime(7 * 60 * 1000);
+		factory.setMaxIdleTime(60000);
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -126,8 +127,6 @@ public class WebSocketServlet extends HttpServlet {
 	private class SourceAnimo extends OnTextMessage {
         @Override
         public void onMessage(String data) {
-            if (data.isEmpty())
-                return;
             try {
                 Relationship r = THE._.get(data);
                 if (r != null) {
@@ -144,8 +143,6 @@ public class WebSocketServlet extends HttpServlet {
     private class AnimoSubGraph extends OnTextMessage {
 		@Override
 		public void onMessage(String data) {
-            if (data.isEmpty())
-                return;
             Relationship r = THE._.get(data);
             if (r == null) return; //XXX: send error message
             IndexHits<Relationship> hits = Order.queryDown(r.getEndNode());
@@ -161,7 +158,6 @@ public class WebSocketServlet extends HttpServlet {
     }
 
     private class AnimoIMS extends OnTextMessage {
-
 		@Override
 		public void onMessage(String data) {
 			System.out.println("AnimoIMS "+data);
@@ -171,7 +167,6 @@ public class WebSocketServlet extends HttpServlet {
             	//XXX: send error message, if it come from serializer
 			}
 		}
-    	
     }
 
     private class SaveAnimo extends OnTextMessage {
@@ -197,6 +192,7 @@ public class WebSocketServlet extends HttpServlet {
 
             if (data.isEmpty())
                 return;
+
             Executor.execute(new Runnable() {
 
                 private void sendThes (Relationship  r) throws IOException {
@@ -229,16 +225,19 @@ public class WebSocketServlet extends HttpServlet {
                         try {
                             if (r != null) {
                                 cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(r, cache));
-                                //sendThes(new JExpression(_(ALL._, r)));
                             } else {
                                 if (exp.indexOf(" ") > 0) {
-                                    sendThes(new AnimoExpression(exp));
+                                    sendThes(new AnimoExpression(new FastGraphBuilder(false), exp));
                                 }
                             }
                         } catch (IOException e) {}
                     } catch (IOException e) {}
                 }
+
             });
+
         }
+
     }
+
 }

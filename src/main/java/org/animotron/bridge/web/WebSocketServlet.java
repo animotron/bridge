@@ -21,6 +21,8 @@
 package org.animotron.bridge.web;
 
 import org.animotron.Executor;
+import org.animotron.cache.Cache;
+import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
 import org.animotron.expression.JExpression;
@@ -60,6 +62,8 @@ public class WebSocketServlet extends HttpServlet {
 	private static final long serialVersionUID = -1773286872178450453L;
 
 	private WebSocketFactory factory;
+    
+    private Cache cache = FileCache._;
 
 	@Override
 	public void init() throws ServletException {
@@ -131,7 +135,7 @@ public class WebSocketServlet extends HttpServlet {
             try {
                 Relationship r = THE._.get(data);
                 if (r != null) {
-                    cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r));
+                    cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r, cache));
                 } else {
                     //XXX: send error message
                 }
@@ -166,7 +170,7 @@ public class WebSocketServlet extends HttpServlet {
 		public void onMessage(String data) {
 			System.out.println("AnimoIMS "+data);
             try {
-				cnn.sendMessage(CachedSerializer.HTML_PART.serialize(new AnimoExpression(data)));
+				cnn.sendMessage(CachedSerializer.HTML_PART.serialize(new AnimoExpression(data), cache));
 			} catch (IOException e) {
             	//XXX: send error message, if it come from serializer
 			}
@@ -181,7 +185,7 @@ public class WebSocketServlet extends HttpServlet {
                 return;
             try {
                 Expression e = new AnimoExpression(data);
-                cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(e));
+                cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(e, cache));
             } catch (IOException e) {
                 //XXX: send error message
             }
@@ -204,7 +208,7 @@ public class WebSocketServlet extends HttpServlet {
                         return;
                     Iterator<Path> it = Utils.THES.traverse(r.getEndNode()).iterator();
                     while(it.hasNext()) {
-                        cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(it.next().lastRelationship()));
+                        cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(it.next().lastRelationship(), cache));
                     }
                 }
 
@@ -228,7 +232,7 @@ public class WebSocketServlet extends HttpServlet {
                         Relationship r = THE._.get(exp);
                         try {
                             if (r != null) {
-                                cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(r));
+                                cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(r, cache));
                                 sendThes(new JExpression(_(ALL._, r)));
                             } else {
                                 if (exp.indexOf(" ") > 0) {

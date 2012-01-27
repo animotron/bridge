@@ -153,7 +153,11 @@
     }
 
     function open(id) {
-        socket.send(id);
+        if (editor.getSession().getUndoManager().hasUndo()) {
+            window.open(window.location.pathname + "#" + id);
+        } else {
+            socket.send(id);
+        }
     }
 
     var AnimoMode = require("ace/mode/animo").Mode;
@@ -271,9 +275,7 @@
                             socket = new WebSocket(uri, "search");
                             socket.onmessage = function (event) {
                                 var id = getId(event.data);
-                                var target = editor.getSession().getUndoManager().hasUndo()
-                                                ? "target='_blank'" : "";
-                                var a = $("<a href='#" + id + "'" + target + ">" + id + "</a><pre>" + event.data + "</pre>")
+                                var a = $("<a href='#" + id + "'>" + id + "</a><pre>" + event.data + "</pre>")
                                         .mouseenter(function(){
                                             canClose= false;
                                         }).mouseleave(function(){

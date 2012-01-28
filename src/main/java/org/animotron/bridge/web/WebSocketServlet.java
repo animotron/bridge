@@ -64,6 +64,7 @@ public class WebSocketServlet extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
+
 		// Create and configure WS factory
 		factory = new WebSocketFactory(new WebSocketFactory.Acceptor() {
 			public boolean checkOrigin(HttpServletRequest request, String origin) {
@@ -73,6 +74,7 @@ public class WebSocketServlet extends HttpServlet {
 			}
 
 			public WebSocket doWebSocketConnect(HttpServletRequest request, String protocol) {
+
                 if ("src".equals(protocol))
                     return new SourceAnimo();
 
@@ -82,6 +84,9 @@ public class WebSocketServlet extends HttpServlet {
                 else if ("save".equals(protocol))
                     return new SaveAnimo();
 
+                else if ("eval".equals(protocol))
+                    return new EvalAnimo();
+
                 else if ("graph".equals(protocol))
                     return new AnimoSubGraph();
 				
@@ -89,11 +94,14 @@ public class WebSocketServlet extends HttpServlet {
                     return new AnimoIMS();
 
                 return null;
+
 			}
+
 		});
 
 		factory.setBufferSize(4096);
 		factory.setMaxIdleTime(60000);
+
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -238,6 +246,20 @@ public class WebSocketServlet extends HttpServlet {
 
         }
 
+    }
+
+    private class EvalAnimo extends OnTextMessage {
+        @Override
+        public void onMessage(String data) {
+            if (data.isEmpty())
+                return;
+            try {
+                Expression e = new AnimoExpression(data);
+                cnn.sendMessage(CachedSerializer.PRETTY_ANIMO_RESULT.serialize(e, cache));
+            } catch (IOException e) {
+                //XXX: send error message
+            }
+        }
     }
 
 }

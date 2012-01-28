@@ -208,6 +208,26 @@
             }
         });
 
+        function onidentifier(callback) {
+            var pos = editor.getCursorPosition();
+            var token = editor.getSession().bgTokenizer.lines[pos.row].tokens;
+            var t = 0, n = 0, s = 0;
+            for (var i = 0; i < token.length; i++) {
+                n += token[i].value.length;
+                if (n > pos.column) {
+                    t = i;
+                    break;
+                }
+                s = n;
+            }
+            if (t > 0 && s == pos.column && token[t].type != "identifier") {
+                t--;
+            }
+            if (token[t].type == "identifier") {
+                callback(token[t].value);
+            }
+        }
+
         commands.addCommand({
             name: 'lookup',
             bindKey: {
@@ -216,23 +236,24 @@
                 sender: 'editor'
             },
             exec: function(env, args, request) {
-                var pos = editor.getCursorPosition();
-                var token = editor.getSession().bgTokenizer.lines[pos.row].tokens;
-                var t = 0, n = 0, s = 0;
-                for (var i = 0; i < token.length; i++) {
-                    n += token[i].value.length;
-                    if (n > pos.column) {
-                        t = i;
-                        break;
-                    }
-                    s = n;
-                }
-                if (t > 0 && s == pos.column && token[t].type != "identifier") {
-                    t--;
-                }
-                if (token[t].type == "identifier") {
-                    open(token[t].value);
-                }
+                onidentifier(function(id){
+                    open(id);
+                });
+            }
+        });
+
+        commands.addCommand({
+            name: 'hierarchy',
+            bindKey: {
+                win: 'Ctrl-H',
+                mac: 'Command-H',
+                sender: 'editor'
+            },
+            exec: function(env, args, request) {
+                onidentifier(function(id){
+                    sinput.val("all " + id);
+                    sinput.focus();
+                });
             }
         });
 

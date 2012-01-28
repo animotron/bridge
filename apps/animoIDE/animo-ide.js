@@ -154,23 +154,22 @@
             }
         });
 
-        window.addEventListener('hashchange', function (event) {
+        window.addEventListener('hashchange', function (event){
             openLocation();
         });
 
-        function openLocation() {
+        function openLocation(){
             var id = window.location.hash.substr(1);
             open(id == "" ? "new" : id);
         }
 
-        function open(id) {
-            if (editor.getSession().getUndoManager().hasUndo()) {
+        function open(id){
+            if (editor.getSession().getUndoManager().hasUndo()){
                 window.open(window.location.pathname + "#" + id, "_blank");
             } else {
                 send(id, "src", function (event) {
                     var id = getId(event.data);
                     editor.getSession().setValue(event.data);
-                    editor.focus();
                 });
             }
         }
@@ -242,19 +241,22 @@
         openLocation();
 
         var value = "";
-        var canClose = true;
-        var mustOpen = true;
+
+        function show() {
+            sinput.unbind("blur");
+            self.show();
+            editor.focus();
+        }
 
         sinput.keypress(function(event) {
            if (event.keyCode == 27) {
-                self.show();
-                editor.focus();
+                show();
            }
-        }).one("focus", function(){
-            sinput.focus(function(){
-                if (mustOpen) {
-                    value = "";
-                };
+        }).focus(function(){
+            self.hide();
+            sinput.one("blur", function(event){
+                close(socket["search"]);
+                show();
             });
             setInterval(function(){
                 var count = 0;
@@ -264,30 +266,27 @@
                     setTimeout(function(){
                         var v = sinput.val();
                         if (v == "") {
-                            self.show();
-                            mustOpen = true;
+                            show();
                         } else if (v == val) {
                             count = 0;
                             caption.html("<h2>Searching...</h2><h6>Not found anything still</h6>");
                             list.html("<ol></ol>");
-                            if (mustOpen) {
-                                mustOpen = false;
-                                self.hide();
-                            }
                             send(val, "search", function(event){
                                 count++;
                                 caption.html("<h2>Searching...</h2><h6>Found " + count + "</h6>");
                                 var id = getId(event.data);
-                                var item = $("<li><p><a href='#" + id + "'>" + id + "</a></p><pre>" + event.data + "</pre></li>")
-                                        .mouseenter(function(){
-                                            canClose= false;
-                                        }).mouseleave(function(){
-                                            sinput.focus();
-                                            canClose= true;
-                                        });
+                                var item = $("<li><p><a href='#" + id + "'>" + id + "</a></p><pre>" + event.data + "</pre></li>");
+                                var canFocus = true;
                                 item.find("a").click(function(){
-                                    self.show();
-                                    editor.focus();
+                                    canFocus = false;
+                                    show();
+                                });
+                                item.find("p, pre").mouseenter(function(){
+                                    sinput.unbind("blur");
+                                }).mouseleave(function(){
+                                    if (canFocus) {
+                                        sinput.focus();
+                                    }
                                 });
                                 list.find("ol").append(item);
                             });
@@ -296,14 +295,6 @@
                     value = val;
                 }
             }, 100);
-        }).blur(function(event){
-            if (canClose) {
-                self.show();
-                mustOpen = true;
-                close(socket["search"]);
-            } else {
-                sinput.focus();
-            }
         });
 
     };

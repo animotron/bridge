@@ -148,20 +148,27 @@
 
         var editor;
 
+        var modified = false;
+
         var self = $("#editor");
         var sinput = $("#search");
         var caption = $("header");
         var list = $("section");
         var cons = $("#console");
 
-        window.addEventListener('popstate', function(event){
-            if (event.state) {
-                open(event.state);
+
+        window.addEventListener('hashchange', function(event){
+            if (modified) {
+                window.history.replaceState(null, null, event.oldURL);
+                window.open(event.newURL, "_blank");
             }
+            openLocation();
         });
 
-        window.addEventListener('hashchange', function (event){
-            openLocation();
+        window.addEventListener('unload', function(event){
+            if (modified) {
+                event.stopPropagation();
+            }
         });
 
         function openLocation(){
@@ -169,15 +176,13 @@
             open(id == "" ? "new" : id);
         }
 
-        function open(id){
-            if (editor.getSession().getUndoManager().hasUndo()){
-                window.open(window.location.pathname + "#" + id, "_blank");
-            } else {
-                send(id, "src", function (event) {
-                    var id = getId(event.data);
-                    editor.getSession().setValue(event.data);
-                });
-            }
+        function open(id) {
+            send(id, "src", function (event) {
+                cons.modal("hide");
+                var id = getId(event.data);
+                editor.getSession().setValue(event.data);
+                modified = false;
+            });
         }
 
         function getId(data) {
@@ -196,7 +201,9 @@
             },
             exec: function(env, args, request) {
                 send(editor.getSession().getValue(), "save", function(event){
+                    cons.modal("hide");
                     editor.getSession().setValue(event.data);
+                    modified = false;
                 });
             }
         });
@@ -210,6 +217,7 @@
             },
             exec: function(env, args, request) {
                 send(editor.getSession().getValue(), "eval", function(event){
+                    modified = false;
                     var W = self.width();
                     var H = self.height() + 40;
                     var w = W * 0.9;
@@ -252,7 +260,7 @@
             }
         });
 
-        function onidentifier(callback) {
+        function onidentifier(editor, callback) {
             var pos = editor.getCursorPosition();
             var token = editor.getSession().bgTokenizer.lines[pos.row].tokens;
             var t = 0, n = 0, s = 0;
@@ -280,7 +288,7 @@
                 sender: 'editor'
             },
             exec: function(env, args, request) {
-                onidentifier(function(id){
+                onidentifier(env.editor, function(id){
                     window.location.hash = "#" + id
                 });
             }
@@ -294,7 +302,7 @@
                 sender: 'editor'
             },
             exec: function(env, args, request) {
-                onidentifier(function(id){
+                onidentifier(env.editor, function(id){
                     sinput.val("all " + id);
                     sinput.focus();
                 });
@@ -317,6 +325,9 @@
 
         editor = ace.edit(self.get(0));
         editor.getSession().setMode(new AnimoMode());
+        editor.getSession().doc.on("change", function(){
+            modified = true;
+        });
         openLocation();
 
         cons.find(".modal-body").css({padding : 0});
@@ -333,6 +344,7 @@
                 show();
            }
         }).focus(function(){
+            cons.modal("hide");
             var val = sinput.val();
             blur();
             if (val != "" && value == val) {

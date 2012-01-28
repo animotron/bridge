@@ -248,26 +248,40 @@
             editor.focus();
         }
 
+        function blur() {
+            sinput.blur(function(event){
+                close(socket["search"]);
+                show();
+            });
+        }
+
+        function hide() {
+            self.hide();
+            blur();
+        }
+
         sinput.keypress(function(event) {
            if (event.keyCode == 27) {
                 show();
            }
         }).focus(function(){
-            self.hide();
-            sinput.one("blur", function(event){
-                close(socket["search"]);
-                show();
-            });
+            var val = sinput.val();
+            if (val != "" && value == val) {
+                hide();
+            } else {
+                blur();
+            }
             setInterval(function(){
                 var count = 0;
                 var val = sinput.val();
+                if (val != "" && val != value) {
+                    hide();
+                }
                 if (val != value) {
                     close(socket["search"]);
                     setTimeout(function(){
                         var v = sinput.val();
-                        if (v == "") {
-                            show();
-                        } else if (v == val) {
+                        if (v != "" && v == val) {
                             count = 0;
                             caption.html("<h2>Searching...</h2><h6>Not found anything still</h6>");
                             list.html("<ol></ol>");
@@ -278,6 +292,7 @@
                                 var item = $("<li><p><a href='#" + id + "'>" + id + "</a></p><pre>" + event.data + "</pre></li>");
                                 var canFocus = true;
                                 item.find("a").click(function(){
+                                    close(socket["search"]);
                                     canFocus = false;
                                     show();
                                 });

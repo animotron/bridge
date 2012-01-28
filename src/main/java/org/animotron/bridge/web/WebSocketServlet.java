@@ -200,7 +200,7 @@ public class WebSocketServlet extends HttpServlet {
                         return;
                     Iterator<Path> it = Utils.THES.traverse(r.getEndNode()).iterator();
                     while(it.hasNext()) {
-                        cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(it.next().lastRelationship(), cache));
+                        cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(it.next().lastRelationship(), cache));
                     }
                 }
 
@@ -224,14 +224,14 @@ public class WebSocketServlet extends HttpServlet {
                         Relationship r = THE._.get(exp);
                         try {
                             if (r != null) {
-                                cnn.sendMessage(CachedSerializer.ANIMO_RESULT_ONE_STEP.serialize(r, cache));
+                                cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r, cache));
                             } else {
                                 if (exp.indexOf(" ") > 0) {
                                     sendThes(new AnimoExpression(new FastGraphBuilder(false), exp));
                                 }
                             }
-                        } catch (IOException e) {}
-                    } catch (IOException e) {}
+                        } catch (Exception e) {}
+                    } catch (Exception e) {}
                 }
 
             });

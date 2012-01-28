@@ -144,9 +144,15 @@
         }
     }
 
-    $.animoIDE = function(self, sinput, caption, list) {
+    $.animoIDE = function() {
 
         var editor;
+
+        var self = $("#editor");
+        var sinput = $("#search");
+        var caption = $("header");
+        var list = $("section");
+        var cons = $("#console");
 
         window.addEventListener('popstate', function(event){
             if (event.state) {
@@ -190,8 +196,34 @@
             },
             exec: function(env, args, request) {
                 send(editor.getSession().getValue(), "save", function(event){
-                    current = getId(event.data);
                     editor.getSession().setValue(event.data);
+                });
+            }
+        });
+
+        commands.addCommand({
+            name: 'eval',
+            bindKey: {
+                win: 'F9',
+                mac: 'F9',
+                sender: 'editor'
+            },
+            exec: function(env, args, request) {
+                send(editor.getSession().getValue(), "eval", function(event){
+                    var W = self.width();
+                    var H = self.height() + 40;
+                    var w = W * 0.9;
+                    var h = H * 0.9;
+                    cons.css({
+                        maxWidth    : w,
+                        width       : w,
+                        maxHeight   : h,
+                        height      : h
+                    }).one("shown", function(){
+                        cons.find(".console-editor").height(cons.innerHeight() - cons.find(".modal-header").outerHeight()- cons.find(".modal-footer").outerHeight());
+                        cons.editor.resize();
+                    }).modal().offset({top: (H-h)/2, left: (W-w)/2});
+                    cons.editor.getSession().setValue(event.data);
                 });
             }
         });
@@ -237,7 +269,7 @@
             },
             exec: function(env, args, request) {
                 onidentifier(function(id){
-                    open(id);
+                    window.location.hash = "#" + id
                 });
             }
         });
@@ -257,16 +289,11 @@
             }
         });
 
-        editor = ace.edit(self.get(0));
-        editor.getSession().setMode(new AnimoMode());
-        openLocation();
-
-        var value = "";
-
         function show() {
             sinput.unbind("blur");
             self.show();
             editor.focus();
+            editor.resize();
         }
 
         function blur() {
@@ -276,10 +303,18 @@
             });
         }
 
-        function hide() {
-            self.hide();
-            blur();
-        }
+        editor = ace.edit(self.get(0));
+        editor.getSession().setMode(new AnimoMode());
+        openLocation();
+
+        cons.find(".modal-body").css({padding : 0});
+        cons.on("hidden", function(){editor.focus()});
+        cons.editor = ace.edit(cons.find(".console-editor").get(0));
+        cons.editor.getSession().setMode(new AnimoMode());
+        cons.editor.setShowPrintMargin(false);
+        cons.editor.setReadOnly(true);
+
+        var value = "";
 
         sinput.keypress(function(event) {
            if (event.keyCode == 27) {
@@ -287,16 +322,16 @@
            }
         }).focus(function(){
             var val = sinput.val();
+            blur();
             if (val != "" && value == val) {
-                hide();
-            } else {
-                blur();
+                self.hide();
             }
             setInterval(function(){
                 var count = 0;
                 var val = sinput.val();
                 if (val != "" && val != value) {
-                    hide();
+                    blur();
+                    self.hide();
                 }
                 if (val != value) {
                     close(socket["search"]);
@@ -304,11 +339,11 @@
                         var v = sinput.val();
                         if (v != "" && v == val) {
                             count = 0;
-                            caption.html("<h2>Searching...</h2><h6>Not found anything still</h6>");
+                            caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Not found anything still</h6>");
                             list.html("<ol></ol>");
                             send(val, "search", function(event){
                                 count++;
-                                caption.html("<h2>Searching...</h2><h6>Found " + count + "</h6>");
+                                caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Found " + count + "</h6>");
                                 var id = getId(event.data);
                                 var item = $("<li><p><a href='#" + id + "'>" + id + "</a></p><pre>" + event.data + "</pre></li>");
                                 var canFocus = true;

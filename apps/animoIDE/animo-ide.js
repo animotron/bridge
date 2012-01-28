@@ -240,6 +240,18 @@
             }
         });
 
+        commands.addCommand({
+            name: 'new',
+            bindKey: {
+                win: 'Ctrl-N',
+                mac: 'Command-N',
+                sender: 'editor'
+            },
+            exec: function(env, args, request) {
+                window.location.hash = "#new";
+            }
+        });
+
         function onidentifier(callback) {
             var pos = editor.getCursorPosition();
             var token = editor.getSession().bgTokenizer.lines[pos.row].tokens;

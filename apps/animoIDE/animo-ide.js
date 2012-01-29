@@ -348,6 +348,11 @@
 
         var value = "";
 
+        function safe (s) {
+            return s.replace(/&(?!\w+([;\s]|$))/g, "&amp;")
+                    .replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
         sinput.keypress(function(event) {
            if (event.keyCode == 27) {
                 show();
@@ -379,7 +384,7 @@
                                 caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Found " + count + "</h6>");
                                 var id = getId(event.data);
                                 var hash = "#" + id;
-                                var item = $("<li><p><a href='" + hash + "'>" + id + "</a></p><pre>" + event.data + "</pre></li>");
+                                var item = $("<li><p><a href='" + hash + "'>" + id + "</a></p><pre>" + safe(event.data) + "</pre></li>");
                                 var canFocus = true;
                                 item.find("a").click(function(event){
                                     close(socket["search"]);

@@ -1,4 +1,5 @@
 the animoIDE
     html-page
+        (title "Animo IDE")
 	    (use animoIDE-layout)
-        (weak-use kendo-common-min, kendo-default-min)
+        (weak-use bootstrap, less-min)

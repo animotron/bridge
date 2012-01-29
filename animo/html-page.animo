@@ -9,5 +9,6 @@ the html-page
             (\link (@rel "shortcut icon") (@href get uri any favicon))
             (each (prefer less) (\link (@rel "stylesheet/less") (@href get uri)))
             (each (prefer css) (\link (@rel "stylesheet") (@href get uri)))
+            (get css-ie-hack)
             (each (prefer js) (\script @src get uri)))
         (\body any layout))

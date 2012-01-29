@@ -10,15 +10,10 @@ the animoIDE-layout
      "#content {overflow: auto; padding-top: 20px} "
      ".ace_editor {font-size: 16px;}")
 
-    (!-- "Navigation")
     (\div (@class "navbar navbar-fixed")
       (\div (@class "navbar-inner")
         (\div (@class "container")
-          (!-- \a (@class "brand") (@href "/") (get project-name))
           (\span (@class "brand") "Animo IDE")
-          (!-- \ul (@class "nav")
-            (\li (@class "active") "Animo IDE")
-          )
           (\div (@class "navbar-search")
             (\input (@id "search") (@type "text") (@class "search-query pull-left") (@placeholder "Search"))
           )
@@ -49,8 +44,6 @@ the animoIDE-layout
 
     (\script @src get uri any ace)
     (\script @src get uri any jquery-min)
-    (\script @src get uri any bootstrap-tooltip)
-    (\script @src get uri any bootstrap-popover)
     (\script @src get uri any bootstrap-modal)
     (\script @src get uri any animo-ide)
 

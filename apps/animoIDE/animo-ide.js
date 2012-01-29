@@ -211,7 +211,7 @@
                     cons.modal("hide");
                     editor.getSession().setValue(event.data);
                     modified = false;
-                    update(id);
+                    update(getId(event.data));
                 });
             }
         });
@@ -240,7 +240,7 @@
                         cons.editor.resize();
                     }).modal().offset({top: (H-h)/2, left: (W-w)/2});
                     cons.editor.getSession().setValue(event.data);
-                    update(id);
+                    update(getId(event.data));
                 });
             }
         });

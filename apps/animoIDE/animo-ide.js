@@ -159,15 +159,10 @@
 
         window.addEventListener('hashchange', function(event){
             if (modified) {
-                window.history.replaceState(null, null, event.oldURL);
                 window.open(event.newURL, "_blank");
-            }
-            openLocation();
-        });
-
-        window.addEventListener('unload', function(event){
-            if (modified) {
-                event.stopPropagation();
+                window.history.back();
+            } else {
+                openLocation();
             }
         });
 
@@ -182,11 +177,23 @@
                 var id = getId(event.data);
                 editor.getSession().setValue(event.data);
                 modified = false;
+                update(id);
             });
         }
 
+        function update(id) {
+            var hash = "#" + id;
+            if (hash != window.location.hash) {
+                window.history.replaceState(null, null, window.location.pathname + hash);
+            }
+        }
+
         function getId(data) {
-            return data.split("\n")[0].split(" ")[1].split(".")[0];
+            var t = data.split("\n")[0].split(" ");
+            if (t.length > 1 && t[0] == "the") {
+                return t[1].split(".")[0];
+            }
+            return "";
         }
 
         var AnimoMode = require("ace/mode/animo").Mode;
@@ -204,6 +211,7 @@
                     cons.modal("hide");
                     editor.getSession().setValue(event.data);
                     modified = false;
+                    update(id);
                 });
             }
         });
@@ -232,6 +240,7 @@
                         cons.editor.resize();
                     }).modal().offset({top: (H-h)/2, left: (W-w)/2});
                     cons.editor.getSession().setValue(event.data);
+                    update(id);
                 });
             }
         });
@@ -326,7 +335,7 @@
         editor = ace.edit(self.get(0));
         editor.getSession().setMode(new AnimoMode());
         editor.getSession().doc.on("change", function(){
-            modified = true;
+            modified = editor.getSession().getUndoManager().hasUndo();
         });
         openLocation();
 
@@ -369,15 +378,21 @@
                                 count++;
                                 caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Found " + count + "</h6>");
                                 var id = getId(event.data);
-                                var item = $("<li><p><a href='#" + id + "'>" + id + "</a></p><pre>" + event.data + "</pre></li>");
+                                var hash = "#" + id;
+                                var item = $("<li><p><a href='" + hash + "'>" + id + "</a></p><pre>" + event.data + "</pre></li>");
                                 var canFocus = true;
-                                item.find("a").click(function(){
+                                item.find("a").click(function(event){
                                     close(socket["search"]);
                                     canFocus = false;
                                     show();
+                                    if (modified && hash != window.location.hash) {
+                                        window.open(window.location.pathname + "#" + id);
+                                        return false;
+                                    }
                                 });
                                 item.find("p, pre").mouseenter(function(){
                                     sinput.unbind("blur");
+                                    canFocus = true;
                                 }).mouseleave(function(){
                                     if (canFocus) {
                                         sinput.focus();

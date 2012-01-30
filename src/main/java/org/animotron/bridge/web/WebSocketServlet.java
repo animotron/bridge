@@ -203,7 +203,7 @@ public class WebSocketServlet extends HttpServlet {
 
             Executor.execute(new Runnable() {
 
-                private void sendThes (Relationship  r) throws IOException {
+                private void sendThes (Relationship  r) throws Exception {
                     if (r == null)
                         return;
                     Iterator<Path> it = Utils.THES.traverse(r.getEndNode()).iterator();
@@ -212,7 +212,7 @@ public class WebSocketServlet extends HttpServlet {
                     }
                 }
 
-                private void sendThes (Expression  e) throws IOException {
+                private void sendThes (Expression  e) throws Exception {
                     int i = 0;
                     QCAVector v;
                     pipe = Evaluator._.execute(null, e);

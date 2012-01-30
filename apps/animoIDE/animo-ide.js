@@ -304,6 +304,20 @@
         });
 
         commands.addCommand({
+            name: 'lookout',
+            bindKey: {
+                win: 'Ctrl-Shift-B',
+                mac: 'Command-Shift-B',
+                sender: 'editor'
+            },
+            exec: function(env, args, request) {
+                onidentifier(env.editor, function(id){
+                    window.open(window.location.pathname + "#" + id, "_blank");
+                });
+            }
+        });
+
+        commands.addCommand({
             name: 'hierarchy',
             bindKey: {
                 win: 'Ctrl-H',

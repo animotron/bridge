@@ -7,7 +7,7 @@ the inventory-document
 	)
 	
 	(part
-		(issue-party)
-		(receive-party)
+		(issue party)
+		(receive party)
 		(SKU)
 	)

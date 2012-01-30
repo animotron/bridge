@@ -4,4 +4,4 @@ the price
 		(lang-ru "цена")
 	)
 
-	(/ (cost) (qty))
+	(/ (get cost) (get qty))

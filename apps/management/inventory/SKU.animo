@@ -1,6 +1,4 @@
-the inventory-document
-	(document)
-
+the SKU
 	(word 
 		(lang-en "stock-keeping unit")
 		(lang-ru "единица учета запасов")

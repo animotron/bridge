@@ -6,7 +6,7 @@ the cost
 		(lang-ru "стоимость")
 	)
 	
-	(* (qty) (cost))
+	(* (get qty) (get cost))
 	
 	(number)
 	(currency)

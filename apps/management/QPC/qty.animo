@@ -4,7 +4,7 @@ the qty
 		(lang-ru "количество")
 	)
 	
-	(/ (cost) (price))
+	(/ (get cost) (get price))
 	
 	(number)
 	(UoM)

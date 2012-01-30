@@ -1,0 +1,5 @@
+the receive
+	(word 
+		(lang-en "receive")
+		(lang-ru "приход")
+	)

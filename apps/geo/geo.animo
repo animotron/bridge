@@ -1,0 +1,5 @@
+the geo
+    html-page
+        (title "Geo!")
+	    (use geo-layout)
+        (weak-use bootstrap, less-min, leaflet)

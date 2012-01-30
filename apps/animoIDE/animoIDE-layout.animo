@@ -10,7 +10,7 @@ the animoIDE-layout
      "#content {overflow: auto; padding-top: 20px} "
      ".ace_editor {font-size: 16px;}")
 
-    (\div (@class "navbar navbar-fixed")
+    (\nav (@class "navbar navbar-fixed")
       (\div (@class "navbar-inner")
         (\div (@class "container")
           (\span (@class "brand") "Animo IDE")

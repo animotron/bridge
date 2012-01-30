@@ -1,0 +1,41 @@
+the geo-layout
+
+	(layout)
+
+	(css-ie-hack !-- "[if lte IE 8]>" (\link (@rel "stylesheet") (@href get uri any leaflet-ie)) "<![endif]")
+
+    (\style
+     "body, html {overflow: hidden;} "
+     "#map {position: absolute; top: 40px; bottom: 0; left: 0; right: 0px;} "
+     ".leaflet-tile {max-width: none; max-height: none;}"
+    )
+
+    (\nav (@class "navbar navbar-fixed")
+      (\div (@class "navbar-inner")
+        (\div (@class "container")
+          (\span (@class "brand") get title)
+          (\div (@class "navbar-search  pull-left")
+            (\input (@id "search") (@type "text") (@class "search-query") (@placeholder "Search"))
+          )
+        )
+      )
+    )
+
+    (!-- \div (@id "body") (@class "fluid-container sidebar-right")
+      (\div (@class)
+
+      )
+      (\sidebar (@class "fluid-sidebar")
+        (\header)
+        (\section)
+        (\footer)
+      )
+    )
+
+    (\div (@id "map"))
+
+    (\script @src get uri any jquery-min)
+    (\script @src get uri any leaflet-min)
+    (\script @src get uri any geo)
+
+    (\script "$(function(){$.geo();});")

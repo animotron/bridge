@@ -1,5 +1,13 @@
 the document
+	
+	(event)
+	
 	(word 
 		(lang-en "document")
 		(lang-ru "документ")
+	)
+	
+	(\div (@id "document")
+		(\lable "Номер" (\input (@id "document-number") (@disabled))
+		(\lable "от" (\input (@id "document-date") (@value now))
 	)

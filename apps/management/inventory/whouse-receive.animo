@@ -1,0 +1,32 @@
+the whouse-receive
+
+	(document)
+	(receive,goods)
+	
+	(word 
+		(lang-en "warehouse receive document")
+		(lang-ru "документ прихода на склад")
+	)
+	
+
+	(\div (@id "whouse-receive")
+		(\label "Склад" (\input (@id "whouse")))
+		(\label "Контрагент" (\input (@id "contra")))
+
+		(\table
+			(\tr
+				(\th "Наименование")
+				(\th "Ед.Изм.")
+				(\th "Количество")
+				(\th "Цена")
+				(\th "Сумма")
+			)
+			(\tr
+				(\td \input @id "goods")
+				(\td \input @id "UoM")
+				(\td \input @id "qty*number")
+				(\td \input @id "price*number")
+				(\td \input @id "cost*number")
+			)
+		)
+	)

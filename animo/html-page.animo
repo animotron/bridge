@@ -11,8 +11,4 @@ the html-page
             (each (prefer css) (\link (@rel "stylesheet") (@href get uri)))
             (get css-ie-hack)
             (each (prefer js) (\script @src get uri)))
-        (\body
-            (each (get style) (\style this style))
-            (any layout)
-            (each (get js) (\script @src get uri any this js))
-            (each (get script) (\script this script))))
+        (\body any layout))

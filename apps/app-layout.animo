@@ -2,10 +2,12 @@ the app-layout
 
 	(layout)
 
-    (style
+    (\style
         "html, body {overflow: auto; padding-top: 40px}"
         ".frame {position: absolute; top: 40px; bottom: 0; left: 0; right: 0; overflow: auto}"
     )
+
+    (each (get style) (\style this style))
 
     (\nav (@class "navbar navbar-fixed")
         (\div (@class "navbar-inner")
@@ -20,4 +22,9 @@ the app-layout
 
     (get frame)
 
-    (js jquery-min, utils)
+    (\script @src get uri any jquery-min)
+    (\script @src get uri any utils)
+
+    (each (get js) (\script @src get uri any this js))
+
+    (each (get script) (\script this script))

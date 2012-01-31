@@ -34,8 +34,9 @@ the geo-layout
 
     (\div (@id "map"))
 
-    (\script @src get uri any jquery-min)
     (\script @src get uri any leaflet-min)
+    (\script @src get uri any jquery-min)
+    (\script @src get uri any utils)
     (\script @src get uri any geo)
 
     (\script "$(function(){$.geo();});")

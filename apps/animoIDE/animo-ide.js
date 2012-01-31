@@ -123,10 +123,14 @@
     var socket = [];
     var uri = "ws://" + window.location.host + "/ws";
 
-    function close (socket) {
+    function close (protocol) {
         try {
-            socket.close();
-        } catch (e) {}
+            socket[protocol].closed = true;
+            socket[protocol].close();
+            return true;
+        } catch (e) {
+            return false;
+        }
     }
 
     function send (message, protocol, onmessage) {
@@ -339,13 +343,6 @@
             editor.resize();
         }
 
-        function blur() {
-            sinput.blur(function(event){
-                close(socket["search"]);
-                show();
-            });
-        }
-
         editor = ace.edit(self.get(0));
         editor.getSession().setMode(new AnimoMode());
         editor.getSession().doc.on("change", function(){
@@ -360,8 +357,6 @@
         cons.editor.setShowPrintMargin(false);
         cons.editor.setReadOnly(true);
 
-        var value = "";
-
         function safe (s) {
             return s.replace(/&(?!\w+([;\s]|$))/g, "&amp;")
                     .replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -373,58 +368,49 @@
            }
         }).focus(function(){
             cons.modal("hide");
-            var val = sinput.val();
-            blur();
-            if (val != "" && value == val) {
+            sinput.blur(function(event){
+                show();
+            });
+            if (sinput.val() != "") {
                 self.hide();
             }
-            setInterval(function(){
+        }).liveChange(function(){
+            var val = sinput.val();
+            if (val != "") {
+                self.hide();
                 var count = 0;
-                var val = sinput.val();
-                if (val != "" && val != value) {
-                    blur();
-                    self.hide();
-                }
-                if (val != value) {
-                    close(socket["search"]);
-                    setTimeout(function(){
-                        var v = sinput.val();
-                        if (v != "" && v == val) {
-                            count = 0;
-                            caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Not found anything still</h6>");
-                            list.html("<ol></ol>");
-                            send(val, "search", function(event){
-                                count++;
-                                caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Found " + count + "</h6>");
-                                var id = getId(event.data);
-                                var hash = "#" + id;
-                                var item = $("<li><p><a href='" + hash + "'>" + id + "</a></p><pre>" + safe(event.data) + "</pre></li>");
-                                var canFocus = true;
-                                item.find("a").click(function(event){
-                                    close(socket["search"]);
-                                    canFocus = false;
-                                    show();
-                                    if (modified && hash != window.location.hash) {
-                                        window.open(window.location.pathname + "#" + id);
-                                        return false;
-                                    }
-                                });
-                                item.find("p, pre").mouseenter(function(){
-                                    sinput.unbind("blur");
-                                    canFocus = true;
-                                }).mouseleave(function(){
-                                    if (canFocus) {
-                                        sinput.focus();
-                                    }
-                                });
-                                list.find("ol").append(item);
-                            });
-                        }
-                    }, 300);
-                    value = val;
-                }
-            }, 100);
-        });
+                close("search");
+                caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Not found anything still</h6>");
+                list.html("<ol></ol>");
+                send(val, "search", function(event){
+                    if (!event.target.closed) {
+                        count++;
+                        caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Found " + count + "</h6>");
+                        var id = getId(event.data);
+                        var hash = "#" + id;
+                        var item = $("<li><p><a href='" + hash + "'>" + id + "</a></p><pre>" + safe(event.data) + "</pre></li>");
+                        var canFocus = true;
+                        item.find("a").click(function(event){
+                            canFocus = false;
+                            show();
+                            if (modified && hash != window.location.hash) {
+                                window.open(window.location.pathname + "#" + id);
+                                return false;
+                            }
+                        });
+                        item.find("p, pre").mouseenter(function(){
+                            sinput.unbind("blur");
+                            canFocus = true;
+                        }).mouseleave(function(){
+                            if (canFocus) {
+                                sinput.focus();
+                            }
+                        });
+                        list.find("ol").append(item);
+                    }
+                });
+            }
+        }).val("");
 
     };
 

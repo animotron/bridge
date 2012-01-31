@@ -45,6 +45,7 @@ the animoIDE-layout
     (\script @src get uri any ace)
     (\script @src get uri any jquery-min)
     (\script @src get uri any bootstrap-modal)
+    (\script @src get uri any utils)
     (\script @src get uri any animo-ide)
 
     (\script "$(function(){$.animoIDE();});")

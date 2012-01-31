@@ -125,12 +125,8 @@
 
     function close (protocol) {
         try {
-            socket[protocol].closed = true;
             socket[protocol].close();
-            return true;
-        } catch (e) {
-            return false;
-        }
+        } catch (e) {}
     }
 
     function send (message, protocol, onmessage) {
@@ -383,7 +379,7 @@
                 caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Not found anything still</h6>");
                 list.html("<ol></ol>");
                 send(val, "search", function(event){
-                    if (!event.target.closed) {
+                    if (!event.target.readyState != 1) {
                         count++;
                         caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Found " + count + "</h6>");
                         var id = getId(event.data);

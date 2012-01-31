@@ -5,21 +5,19 @@ the animoIDE
 
     (style
          ".console-editor {position: relative; visible: yes} "
-         "#editor, #content {position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "
          "#editor {background-color: #fff;} "
          "#content {overflow: auto; padding-top: 20px} "
-         ".ace_editor {font-size: 16px;}"
     )
 
     (frame
 
-        (\div (@id "content")
+        (\div (@id "content")  (@class "frame")
             (\div (@class "container")
                 (\header) (\section) (\footer)
             )
         )
 
-        (\div (@id "editor"))
+        (\div (@id "editor") (@class "frame"))
 
         (\div (@id "console") (@class "modal hide fade")
             (\div (@class "modal-header")
@@ -37,6 +35,3 @@ the animoIDE
     )
 
     (js ace, bootstrap-modal, animo-ide)
-
-    (script "$(function(){$.animoIDE();});")
-

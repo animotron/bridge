@@ -1,5 +1,22 @@
 the geo
-    html-page
-        (title "Geo!")
-	    (use geo-layout)
-        (weak-use bootstrap, less-min, leaflet)
+
+    (app)
+
+    (title "Geo!")
+
+	(css-ie-hack !-- "[if lte IE 8]>" (\link (@rel "stylesheet") (@href get uri any leaflet-ie)) "<![endif]")
+
+    (style
+        "#map {position: absolute; top: 40px; bottom: 0; left: 0; right: 0px;}"
+        ".leaflet-tile {max-width: none; max-height: none;}"
+    )
+
+    (frame
+
+        (\div (@id "map") (@class "frame"))
+
+    )
+
+    (js leaflet-min, geo)
+
+    (script "$(function(){$.geo();});")

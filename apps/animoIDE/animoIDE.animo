@@ -1,5 +1,42 @@
 the animoIDE
-    html-page
-        (title "Animo IDE")
-	    (use animoIDE-layout)
-        (weak-use bootstrap, less-min)
+    (app)
+
+    (title "Animo IDE")
+
+    (style
+         ".console-editor {position: relative; visible: yes} "
+         "#editor, #content {position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "
+         "#editor {background-color: #fff;} "
+         "#content {overflow: auto; padding-top: 20px} "
+         ".ace_editor {font-size: 16px;}"
+    )
+
+    (frame
+
+        (\div (@id "content")
+            (\div (@class "container")
+                (\header) (\section) (\footer)
+            )
+        )
+
+        (\div (@id "editor"))
+
+        (\div (@id "console") (@class "modal hide fade")
+            (\div (@class "modal-header")
+                (\a (@class "close") (@data-dismiss "modal") "&times;")
+                (\h3 (@id console-caption) ("Evaluation's result"))
+            )
+            (\div (@class "modal-body")
+                (\div (@class "console-editor"))
+            )
+            (\div (@class "modal-footer")
+                (\a (@class "btn primary") (@data-dismiss "modal") ("Close"))
+            )
+        )
+
+    )
+
+    (js ace, bootstrap-modal, animo-ide)
+
+    (script "$(function(){$.animoIDE();});")
+

@@ -49,6 +49,7 @@ public class ResourcesBridge extends AbstractResourcesBridge {
     protected void loadFile(final File file) throws IOException {
         InputStream is = new FileInputStream(file);
         if (file.getName().endsWith(".animo")) {
+        	System.out.println("animo loading "+file.getName());
             __(new AnimoExpression(is));
         } else {
             __(

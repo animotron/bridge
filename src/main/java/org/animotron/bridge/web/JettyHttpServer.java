@@ -21,11 +21,15 @@
 package org.animotron.bridge.web;
 
 import org.animotron.bridge.FSBridge;
+import org.animotron.bridge.websocket.WebSocketServlet;
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static org.animotron.graph.AnimoGraph.startDB;
 
@@ -62,8 +66,14 @@ public class
     	}
     	
     	//setup servlet container
-        jetty = new Server(jettyPort);
+//      jetty = new Server(jettyPort);
+        jetty = new Server();
         jetty.setStopAtShutdown(true);
+        
+        Connector connector=new SelectChannelConnector();
+        connector.setHost("192.168.7.101");
+        connector.setPort(8080);
+        jetty.addConnector(connector);
         
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
@@ -84,6 +94,8 @@ public class
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        System.out.println(Arrays.toString(jetty.getConnectors()));
     }
 
     public void stop() {

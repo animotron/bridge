@@ -120,30 +120,6 @@
         window.WebSocket = window.MozWebSocket;
     }
 
-    var socket = [];
-    var uri = "ws://" + window.location.host + "/ws";
-
-    function close (protocol) {
-        try {
-            socket[protocol].close();
-        } catch (e) {}
-    }
-
-    function send (message, protocol, onmessage) {
-        var s = socket[protocol];
-        try {
-            s.onmessage = onmessage;
-            s.sendMessage(message);
-        } catch (e) {
-            s = new WebSocket(uri, protocol);
-            socket[protocol] = s;
-            s.onmessage = onmessage;
-            s.onopen = function() {
-                s.send(message);
-            };
-        }
-    }
-
     var editor;
     var modified = false;
 
@@ -169,7 +145,7 @@
     }
 
     function open(id) {
-        send(id, "src", function (event) {
+        $.socket.send(id, "src", function (event) {
             cons.modal("hide");
             var id = getId(event.data);
             editor.getSession().setValue(event.data);
@@ -204,7 +180,7 @@
             sender: 'editor'
         },
         exec: function(env, args, request) {
-            send(editor.getSession().getValue(), "save", function(event){
+            $.socket.send(editor.getSession().getValue(), "save", function(event){
                 cons.modal("hide");
                 editor.getSession().setValue(event.data);
                 modified = false;
@@ -221,7 +197,7 @@
             sender: 'editor'
         },
         exec: function(env, args, request) {
-            send(editor.getSession().getValue(), "eval", function(event){
+            $.socket.send(editor.getSession().getValue(), "eval", function(event){
                 modified = false;
                 var W = self.width();
                 var H = self.height() + 40;
@@ -372,35 +348,33 @@
         if (val != "") {
             self.hide();
             var count = 0;
-            close("search");
+            $.socket.close("search");
             caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Not found anything still</h6>");
             list.html("<ol></ol>");
-            send(val, "search", function(event){
-                if (!event.target.readyState != 1) {
-                    count++;
-                    caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Found " + count + "</h6>");
-                    var id = getId(event.data);
-                    var hash = "#" + id;
-                    var item = $("<li><p><a href='" + hash + "'>" + id + "</a></p><pre>" + safe(event.data) + "</pre></li>");
-                    var canFocus = true;
-                    item.find("a").click(function(event){
-                        canFocus = false;
-                        show();
-                        if (modified && hash != window.location.hash) {
-                            window.open(window.location.pathname + "#" + id);
-                            return false;
-                        }
-                    });
-                    item.find("p, pre").mouseenter(function(){
-                        sinput.unbind("blur");
-                        canFocus = true;
-                    }).mouseleave(function(){
-                        if (canFocus) {
-                            sinput.focus();
-                        }
-                    });
-                    list.find("ol").append(item);
-                }
+            $.socket.send(val, "search", function(event){
+                count++;
+                caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Found " + count + "</h6>");
+                var id = getId(event.data);
+                var hash = "#" + id;
+                var item = $("<li><p><a href='" + hash + "'>" + id + "</a></p><pre>" + safe(event.data) + "</pre></li>");
+                var canFocus = true;
+                item.find("a").click(function(event){
+                    canFocus = false;
+                    show();
+                    if (modified && hash != window.location.hash) {
+                        window.open(window.location.pathname + "#" + id);
+                        return false;
+                    }
+                });
+                item.find("p, pre").mouseenter(function(){
+                    sinput.unbind("blur");
+                    canFocus = true;
+                }).mouseleave(function(){
+                    if (canFocus) {
+                        sinput.focus();
+                    }
+                });
+                list.find("ol").append(item);
             });
         }
     }).val("");

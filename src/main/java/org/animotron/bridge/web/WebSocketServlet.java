@@ -135,6 +135,8 @@ public class WebSocketServlet extends HttpServlet {
 	private class SourceAnimo extends OnTextMessage {
         @Override
         public void onMessage(String data) {
+            if (data.isEmpty())
+                return;
             try {
                 Relationship r = THE._.get(data);
                 if (r != null) {
@@ -151,6 +153,8 @@ public class WebSocketServlet extends HttpServlet {
     private class AnimoSubGraph extends OnTextMessage {
 		@Override
 		public void onMessage(String data) {
+            if (data.isEmpty())
+                return;
             Relationship r = THE._.get(data);
             if (r == null) return; //XXX: send error message
             IndexHits<Relationship> hits = Order.queryDown(r.getEndNode());
@@ -168,6 +172,8 @@ public class WebSocketServlet extends HttpServlet {
     private class AnimoIMS extends OnTextMessage {
 		@Override
 		public void onMessage(String data) {
+            if (data.isEmpty())
+                return;
 			System.out.println("AnimoIMS "+data);
             try {
 				cnn.sendMessage(CachedSerializer.HTML_PART.serialize(new AnimoExpression(data), cache));

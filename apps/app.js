@@ -1,5 +1,13 @@
 (function($){
 
+   /*
+    *  The simple socket management system
+    */
+
+    if (window.MozWebSocket) {
+        window.WebSocket = window.MozWebSocket;
+    }
+
     var socket = [];
     var uri = "ws://" + window.location.host + "/ws";
 
@@ -22,7 +30,7 @@
             };
             try {
                 s.onmessage = onmessage;
-                s.sendMessage(message);
+                s.send(message);
             } catch (e) {
                 s = new WebSocket(uri, protocol);
                 socket[protocol] = s;
@@ -31,7 +39,7 @@
                     s.send(message);
                     s.ping = setInterval(function(){
                         if (s.readyState == 1) {
-                            s.sendMessage("");
+                            s.send("");
                         }
                     }, 44000)
                 };
@@ -41,6 +49,13 @@
             }
         }
     };
+
+
+
+
+   /*
+    *  The live change JQuery plugin
+    */
 
     $.fn.liveChange = function(callback) {
         return $(this).each(function(){
@@ -63,5 +78,13 @@
             }, 100);
         });
     };
+
+
+
+   /*
+    *  The live change JQuery plugin
+    */
+
+
 
 })(jQuery);

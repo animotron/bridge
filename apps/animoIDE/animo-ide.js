@@ -116,10 +116,6 @@
 
     });
 
-    if (window.MozWebSocket) {
-        window.WebSocket = window.MozWebSocket;
-    }
-
     var editor;
     var modified = false;
 

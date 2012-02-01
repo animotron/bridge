@@ -13,28 +13,23 @@
 
     $.socket = {
         close : function (protocol) {
-            try {
-                var s = socket[protocol];
-                if (s) {
-                    s.close();
-                    clearInterval(s.ping);
-                }
-            } catch (e) {}
+            var s = socket[protocol];
+            if (s) {
+                s.close();
+                clearInterval(s.ping);
+            }
         },
         send : function (message, protocol, callback) {
             var s = socket[protocol];
-            var onmessage = function (event) {
-                if (s.readyState == 1) {
-                    callback(event);
-                }
-            };
-            try {
-                s.onmessage = onmessage;
+            if (s && s.readyState == 1) {
                 s.send(message);
-            } catch (e) {
+            } else {
                 s = new WebSocket(uri, protocol);
-                socket[protocol] = s;
-                s.onmessage = onmessage;
+                s.onmessage = function(event){
+                    if (s.readyState == 1) {
+                        callback(event);
+                    }
+                };
                 s.onopen = function() {
                     s.send(message);
                     s.ping = setInterval(function(){
@@ -46,6 +41,7 @@
                 s.onclose = function() {
                     clearInterval(s.ping);
                 };
+                socket[protocol] = s;
             }
         }
     };

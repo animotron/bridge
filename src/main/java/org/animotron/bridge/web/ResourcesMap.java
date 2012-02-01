@@ -71,7 +71,6 @@ public class ResourcesMap extends AbstractResourcesBridge {
                                 builder.start(AN._);
                                     builder._(REF._, extension);
                                 builder.end();
-                                name = name.substring(0, index).replace(".", "-");
                             }
                             builder.start(AN._);
                                 builder._(REF._, name);

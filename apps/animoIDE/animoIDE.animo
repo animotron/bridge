@@ -36,4 +36,8 @@ the animoIDE
 
     )
 
-    (js ace, bootstrap-modal, animo-ide)
+    (js
+        (any ace.js)
+        (any bootstrap-modal.js)
+        (any animo-ide.js)
+    )

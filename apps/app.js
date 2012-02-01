@@ -8,30 +8,32 @@
         window.WebSocket = window.MozWebSocket;
     }
 
-    var socket = [];
-    var uri = "ws://" + window.location.host + "/ws";
-
     $.socket = {
+        spool : [],
+        uri   : "ws://" + window.location.host + "/ws",
         close : function (protocol) {
-            var s = socket[protocol];
+            var s = $.socket.spool[protocol];
             if (s) {
                 s.close();
                 clearInterval(s.ping);
             }
         },
-        send : function (message, protocol, callback) {
-            var s = socket[protocol];
-            if (s && s.readyState == 1) {
-                s.send(message);
-            } else {
-                s = new WebSocket(uri, protocol);
+        send  : function (message, protocol, callback) {
+            var s = $.socket.spool[protocol];
+            function send() {
                 s.onmessage = function(event){
                     if (s.readyState == 1) {
                         callback(event);
                     }
                 };
+                s.send(message);
+            }
+            if (s && s.readyState == 1) {
+                send();
+            } else {
+                s = new WebSocket($.socket.uri, protocol);
                 s.onopen = function() {
-                    s.send(message);
+                    send();
                     s.ping = setInterval(function(){
                         if (s.readyState == 1) {
                             s.send("");
@@ -41,7 +43,7 @@
                 s.onclose = function() {
                     clearInterval(s.ping);
                 };
-                socket[protocol] = s;
+                $.socket.spool[protocol] = s;
             }
         }
     };

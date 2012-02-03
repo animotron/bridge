@@ -1,4 +1,28 @@
-(function($){
+/*
+ *  Copyright (C) 2011-2012 The Animo Project
+ *  http://animotron.org
+ *
+ *  This file is part of Animotron.
+ *
+ *  Animotron is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of
+ *  the License, or (at your option) any later version.
+ *
+ *  Animotron is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of
+ *  the GNU Affero General Public License along with Animotron.
+ *  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
+ * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
+ *
+ */
+ (function($){
 
    /*
     *  The simple socket management system
@@ -9,18 +33,21 @@
     }
 
     $.socket = {
-        spool : [],
+
+        pool  : [],
         uri   : "ws://" + window.location.host + "/ws",
+
         close : function (protocol) {
-            var s = $.socket.spool[protocol];
+            var s = $.socket.pool[protocol];
             if (s) {
                 s.close();
                 clearInterval(s.ping);
             }
         },
+
         send  : function (message, protocol, callback) {
-            var s = $.socket.spool[protocol];
-            function send() {
+            var s = $.socket.pool[protocol];
+            var send = function () {
                 s.onmessage = function(event){
                     if (s.readyState == 1) {
                         callback(event);
@@ -43,11 +70,11 @@
                 s.onclose = function() {
                     clearInterval(s.ping);
                 };
-                $.socket.spool[protocol] = s;
+                $.socket.pool[protocol] = s;
             }
         }
-    };
 
+    };
 
 
 
@@ -80,9 +107,16 @@
 
 
    /*
-    *  The live change JQuery plugin
+    *  The dynamic application environment
     */
 
+    $.app = {
+        eval : function (action, id, value) {
+            $.socket.send(action + " " + id + " " + value, "app" ,function(event){
+                eval("(function($){" + event.data + "})(jQuery);");
+            });
+        }
+    };
 
 
 })(jQuery);

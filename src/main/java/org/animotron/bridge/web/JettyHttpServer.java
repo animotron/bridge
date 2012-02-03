@@ -22,9 +22,7 @@ package org.animotron.bridge.web;
 
 import org.animotron.bridge.FSBridge;
 import org.animotron.bridge.websocket.WebSocketServlet;
-import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
@@ -56,24 +54,23 @@ public class
     		//if (!getSTART().hasRelationship(Direction.OUTGOING)) {
                 new ResourcesMap("/common").load("common/");
                 new ResourcesMap("/theme").load("theme/");
+                new ResourcesMap("/apps").load("apps/");
                 FSBridge._.load("animo/");
                 FSBridge._.load("etc/");
                 ResourcesBridge bin = new ResourcesBridge("/binary");
-                //bin.load("apps/");
-                new ResourcesMap("/apps").load("apps/");
                 bin.load("site/");
         	//}
     	}
     	
     	//setup servlet container
-//      jetty = new Server(jettyPort);
-        jetty = new Server();
+        jetty = new Server(jettyPort);
+//        jetty = new Server();
         jetty.setStopAtShutdown(true);
         
-        Connector connector=new SelectChannelConnector();
-        connector.setHost("192.168.7.101");
-        connector.setPort(8080);
-        jetty.addConnector(connector);
+//        Connector connector=new SelectChannelConnector();
+//        connector.setHost("192.168.7.101");
+//        connector.setPort(8080);
+//        jetty.addConnector(connector);
         
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");

@@ -101,7 +101,7 @@
                             else
                                 return "identifier";
                         },
-                        regex : '[^,."\\s\\(\\)]+'
+                        regex : '[^,"\\s\\(\\)]+'
                     }, {
                         token : "string",
                         merge : "true",

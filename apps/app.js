@@ -88,19 +88,27 @@
             if (callback) {
                 self.bind("liveChange", callback);
             }
-            var value = self.val();
-            setInterval(function(){
-                var val = self.val();
-                if (val != value) {
-                    value = val;
-                    setTimeout(function(){
-                        var v = self.val();
-                        if (v == val) {
-                            self.trigger("liveChange");
-                        }
-                    }, 300);
-                }
-            }, 100);
+            var timer;
+            self.focus(function(){
+                var value = self.val();
+                function callback(){
+                    var val = self.val();
+                    if (val != value) {
+                        value = val;
+                        clearInterval(timer);
+                        setTimeout(function(){
+                            var v = self.val();
+                            if (v == val) {
+                                self.trigger("liveChange");
+                            }
+                            timer = setInterval(callback, 250);
+                        }, 250);
+                    }
+                };
+                timer = setInterval(callback, 250);
+            }).blur(function(){
+                clearInterval(timer);
+            });
         });
     };
 

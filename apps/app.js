@@ -119,11 +119,44 @@
     */
 
     $.app = {
+
+        context : function(root) {
+            function build(root) {
+                var a = [];
+                $.each(root, function(){
+                    var item = $(this);
+                    var id = item.attr("id");
+                    var v = item.val();
+                    var c = build(item.children());
+                    if (id) {
+                        var o = {};
+                        if (c.length > 0) {
+                           o[id] = v ? [v, c] : c;
+                        } else {
+                           o[id] = v;
+                        }
+                        a.push(o);
+                    } else {
+                        for (var i = 0; i < c.length; i++) {
+                            a.push(c[i]);
+                        }
+                    }
+                });
+                return a;
+            }
+
+            return build(root ? root : $("body"));
+
+            //return context;
+
+        },
+
         eval : function (action, id, value) {
             $.socket.send(action + " " + id + " " + value, "app" ,function(event){
                 eval("(function($){" + event.data + "})(jQuery);");
             });
         }
+
     };
 
 

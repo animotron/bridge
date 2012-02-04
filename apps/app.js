@@ -126,10 +126,10 @@
                 $.each(root, function(){
                     var item = $(this);
                     var id = item.attr("id");
-                    var v = item.val();
                     var c = build(item.children());
                     if (id) {
                         var o = {};
+                        var v = item.val();
                         if (c.length > 0) {
                            o[id] = v ? [v, c] : c;
                         } else {
@@ -137,18 +137,14 @@
                         }
                         a.push(o);
                     } else {
-                        for (var i = 0; i < c.length; i++) {
-                            a.push(c[i]);
-                        }
+                        c.forEach(function(i){
+                            a.push(i);
+                        });
                     }
                 });
                 return a;
             }
-
             return build(root ? root : $("body"));
-
-            //return context;
-
         },
 
         eval : function (action, id, value) {

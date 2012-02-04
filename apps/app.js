@@ -151,10 +151,11 @@
 
         eval : function (action, id, value) {
             var exp = {
-                id     : id,
-                action : action,
-                value  : value,
-                state  : $.app.context();
+                id      : id,
+                action  : action,
+                value   : value,
+                request : document.cookie["request"];
+                state   : $.app.context();
             };
             $.socket.send($.toJSON(exp), "app" ,function(event){
                 eval("(function($){" + event.data + "})(jQuery);");

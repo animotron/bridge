@@ -137,9 +137,9 @@
                         }
                         a.push(o);
                     } else {
-                        c.forEach(function(i){
-                            a.push(i);
-                        });
+                        for (var i = 0; i < c.length; i++) {
+                            a.push(c[i]);
+                        }
                     }
                 });
                 return a;

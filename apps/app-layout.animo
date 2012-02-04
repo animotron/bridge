@@ -23,6 +23,7 @@ the app-layout
     (get frame)
 
     (\script @src get uri any jquery.min.js)
+    (\script @src get uri any jquery.json.min.js)
     (\script @src get uri any app.js)
 
     (each (get js) (\script @src get uri))

@@ -131,9 +131,10 @@
                         var o = {};
                         var v = item.val();
                         if (c.length > 0) {
-                           o[id] = v ? [v, c] : c;
+                            c = c.length == 1 ? c[0] : c;
+                            o[id] = v ? [v, c] : c;
                         } else {
-                           o[id] = v;
+                            o[id] = v;
                         }
                         a.push(o);
                     } else {

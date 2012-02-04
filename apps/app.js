@@ -150,7 +150,13 @@
         },
 
         eval : function (action, id, value) {
-            $.socket.send(action + " " + id + " " + value, "app" ,function(event){
+            var exp = {
+                id     : id,
+                action : action,
+                value  : value,
+                state  : $.app.context();
+            };
+            $.socket.send($.toJSON(exp), "app" ,function(event){
                 eval("(function($){" + event.data + "})(jQuery);");
             });
         }

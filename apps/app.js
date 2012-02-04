@@ -145,7 +145,8 @@
                 });
                 return a;
             }
-            return build(root ? root : $("body"));
+            var c = build(root ? root : $("body"));
+            return c.length == 1 ? c[0] : c;
         },
 
         eval : function (action, id, value) {

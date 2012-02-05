@@ -154,8 +154,8 @@
                 id      : id,
                 action  : action,
                 value   : value,
-                request : document.cookie["request"];
-                state   : $.app.context();
+                request : document.cookie["request"],
+                state   : $.app.context()
             };
             $.socket.send($.toJSON(exp), "app" ,function(event){
                 eval("(function($){" + event.data + "})(jQuery);");

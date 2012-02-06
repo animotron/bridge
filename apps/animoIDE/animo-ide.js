@@ -263,6 +263,18 @@
         }
     });
 
+    commands.addCommand({
+        name: 'new blank',
+        bindKey: {
+            win: 'Ctrl-Shift-N',
+            mac: 'Command-Shift-N',
+            sender: 'editor'
+        },
+        exec: function(env, args, request) {
+            window.open(window.location.pathname + "#new");
+        }
+    });
+
     function onidentifier(editor, callback) {
         var pos = editor.getCursorPosition();
         var token = editor.getSession().bgTokenizer.lines[pos.row].tokens;
@@ -298,7 +310,7 @@
     });
 
     commands.addCommand({
-        name: 'lookout',
+        name: 'lookup blank',
         bindKey: {
             win: 'Ctrl-Shift-B',
             mac: 'Command-Shift-B',

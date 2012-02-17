@@ -135,7 +135,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.1</version>
+				<version>1.2</version>
 				<executions>
 					<execution>
 						<goals>
@@ -146,6 +146,20 @@
 				<configuration>
 					<mainClass>org.animotron.web.JettyHttpServer</mainClass>
 				</configuration>
+			</plugin>
+
+			<plugin>
+  				<groupId>org.codehaus.mojo</groupId>
+  				<artifactId>appassembler-maven-plugin</artifactId>
+ 				<version>1.2</version>
+        		<configuration>
+          			<programs>
+            			<program>
+              				<mainClass>org.animotron.web.JettyHttpServer</mainClass>
+              				<name>animotron</name>
+           				</program>
+          			</programs>
+       			</configuration> 				
 			</plugin>
 		</plugins>
 	</build>
@@ -161,4 +175,5 @@
 			<url>http://www.ettrema.com/maven2</url>
 		</repository>
 	</repositories>
+	
 </project>

@@ -1,0 +1,75 @@
+the bootstrap-variables.less
+
+    (mime-type text-x-less)
+
+    (any theme-settings)
+
+    ("@linkColor: ")            (get link-color) ("; ")
+
+    ("@linkColorHover: darken(@linkColor, 15%); ")
+
+    ("@black: ")                (get black) ("; ")
+    ("@grayDark: ")             (get gray-dark) ("; ")
+    ("@gray: ")                 (get gray) ("; ")
+    ("@grayLight: ")            (get gray-light) ("; ")
+    ("@grayLighter: ")          (get gray-lighter) ("; ")
+    ("@white: ")                (get white) ("; ")
+
+    ("@blue: ")                 (get blue) ("; ")
+    ("@blueDark: ")             (get blue-dark) ("; ")
+    ("@green: ")                (get green) ("; ")
+    ("@red: ")                  (get red) ("; ")
+    ("@yellow: ")               (get yellow) ("; ")
+    ("@orange: ")               (get orange) ("; ")
+    ("@pink: ")                 (get pink) ("; ")
+    ("@purple: ")               (get purple) ("; ")
+
+    ("@gridColumns: ")          (get grid-columns) ("; ")
+    ("@gridColumnWidth: ")      (get grid-column-width) ("; ")
+    ("@gridGutterWidth: ")      (get grid-gutter-width) ("; ")
+
+    ("@siteWidth: (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1)); ")
+
+    ("@fluidGridColumnWidth: ") (get fluid-grid-column-width) ("; ")
+    ("@fluidGridGutterWidth: ") (get fluid-grid-gutter-width) ("; ")
+
+    ("@zindexDropdown: 1000; @zindexPopover: 1010; @zindexTooltip: 1020; @zindexFixedNavbar: 1030; @zindexModalBackdrop: 1040; @zindexModal: 1050; ")
+
+    ("@baseFontSize: ")         (get base-font-size) ("; ")
+    ("@baseFontFamily: ")       (get base-font-family) ("; ")
+    ("@baseLineHeight: ")       (get base-line-height) ("; ")
+    ("@textColor: @grayDark; ")
+
+    ("@primaryButtonColor: @linkColor;")
+
+    ("@iconSpritePath:          '../img/glyphicons-halflings.png';")
+    ("@iconWhiteSpritePath:     '../img/glyphicons-halflings-white.png';")
+
+    ("@placeholderText:         @grayLight;")
+
+    ("@hrBorder:                @grayLighter;")
+
+    ("@navbarHeight:                    40px;")
+    ("@navbarBackground:                @grayDarker;")
+    ("@navbarBackgroundHighlight:       @grayDark;")
+    ("@navbarLinkBackgroundHover:       transparent;")
+
+    ("@navbarText:                      @grayLight;")
+    ("@navbarLinkColor:                 @grayLight;")
+    ("@navbarLinkColorHover:            @white;")
+
+    ("@warningText:             #c09853;")
+    ("@warningBackground:       #fcf8e3;")
+    ("@warningBorder:           darken(spin(@warningBackground, -10), 3%);")
+
+    ("@errorText:               #b94a48;")
+    ("@errorBackground:         #f2dede;")
+    ("@errorBorder:             darken(spin(@errorBackground, -10), 3%);")
+
+    ("@successText:             #468847;")
+    ("@successBackground:       #dff0d8;")
+    ("@successBorder:           darken(spin(@successBackground, -10), 5%);")
+
+    ("@infoText:                #3a87ad;")
+    ("@infoBackground:          #d9edf7;")
+    ("@infoBorder:              darken(spin(@infoBackground, -10), 7%);")

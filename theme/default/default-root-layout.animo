@@ -1,7 +1,4 @@
 the default-root-layout
     (default, root, layout)
-    (\h1 get title)
-    (\p get content)
-    (\ul
-        (\li ("Host: ") (\strong get host))
-        (\li ("URI: ")  (\strong get uri)))
+    (get content)
+

@@ -1,0 +1,232 @@
+the AnimoLanguage
+	(root, animotron, resource)
+    (title   "Animo language")
+    (content
+        <div class="news">
+            <div class="title h2">
+                <h2>
+                    Animo language
+                </h2>
+            </div>
+            <p>
+                A language based on ideas from linguistic, neuroscience, algebra and XML database. It is a declarative representation of information relationships and processing agreements.
+            </p>
+            <p>
+                RDF, SPARQL, OWL, XQuery, XSL and XML Database are well known technologies, 
+                but there is no single glue to put all this together. The main advantage of these formats is flexibility.  
+                However, that leads to many different representations of same structures (e.g DocBook, TEI and etc). 
+                The problem of complexity is similar to C libraries, in that we must operate at the level of the data 
+                structures. After C, came Java with its standard libraries, a language which programmers can use 
+                and which can be easily understood by other programmer. The Animo language aim to create universal 
+                language for people (not only programmers)to speak.
+            </p>
+            <p>
+                Each time we start new project, we have to choose which technologies we should use, and how to put 
+                them all together. We are also concerned with separating data from code, and constructing tests 
+                to assert the behaviour.
+            </p>
+            <p>
+                Animo solves these issues and much more. With Animo, at design time your are not forced, for example, 
+                to have to choose top-down or bottom-up processing, it can be controlled by instructions.
+                Default evaluation strategy similar to LISP. The Animo language cover PROLOG's  use cases.
+            </p>
+            <br/>
+            <p>
+                The language incorporates many proven features whilst also incorporating some new ideas, with the aim of making programming more natural for humans. 
+                The eventual goal is to create a bridge between native languages and Animo structures, computer programming style should evolve to become a dialog with the 
+                computer and as such dialog constructs must be a part of the language itself. Currently the language constructions are based on English-Prime concepts, 
+                so you can write your code as through writting a book or specification.
+            </p>
+            <div class="quote">
+                <div class="title h2">
+                    <h2>Features:</h2>
+                </div>
+                <ul>
+                    <li>Integrated database space as the global context for language processing.</li>
+                    <li>Processing flow and Context mix-in</li>
+                    <li>IS-HAVE relations build into the data model</li>
+                    <li>Data and code merged into one model</li>
+                    <li>Pluggable architecture: data, models, code and languages (evaluation of different languages)</li>
+                    <li>Type safe reference resolving</li>
+                    <li>Animo language injections to XQuery, XSL and others</li>
+                </ul>
+            </div>
+        </div>
+        <div class="del_4"/>
+        <div class="news">
+            <div class="title h2">
+                <h2>Merging code and data into one topological space</h2>
+            </div>
+            <table style="font-size:12px;">
+                <tr>
+                    <td rowspan="2" valign="top">
+                        <a href="image/g9020.png" class="lightbox" title="Relations beween context and processing flow">
+                            <img src="image/g9020.png" width="313" height="279" alt="Relations beween context and processing flow"/>
+                        </a>
+                    </td>
+                    <td>
+                        <div class="title h3">
+                            <h3>There are numerous differing languages, but each share common ideas:</h3>
+                        </div>
+                        <p>• Processor operation is directly mapped to language operator;</p>
+                        <p>• Stability of processing line (order of calculations [and-structure]);</p>
+                        <p>• References (variables or functions);</p>
+                        <p>• Conditional forking of processing-flow (binary [if-then-else] or multi [case statements or pattern matching]);</p>
+                        <p>• Multitasking (parallel calculations [or-structure]);</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="title h3">
+                            <h3>Animo language is different because:</h3>
+                        </div>
+                        <p>• All information resides in one reference space - "context" &amp; dynamic language processing model.</p>
+                        <p>[Language evaluation model is merged with language processing model] </p>
+                        <p>This hides function parameters, but does not remove them completely (hide it into the function's code).</p>
+                        <p>Keep the possibility of static analyze to resolve "dead" references (variables). </p>
+                        <p>• Merging code and data into one topological space. This has some interesting effects:</p>
+                        <p>a) The processing line for same input can be different, because of feedback effect. </p>
+                        <p>b) "separating line" moving from data-code to more-less stable structures.</p>
+                        <p>Additionally, simultaneously, it's possible to optimize (cache) calculations to speed-up processing in general.</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="del_4"/>
+        <div class="news">
+            <div class="title h2">
+                <h2>Processing model</h2>
+            </div>
+            <table style="font-size:12px;">
+                <tr>
+                    <td>
+                        <p>The processing model is base on ideas taken from nervous system and has axioms:</p>
+                        <p align="center">
+                            <b>Axiom 1:</b>
+                        </p>
+                        <p>
+                            Cell's life (including neuron) can be described by R = F ( C ) (1) 
+                            where F - function (flow), C - environment force to cell and R - cell force 
+                            to environment
+                        </p>
+                        <p align="center">
+                            <b>Axiom 2:</b>
+                        </p>
+                        <p>
+                            Group of cells' life (including neuron) can be described by (1)
+                        </p>
+                        <p align="center">
+                            <b>Axiom 3:</b>
+                        </p>
+                        <p>
+                            Neuron or neuron's structure choose processing flow base 
+                            on input signal (pattern detection)
+                        </p>
+                        <p align="center">
+                            <b>Axiom 4:</b>
+                        </p>
+                        <p>
+                            Neuron's structure can generate dynamic (depend on incoming signal 
+                            pattern) or constant signal (signal will not changer over lifetime). 
+                            Neural circuit always have input, output and processing path. 
+                            This can be simulated by two different processing models: 
+                            "from inputs to outputs" (FIO) or "from outputs to inputs" (FOI). 
+                            Both of them are equal on result, but different on optimization needs and 
+                            opportunities. Processing optimization for single output is better with FOI model,
+                            but best result can be achieve by balancing it with FIO model.
+                        </p>
+                    </td>
+                    <td valign="top">
+                        <a href="image/g11241.png" class="lightbox" title="The Animo processing flow tree">
+                            <img src="image/g11241.png" width="313" height="279" alt="The Animo processing flow tree"/>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            <div class="title h3">
+                <h3>The request processing</h3>
+            </div>
+            <p>
+                [input] -&gt; sense functions -&gt; (context, processing flow) -&gt; processing flow(context) 
+                -&gt; [output] where sense function detect input information and transform it 
+                into processing flow and context.
+            </p>
+            <div class="clear"/>
+        </div>
+        <div class="del_4"/>
+        <div class="news">
+            <div class="title h2">
+                <h2>Evaluation contexts</h2>
+            </div>
+            <p>The processing flow element have access to several contexts: local, stack, global and flow.</p>
+            <p>- local is context that have highest priority;</p>
+            <p>- stack is context's train. The evaluation result pushes local context to stack;</p>
+            <p>- global context is documents stored at XML database;</p>
+            <p>- flow context is processing line until current position.</p>
+            <br/>
+            <p>During evaluation context can be transformed to processing flow, or added to context. Result of the evaluation is sent to context.</p>
+        </div>
+        <div class="del_4"/>
+        <div class="news">
+            <div class="title h2">
+                <h2>Animo language</h2>
+            </div>
+            <p>
+                <div class="prezi-player">
+                    <style type="text/css" media="screen">
+                            .prezi-player {
+                                width: 550px;
+                            }
+                            .prezi-player-links {
+                                text-align: center;
+                            }
+                        </style>
+                    <object id="prezi_nfqftc_n5hce" name="prezi_nfqftc_n5hce" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400">
+                        <param name="movie" value="http://prezi.com/bin/preziloader.swf"/>
+                        <param name="allowfullscreen" value="true"/>
+                        <param name="allowscriptaccess" value="always"/>
+                        <param name="bgcolor" value="#ffffff"/>
+                        <param name="flashvars" value="prezi_id=nfqftc_n5hce&amp;lock_to_path=0&amp;color=ffffff&amp;autoplay=no&amp;autohide_ctrls=0"/>
+                        <embed id="preziEmbed_nfqftc_n5hce" name="preziEmbed_nfqftc_n5hce" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=nfqftc_n5hce&amp;lock_to_path=0&amp;color=ffffff&amp;autoplay=no&amp;autohide_ctrls=0"/>
+                    </object>
+                    <div class="prezi-player-links">
+                        <p>
+                            <a title="" href="http://prezi.com/nfqftc_n5hce/animo-language/">Animo Language</a> on 
+                            <a href="http://prezi.com">Prezi</a>
+                        </p>
+                    </div>
+                </div>
+            </p>
+        </div>
+        <div class="del_4"/>
+        <div class="news">
+            <div class="title h2">
+                <h2>The Animo concept</h2>
+            </div>
+            <p>
+                <div class="prezi-player">
+                    <style type="text/css" media="screen">
+                        .prezi-player {
+                            width: 550px;
+                        }
+                        .prezi-player-links {
+                            text-align: center;
+                        }
+                    </style>
+                    <object id="prezi_3u8r2djemdwo" name="prezi_3u8r2djemdwo" classid="clsid27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400">
+                        <param name="movie" value="http://prezi.com/bin/preziloader.swf"/>
+                        <param name="allowfullscreen" value="true"/>
+                        <param name="allowscriptaccess" value="always"/>
+                        <param name="bgcolor" value="#ffffff"/>
+                        <param name="flashvars" value="prezi_id=3u8r2djemdwo&amp;lock_to_path=0&amp;color=ffffff&amp;autoplay=no&amp;autohide_ctrls=0"/>
+                        <embed id="preziEmbed_3u8r2djemdwo" name="preziEmbed_3u8r2djemdwo" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=3u8r2djemdwo&amp;lock_to_path=0&amp;color=ffffff&amp;autoplay=no&amp;autohide_ctrls=0"/>
+                    </object>
+                    <div class="prezi-player-links">
+                        <p>
+                            <a title="Knowledge - behavior dualism mixed into one" href="http://prezi.com/3u8r2djemdwo/the-animo-concept/">The Animo concept</a> on <a href="http://prezi.com">Prezi</a>
+                        </p>
+                    </div>
+                </div>
+            </p>
+        </div>
+    )

@@ -1,0 +1,6 @@
+the animotron-site
+    (site)
+    (server-name "localhost")
+    (project-name "Animo test")
+    (weak-use default)
+    (weak-use localhost)

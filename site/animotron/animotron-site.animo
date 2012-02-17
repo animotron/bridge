@@ -1,6 +1,6 @@
 the animotron-site
     (site)
-    (server-name "localhost" "animotron.org" "www.animotron.org")
+    (server-name "animotron.org" "www.animotron.org" "animotron.local")
     (project-name "Animotron")
     (weak-use default)
     (weak-use animotron)

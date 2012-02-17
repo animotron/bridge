@@ -1,4 +1,4 @@
 the it-working
-	(root, animotron, resource)
+	(root, localhost, resource)
     (title   "Welcome to Animo")
     (content "It is working!")

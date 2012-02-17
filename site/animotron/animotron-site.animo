@@ -3,4 +3,4 @@ the animotron-site
     (server-name "animotron.org" "www.animotron.org" "animotron.local")
     (project-name "Animotron")
     (weak-use default)
-    (weak-use animotron)
+    (use animotron)

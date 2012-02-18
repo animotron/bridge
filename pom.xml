@@ -13,15 +13,17 @@
 		</developer>
 		<developer>
 			<name>Evgeny Gazdovsky</name>
-            <email>gazdovsky@gmail.com</email>
+			<email>gazdovsky@gmail.com</email>
 		</developer>
 	</developers>
 
 	<properties>
 		<jettyVersion>8.1.0.RC2</jettyVersion>
 		<!-- <jettyVersion>7.4.2.v20110526</jettyVersion> -->
-        <miltonVersion>1.6.2</miltonVersion>
-        <slf4jVersion>1.6.1</slf4jVersion>
+		<miltonVersion>1.6.2</miltonVersion>
+		<slf4jVersion>1.6.1</slf4jVersion>
+		<staging.dir>${project.build.directory}\staging</staging.dir>
+		<izpack.standalone.compiler.version>4.3.2</izpack.standalone.compiler.version>
 	</properties>
 
 	<dependencies>
@@ -42,21 +44,14 @@
 			<version>${slf4jVersion}</version>
 		</dependency>
 		<!-- servlet container -->
-		<!-- 
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>6.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		-->
+		<!-- <dependency> <groupId>javax</groupId> <artifactId>javaee-api</artifactId> 
+			<version>6.0</version> <type>jar</type> <scope>compile</scope> </dependency> -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlet</artifactId>
 			<version>${jettyVersion}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-websocket</artifactId>
@@ -74,58 +69,52 @@
 			<artifactId>smackx</artifactId>
 			<version>3.2.1</version>
 		</dependency>
-		
+
 		<!-- OAuth -->
 		<dependency>
 			<groupId>org.scribe</groupId>
 			<artifactId>scribe</artifactId>
 			<version>1.2.3</version>
 		</dependency>
-		
-		<!-- 
+
+		<!-- <dependency> <groupId>httpunit</groupId> <artifactId>httpunit</artifactId> 
+			<version>1.7</version> <scope>test</scope> </dependency> -->
 		<dependency>
-			<groupId>httpunit</groupId>
-			<artifactId>httpunit</artifactId>
-			<version>1.7</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		 -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
 
 	</dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.8.2</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.8.2</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven2-repository.dev.java.net</id>
-            <name>Java.net Repository for Maven</name>
-            <url>http://download.java.net/maven/2/</url>
-        </pluginRepository>
-    </pluginRepositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/2/</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<build>
 		<plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
 			<plugin>
 				<!-- This plugin is needed for the servlet example -->
 				<groupId>org.mortbay.jetty</groupId>
@@ -149,31 +138,84 @@
 			</plugin>
 
 			<plugin>
-  				<groupId>org.codehaus.mojo</groupId>
-  				<artifactId>appassembler-maven-plugin</artifactId>
- 				<version>1.2</version>
-        		<configuration>
-          			<programs>
-            			<program>
-              				<mainClass>org.animotron.bridge.web.JettyHttpServer</mainClass>
-              				<name>animotron</name>
-           				</program>
-          			</programs>
-       			</configuration> 				
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>1.2</version>
+				<configuration>
+					<programs>
+						<program>
+							<mainClass>org.animotron.bridge.web.JettyHttpServer</mainClass>
+							<name>animotron</name>
+						</program>
+					</programs>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.izpack</groupId>
+				<artifactId>izpack-maven-plugin</artifactId>
+				<version>1.0-alpha-5</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>izpack</goal>
+						</goals>
+						<configuration>
+							<izpackBasedir>${staging.dir}</izpackBasedir>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.izpack</groupId>
+						<artifactId>izpack-standalone-compiler</artifactId>
+						<version>${izpack.standalone.compiler.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4.2</version>
+				<configuration>
+					<nonFilteredFileExtensions>
+						<nonFilteredFileExtension>war</nonFilteredFileExtension>
+					</nonFilteredFileExtensions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${staging.dir}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/resources</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
 
 	<repositories>
-        <repository>
-            <id>maven2-repository.dev.java.net</id>
-            <name>Java.net Repository for Maven</name>
-            <url>http://download.java.net/maven/2/</url>
-        </repository>
+		<repository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/2/</url>
+		</repository>
 		<repository>
 			<id>ettrema-repo</id>
 			<url>http://www.ettrema.com/maven2</url>
 		</repository>
 	</repositories>
-	
+
 </project>

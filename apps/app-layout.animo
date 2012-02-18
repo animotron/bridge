@@ -8,13 +8,20 @@ the app-layout
         (get style)
     )
 
-
-    (\nav (@class "navbar navbar-fixed")
+    (\nav (@class "navbar navbar-fixed-top")
         (\div (@class "navbar-inner")
             (\div (@class "container")
+                (\a
+                    (@class "btn btn-navbar") (@data-toggle "collapse") (@data-target ".nav-collapse")
+                    (\span (@class "icon-bar"))
+                    (\span (@class "icon-bar"))
+                    (\span (@class "icon-bar"))
+                )
                 (\span (@class "brand") (get title))
-                (\div (@class "navbar-search  pull-left")
+                (\form (@class "navbar-search  pull-left")
                     (\input (@id "search") (@type "text") (@class "search-query") (@placeholder "Search"))
+                )
+                (\div (@class "nav-collapse")
                 )
             )
         )
@@ -24,8 +31,10 @@ the app-layout
 
     (\script @src get uri any jquery.min.js)
     (\script @src get uri any jquery.json.min.js)
+    (\script @src get uri any bootstrap-collapse.js)
     (\script @src get uri any app.js)
 
     (each (get js) (\script @src get uri))
 
     (each (get script) (\script this script))
+

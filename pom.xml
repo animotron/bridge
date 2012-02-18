@@ -22,7 +22,7 @@
 		<!-- <jettyVersion>7.4.2.v20110526</jettyVersion> -->
 		<miltonVersion>1.6.2</miltonVersion>
 		<slf4jVersion>1.6.1</slf4jVersion>
-		<staging.dir>${project.build.directory}\staging</staging.dir>
+		<staging.dir>${project.build.directory}/staging</staging.dir>
 		<izpack.standalone.compiler.version>4.3.2</izpack.standalone.compiler.version>
 	</properties>
 

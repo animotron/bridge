@@ -104,7 +104,7 @@
                             timer = setInterval(callback, 250);
                         }, 250);
                     }
-                };
+           };
                 timer = setInterval(callback, 250);
             }).blur(function(){
                 clearInterval(timer);

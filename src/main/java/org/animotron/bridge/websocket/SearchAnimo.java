@@ -20,8 +20,6 @@
  */
 package org.animotron.bridge.websocket;
 
-import java.util.Iterator;
-
 import org.animotron.Executor;
 import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
@@ -34,8 +32,11 @@ import org.animotron.manipulator.Evaluator;
 import org.animotron.manipulator.QCAVector;
 import org.animotron.statement.operator.THE;
 import org.animotron.statement.operator.Utils;
+import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Path;
 import org.neo4j.graphdb.Relationship;
+
+import java.util.Iterator;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -77,8 +78,17 @@ public class SearchAnimo extends OnTextMessage {
             public void run() {
                 String exp = data.trim();
                 try {
-                    long rid = Long.valueOf(exp);
-                    sendThes(AnimoGraph.getDb().getRelationshipById(rid));
+                    String e = exp.toLowerCase();
+                    if (e.startsWith("node ")) {
+                        for (Relationship r : AnimoGraph.getDb().getNodeById(Long.valueOf(e.substring(5))).getRelationships(Direction.INCOMING)) {
+                            sendThes(r);
+                        }
+                    } else {
+                        if (e.startsWith("relationship ")) {
+                            e = e.substring(13);
+                        }
+                        sendThes(AnimoGraph.getDb().getRelationshipById(Long.valueOf(e)));
+                    }
                 } catch (NumberFormatException nfe) {
                     Relationship r = THE._.get(exp);
                     try {

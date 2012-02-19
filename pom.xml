@@ -138,21 +138,6 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>appassembler-maven-plugin</artifactId>
-				<version>1.2</version>
-				<configuration>
-					<assembleDirectory>${staging.dir}</assembleDirectory>
-					<programs>
-						<program>
-							<mainClass>org.animotron.bridge.web.JettyHttpServer</mainClass>
-							<name>animotron</name>
-						</program>
-					</programs>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.7</version>
 				<executions>
@@ -174,6 +159,32 @@
 			</plugin>
 
 			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>1.2</version>
+				<configuration>
+					<assembleDirectory>${staging.dir}</assembleDirectory>
+					<programs>
+						<program>
+							<mainClass>org.animotron.bridge.web.JettyHttpServer</mainClass>
+							<name>animotron</name>
+						</program>
+					</programs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>preparing-staging-area</id>
+						<phase>package</phase>
+						<goals>
+							<goal>generate-daemons</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<!-- 
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.4</version>
@@ -186,6 +197,36 @@
 						</goals>
 						<configuration>
 							<outputDirectory>${staging.dir}/dependency</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			-->
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4.2</version>
+				<configuration>
+					<nonFilteredFileExtensions>
+						<nonFilteredFileExtension>war</nonFilteredFileExtension>
+					</nonFilteredFileExtensions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${staging.dir}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/resources</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
 						</configuration>
 					</execution>
 				</executions>
@@ -217,34 +258,6 @@
 				</dependencies>
 			</plugin>
 
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.4.2</version>
-				<configuration>
-					<nonFilteredFileExtensions>
-						<nonFilteredFileExtension>war</nonFilteredFileExtension>
-					</nonFilteredFileExtensions>
-				</configuration>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<encoding>UTF-8</encoding>
-							<outputDirectory>${staging.dir}</outputDirectory>
-							<resources>
-								<resource>
-									<directory>src/main/resources</directory>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 

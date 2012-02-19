@@ -14,13 +14,22 @@
     <javaversion>1.6</javaversion>
  
     <pack200 />
+    
+    <run-privileged condition="izpack.windowsinstall.vista|izpack.macinstall"/>
   </info>
  
-  <guiprefs resizable="no" width="480" height="360">
-    <laf name="looks">
-      <param name="variant" value="windows" />
+  <guiprefs width="800" height="600" resizable="no">
+    <splash>images/peas_load.gif</splash>
+    <laf name="substance">
       <os family="windows" />
+      <os family="unix" />
+      <param name="variant" value="mist-silver" />
     </laf>
+    <laf name="substance">
+      <os family="mac" />
+      <param name="variant" value="mist-aqua" />
+    </laf>
+    <modifier key="useHeadingPanel" value="yes" />
   </guiprefs>
  
   <locale>
@@ -28,7 +37,10 @@
   </locale>
  
   <panels>
-    <panel classname="DefaultTargetPanel" />
+    <panel classname="TargetPanel"/>
+    <panel classname="PacksPanel"/>
+    <panel classname="InstallPanel"/>
+    <panel classname="FinishPanel"/>
   </panels>
   
   <!-- 
@@ -38,8 +50,11 @@
   -->
   
   <packs>
-    <pack name="main" required="yes">
+	<pack name="main" required="yes">
       <description>Animotron Web Bridge Installation</description>
+      <fileset dir="bin" targetdir="${INSTALL_PATH}" override="true"/>
+      <fileset dir="repo" targetdir="${INSTALL_PATH}" override="true"/>
+      <!-- <parsable targetfile="${INSTALL_PATH}/test.properties"/> -->
     </pack>
   </packs>
  

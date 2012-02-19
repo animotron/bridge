@@ -271,18 +271,70 @@
 									<directory>src/main/resources</directory>
 									<filtering>true</filtering>
 								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-animo</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${staging.dir}/animo</outputDirectory>
+							<resources>
 								<resource>
 									<directory>animo</directory>
 									<filtering>true</filtering>
 								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-apps</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${staging.dir}/apps</outputDirectory>
+							<resources>
 								<resource>
 									<directory>apps</directory>
 									<filtering>true</filtering>
 								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-common</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${staging.dir}/common</outputDirectory>
+							<resources>
 								<resource>
 									<directory>common</directory>
 									<filtering>true</filtering>
 								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-site</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${staging.dir}/site</outputDirectory>
+							<resources>
 								<resource>
 									<directory>site</directory>
 									<filtering>true</filtering>

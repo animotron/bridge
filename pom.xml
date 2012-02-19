@@ -182,7 +182,7 @@
 						<id>copy</id>
 						<phase>package</phase>
 						<goals>
-							<goal>copy</goal>
+							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
 							<outputDirectory>${staging.dir}/dependency</outputDirectory>

@@ -8,6 +8,6 @@ the document
 	)
 	
 	(\div (@id "document")
-		(\lable "Номер" (\input (@id "document-number") (@disabled))
-		(\lable "от" (\input (@id "document-date") (@value now))
+		(\label "Номер" (\input (@id "document-number") (@disabled)))
+		(\label "от" (\input (@id "document-date") (@value now)))
 	)

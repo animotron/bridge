@@ -18,8 +18,8 @@
 	</developers>
 
 	<properties>
-		<jettyVersion>8.1.0.RC2</jettyVersion>
-		<!-- <jettyVersion>7.4.2.v20110526</jettyVersion> -->
+		<jettyVersion>8.1.0.v20120127</jettyVersion>
+		<!-- <jettyVersion>8.1.1.v20120215</jettyVersion> -->
 		<miltonVersion>1.6.2</miltonVersion>
 		<slf4jVersion>1.6.1</slf4jVersion>
 		<staging.dir>${project.build.directory}/staging</staging.dir>
@@ -138,6 +138,27 @@
 			</plugin>
 
 			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>create-staging-area</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<copy todir="${staging.dir}">
+									<fileset dir="${basedir}/src/izpack" />
+								</copy>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>appassembler-maven-plugin</artifactId>
 				<version>1.2</version>
@@ -149,32 +170,83 @@
 							<name>animotron</name>
 						</program>
 					</programs>
+					<daemons>
+						<daemon>
+							<id>animobridge</id>
+							<mainClass>org.animotron.bridge.web.JettyHttpServer</mainClass>
+							<commandLineArguments>
+								<commandLineArgument>start</commandLineArgument>
+							</commandLineArguments>
+							<platforms>
+								<platform>jsw</platform>
+							</platforms>
+							<generatorConfigurations>
+								<generatorConfiguration>
+									<generator>jsw</generator>
+									<includes>
+										<include>linux-x86-32</include>
+										<include>linux-x86-64</include>
+									</includes>
+									<configuration>
+										<property>
+											<name>configuration.directory.in.classpath.first</name>
+											<value>etc</value>
+										</property>
+										<property>
+											<name>set.default.REPO_DIR</name>
+											<value>lib</value>
+										</property>
+										<property>
+											<name>wrapper.logfile</name>
+											<value>logs/wrapper.log</value>
+										</property>
+										<property>
+											<name>run.as.user.envvar</name>
+											<value>animo</value>
+										</property>
+									</configuration>
+								</generatorConfiguration>
+							</generatorConfigurations>
+							<jvmSettings>
+								<initialMemorySize>256M</initialMemorySize>
+								<maxMemorySize>1024M</maxMemorySize>
+								<systemProperties>
+									<systemProperty>java.security.policy=conf/policy.all</systemProperty>
+									<systemProperty>com.sun.management.jmxremote</systemProperty>
+									<systemProperty>com.sun.management.jmxremote.port=8999</systemProperty>
+									<systemProperty>com.sun.management.jmxremote.authenticate=false</systemProperty>
+									<systemProperty>com.sun.management.jmxremote.ssl=false</systemProperty>
+								</systemProperties>
+								<extraArguments>
+									<extraArgument>-server</extraArgument>
+								</extraArguments>
+							</jvmSettings>
+						</daemon>
+					</daemons>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.izpack</groupId>
-				<artifactId>izpack-maven-plugin</artifactId>
-				<version>1.0-alpha-5</version>
 				<executions>
 					<execution>
+						<id>generate-jsw-scripts</id>
 						<phase>package</phase>
 						<goals>
-							<goal>izpack</goal>
+							<goal>generate-daemons</goal>
 						</goals>
-						<configuration>
-							<izpackBasedir>${staging.dir}</izpackBasedir>
-						</configuration>
+					</execution>
+					<execution>
+						<id>generate-program-scripts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
 					</execution>
 				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.codehaus.izpack</groupId>
-						<artifactId>izpack-standalone-compiler</artifactId>
-						<version>${izpack.standalone.compiler.version}</version>
-					</dependency>
-				</dependencies>
 			</plugin>
+
+
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
+				<version>2.4</version> <executions> <execution> <id>copy</id> <phase>package</phase> 
+				<goals> <goal>copy-dependencies</goal> </goals> <configuration> <outputDirectory>${staging.dir}/dependency</outputDirectory> 
+				</configuration> </execution> </executions> </plugin> -->
 
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -202,8 +274,120 @@
 							</resources>
 						</configuration>
 					</execution>
+					<execution>
+						<id>copy-animo</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${staging.dir}/animo</outputDirectory>
+							<resources>
+								<resource>
+									<directory>animo</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-apps</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${staging.dir}/apps</outputDirectory>
+							<resources>
+								<resource>
+									<directory>apps</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-common</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${staging.dir}/common</outputDirectory>
+							<resources>
+								<resource>
+									<directory>common</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-site</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${staging.dir}/site</outputDirectory>
+							<resources>
+								<resource>
+									<directory>site</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-theme</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${staging.dir}/theme</outputDirectory>
+							<resources>
+								<resource>
+									<directory>theme</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.izpack</groupId>
+				<artifactId>izpack-maven-plugin</artifactId>
+				<version>1.0-alpha-5</version>
+				<configuration>
+					<izpackBasedir>${staging.dir}</izpackBasedir>
+					<customPanelDirectory>${staging.dir}</customPanelDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>standard-installer</id>
+						<phase>package</phase>
+						<goals>
+							<goal>izpack</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.izpack</groupId>
+						<artifactId>izpack-standalone-compiler</artifactId>
+						<version>${izpack.standalone.compiler.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
 		</plugins>
 	</build>
 

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation version="1.0">
+  <info>
+    <appname>Animotron WBridge Installer</appname>
+    <appversion>0.1</appversion>
+    
+    <authors>
+      <author name="Evgeny Gazdovsky" email="gazdovsky@gmail.com"/>
+      <author name="Dmitriy Shabanov" email="shabanovd@gmail.com"/>
+    </authors>
+    <url>http://animotron.org/</url>
+
+    <uninstaller write="no" />
+    <javaversion>1.6</javaversion>
+ 
+    <pack200 />
+    
+    <run-privileged condition="izpack.windowsinstall.vista|izpack.macinstall"/>
+  </info>
+ 
+  <guiprefs width="800" height="600" resizable="no">
+    <splash>images/peas_load.gif</splash>
+    <laf name="substance">
+      <os family="windows" />
+      <os family="unix" />
+      <param name="variant" value="mist-silver" />
+    </laf>
+    <laf name="substance">
+      <os family="mac" />
+      <param name="variant" value="mist-aqua" />
+    </laf>
+    <modifier key="useHeadingPanel" value="yes" />
+  </guiprefs>
+ 
+  <locale>
+    <langpack iso3="eng" />
+  </locale>
+ 
+  <panels>
+    <panel classname="TargetPanel"/>
+    <panel classname="PacksPanel"/>
+    <panel classname="InstallPanel"/>
+    <panel classname="FinishPanel"/>
+  </panels>
+  
+  <!-- 
+  <resources>
+    <res id="TargetPanel.dir" src="defaultInstallDir.txt" />
+  </resources>
+  -->
+  
+  <packs>
+	<pack name="main" required="yes">
+      <description>Animotron Web Bridge Installation</description>
+      <fileset dir="bin" targetdir="${INSTALL_PATH}/bin" override="true"/>
+      <fileset dir="repo" targetdir="${INSTALL_PATH}/repo" override="true"/>
+      <fileset dir="animo" targetdir="${INSTALL_PATH}/animo" override="true"/>
+      <fileset dir="apps" targetdir="${INSTALL_PATH}/apps" override="true"/>
+      <fileset dir="common" targetdir="${INSTALL_PATH}/common" override="true"/>
+      <fileset dir="site" targetdir="${INSTALL_PATH}/site" override="true"/>
+      <fileset dir="theme" targetdir="${INSTALL_PATH}/theme" override="true"/>
+      <!-- <parsable targetfile="${INSTALL_PATH}/test.properties"/> -->
+    </pack>
+  </packs>
+ 
+</installation>

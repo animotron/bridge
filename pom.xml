@@ -18,8 +18,8 @@
 	</developers>
 
 	<properties>
-		<jettyVersion>8.1.1.v20120215</jettyVersion>
-		<!-- <jettyVersion>7.4.2.v20110526</jettyVersion> -->
+		<jettyVersion>8.1.0.v20120127</jettyVersion>
+		<!-- <jettyVersion>8.1.1.v20120215</jettyVersion> -->
 		<miltonVersion>1.6.2</miltonVersion>
 		<slf4jVersion>1.6.1</slf4jVersion>
 		<staging.dir>${project.build.directory}/staging</staging.dir>

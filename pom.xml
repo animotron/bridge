@@ -170,6 +170,59 @@
 							<name>animotron</name>
 						</program>
 					</programs>
+					<daemons>
+						<daemon>
+							<id>animobridge</id>
+							<mainClass>org.animotron.bridge.web.JettyHttpServer</mainClass>
+							<commandLineArguments>
+								<commandLineArgument>start</commandLineArgument>
+							</commandLineArguments>
+							<platforms>
+								<platform>jsw</platform>
+							</platforms>
+							<generatorConfigurations>
+								<generatorConfiguration>
+									<generator>jsw</generator>
+									<includes>
+										<include>linux-x86-32</include>
+										<include>linux-x86-64</include>
+									</includes>
+									<configuration>
+										<property>
+											<name>configuration.directory.in.classpath.first</name>
+											<value>etc</value>
+										</property>
+										<property>
+											<name>set.default.REPO_DIR</name>
+											<value>lib</value>
+										</property>
+										<property>
+											<name>wrapper.logfile</name>
+											<value>logs/wrapper.log</value>
+										</property>
+										<property>
+											<name>run.as.user.envvar</name>
+											<value>animo</value>
+										</property>
+									</configuration>
+								</generatorConfiguration>
+							</generatorConfigurations>
+							<jvmSettings>
+								<initialMemorySize>256M</initialMemorySize>
+								<maxMemorySize>1024M</maxMemorySize>
+								<systemProperties>
+									<systemProperty>java.security.policy=conf/policy.all</systemProperty>
+									<systemProperty>com.sun.management.jmxremote</systemProperty>
+									<systemProperty>com.sun.management.jmxremote.port=8999</systemProperty>
+									<systemProperty>com.sun.management.jmxremote.authenticate=false</systemProperty>
+									<systemProperty>com.sun.management.jmxremote.ssl=false</systemProperty>
+								</systemProperties>
+								<extraArguments>
+									<extraArgument>-server</extraArgument>
+								</extraArguments>
+							</jvmSettings>
+						</daemon>
+					</daemons>
 				</configuration>
 				<executions>
 					<execution>
@@ -183,25 +236,10 @@
 			</plugin>
 
 
-			<!-- 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<id>copy</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${staging.dir}/dependency</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			-->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
+				<version>2.4</version> <executions> <execution> <id>copy</id> <phase>package</phase> 
+				<goals> <goal>copy-dependencies</goal> </goals> <configuration> <outputDirectory>${staging.dir}/dependency</outputDirectory> 
+				</configuration> </execution> </executions> </plugin> -->
 
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -238,7 +276,7 @@
 				<version>1.0-alpha-5</version>
 				<configuration>
 					<izpackBasedir>${staging.dir}</izpackBasedir>
-       				<customPanelDirectory>${staging.dir}</customPanelDirectory>
+					<customPanelDirectory>${staging.dir}</customPanelDirectory>
 				</configuration>
 				<executions>
 					<execution>

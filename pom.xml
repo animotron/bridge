@@ -226,10 +226,17 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id>preparing-staging-area</id>
+						<id>generate-jsw-scripts</id>
 						<phase>package</phase>
 						<goals>
 							<goal>generate-daemons</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-program-scripts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>assemble</goal>
 						</goals>
 					</execution>
 				</executions>

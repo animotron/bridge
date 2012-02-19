@@ -52,12 +52,12 @@
   <packs>
 	<pack name="main" required="yes">
       <description>Animotron Web Bridge Installation</description>
-      <fileset dir="bin" targetdir="${INSTALL_PATH}\bin" override="true"/>
-      <fileset dir="repo" targetdir="${INSTALL_PATH}\repo" override="true"/>
-      <fileset dir="animo" targetdir="${INSTALL_PATH}\animo" override="true"/>
-      <fileset dir="apps" targetdir="${INSTALL_PATH}\apps" override="true"/>
-      <fileset dir="common" targetdir="${INSTALL_PATH}\common" override="true"/>
-      <fileset dir="site" targetdir="${INSTALL_PATH}\site" override="true"/>
+      <fileset dir="bin" targetdir="${INSTALL_PATH}/bin" override="true"/>
+      <fileset dir="repo" targetdir="${INSTALL_PATH}/repo" override="true"/>
+      <fileset dir="animo" targetdir="${INSTALL_PATH}/animo" override="true"/>
+      <fileset dir="apps" targetdir="${INSTALL_PATH}/apps" override="true"/>
+      <fileset dir="common" targetdir="${INSTALL_PATH}/common" override="true"/>
+      <fileset dir="site" targetdir="${INSTALL_PATH}/site" override="true"/>
       <!-- <parsable targetfile="${INSTALL_PATH}/test.properties"/> -->
     </pack>
   </packs>

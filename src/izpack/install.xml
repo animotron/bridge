@@ -31,10 +31,12 @@
     <panel classname="DefaultTargetPanel" />
   </panels>
   
+  <!-- 
   <resources>
     <res id="TargetPanel.dir" src="defaultInstallDir.txt" />
   </resources>
- 
+  -->
+  
   <packs>
     <pack name="main" required="yes">
       <description>Animotron Web Bridge Installation</description>

@@ -3,6 +3,13 @@
   <info>
     <appname>Animotron WBridge Installer</appname>
     <appversion>0.1</appversion>
+    
+    <authors>
+      <author name="Evgeny Gazdovsky" email="gazdovsky@gmail.com"/>
+      <author name="Dmitriy Shabanov" email="shabanovd@gmail.com"/>
+    </authors>
+    <url>http://animotron.org/</url>
+
     <uninstaller write="no" />
     <javaversion>1.6</javaversion>
  

@@ -33,6 +33,7 @@ import org.animotron.manipulator.QCAVector;
 import org.animotron.statement.operator.THE;
 import org.animotron.statement.operator.Utils;
 import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Path;
 import org.neo4j.graphdb.Relationship;
 
@@ -56,11 +57,15 @@ public class SearchAnimo extends OnTextMessage {
         Executor.execute(new Runnable() {
 
             private void sendThes (Relationship  r) throws Exception {
-                if (r == null)
-                    return;
                 Iterator<Path> it = Utils.THES.traverse(r.getEndNode()).iterator();
                 while(it.hasNext()) {
                     cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(it.next().lastRelationship(), FileCache._));
+                }
+            }
+
+            private void sendThes (Node n) throws Exception {
+                for (Relationship r : n.getRelationships(Direction.INCOMING)) {
+                    sendThes(r);
                 }
             }
 
@@ -80,9 +85,7 @@ public class SearchAnimo extends OnTextMessage {
                 try {
                     String e = exp.toLowerCase();
                     if (e.startsWith("node ")) {
-                        for (Relationship r : AnimoGraph.getDb().getNodeById(Long.valueOf(e.substring(5))).getRelationships(Direction.INCOMING)) {
-                            sendThes(r);
-                        }
+                        sendThes(AnimoGraph.getDb().getNodeById(Long.valueOf(e.substring(5))));
                     } else {
                         if (e.startsWith("relationship ")) {
                             e = e.substring(13);

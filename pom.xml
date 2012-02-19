@@ -153,6 +153,27 @@
 			</plugin>
 
 			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>create-staging-area</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<copy todir="${staging.dir}">
+									<fileset dir="${basedir}/src/izpack" />
+								</copy>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<groupId>org.codehaus.izpack</groupId>
 				<artifactId>izpack-maven-plugin</artifactId>
 				<version>1.0-alpha-5</version>

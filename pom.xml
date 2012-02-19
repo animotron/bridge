@@ -342,6 +342,23 @@
 							</resources>
 						</configuration>
 					</execution>
+					<execution>
+						<id>copy-theme</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${staging.dir}/theme</outputDirectory>
+							<resources>
+								<resource>
+									<directory>theme</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 

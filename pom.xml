@@ -23,7 +23,7 @@
 		<miltonVersion>1.6.2</miltonVersion>
 		<slf4jVersion>1.6.1</slf4jVersion>
 		<staging.dir>${project.build.directory}/staging</staging.dir>
-		<izpack.standalone.compiler.version>5.0.0-beta10-SNAPSHOT</izpack.standalone.compiler.version>
+		<izpack.standalone.compiler.version>4.3.2</izpack.standalone.compiler.version>
 	</properties>
 
 	<dependencies>
@@ -176,7 +176,7 @@
 			<plugin>
 				<groupId>org.codehaus.izpack</groupId>
 				<artifactId>izpack-maven-plugin</artifactId>
-				<version>5.0.0-beta10-SNAPSHOT</version>
+				<version>1.0-alpha-5</version>
 				<executions>
 					<execution>
 						<phase>package</phase>

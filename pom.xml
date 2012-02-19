@@ -271,6 +271,22 @@
 									<directory>src/main/resources</directory>
 									<filtering>true</filtering>
 								</resource>
+								<resource>
+									<directory>animo</directory>
+									<filtering>true</filtering>
+								</resource>
+								<resource>
+									<directory>apps</directory>
+									<filtering>true</filtering>
+								</resource>
+								<resource>
+									<directory>common</directory>
+									<filtering>true</filtering>
+								</resource>
+								<resource>
+									<directory>site</directory>
+									<filtering>true</filtering>
+								</resource>
 							</resources>
 						</configuration>
 					</execution>

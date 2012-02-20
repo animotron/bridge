@@ -5,11 +5,25 @@ the html-page
         (\head
             (\title get title)
             (\meta (@name "viewport") (@content "width=device-width, initial-scale=1.0"))
+
             (each (get keywords) (\meta (@name "keywords") (@content this keywords)))
             (each (get description) (\meta (@name "description") (@content this description)))
-            (\link (@rel "shortcut icon") (@href get uri any favicon))
+
+            (each (get icon) (\link (@rel "icon") (@href get uri)))
+
+            (each (get iphone-icon) (\link (@rel "apple-touch-icon") (@size "57x57") (@href get uri)))
+            (each (get iphone-hires-icon) (\link (@rel "apple-touch-icon") (@size "114x114") (@href get uri)))
+
+            (each (get ipad-icon) (\link (@rel "apple-touch-icon") (@size "72x72") (@href get uri)))
+            (each (get ipad-hires-icon) (\link (@rel "apple-touch-icon") (@size "144x144") (@href get uri)))
+
+            (each (get shortcut-icon) (\link (@rel "shortcut icon") (@href get uri)))
+
             (each (prefer less) (\link (@rel "stylesheet/less") (@href get uri)))
             (each (prefer css) (\link (@rel "stylesheet") (@href get uri)))
+
             (get css-ie-hack)
+
             (each (prefer js) (\script @src get uri)))
+
         (\body any layout))

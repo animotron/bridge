@@ -2,7 +2,7 @@ the bootstrap-variables.less
 
     (mime-type text-x-less)
 
-    (any theme-settings)
+    (any bootstrap, theme)
 
     ("@linkColor: ")            (get link-color) ("; ")
 

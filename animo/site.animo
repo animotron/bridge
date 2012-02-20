@@ -1,0 +1,7 @@
+the site
+    (icon any logo-57x57)
+    (iphone-icon any logo-57x57)
+    (iphone-hires-icon any logo-114x114)
+    (ipad-icon any logo-72x72)
+    (ipad-hires-icon any logo-144x144)
+    (shortcut-icon any favicon)

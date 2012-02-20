@@ -388,7 +388,26 @@
 				</dependencies>
 			</plugin>
 
-		</plugins>
+            <plugin>
+                <groupId>com.jakewharton</groupId>
+                <artifactId>github-deploy-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <replaceExisting>true</replaceExisting>
+                    <ignoreTypes>
+                        <ignoreType>java-source</ignoreType>
+                    </ignoreTypes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
 	</build>
 
 	<repositories>

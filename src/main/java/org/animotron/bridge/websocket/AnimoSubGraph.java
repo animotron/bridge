@@ -43,7 +43,7 @@ public class AnimoSubGraph extends OnTextMessage {
         Relationship r = THE._.get(data);
         if (r == null) return; //XXX: send error message
         
-        IndexHits<Relationship> hits = Order.queryDown(r.getEndNode());
+        IndexHits<Relationship> hits = Order._.queryDown(r.getEndNode());
         try {
         	for (Relationship rr : hits) {
 				cnn.sendMessage(rr.getType().name());

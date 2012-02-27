@@ -56,20 +56,20 @@ public class SearchAnimo extends OnTextMessage {
 
         Executor.execute(new Runnable() {
 
-            private void sendThes (Relationship  r) throws Exception {
+            private void sendThes (Relationship  r) throws Throwable {
                 Iterator<Path> it = Utils.THES.traverse(r.getEndNode()).iterator();
                 while(it.hasNext()) {
                     cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(it.next().lastRelationship(), FileCache._));
                 }
             }
 
-            private void sendThes (Node n) throws Exception {
+            private void sendThes (Node n) throws Throwable {
                 for (Relationship r : n.getRelationships(Direction.INCOMING)) {
                     sendThes(r);
                 }
             }
 
-            private void sendThes (Expression  e) throws Exception {
+            private void sendThes (Expression  e) throws Throwable {
                 int i = 0;
                 QCAVector v;
                 pipe = Evaluator._.execute(null, e);
@@ -102,8 +102,8 @@ public class SearchAnimo extends OnTextMessage {
                                 sendThes(new AnimoExpression(new FastGraphBuilder(false), exp));
                             }
                         }
-                    } catch (Exception e) {}
-                } catch (Exception e) {}
+                    } catch (Throwable t) {}
+                } catch (Throwable t) {}
             }
         });
     }

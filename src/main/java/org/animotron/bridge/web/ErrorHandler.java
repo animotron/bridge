@@ -43,7 +43,7 @@ import static org.animotron.bridge.web.WebSerializer.serialize;
  */
 public class ErrorHandler {
 
-    public static void doRequest(HttpServletRequest req, HttpServletResponse res, Exception x) {
+    public static void doRequest(HttpServletRequest req, HttpServletResponse res, Throwable x) {
         long startTime = System.currentTimeMillis();
         try {
             if (x instanceof ENotFound || x instanceof FileNotFoundException) {
@@ -54,8 +54,8 @@ public class ErrorHandler {
                 res.setStatus(SC_INTERNAL_SERVER_ERROR);
                 serialize(new AnimoRequest(req, SC_INTERNAL_SERVER_ERROR, x), res);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
     }
@@ -65,8 +65,8 @@ public class ErrorHandler {
         try {
             res.setStatus(status);
             serialize(new AnimoRequest(req, status, null), res);
-        } catch (Exception e) {
-            doRequest(req, res, e);
+        } catch (Throwable t) {
+            doRequest(req, res, t);
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
     }
@@ -76,10 +76,10 @@ public class ErrorHandler {
         private static final String STACK_TRACE = "stack-trace";
         private static final String ERROR = "error";
         private static final String CODE = "code";
-        private Exception x;
+        private Throwable x;
         private int status;
 
-        public AnimoRequest(HttpServletRequest req, int status, Exception x) throws Exception {
+        public AnimoRequest(HttpServletRequest req, int status, Throwable x) throws Throwable {
             super(req);
             this.status = status;
             this.x = x;

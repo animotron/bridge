@@ -88,8 +88,8 @@ public class
         // ... and start it up
         try {
             jetty.start();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
         }
 
         System.out.println(Arrays.toString(jetty.getConnectors()));
@@ -98,8 +98,8 @@ public class
     public void stop() {
         try {
             jetty.stop();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
         }
     }
     

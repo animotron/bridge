@@ -33,7 +33,7 @@ import static org.animotron.expression.AnimoExpression.__;
 public class BootstrapTest extends ATest {
 
     @Test
-    public void test_00() throws Exception {
+    public void test_00() throws Throwable {
 
         __(
         "the default-theme-settings\n" +
@@ -121,7 +121,7 @@ public class BootstrapTest extends ATest {
     }
 
     @Test
-    public void test_01() throws Exception {
+    public void test_01() throws Throwable {
 
         __(
         "the default-theme-settings " +
@@ -207,7 +207,7 @@ public class BootstrapTest extends ATest {
     }
 
     @Test
-    public void test_02() throws Exception {
+    public void test_02() throws Throwable {
 
         __(
         "the default-theme-settings " +
@@ -226,7 +226,7 @@ public class BootstrapTest extends ATest {
     }
 
     @Test
-    public void test_03() throws Exception {
+    public void test_03() throws Throwable {
 
         __(
         "the default-theme-settings " +

@@ -49,7 +49,7 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
     
     protected final HttpServletRequest req;
 
-    public AbstractRequestExpression(HttpServletRequest req) throws Exception {
+    public AbstractRequestExpression(HttpServletRequest req) throws Throwable {
         super(new FastGraphBuilder(true));
         this.req = req;
     }

@@ -20,11 +20,11 @@
  */
 package org.animotron.bridge.websocket;
 
+import org.eclipse.jetty.websocket.WebSocket;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
-import org.eclipse.jetty.websocket.WebSocket;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -44,14 +44,14 @@ public abstract class OnTextMessage implements WebSocket.OnTextMessage {
     public void onClose(int closeCode, String message) {
     }
 
-    public void sendError(Exception e) {
+    public void sendError(Throwable t) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
+        t.printStackTrace(pw);
         try {
             cnn.sendMessage(sw.toString());
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

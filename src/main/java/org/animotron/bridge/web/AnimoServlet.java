@@ -80,8 +80,8 @@ public class AnimoServlet extends HttpServlet {
             } else {
                 res.setStatus(SC_NOT_MODIFIED);
             }
-        } catch (Exception e) {
-            ErrorHandler.doRequest(req, res, e);
+        } catch (Throwable t) {
+            ErrorHandler.doRequest(req, res, t);
         }
 	}
 
@@ -91,7 +91,7 @@ public class AnimoServlet extends HttpServlet {
         private List<String> list = new ArrayList<String>(MAX_PARTS_COUNT);
         private static final String ROOT = "root";
 
-        public AnimoRequest(HttpServletRequest req) throws Exception {
+        public AnimoRequest(HttpServletRequest req) throws Throwable {
             super(req);
             String [] parts = req.getPathInfo().split("/");
             if (parts.length > MAX_PARTS_COUNT) {

@@ -99,8 +99,8 @@ public class BridgeServlet extends HttpServlet {
             } else {
                 res.setStatus(SC_NOT_MODIFIED);
             }
-        } catch (Exception e) {
-            ErrorHandler.doRequest(req, res, e);
+        } catch (Throwable t) {
+            ErrorHandler.doRequest(req, res, t);
         } finally {
             if (is != null) is.close();
         }

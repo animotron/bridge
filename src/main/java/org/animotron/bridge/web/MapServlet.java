@@ -81,8 +81,8 @@ public class MapServlet extends HttpServlet {
                     os.write(buf, 0, len);
                 }
                 os.close();
-            } catch (Exception e) {
-                ErrorHandler.doRequest(req, res, e);
+            } catch (Throwable t) {
+                ErrorHandler.doRequest(req, res, t);
             } finally {
                 if (is != null) is.close();
             }

@@ -50,7 +50,7 @@ public class JabberClient implements MessageListener, ChatManagerListener, Packe
 //    	try {
 //		    FSBridge.load("src/main/animo/");
 //		    FSBridge.load("etc/");
-//    	} catch (Exception e) {
+//    	} catch (Throwable t) {
 //		}
 	}
 	
@@ -199,13 +199,13 @@ public class JabberClient implements MessageListener, ChatManagerListener, Packe
         	else
         		return CachedSerializer.PRETTY_ANIMO_RESULT.serialize(op);
 
-        } catch (Exception e) {
-			e.printStackTrace();
-			return e.getMessage();
+        } catch (Throwable t) {
+			t.printStackTrace();
+			return t.getMessage();
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Throwable {
 		JabberClient client = new JabberClient();
 		
 		Thread.sleep(12*60*60*1000);

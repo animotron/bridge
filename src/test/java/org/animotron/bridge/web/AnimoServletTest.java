@@ -33,7 +33,7 @@ import org.junit.Test;
 public class AnimoServletTest extends ATest {
 
     @Test
-    public void test() throws Exception {
+    public void test() throws Throwable {
     	FSBridge._.load("src/test/resources/animo/");
     	AnimoServlet servlet = new AnimoServlet();
     	HttpRequest request = new HttpRequest("/","localhost");

@@ -40,7 +40,7 @@ import static org.animotron.expression.JExpression.value;
 public class AnimotronTest extends ATest {
 
     @Test
-    public void test() throws Exception {
+    public void test() throws Throwable {
 
 		FSBridge._.load("animo/");
         FSBridge._.load("site/");

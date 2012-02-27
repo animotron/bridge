@@ -40,7 +40,7 @@ public class BinaryServletTest extends ATest {
     private static final String URI_CONTEXT = "/binary";
 
     @Test
-    public void test() throws Exception {
+    public void test() throws Throwable {
         FSBridge._.load("src/test/resources/animo/");
         new ResourcesBridge(URI_CONTEXT).load("src/test/resources/site/");
         BridgeServlet servlet = new BridgeServlet();

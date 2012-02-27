@@ -39,7 +39,7 @@ public class CommonServletTest extends ATest {
     private static final String PATH = "src/test/resources/site/";
 
     @Test
-    public void test() throws Exception {
+    public void test() throws Throwable {
         FSBridge._.load("src/test/resources/animo/");
         new ResourcesMap(URI_CONTEXT).load(PATH);
     	MapServlet servlet = new MapServlet(PATH);

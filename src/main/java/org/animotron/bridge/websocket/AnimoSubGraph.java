@@ -20,12 +20,12 @@
  */
 package org.animotron.bridge.websocket;
 
-import java.io.IOException;
-
 import org.animotron.graph.index.Order;
 import org.animotron.statement.operator.THE;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.index.IndexHits;
+
+import java.io.IOException;
 
 
 /**
@@ -43,7 +43,7 @@ public class AnimoSubGraph extends OnTextMessage {
         Relationship r = THE._.get(data);
         if (r == null) return; //XXX: send error message
         
-        IndexHits<Relationship> hits = Order.queryDown(r.getEndNode());
+        IndexHits<Relationship> hits = Order._.queryDown(r.getEndNode());
         try {
         	for (Relationship rr : hits) {
 				cnn.sendMessage(rr.getType().name());

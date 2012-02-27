@@ -227,7 +227,7 @@ public abstract class ATest {
 		}
 
 		@Override
-		public Enumeration getAttributeNames() {
+		public Enumeration<?> getAttributeNames() {
 			return null;
 		}
 
@@ -262,17 +262,17 @@ public abstract class ATest {
 		}
 
 		@Override
-		public Enumeration getLocales() {
+		public Enumeration<?> getLocales() {
 			return null;
 		}
 
 		@Override
-		public Map getParameterMap() {
+		public Map<?,?> getParameterMap() {
 			return null;
 		}
 
 		@Override
-		public Enumeration getParameterNames() {
+		public Enumeration<?> getParameterNames() {
 			return NullEnumeration.getInstance();
 		}
 
@@ -361,12 +361,12 @@ public abstract class ATest {
 		}
 
 		@Override
-		public Enumeration getHeaders(String name) {
+		public Enumeration<?> getHeaders(String name) {
 			return null;
 		}
 
 		@Override
-		public Enumeration getHeaderNames() {
+		public Enumeration<?> getHeaderNames() {
 			return null;
 		}
 

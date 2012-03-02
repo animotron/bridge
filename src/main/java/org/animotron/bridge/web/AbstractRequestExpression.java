@@ -45,7 +45,7 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
     public static final String SITE = "site";
     public static final String SERVER_NAME = "server-name";
     public static final String HTML_PAGE = "html-page";
-    public static final String RESOURCE = "resource";
+    public static final String REQUEST = "request";
     
     protected final HttpServletRequest req;
 
@@ -58,11 +58,14 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
     public void build() throws AnimoException, IOException {
         builder.start(LINK._);
             builder.start(AN._);
+                builder._(REF._, REQUEST);
+            builder.end();
+            builder.start(AN._);
                 context();
                 params();
                 uri();
             builder.end();
-        site();
+            site();
         builder.end();
     }
 

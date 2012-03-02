@@ -92,7 +92,7 @@ public class ErrorHandler {
                 builder._(REF._, ERROR);
             builder.end();
             builder.start(ANY._);
-                builder._(REF._, RESOURCE);
+                builder._(REF._, REQUEST);
                 builder.start(WITH._);
                     builder._(REF._, CODE);
                     builder._(status);

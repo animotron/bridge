@@ -1,6 +1,6 @@
-the AnimoLanguage
+the animo-language
 
-	(root, animotron, resource)
+	(html-page)
 
     (title "Animo")
 

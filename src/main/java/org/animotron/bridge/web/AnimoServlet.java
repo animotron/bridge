@@ -25,7 +25,7 @@ import org.animotron.exception.ENotFound;
 import org.animotron.expression.Expression;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
-import org.animotron.statement.query.ANY;
+import org.animotron.statement.query.GET;
 import org.animotron.statement.relation.USE;
 
 import javax.servlet.ServletException;
@@ -110,12 +110,12 @@ public class AnimoServlet extends HttpServlet {
         @Override
         public void context() throws AnimoException, IOException {
             if (list.isEmpty()) {
-                builder._(REF._, HTML_PAGE);
-                builder.start(USE._);
+                builder.start(GET._);
                     builder._(REF._, ROOT);
-                builder.end();
-                builder.start(ANY._);
-                    builder._(REF._, RESOURCE);
+                    //TODO
+                    //builder.start(THIS._);
+                    //    builder._(SITE);
+                    //builder.end();
                 builder.end();
             } else {
                 builder._(REF._, list.get(0));

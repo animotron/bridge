@@ -49,11 +49,11 @@ public class ErrorHandler {
         try {
             if (x instanceof ENotFound || x instanceof FileNotFoundException) {
                 res.setStatus(SC_NOT_FOUND);
-                serialize(new AnimoRequest(req, SC_NOT_FOUND, null), res, uuid());
+                serialize(new AnimoRequest(req, SC_NOT_FOUND, null), res);
             } else {
                 res.reset();
                 res.setStatus(SC_INTERNAL_SERVER_ERROR);
-                serialize(new AnimoRequest(req, SC_INTERNAL_SERVER_ERROR, x), res, uuid());
+                serialize(new AnimoRequest(req, SC_INTERNAL_SERVER_ERROR, x), res);
             }
         } catch (Throwable t) {
             t.printStackTrace();
@@ -65,7 +65,7 @@ public class ErrorHandler {
         long startTime = System.currentTimeMillis();
         try {
             res.setStatus(status);
-            serialize(new AnimoRequest(req, status, null), res, uuid());
+            serialize(new AnimoRequest(req, status, null), res);
         } catch (Throwable t) {
             doRequest(req, res, t);
         }

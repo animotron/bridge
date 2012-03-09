@@ -51,12 +51,16 @@ public class WebSerializer {
     public static final String MIME_TYPE = "mime-type";
     private static Cache cache = FileCache._;
 
+    public static void serialize(Expression request, HttpServletResponse res) throws IOException, ENotFound {
+        serialize(request, res, uuid());
+    }
+
     public static void serialize(Expression request, HttpServletResponse res, String uuid) throws IOException, ENotFound {
         String mime = STRING.serialize(
                 new JExpression(
                         _(GET._, TYPE, _(GET._, MIME_TYPE, _(request)))
                 ),
-                cache, uuid
+                cache
         );
         if (mime.isEmpty()) {
             throw new ENotFound(request);
@@ -75,7 +79,7 @@ public class WebSerializer {
                 new JExpression(
                         _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value(ext))))
                 ),
-                FileCache._, uuid()
+                FileCache._
         );
         return mime.isEmpty() ? "application/octet-stream" : mime;
     }

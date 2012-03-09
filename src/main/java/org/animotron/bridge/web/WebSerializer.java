@@ -38,6 +38,7 @@ import static org.animotron.expression.JExpression._;
 import static org.animotron.expression.JExpression.value;
 import static org.animotron.graph.Nodes.EXTENSION;
 import static org.animotron.graph.serializer.CachedSerializer.*;
+import static org.animotron.utils.MessageDigester.uuid;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -50,12 +51,12 @@ public class WebSerializer {
     public static final String MIME_TYPE = "mime-type";
     private static Cache cache = FileCache._;
 
-    public static void serialize(Expression request, HttpServletResponse res) throws IOException, ENotFound {
+    public static void serialize(Expression request, HttpServletResponse res, String uuid) throws IOException, ENotFound {
         String mime = STRING.serialize(
                 new JExpression(
                         _(GET._, TYPE, _(GET._, MIME_TYPE, _(request)))
                 ),
-                cache
+                cache, uuid
         );
         if (mime.isEmpty()) {
             throw new ENotFound(request);
@@ -65,7 +66,7 @@ public class WebSerializer {
             res.setContentLength(-1);
             CachedSerializer cs =
                     mime.equals("text/html") ? HTML : mime.endsWith("xml") ? XML : STRING;
-            cs.serialize(request, os, cache);
+            cs.serialize(request, os, cache, uuid);
         }
     }
 
@@ -74,7 +75,7 @@ public class WebSerializer {
                 new JExpression(
                         _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value(ext))))
                 ),
-                FileCache._
+                FileCache._, uuid()
         );
         return mime.isEmpty() ? "application/octet-stream" : mime;
     }

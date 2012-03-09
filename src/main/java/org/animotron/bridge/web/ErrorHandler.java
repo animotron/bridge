@@ -35,6 +35,7 @@ import java.io.*;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static org.animotron.bridge.web.WebSerializer.serialize;
+import static org.animotron.utils.MessageDigester.uuid;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -48,11 +49,11 @@ public class ErrorHandler {
         try {
             if (x instanceof ENotFound || x instanceof FileNotFoundException) {
                 res.setStatus(SC_NOT_FOUND);
-                serialize(new AnimoRequest(req, SC_NOT_FOUND, null), res);
+                serialize(new AnimoRequest(req, SC_NOT_FOUND, null), res, uuid());
             } else {
                 res.reset();
                 res.setStatus(SC_INTERNAL_SERVER_ERROR);
-                serialize(new AnimoRequest(req, SC_INTERNAL_SERVER_ERROR, x), res);
+                serialize(new AnimoRequest(req, SC_INTERNAL_SERVER_ERROR, x), res, uuid());
             }
         } catch (Throwable t) {
             t.printStackTrace();
@@ -64,7 +65,7 @@ public class ErrorHandler {
         long startTime = System.currentTimeMillis();
         try {
             res.setStatus(status);
-            serialize(new AnimoRequest(req, status, null), res);
+            serialize(new AnimoRequest(req, status, null), res, uuid());
         } catch (Throwable t) {
             doRequest(req, res, t);
         }

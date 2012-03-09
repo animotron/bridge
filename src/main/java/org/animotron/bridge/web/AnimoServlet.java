@@ -39,9 +39,8 @@ import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
 import static org.animotron.bridge.web.WebSerializer.serialize;
-import static org.animotron.graph.Properties.HASH;
-import static org.animotron.graph.Properties.MODIFIED;
-import static org.animotron.utils.MessageDigester.byteArrayToHex;
+import static org.animotron.graph.Properties.RUUID;
+import static org.animotron.utils.MessageDigester.uuid;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -56,15 +55,15 @@ public class AnimoServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         try {
             Expression request = new AnimoRequest(req);
-            long modified = (Long) MODIFIED.get(request);
+            String uuid = RUUID.has(request)? (String) RUUID.get(request) : uuid();
+            long modified = uuid(uuid).getTime();
             res.setDateHeader("Last-Modified", modified);
             boolean isHTTP11 = req.getProtocol().endsWith("1.1");
             if (isHTTP11) {
-                String hash = byteArrayToHex((byte[]) HASH.get(request));
-                res.setHeader("ETag", hash);
+                res.setHeader("ETag", uuid);
                 Enumeration<String> etag = req.getHeaders("If-None-Match");
                 while (etag.hasMoreElements()) {
-                    if (hash.equals(etag.nextElement())) {
+                    if (uuid.equals(etag.nextElement())) {
                         res.setStatus(SC_NOT_MODIFIED);
                         return;
                     }
@@ -76,7 +75,7 @@ public class AnimoServlet extends HttpServlet {
                     res.setHeader("Cache-Control", "no-cache");
                 }
                 res.setDateHeader("Expires", modified);
-                serialize(request, res);
+                serialize(request, res, uuid);
             } else {
                 res.setStatus(SC_NOT_MODIFIED);
             }

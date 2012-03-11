@@ -20,8 +20,6 @@
  */
 package org.animotron.bridge.websocket;
 
-import java.io.IOException;
-
 import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.graph.serializer.CachedSerializer;
@@ -40,7 +38,7 @@ public class AnimoIMS extends OnTextMessage {
 
         try {
 			cnn.sendMessage(CachedSerializer.HTML_PART.serialize(new AnimoExpression(data), FileCache._));
-		} catch (IOException e) {
+		} catch (Throwable e) {
         	//XXX: send error message, if it come from serializer
 		}
 	}

@@ -46,7 +46,7 @@ public class MapServlet extends HttpServlet {
         this.folder = new File(uri);
     }
     
-    private String mime(File file) throws IOException {
+    private String mime(File file) throws Throwable {
         String name = file.getName();
         int index = name.lastIndexOf(".");
         if (index > 0) {

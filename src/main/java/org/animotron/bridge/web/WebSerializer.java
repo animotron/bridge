@@ -31,7 +31,6 @@ import org.animotron.statement.query.ANY;
 import org.animotron.statement.query.GET;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.OutputStream;
 
 import static org.animotron.expression.JExpression._;
@@ -51,11 +50,11 @@ public class WebSerializer {
     public static final String MIME_TYPE = "mime-type";
     private static Cache cache = FileCache._;
 
-    public static void serialize(Expression request, HttpServletResponse res) throws IOException, ENotFound {
+    public static void serialize(Expression request, HttpServletResponse res) throws Throwable {
         serialize(request, res, uuid());
     }
 
-    public static void serialize(Expression request, HttpServletResponse res, String uuid) throws IOException, ENotFound {
+    public static void serialize(Expression request, HttpServletResponse res, String uuid) throws Throwable {
         String mime = STRING.serialize(
                 new JExpression(
                         _(GET._, TYPE, _(GET._, MIME_TYPE, _(request)))
@@ -74,7 +73,7 @@ public class WebSerializer {
         }
     }
 
-    public static String mime(String ext) throws IOException {
+    public static String mime(String ext) throws Throwable {
         String mime = CachedSerializer.STRING.serialize(
                 new JExpression(
                         _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value(ext))))

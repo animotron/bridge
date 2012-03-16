@@ -20,8 +20,6 @@
  */
 package org.animotron.bridge.websocket;
 
-import java.io.IOException;
-
 import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
@@ -41,7 +39,7 @@ public class SaveAnimo extends OnTextMessage {
         try {
             Expression e = new AnimoExpression(data);
             cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(e, FileCache._));
-        } catch (IOException e) {
+        } catch (Throwable e) {
             //XXX: send error message
         }
     }

@@ -53,7 +53,7 @@ public class BridgeServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 6702513972501476806L;
 
-    private String mime(Relationship r) throws IOException {
+    private String mime(Relationship r) throws Throwable {
         return WebSerializer.mime(CachedSerializer.STRING.serialize(new JExpression(_(GET._, EXTENSION, _(r)))));
     }
 

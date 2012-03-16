@@ -20,8 +20,6 @@
  */
 package org.animotron.bridge.websocket;
 
-import java.io.IOException;
-
 import org.animotron.cache.FileCache;
 import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.statement.operator.THE;
@@ -45,7 +43,7 @@ public class SourceAnimo extends OnTextMessage {
             } else {
                 //XXX: send error message
             }
-        } catch (IOException e) {
+        } catch (Throwable e) {
         	sendError(e);
         }
     }

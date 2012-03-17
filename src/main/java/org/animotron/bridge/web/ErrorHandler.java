@@ -35,7 +35,6 @@ import java.io.*;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static org.animotron.bridge.web.WebSerializer.serialize;
-import static org.animotron.utils.MessageDigester.uuid;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -88,7 +87,6 @@ public class ErrorHandler {
 
         @Override
         public void context() throws AnimoException, IOException {
-            builder._(REF._, HTML_PAGE);
             builder.start(USE._);
                 builder._(REF._, ERROR);
             builder.end();

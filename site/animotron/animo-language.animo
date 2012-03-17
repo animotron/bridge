@@ -1,6 +1,6 @@
 the animo-language
 
-	(html-page)
+	(html-page, root, service)
 
     (title "Animo")
 

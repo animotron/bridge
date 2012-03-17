@@ -4,5 +4,4 @@ the localhost-site
     (project-name "Animo test")
     (weak-use default)
     (use localhost)
-    (root it-working)
 

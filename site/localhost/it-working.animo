@@ -1,4 +1,4 @@
 the it-working
-	(html-page)
+	(html-page, root, service)
     (title   "Welcome to Animo")
     (content "It is working!")

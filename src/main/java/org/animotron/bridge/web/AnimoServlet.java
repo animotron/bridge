@@ -25,7 +25,6 @@ import org.animotron.exception.ENotFound;
 import org.animotron.expression.Expression;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
-import org.animotron.statement.query.GET;
 import org.animotron.statement.relation.USE;
 
 import javax.servlet.ServletException;
@@ -109,25 +108,18 @@ public class AnimoServlet extends HttpServlet {
         @Override
         public void context() throws AnimoException, IOException {
             if (list.isEmpty()) {
-                builder.start(GET._);
+                builder.start(USE._);
                     builder._(REF._, ROOT);
-                    //TODO
-                    //builder.start(THIS._);
-                    //    builder._(SITE);
-                    //builder.end();
                 builder.end();
             } else {
-                builder._(REF._, list.get(0));
-                if (list.size() > 1) {
-                    builder.start(USE._);
-                        for (int i = 1; i < list.size() - 1; i++) {
-                            builder._(REF._, list.get(i));
-                        }
-                    builder.end();
-                    builder.start(AN._);
-                        builder._(REF._, list.get(list.size() - 1));
-                    builder.end();
-                }
+                builder.start(USE._);
+                    for (int i = 0; i < list.size() - 1; i++) {
+                        builder._(REF._, list.get(i));
+                    }
+                builder.end();
+                builder.start(AN._);
+                    builder._(REF._, list.get(list.size() - 1));
+                builder.end();
             }
             // TODO add sorted request parametrs, headers, attributes, cookies and etc
         }

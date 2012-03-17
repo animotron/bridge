@@ -22,10 +22,8 @@ package org.animotron.bridge.web;
 
 import org.animotron.exception.AnimoException;
 import org.animotron.exception.ENotFound;
-import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
-import org.animotron.statement.query.ANY;
 import org.animotron.statement.relation.USE;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,7 +72,7 @@ public class ErrorHandler {
     private static class AnimoRequest extends AbstractRequestExpression {
 
         private static final String STACK_TRACE = "stack-trace";
-        private static final String ERROR = "error";
+        private static final String ERROR = "error-service";
         private static final String CODE = "code";
         private Throwable x;
         private int status;
@@ -90,26 +88,23 @@ public class ErrorHandler {
             builder.start(USE._);
                 builder._(REF._, ERROR);
             builder.end();
-            builder.start(ANY._);
-                builder._(REF._, REQUEST);
-                builder.start(WITH._);
-                    builder._(REF._, CODE);
-                    builder._(status);
-                builder.end();
-                if (x != null) {
-                    builder.start(AN._);
-                        builder._(REF._, STACK_TRACE);
-                        StringWriter sw = new StringWriter();
-                        PrintWriter pw = new PrintWriter(sw);
-                        x.printStackTrace(pw);
-                        BufferedReader br = new BufferedReader(new StringReader(sw.toString()));
-                        String s;
-                        while ((s = br.readLine()) != null) {
-                            builder._(s);
-                        }
-                    builder.end();
-                }
+            builder.start(AN._);
+                builder._(REF._, CODE);
+                builder._(status);
             builder.end();
+            if (x != null) {
+                builder.start(AN._);
+                    builder._(REF._, STACK_TRACE);
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+                    x.printStackTrace(pw);
+                    BufferedReader br = new BufferedReader(new StringReader(sw.toString()));
+                    String s;
+                    while ((s = br.readLine()) != null) {
+                        builder._(s);
+                    }
+                builder.end();
+            }
         }
 
     }

@@ -1,5 +1,5 @@
 the not-found
-    (html-page, error, service)
+    (error)
     (code 404)
     (title   "Not found")
     (message

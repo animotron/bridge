@@ -1,0 +1,4 @@
+the error-service
+    (html-page, service)
+    (any error with code get code)
+

@@ -4,3 +4,4 @@ the animotron-site
     (project-name "Animotron")
     (weak-use default)
     (use animotron)
+    (root animo-language)

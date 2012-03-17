@@ -60,16 +60,12 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
             builder.start(AN._);
                 builder._(REF._, REQUEST);
             builder.end();
-            builder.start(ANY._);
-                builder._(REF._, SITE);
-                builder.start(WITH._);
-                    builder._(REF._, SERVER_NAME);
-                    builder._(req.getServerName());
-                builder.end();
+            builder.start(AN._);
                 context();
                 params();
                 uri();
             builder.end();
+            site();
         builder.end();
     }
 
@@ -83,6 +79,16 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
         builder.start(AN._);
             builder._(REF._, URI);
             builder._(req.getRequestURI());
+        builder.end();
+    }
+
+    private final void site() throws AnimoException, IOException {
+        builder.start(ANY._);
+            builder._(REF._, SITE);
+            builder.start(WITH._);
+                builder._(REF._, SERVER_NAME);
+                builder._(req.getServerName());
+            builder.end();
         builder.end();
     }
 

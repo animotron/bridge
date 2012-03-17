@@ -1,5 +1,5 @@
 the internal-server-error
-    (html-page, error, service)
+    (error, resource)
     (code 500)
     (title   "Internal Server Error")
     (message

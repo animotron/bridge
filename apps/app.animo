@@ -1,5 +1,4 @@
 the app
-    (service)
-    (html-page
+    html-page
 	    (use app-layout)
-        (weak-use bootstrap.less, less.min.js))
+        (weak-use bootstrap.less, less.min.js)

@@ -1,5 +1,7 @@
 the bootstrap-variables.less
 
+    (service)
+
     (mime-type text-x-less)
 
     (any bootstrap, theme)

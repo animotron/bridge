@@ -46,9 +46,9 @@ import static org.animotron.utils.MessageDigester.uuid;
  */
 public class WebSerializer {
 
+    private static Cache CACHE = FileCache._;
     public static final String TYPE = "type";
     public static final String MIME_TYPE = "mime-type";
-    private static Cache cache = FileCache._;
 
     public static void serialize(Expression request, HttpServletResponse res) throws Throwable, ENotFound {
         serialize(request, res, uuid());
@@ -59,7 +59,7 @@ public class WebSerializer {
                 new JExpression(
                         _(GET._, TYPE, _(GET._, MIME_TYPE, _(request)))
                 ),
-                cache
+                CACHE
         );
         if (mime.isEmpty()) {
             throw new ENotFound(request);
@@ -69,7 +69,7 @@ public class WebSerializer {
             res.setContentLength(-1);
             CachedSerializer cs =
                     mime.equals("text/html") ? HTML : mime.endsWith("xml") ? XML : STRING;
-            cs.serialize(request, os, cache, uuid);
+            cs.serialize(request, os, CACHE, uuid);
         }
     }
 
@@ -78,7 +78,7 @@ public class WebSerializer {
                 new JExpression(
                         _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value(ext))))
                 ),
-                FileCache._
+                CACHE
         );
         return mime.isEmpty() ? "application/octet-stream" : mime;
     }

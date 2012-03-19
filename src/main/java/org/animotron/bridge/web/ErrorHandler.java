@@ -73,7 +73,7 @@ public class ErrorHandler {
 
         private static final String STACK_TRACE = "stack-trace";
         private static final String ERROR = "error-service";
-        private static final String CODE = "code";
+        private static final String STATUS = "status";
         private Throwable x;
         private int status;
 
@@ -89,7 +89,7 @@ public class ErrorHandler {
                 builder._(REF._, ERROR);
             builder.end();
             builder.start(AN._);
-                builder._(REF._, CODE);
+                builder._(REF._, STATUS);
                 builder._(status);
             builder.end();
             if (x != null) {

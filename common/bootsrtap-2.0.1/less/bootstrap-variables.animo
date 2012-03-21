@@ -1,6 +1,6 @@
-the bootstrap-variables.less
+the bootstrap-variables
 
-    (service)
+    (localhost-site, animotron-site, variables.less)
 
     (mime-type text-x-less)
 

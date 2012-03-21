@@ -61,7 +61,7 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
                 builder._(REF._, REQUEST);
             builder.end();
             builder.start(ANY._);
-                builder._(REF._, SITE);
+                builder._(REF._, service());
                 builder.start(WITH._);
                     builder._(REF._, SERVER_NAME);
                     builder._(req.getServerName());
@@ -69,9 +69,12 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
                 context();
                 params();
                 uri();
+                // TODO add sorted request parametrs, headers, attributes, cookies and etc
             builder.end();
         builder.end();
     }
+
+    protected abstract Object service();
 
     protected abstract void context() throws AnimoException, IOException;
 

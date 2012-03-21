@@ -1,6 +1,8 @@
 the animo-language
 
-	(html-page, root, service)
+	(animotron-site, root, html-page)
+
+	(use root)
 
     (title "Animo")
 

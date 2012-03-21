@@ -22,9 +22,9 @@ package org.animotron.bridge.web;
 
 import org.animotron.exception.AnimoException;
 import org.animotron.exception.ENotFound;
+import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
-import org.animotron.statement.relation.USE;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -72,8 +72,8 @@ public class ErrorHandler {
     private static class AnimoRequest extends AbstractRequestExpression {
 
         private static final String STACK_TRACE = "stack-trace";
-        private static final String ERROR = "error-service";
-        private static final String STATUS = "status";
+        private static final String ERROR = "error";
+        private static final String CODE = "code";
         private Throwable x;
         private int status;
 
@@ -84,12 +84,14 @@ public class ErrorHandler {
         }
 
         @Override
+        protected Object service() {
+            return ERROR;
+        }
+
+        @Override
         public void context() throws AnimoException, IOException {
-            builder.start(USE._);
-                builder._(REF._, ERROR);
-            builder.end();
-            builder.start(AN._);
-                builder._(REF._, STATUS);
+            builder.start(WITH._);
+                builder._(REF._, CODE);
                 builder._(status);
             builder.end();
             if (x != null) {

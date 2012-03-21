@@ -106,22 +106,20 @@ public class AnimoServlet extends HttpServlet {
         }
 
         @Override
+        protected Object service() {
+            return list.isEmpty() ? ROOT : list.get(0);
+        }
+
+        @Override
         public void context() throws AnimoException, IOException {
-            if (list.isEmpty()) {
-                builder.start(USE._);
-                    builder._(REF._, ROOT);
-                builder.end();
-            } else {
-                builder.start(USE._);
-                    for (int i = 0; i < list.size() - 1; i++) {
-                        builder._(REF._, list.get(i));
-                    }
-                builder.end();
-                builder.start(AN._);
-                    builder._(REF._, list.get(list.size() - 1));
-                builder.end();
-            }
-            // TODO add sorted request parametrs, headers, attributes, cookies and etc
+            builder.start(USE._);
+                for (int i = 1; i < list.size() - 1; i++) {
+                    builder._(REF._, list.get(i));
+                }
+            builder.end();
+            builder.start(AN._);
+                builder._(REF._, list.get(list.size() - 1));
+            builder.end();
         }
 
     }

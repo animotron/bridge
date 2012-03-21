@@ -1,5 +1,6 @@
 the not-found
-    (error)
+    (localhost-site, animotron-site, error, html-page)
+    (use error)
     (code 404)
     (title   "Not found")
     (message

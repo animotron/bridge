@@ -1,0 +1,24 @@
+the geo-app
+
+    (geo, app)
+
+    (title "Geo!")
+
+    (weak-use leaflet.css)
+
+	(css-ie-hack "<!--[if lte IE 8]><link rel=\"stylesheet\" href=\"" (get uri any leaflet.ie.css) "\"<![endif]-->")
+
+    (style
+        ".leaflet-tile {max-width: none; max-height: none;}"
+    )
+
+    (frame
+        (\div (@id "map") (@class "frame"))
+    )
+
+    (js
+        (any leaflet.min.js)
+        (any geo.js)
+    )
+
+    (script "$(function(){$.geo(51.505, -0.09, 13);});")

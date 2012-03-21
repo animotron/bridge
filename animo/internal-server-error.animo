@@ -1,5 +1,6 @@
 the internal-server-error
-    (error)
+    (localhost-site, animotron-site, error, html-page)
+    (use error)
     (code 500)
     (title   "Internal Server Error")
     (message

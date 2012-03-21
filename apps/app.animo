@@ -1,5 +1,4 @@
 the app
-    (service)
-    (html-page
-	    (use app-layout)
-        (weak-use bootstrap.less, less.min.js))
+    (localhost-site, animotron-site, html-page)
+    (use app-layout)
+    (weak-use bootstrap.less, less.min.js))

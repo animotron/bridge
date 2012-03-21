@@ -1,5 +1,5 @@
 the it-working
-	(localhost-site, root-handler, html-page)
+	(localhost-site, root, html-page)
     (use root)
     (title   "Welcome to Animo")
     (content "It is working!")

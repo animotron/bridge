@@ -1,6 +1,6 @@
 the animo-language
 
-	(animotron-site, root, html-page)
+	(html-page)
 
 	(use root)
 

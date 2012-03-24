@@ -106,8 +106,8 @@ public class AnimoServlet extends HttpServlet {
         }
 
         @Override
-        protected Object service() {
-            return list.isEmpty() ? ROOT : list.get(0);
+        protected void service() throws AnimoException, IOException {
+            builder._(REF._, list.get(0));
         }
 
         @Override

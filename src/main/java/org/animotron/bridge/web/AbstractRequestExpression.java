@@ -27,7 +27,7 @@ import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 import org.animotron.statement.operator.THE;
-import org.animotron.statement.query.ANY;
+import org.animotron.statement.query.GET;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -60,8 +60,8 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
             builder.start(AN._);
                 builder._(REF._, REQUEST);
             builder.end();
-            builder.start(ANY._);
-                builder._(REF._, service());
+            builder.start(GET._);
+                service();
                 builder.start(WITH._);
                     builder._(REF._, SERVER_NAME);
                     builder._(req.getServerName());
@@ -69,12 +69,12 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
                 context();
                 params();
                 uri();
-                // TODO add sorted request parametrs, headers, attributes, cookies and etc
+                // TODO add sorted request parameters, headers, attributes, cookies and etc
             builder.end();
         builder.end();
     }
 
-    protected abstract Object service();
+    protected abstract void service() throws AnimoException, IOException;
 
     protected abstract void context() throws AnimoException, IOException;
 

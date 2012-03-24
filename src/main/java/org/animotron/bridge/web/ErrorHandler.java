@@ -25,6 +25,7 @@ import org.animotron.exception.ENotFound;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
+import org.animotron.statement.query.ANY;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -84,8 +85,14 @@ public class ErrorHandler {
         }
 
         @Override
-        protected Object service() {
-            return ERROR;
+        protected void service() throws AnimoException, IOException {
+            builder.start(ANY._);
+                builder._(REF._, ERROR);
+                builder.start(WITH._);
+                    builder._(REF._, CODE);
+                    builder._(status);
+                builder.end();
+            builder.end();
         }
 
         @Override

@@ -52,40 +52,40 @@ public class ResourcesMap extends AbstractResourcesBridge {
             __(new AnimoExpression(new FileInputStream(file)));
         } else {
             __(
-                    new BinaryMapExpression(file) {
-                        @Override
-                        protected void description() throws AnimoException, IOException {
-                            int index;
-                            byte buf[] = new byte[1024 * 4];
-                            int len;
-                            InputStream is = new FileInputStream(file);
-                            MessageDigest md = MessageDigester.md();
-                            while((len=is.read(buf))>0) {
-                                md.update(buf,0,len);
-                            }
-                            is.close();
-                            String name = file.getName();
-                            index = name.lastIndexOf(".");
-                            if (index > 0) {
-                                String extension = name.substring(index + 1);
-                                builder.start(AN._);
-                                    builder._(REF._, extension);
-                                builder.end();
-                            }
+                new BinaryMapExpression(file) {
+                    @Override
+                    protected void description() throws AnimoException, IOException {
+                        int index;
+                        byte buf[] = new byte[1024 * 4];
+                        int len;
+                        InputStream is = new FileInputStream(file);
+                        MessageDigest md = MessageDigester.md();
+                        while((len=is.read(buf))>0) {
+                            md.update(buf,0,len);
+                        }
+                        is.close();
+                        String name = file.getName();
+                        index = name.lastIndexOf(".");
+                        if (index > 0) {
+                            String extension = name.substring(index + 1);
                             builder.start(AN._);
-                                builder._(REF._, name);
-                            builder.end();
-                            builder.start(AN._);
-                                builder._(REF._, URI);
-                                StringBuilder s = new StringBuilder(4);
-                                s.append(uriContext);
-                                s.append(path(file));
-                                s.append("?");
-                                s.append(MessageDigester.byteArrayToHex(md.digest()));
-                                builder._(s.toString());
+                                builder._(REF._, extension);
                             builder.end();
                         }
+                        builder.start(AN._);
+                            builder._(REF._, name);
+                        builder.end();
+                        builder.start(AN._);
+                            builder._(REF._, URI);
+                            StringBuilder s = new StringBuilder(4);
+                            s.append(uriContext);
+                            s.append(path(file));
+                            s.append("?");
+                            s.append(MessageDigester.byteArrayToHex(md.digest()));
+                            builder._(s.toString());
+                        builder.end();
                     }
+                }
             );
         }
     }

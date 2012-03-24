@@ -53,23 +53,20 @@ public class ResourcesBridge extends AbstractResourcesBridge {
             __(new AnimoExpression(is));
         } else {
             __(
-                    new BinaryExpression(is, true) {
-
-                        @Override
-                        protected String id () {
-                            return hash();
-                        }
-
-                        @Override
-                        protected void description() throws AnimoException, IOException {
-                            DefaultDescription.create(builder, path(file));
-                            builder.start(AN._);
-                                builder._(REF._, URI);
-                                builder._(uriContext + id());
-                            builder.end();
-                        }
-
+                new BinaryExpression(is, true) {
+                    @Override
+                    protected String id () {
+                        return hash();
                     }
+                    @Override
+                    protected void description() throws AnimoException, IOException {
+                        DefaultDescription.create(builder, path(file));
+                        builder.start(AN._);
+                            builder._(REF._, URI);
+                            builder._(uriContext + id());
+                        builder.end();
+                    }
+                }
             );
         }
     }

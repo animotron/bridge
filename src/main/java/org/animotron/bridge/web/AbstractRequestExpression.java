@@ -54,13 +54,15 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
 
     @Override
     public void build() throws AnimoException, IOException {
-        builder.start(GET._);
-            service();
-            builder.start(ANY._);
-                builder._(REF._, SITE);
-                builder.start(WITH._);
-                    builder._(REF._, SERVER_NAME);
-                    builder._(req.getServerName());
+        builder.start(AN._);
+            builder.start(GET._);
+                service();
+                builder.start(ANY._);
+                    builder._(REF._, SITE);
+                    builder.start(WITH._);
+                        builder._(REF._, SERVER_NAME);
+                        builder._(req.getServerName());
+                    builder.end();
                 builder.end();
             builder.end();
             context();

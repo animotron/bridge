@@ -20,6 +20,7 @@
  */
 package org.animotron.bridge.web;
 
+import com.eaio.uuid.UUID;
 import org.animotron.exception.AnimoException;
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.Expression;
@@ -54,15 +55,23 @@ public class AnimoServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         try {
             Expression request = new AnimoRequest(req);
-            String uuid = RUUID.has(request)? (String) RUUID.get(request) : uuid();
-            long modified = uuid(uuid).getTime();
+            UUID uuid;
+            String suuid;
+            if (RUUID.has(request)) {
+                suuid = (String) RUUID.get(request);
+                uuid = uuid(suuid);
+            } else {
+                uuid = uuid();
+                suuid = uuid.toString();
+            }
+            long modified = uuid.getTime();
             res.setDateHeader("Last-Modified", modified);
             boolean isHTTP11 = req.getProtocol().endsWith("1.1");
             if (isHTTP11) {
-                res.setHeader("ETag", uuid);
+                res.setHeader("ETag", suuid);
                 Enumeration<String> etag = req.getHeaders("If-None-Match");
                 while (etag.hasMoreElements()) {
-                    if (uuid.equals(etag.nextElement())) {
+                    if (suuid.equals(etag.nextElement())) {
                         res.setStatus(SC_NOT_MODIFIED);
                         return;
                     }
@@ -74,7 +83,7 @@ public class AnimoServlet extends HttpServlet {
                     res.setHeader("Cache-Control", "no-cache");
                 }
                 res.setDateHeader("Expires", modified);
-                serialize(request, res, uuid);
+                serialize(request, res, suuid);
             } else {
                 res.setStatus(SC_NOT_MODIFIED);
             }

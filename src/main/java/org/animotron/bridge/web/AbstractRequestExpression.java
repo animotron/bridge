@@ -26,7 +26,7 @@ import org.animotron.graph.builder.FastGraphBuilder;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
-import org.animotron.statement.operator.THE;
+import org.animotron.statement.query.ANY;
 import org.animotron.statement.query.GET;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,9 +44,7 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
     public static final String HOST = "host";
     public static final String SITE = "site";
     public static final String SERVER_NAME = "server-name";
-    public static final String HTML_PAGE = "html-page";
-    public static final String REQUEST = "request";
-    
+
     protected final HttpServletRequest req;
 
     public AbstractRequestExpression(HttpServletRequest req) throws Throwable {
@@ -56,21 +54,19 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
 
     @Override
     public void build() throws AnimoException, IOException {
-        builder.start(THE._);
-            builder.start(AN._);
-                builder._(REF._, REQUEST);
-            builder.end();
-            builder.start(GET._);
-                service();
+        builder.start(GET._);
+            service();
+            builder.start(ANY._);
+                builder._(REF._, SITE);
                 builder.start(WITH._);
                     builder._(REF._, SERVER_NAME);
                     builder._(req.getServerName());
                 builder.end();
-                context();
-                params();
-                uri();
-                // TODO add sorted request parameters, headers, attributes, cookies and etc
             builder.end();
+            context();
+            params();
+            uri();
+            // TODO add sorted request parameters, headers, attributes, cookies and etc
         builder.end();
     }
 

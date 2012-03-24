@@ -57,8 +57,7 @@ public class
                 new ResourcesMap("/apps").load("apps/");
                 FSBridge._.load("animo/");
                 FSBridge._.load("etc/");
-                ResourcesBridge bin = new ResourcesBridge("/binary");
-                bin.load("site/");
+                new ResourcesBridge("/binary").load("site/");
         	//}
     	}
     	

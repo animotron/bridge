@@ -107,19 +107,21 @@ public class AnimoServlet extends HttpServlet {
 
         @Override
         protected void service() throws AnimoException, IOException {
-            builder._(REF._, list.get(0));
+            builder._(REF._, list.isEmpty()? ROOT : list.get(0));
         }
 
         @Override
         public void context() throws AnimoException, IOException {
-            builder.start(USE._);
-                for (int i = 1; i < list.size() - 1; i++) {
-                    builder._(REF._, list.get(i));
-                }
-            builder.end();
-            builder.start(AN._);
-                builder._(REF._, list.get(list.size() - 1));
-            builder.end();
+            if (list.size() > 1) {
+                builder.start(USE._);
+                    for (int i = 1; i < list.size() - 1; i++) {
+                        builder._(REF._, list.get(i));
+                    }
+                builder.end();
+                builder.start(AN._);
+                    builder._(REF._, list.get(list.size() - 1));
+                builder.end();
+            }
         }
 
     }

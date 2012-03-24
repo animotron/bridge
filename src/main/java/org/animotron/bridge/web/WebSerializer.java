@@ -51,7 +51,7 @@ public class WebSerializer {
     public static final String MIME_TYPE = "mime-type";
 
     public static void serialize(Expression request, HttpServletResponse res) throws Throwable, ENotFound {
-        serialize(request, res, uuid());
+        serialize(request, res, uuid().toString());
     }
 
     public static void serialize(Expression request, HttpServletResponse res, String uuid) throws Throwable, ENotFound {

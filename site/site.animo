@@ -8,7 +8,3 @@ the site
     (variables.less bootstrap-variables)
     (not-found-error default-not-found-error)
     (internal-server-error default-internal-server-error)
-    (root it-working)
-    (geo geo-app)
-    (IDE IDE-app)
-    (IMS IMS-app)

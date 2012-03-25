@@ -4,4 +4,10 @@ the animotron-site
     (project-name "Animotron")
     (weak-use default)
     (use animotron)
+
     (root animo-language)
+
+    (geo geo-app)
+    (IDE IDE-app)
+    (IMS IMS-app)
+    

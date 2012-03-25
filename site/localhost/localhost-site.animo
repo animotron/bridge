@@ -2,7 +2,6 @@ the localhost-site
     (site)
     (server-name "localhost")
     (project-name "Animo test")
-    (weak-use default)
-    (use localhost)
+    (weak-use localhost, default)
 
     (root it-working)

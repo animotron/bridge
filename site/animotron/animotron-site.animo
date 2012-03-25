@@ -2,8 +2,7 @@ the animotron-site
     (site)
     (server-name "animotron.org" "www.animotron.org" "animotron.local")
     (project-name "Animotron")
-    (weak-use default)
-    (use animotron)
+    (weak-use animotron, default)
 
     (root animo-language)
 

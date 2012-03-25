@@ -52,9 +52,9 @@ public class
     	//initialize animo
     	if (startDB("data")) {
     		//if (!getSTART().hasRelationship(Direction.OUTGOING)) {
-                new ResourcesMap("/common").load("common/");
+                //new ResourcesMap("/common").load("common/");
                 new ResourcesMap("/theme").load("theme/");
-                new ResourcesMap("/apps").load("apps/");
+                //new ResourcesMap("/apps").load("apps/");
                 FSBridge._.load("animo/");
                 FSBridge._.load("etc/");
                 new ResourcesBridge("/binary").load("site/");

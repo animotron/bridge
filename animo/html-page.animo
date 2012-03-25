@@ -1,6 +1,5 @@
 the html-page
     (mime-type text-html)
-    (any theme)
     (\html
         (\head
             (\title get title)

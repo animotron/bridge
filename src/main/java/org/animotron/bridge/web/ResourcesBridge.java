@@ -34,6 +34,7 @@ import java.io.InputStream;
 
 import static org.animotron.bridge.web.AbstractRequestExpression.URI;
 import static org.animotron.expression.Expression.__;
+import static org.animotron.utils.MessageDigester.uuid;
 
 /**
 * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
@@ -54,6 +55,10 @@ public class ResourcesBridge extends AbstractResourcesBridge {
         } else {
             __(
                 new BinaryExpression(is, true) {
+                    @Override
+                    protected String id () {
+                        return uuid().toString();
+                    }
                     @Override
                     protected void description() throws AnimoException, IOException {
                         DefaultDescription.create(builder, path(file));

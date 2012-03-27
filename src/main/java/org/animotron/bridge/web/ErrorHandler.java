@@ -97,7 +97,7 @@ public class ErrorHandler {
 
         @Override
         public void context() throws AnimoException, IOException {
-            builder.start(WITH._);
+            builder.start(AN._);
                 builder._(REF._, CODE);
                 builder._(status);
             builder.end();

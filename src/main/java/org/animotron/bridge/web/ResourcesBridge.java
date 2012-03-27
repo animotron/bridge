@@ -55,10 +55,6 @@ public class ResourcesBridge extends AbstractResourcesBridge {
             __(
                 new BinaryExpression(is, true) {
                     @Override
-                    protected String id () {
-                        return hash();
-                    }
-                    @Override
                     protected void description() throws AnimoException, IOException {
                         DefaultDescription.create(builder, path(file));
                         builder.start(AN._);

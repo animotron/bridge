@@ -20,6 +20,7 @@
  */
 package org.animotron.bridge.web;
 
+import org.animotron.Shell;
 import org.animotron.bridge.FSBridge;
 import org.animotron.bridge.websocket.WebSocketServlet;
 import org.eclipse.jetty.server.Server;
@@ -106,13 +107,15 @@ public class
     	JettyHttpServer server = new JettyHttpServer();
     	
     	server.start();
-    	
-    	while (true) {
-    		try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-			}
-    	}
+
+        Shell.process();
+
+//    	while (true) {
+//    		try {
+//				Thread.sleep(10000);
+//			} catch (InterruptedException e) {
+//			}
+//    	}
 	}
 
 }

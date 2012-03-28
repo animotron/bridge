@@ -1,3 +1,4 @@
 the not-found-error
-    code 404
+    (error)
+    (code 404)
 

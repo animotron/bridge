@@ -18,17 +18,17 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.animotron:core:0.0.9-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j:neo4j-kernel:1.6" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j:neo4j-kernel:1.7.M02" level="project" />
     <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j:neo4j-lucene-index:1.6" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j:neo4j-lucene-index:1.7.M02" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-core:3.5.0" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j:neo4j-graph-algo:1.6" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j:neo4j-udc:1.6" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j:neo4j-graph-matching:1.6" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j:neo4j-cypher:1.6" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j:neo4j-graph-algo:1.7.M02" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j:neo4j-udc:1.7.M02" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j:neo4j-graph-matching:1.7.M02" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j:neo4j-cypher:1.7.M02" level="project" />
     <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.9.0-1" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j:neo4j-jmx:1.6" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j.build:neo4j-berkeleydb-je-index:0.5-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j:neo4j-jmx:1.7.M02" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j.build:neo4j-berkeleydb-je-index:1.7.M02" level="project" />
     <orderEntry type="library" name="Maven: com.sleepycat:je:4.1.10" level="project" />
     <orderEntry type="library" name="Maven: javolution:javolution:5.5.1" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:1.6.2" level="project" />
@@ -49,6 +49,7 @@
     <orderEntry type="library" name="Maven: javax.xml.stream:stax-api:1.0-2" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.woodstox:stax2-api:3.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.4" level="project" />
+    <orderEntry type="library" name="Maven: jgroups:jgroups:2.9.0.GA" level="project" />
     <orderEntry type="library" name="Maven: org.jetlang:jetlang:0.2.5" level="project" />
     <orderEntry type="library" name="Maven: com.eaio.uuid:uuid:3.2" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />

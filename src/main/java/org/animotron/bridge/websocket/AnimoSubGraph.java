@@ -21,7 +21,7 @@
 package org.animotron.bridge.websocket;
 
 import org.animotron.graph.index.Order;
-import org.animotron.statement.operator.THE;
+import org.animotron.statement.operator.DEF;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.index.IndexHits;
 
@@ -40,7 +40,7 @@ public class AnimoSubGraph extends OnTextMessage {
         if (data.isEmpty())
             return;
         
-        Relationship r = THE._.get(data);
+        Relationship r = DEF._.get(data);
         if (r == null) return; //XXX: send error message
         
         IndexHits<Relationship> hits = Order._.queryDown(r.getEndNode());

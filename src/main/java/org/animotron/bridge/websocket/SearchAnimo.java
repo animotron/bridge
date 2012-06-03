@@ -30,7 +30,7 @@ import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.io.Pipe;
 import org.animotron.manipulator.Evaluator;
 import org.animotron.manipulator.QCAVector;
-import org.animotron.statement.operator.THE;
+import org.animotron.statement.operator.DEF;
 import org.animotron.statement.operator.Utils;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
@@ -93,7 +93,7 @@ public class SearchAnimo extends OnTextMessage {
                         sendThes(AnimoGraph.getDb().getRelationshipById(Long.valueOf(e)));
                     }
                 } catch (NumberFormatException nfe) {
-                    Relationship r = THE._.get(exp);
+                    Relationship r = DEF._.get(exp);
                     try {
                         if (r != null) {
                             cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r, FileCache._));

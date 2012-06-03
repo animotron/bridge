@@ -24,7 +24,7 @@ import javolution.util.FastMap;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.graph.AnimoGraph;
 import org.animotron.graph.serializer.CachedSerializer;
-import org.animotron.statement.operator.THE;
+import org.animotron.statement.operator.DEF;
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
@@ -54,7 +54,7 @@ public class JabberClient implements MessageListener, ChatManagerListener, Packe
 //		}
 	}
 	
-	//private Node I = THE._("animotron@gmail.com");
+	//private Node I = DEF._("animotron@gmail.com");
 	
 	XMPPConnection connection;
 	Map<String, MultiUserChat> chats = new FastMap<String, MultiUserChat>();
@@ -183,7 +183,7 @@ public class JabberClient implements MessageListener, ChatManagerListener, Packe
 		Relationship op = null;
 		if (expectCall) {
 			if (msg.substring(0,4).toLowerCase().equals("anna")) {
-				op = THE._.get(msg.substring(5).trim());
+				op = DEF._.get(msg.substring(5).trim());
 				sendResult = false;
 				
 			} else if (msg.substring(0,3).toLowerCase().equals("ann")) {

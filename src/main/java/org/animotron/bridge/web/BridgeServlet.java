@@ -23,7 +23,7 @@ package org.animotron.bridge.web;
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.JExpression;
 import org.animotron.graph.serializer.CachedSerializer;
-import org.animotron.statement.operator.THE;
+import org.animotron.statement.operator.DEF;
 import org.animotron.statement.query.GET;
 import org.animotron.statement.value.STREAM;
 import org.neo4j.graphdb.Direction;
@@ -61,7 +61,7 @@ public class BridgeServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         InputStream is = null;
         try {
-            Relationship r = THE._.get(req.getPathInfo().substring(1));
+            Relationship r = DEF._.get(req.getPathInfo().substring(1));
             if (r == null) {
                 throw new ENotFound(null);
             }

@@ -22,7 +22,7 @@ package org.animotron.bridge.websocket;
 
 import org.animotron.cache.FileCache;
 import org.animotron.graph.serializer.CachedSerializer;
-import org.animotron.statement.operator.THE;
+import org.animotron.statement.operator.DEF;
 import org.neo4j.graphdb.Relationship;
 
 /**
@@ -37,7 +37,7 @@ public class SourceAnimo extends OnTextMessage {
         if (data.isEmpty())
             return;
         try {
-            Relationship r = THE._.get(data);
+            Relationship r = DEF._.get(data);
             if (r != null) {
                 cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r, FileCache._));
             } else {

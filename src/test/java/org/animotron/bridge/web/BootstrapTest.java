@@ -36,7 +36,7 @@ public class BootstrapTest extends ATest {
     public void test_00() throws Throwable {
 
         __(
-        "the default-theme-settings\n" +
+        "def default-theme-settings\n" +
 
 	        "(default, theme-settings)\n" +
 	
@@ -71,7 +71,7 @@ public class BootstrapTest extends ATest {
 	        "(primary-color         \"@blue\")"
         ,
 
-        "the bootstrap-variables\n" +
+        "def bootstrap-variables\n" +
 
         	"(mime-type text-x-less)\n" +
 
@@ -124,7 +124,7 @@ public class BootstrapTest extends ATest {
     public void test_01() throws Throwable {
 
         __(
-        "the default-theme-settings " +
+        "def default-theme-settings " +
 	
 	        "(default, theme-settings) " +
 	
@@ -159,7 +159,7 @@ public class BootstrapTest extends ATest {
 	        "(primary-color         \"@blue\")"
         ,
 
-        "the bootstrap-variables " +
+        "def bootstrap-variables " +
 
         "(mime-type text-x-less) " +
 
@@ -210,12 +210,12 @@ public class BootstrapTest extends ATest {
     public void test_02() throws Throwable {
 
         __(
-        "the default-theme-settings " +
+        "def default-theme-settings " +
         	"(default, theme-settings) " +
         	"(primary-color         \"@blue\")"
         ,
 
-        "the bootstrap-variables\n" +
+        "def bootstrap-variables\n" +
         	"(mime-type text-x-less) " +
         	"(any theme-settings) " +
         
@@ -229,12 +229,12 @@ public class BootstrapTest extends ATest {
     public void test_03() throws Throwable {
 
         __(
-        "the default-theme-settings " +
+        "def default-theme-settings " +
     		"(default, theme-settings) " +
     		"(primary-color         \"@blue\")"
         ,
 
-		"the bootstrap-variables\n" +
+		"def bootstrap-variables\n" +
 			"(mime-type text-x-less)\n" +
 			"(any theme-settings)\n" +
 			"(ordered (\"@primaryButtonColor: \")   (get primary-color) )"

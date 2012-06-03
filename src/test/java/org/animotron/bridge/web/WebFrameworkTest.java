@@ -74,7 +74,7 @@ public class WebFrameworkTest extends ATest {
                                     "(\\meta (@name \"keywords\") (@content)) " +
                                     "(\\meta (@name \"description\") (@content))) " +
                                 "(\\body " +
-                                    "the theme-concrete-root-layout " +
+                                    "def theme-concrete-root-layout " +
                                         "(layout) (theme-concrete) (root) " +
                                         "(\\h1 title \"Welcome to Animo\") " +
                                         "(\\p content \"It is working!\") " +
@@ -132,7 +132,7 @@ public class WebFrameworkTest extends ATest {
                         )
                 )
         );
-        assertAnimoResult(s, "the image-vnd-microsoft-icon (mime-type) (image) (type) (name) (extension).");
+        assertAnimoResult(s, "def image-vnd-microsoft-icon (mime-type) (image) (type) (name) (extension).");
 
         s = new JExpression(
                 _(GET._, "type",

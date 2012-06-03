@@ -1,4 +1,4 @@
-the UoM
+def UoM
 	(word 
 		(lang-en "currency")
 		(lang-ru "валюта")

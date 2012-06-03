@@ -1,4 +1,4 @@
-the theme-concrete-root-layout
+def theme-concrete-root-layout
     (layout, theme-concrete, root)
     (\h1 get title)
     (\p get content)

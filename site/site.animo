@@ -1,4 +1,4 @@
-the site
+def site
     (icon any logo-57x57)
     (iphone-icon any logo-57x57)
     (iphone-hires-icon any logo-114x114)

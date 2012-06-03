@@ -1,4 +1,4 @@
-the lang-ru
+def lang-ru
 	(language)
 	(word 
 		(lang-en "russian")

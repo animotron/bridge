@@ -1,4 +1,4 @@
-the debit
+def debit
 	(word 
 		(lang-en "debit")
 		(lang-ru "дебет")

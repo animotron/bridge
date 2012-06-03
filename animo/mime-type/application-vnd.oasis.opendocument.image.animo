@@ -1,4 +1,4 @@
-the application-vnd-oasis-opendocument-image
+def application-vnd-oasis-opendocument-image
     (mime-type)
     (type      "application/vnd.oasis.opendocument.image")
     (name      "OpenOffice.org Image")

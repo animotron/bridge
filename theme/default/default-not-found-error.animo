@@ -1,8 +1,8 @@
-the default-not-found-error
+def default-not-found-error
     (html-page)
     (use default, error)
     (title "Not found")
     (message
-        ("The server has not found anything matching the request ")
+        ("The server has not found anything matching def request ")
         (\strong get uri) ("."))
 

@@ -1,4 +1,4 @@
-the currency
+def currency
 	(word 
 		(lang-en "currency")
 		(lang-ru "валюта")

@@ -1,4 +1,4 @@
-the application-vnd-ms-word
+def application-vnd-ms-word
     (mime-type)
     (type      "application/vnd.ms-word")
     (name      "Microsoft Word Document")

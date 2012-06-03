@@ -1,4 +1,4 @@
-the party
+def party
 	(word 
 		(lang-en "party")
 		(lang-ru "")

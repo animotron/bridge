@@ -1,4 +1,4 @@
-the default-theme
+def default-theme
 
     (default, bootstrap, theme)
 

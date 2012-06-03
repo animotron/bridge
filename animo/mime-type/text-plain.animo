@@ -1,4 +1,4 @@
-the text-plain
+def text-plain
     (mime-type)
     (type      "text/plain")
     (name      "Plain Text")

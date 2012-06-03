@@ -1,4 +1,4 @@
-the text-x-less
+def text-x-less
     (mime-type)
     (type      "text/x-less")
     (name      "LessCSS stylesheet")

@@ -1,4 +1,4 @@
-the application-vnd-oasis-opendocument-chart
+def application-vnd-oasis-opendocument-chart
     (mime-type)
     (type      "application/vnd.oasis.opendocument.chart")
     (name      "OpenOffice.org Diagram Chart")

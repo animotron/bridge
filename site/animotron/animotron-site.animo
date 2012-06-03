@@ -1,4 +1,4 @@
-the animotron-site
+def animotron-site
     (site)
     (server-name "animotron.org" "www.animotron.org" "animotron.local")
     (project-name "Animotron")

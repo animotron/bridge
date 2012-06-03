@@ -1,4 +1,4 @@
-the equity
+def equity
 	(word 
 		(lang-en "equity")
 		(lang-ru "собственный капитал")

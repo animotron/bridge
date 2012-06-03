@@ -1,4 +1,4 @@
-the it-working
+def it-working
 	(html-service, root, localhost)
     (title   "Welcome to Animo")
     (content "It is working!")

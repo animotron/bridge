@@ -1,4 +1,4 @@
-the application-x-javascript
+def application-x-javascript
     (mime-type)
     (type      "application/x-javascript")
     (name      "JavaScript")

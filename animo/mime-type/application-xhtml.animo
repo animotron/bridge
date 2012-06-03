@@ -1,4 +1,4 @@
-the application-xhtml
+def application-xhtml
     (mime-type)
     (type      "application/xhtml+xml")
     (name      "XHTML Document")

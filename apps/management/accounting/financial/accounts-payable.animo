@@ -1,4 +1,4 @@
-the accounts-payable
+def accounts-payable
 	(word 
 		(lang-en "accounts payable")
 		(lang-en "A/P")

@@ -1,4 +1,4 @@
-the image-gif
+def image-gif
     (mime-type)
     (type      "image/gif")
     (name      "GIF Image")

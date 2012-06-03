@@ -1,4 +1,4 @@
-the balance-sheet
+def balance-sheet
 	(word 
 		(lang-en "balance sheet")
 		(lang-en "statement of financial position")

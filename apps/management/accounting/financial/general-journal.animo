@@ -1,13 +1,13 @@
-the general-journal
+def general-journal
 	(word 
 		(lang-en "general journal")
 		(lang-ru "")
 	)
 	
 	(!-- "
-    The date of the transaction;
-    Titles of the accounts debited and credited (credited account is indented several spaces);
+    The date of def transaction;
+    Titles of def accounts debited and credited (credited account is indented several spaces);
     The amount of each debit and credit; and,
-    An explanation of the transaction also known as a Narration.
+    An explanation of def transaction also known as a Narration.
     ")
 	

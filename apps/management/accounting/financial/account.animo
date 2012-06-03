@@ -1,4 +1,4 @@
-the account
+def account
 	(word 
 		(lang-en "account")
 		(lang-en "A/C")

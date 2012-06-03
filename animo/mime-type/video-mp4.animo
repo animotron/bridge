@@ -1,4 +1,4 @@
-the video-mp4
+def video-mp4
     (mime-type)
     (type      "video/mp4")
     (name      "MP4 Video")

@@ -1,4 +1,4 @@
-the monetary-amount
+def monetary-amount
 	(part
 		(number)
 		(currency)

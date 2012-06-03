@@ -1,4 +1,4 @@
-the text-html
+def text-html
     (mime-type, text)
     (type      "text/html")
     (name      "HTML Document")

@@ -1,4 +1,4 @@
-the application-vnd-oasis-opendocument-graphics-template
+def application-vnd-oasis-opendocument-graphics-template
     (mime-type)
     (type      "application/vnd.oasis.opendocument.graphics-template")
     (name      "OpenOffice.org Drawing Model")

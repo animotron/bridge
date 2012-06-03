@@ -1,4 +1,4 @@
-the application-atom
+def application-atom
     (mime-type)
     (type      "application/atom+xml")
     (name      "Atom Feed Document")

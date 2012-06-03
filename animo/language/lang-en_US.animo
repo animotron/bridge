@@ -1,4 +1,4 @@
-the lang-en_US
+def lang-en_US
 	(lang-en)
 	(word 
 		(lang-en "U.S. English")

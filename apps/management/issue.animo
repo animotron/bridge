@@ -1,4 +1,4 @@
-the issue
+def issue
 	(word 
 		(lang-en "issue")
 		(lang-ru "расход")

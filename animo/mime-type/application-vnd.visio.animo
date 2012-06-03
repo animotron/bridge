@@ -1,4 +1,4 @@
-the application-vnd-visio
+def application-vnd-visio
     (mime-type)
     (type      "application/vnd.visio")
     (name      "Microsoft Visio Document")

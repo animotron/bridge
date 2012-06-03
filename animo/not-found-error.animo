@@ -1,4 +1,4 @@
-the not-found-error
+def not-found-error
     (error)
     (code 404)
 

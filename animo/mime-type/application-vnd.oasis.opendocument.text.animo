@@ -1,4 +1,4 @@
-the application-vnd-oasis-opendocument-text
+def application-vnd-oasis-opendocument-text
     (mime-type)
     (type      "application/vnd.oasis.opendocument.text")
     (name      "OpenOffice.org Formatted Text Document")

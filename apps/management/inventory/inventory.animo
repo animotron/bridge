@@ -1,4 +1,4 @@
-the inventory
+def inventory
 	(word 
 		(lang-en_US "inventory")
 		(lang-en_GB "stock")

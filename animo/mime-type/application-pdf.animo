@@ -1,4 +1,4 @@
-the application-pdf
+def application-pdf
     (mime-type)
     (type      "application/pdf")
     (name      "PDF (Adobe)")

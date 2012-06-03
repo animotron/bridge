@@ -1,4 +1,4 @@
-the default-error-layout
+def default-error-layout
     (default, error, layout)
     (\h1 get code)
     (\h2 get title)

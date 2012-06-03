@@ -1,4 +1,4 @@
-the monetary-transactions
+def monetary-transactions
 	(word 
 		(lang-en "monetary transactions")
 		(lang-ru "")

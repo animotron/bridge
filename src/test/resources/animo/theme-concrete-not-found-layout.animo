@@ -1,4 +1,4 @@
-the theme-concrete-not-found-layout
+def theme-concrete-not-found-layout
     (layout, theme-concrete, not-found)
     (\h1 get title)
     (\p get content)

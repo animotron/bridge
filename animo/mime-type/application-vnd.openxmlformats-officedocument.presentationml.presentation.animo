@@ -1,4 +1,4 @@
-the application-vnd-openxmlformats-officedocument-presentationml-presentation
+def application-vnd-openxmlformats-officedocument-presentationml-presentation
     (mime-type)
     (type      "application/vnd.oasis.openxmlformats-officedocument.presentationml.presentation")
     (name      "OOXML Presentation")

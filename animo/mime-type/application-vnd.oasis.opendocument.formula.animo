@@ -1,4 +1,4 @@
-the application-vnd-oasis-opendocument-formula
+def application-vnd-oasis-opendocument-formula
     (mime-type)
     (type      "application/vnd.oasis.opendocument.formula")
     (name      "OpenOffice.org Formula")

@@ -1,8 +1,8 @@
-the default-internal-server-error
+def default-internal-server-error
     (html-page)
     (use default, error)
     (title "Internal Server Error")
     (message
-        ("The server encountered an unexpected condition which prevented it from fulfilling the request ")
+        ("The server encountered an unexpected condition which prevented it from fulfilling def request ")
         (\strong get uri) ("."))
 

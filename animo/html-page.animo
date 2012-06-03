@@ -1,4 +1,4 @@
-the html-page
+def html-page
     (mime-type text-html)
     (\html
         (\head

@@ -1,4 +1,4 @@
-the application-vnd-oasis-opendocument-presentation-template
+def application-vnd-oasis-opendocument-presentation-template
     (mime-type)
     (type      "application/vnd.oasis.opendocument.presentation-template")
     (name      "OpenOffice.org Presentation Model")

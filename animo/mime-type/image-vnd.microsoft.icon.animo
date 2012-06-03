@@ -1,4 +1,4 @@
-the image-vnd-microsoft-icon
+def image-vnd-microsoft-icon
     (mime-type)
     (type      "image/vnd.microsoft.icon")
     (name      "Icon Image")

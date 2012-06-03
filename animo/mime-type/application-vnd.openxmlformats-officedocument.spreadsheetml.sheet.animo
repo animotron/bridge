@@ -1,4 +1,4 @@
-the application-vnd-openxmlformats-officedocument-spreadsheetml-sheet
+def application-vnd-openxmlformats-officedocument-spreadsheetml-sheet
     (mime-type)
     (type      "application/vnd.oasis.openxmlformats-officedocument.spreadsheetml.sheet")
     (name      "OOXML Spreadsheet")

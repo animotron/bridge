@@ -1,4 +1,4 @@
-the video-mpeg
+def video-mpeg
     (mime-type)
     (type      "video/mpeg")
     (name      "MPEG Video")

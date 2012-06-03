@@ -1,4 +1,4 @@
-the inventory-document
+def inventory-document
 	(document)
 
 	(word 

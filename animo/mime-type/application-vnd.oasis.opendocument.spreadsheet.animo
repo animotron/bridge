@@ -1,4 +1,4 @@
-the application-vnd-oasis-opendocument-spreadsheet
+def application-vnd-oasis-opendocument-spreadsheet
     (mime-type)
     (type      "application/vnd.oasis.opendocument.spreadsheet")
     (name      "OpenOffice.org Spreadsheet")

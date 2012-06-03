@@ -1,4 +1,4 @@
-the price
+def price
 	(word 
 		(lang-en "price")
 		(lang-ru "цена")

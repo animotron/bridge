@@ -1,4 +1,4 @@
-the application-vnd-openxmlformats-officedocument-presentationml-slideshow
+def application-vnd-openxmlformats-officedocument-presentationml-slideshow
     (mime-type)
     (type      "application/vnd.oasis.openxmlformats-officedocument.presentationml.slideshow")
     (name      "OOXML Presentation Slideshow")

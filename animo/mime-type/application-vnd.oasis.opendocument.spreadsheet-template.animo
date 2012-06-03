@@ -1,4 +1,4 @@
-the application-vnd-oasis-opendocument-spreadsheet-template
+def application-vnd-oasis-opendocument-spreadsheet-template
     (mime-type)
     (type      "application/vnd.oasis.opendocument.spreadsheet-template")
     (name      "OpenOffice.org Spreadsheet Model")

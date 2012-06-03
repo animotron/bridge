@@ -1,4 +1,4 @@
-the html-service
+def html-service
     (service)
     (mime-type text-html)
     (\html

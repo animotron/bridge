@@ -1,4 +1,4 @@
-the application-rdf
+def application-rdf
     (mime-type)
     (type      "application/rdf")
     (name      "RDF Document")

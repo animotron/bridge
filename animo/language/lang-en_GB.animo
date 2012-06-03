@@ -1,4 +1,4 @@
-the lang-en_GB
+def lang-en_GB
 	(lang-en)
 	(word 
 		(lang-en "British English")

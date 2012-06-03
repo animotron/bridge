@@ -1,4 +1,4 @@
-the audio-mpeg
+def audio-mpeg
     (mime-type)
     (type      "audio/mpeg")
     (name      "MPEG Audio")

@@ -1,4 +1,4 @@
-the receive
+def receive
 	(word 
 		(lang-en "receive")
 		(lang-ru "приход")

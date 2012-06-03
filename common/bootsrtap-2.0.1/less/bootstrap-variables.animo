@@ -1,4 +1,4 @@
-the bootstrap-variables
+def bootstrap-variables
 
     (mime-type text-x-less)
 

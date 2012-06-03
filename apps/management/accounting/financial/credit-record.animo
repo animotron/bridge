@@ -1,4 +1,4 @@
-the credit-record
+def credit-record
 	(word 
 		(lang-en "credit record")
 		(lang-en "credit entry")

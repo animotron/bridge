@@ -1,4 +1,4 @@
-the image-x-bitmap
+def image-x-bitmap
     (mime-type)
     (type      "image/x-bitmap")
     (name      "X Bitmap Graphic")

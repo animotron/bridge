@@ -1,4 +1,4 @@
-the lang-en
+def lang-en
 	(language)
 	(word 
 		(lang-en "english")

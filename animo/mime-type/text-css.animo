@@ -1,4 +1,4 @@
-the text-css
+def text-css
     (mime-type)
     (type      "text/css")
     (name      "CSS stylesheet")

@@ -1,4 +1,4 @@
-the image-tiff
+def image-tiff
     (mime-type)
     (type      "image/tiff")
     (name      "TIF Image")

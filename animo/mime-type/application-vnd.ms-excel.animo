@@ -1,4 +1,4 @@
-the application-vnd-ms-excel
+def application-vnd-ms-excel
     (mime-type)
     (type      "application/vnd.ms-excel")
     (name      "Microsoft Excel Document")

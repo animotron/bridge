@@ -1,4 +1,4 @@
-the debit-record
+def debit-record
 	(word 
 		(lang-en "debit record")
 		(lang-en "debit entry")

@@ -1,4 +1,4 @@
-the image-x-portable-bitmap
+def image-x-portable-bitmap
     (mime-type)
     (type      "image/x-portable-bitmap")
     (name      "PBM Bitmap Format")

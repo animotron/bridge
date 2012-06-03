@@ -1,4 +1,4 @@
-the image-jpeg
+def image-jpeg
     (mime-type)
     (type      "image/jpeg")
     (name      "JPEG Image")

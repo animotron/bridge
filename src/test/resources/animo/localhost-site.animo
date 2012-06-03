@@ -1,4 +1,4 @@
-the localhost-site
+def localhost-site
     (site)
     (server-name "localhost")
     (use theme-concrete)

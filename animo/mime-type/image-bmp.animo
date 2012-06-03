@@ -1,4 +1,4 @@
-the image-bmp
+def image-bmp
     (mime-type)
     (type      "image/bmp")
     (name      "Windows Bitmap Image")

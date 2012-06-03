@@ -1,4 +1,4 @@
-the application-json
+def application-json
     (mime-type)
     (type      "application/json")
     (name      "JSON")

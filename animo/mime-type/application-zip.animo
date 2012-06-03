@@ -1,4 +1,4 @@
-the application-zip
+def application-zip
     (mime-type)
     (type      "application/zip")
     (name      "ZIP Archive")

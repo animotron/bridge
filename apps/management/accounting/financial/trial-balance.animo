@@ -1,4 +1,4 @@
-the trial-balance
+def trial-balance
 	(word 
 		(lang-en "trial balance")
 		(lang-en "T/B")

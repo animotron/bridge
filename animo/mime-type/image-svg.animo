@@ -1,4 +1,4 @@
-the image-svg
+def image-svg
     (mime-type)
     (type      "image/svg+xml")
     (name      "SVG Image")

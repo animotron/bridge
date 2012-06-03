@@ -1,4 +1,4 @@
-the accounts-receivable
+def accounts-receivable
 	(word 
 		(lang-en "accounts receivable")
 		(lang-en "A/R")

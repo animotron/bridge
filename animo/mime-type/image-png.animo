@@ -1,4 +1,4 @@
-the image-png
+def image-png
     (mime-type)
     (type      "image/png")
     (name      "PNG Image")

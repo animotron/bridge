@@ -1,4 +1,4 @@
-the general-ledger
+def general-ledger
 	(word 
 		(lang-en "general ledger")
 		(lang-en "G/L")

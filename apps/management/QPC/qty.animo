@@ -1,4 +1,4 @@
-the qty
+def qty
 	(word 
 		(lang-en "quantity")
 		(lang-ru "количество")

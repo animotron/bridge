@@ -1,5 +1,5 @@
 def application-animo
-    (mime-type)
+    (#mime-type)
     (type      "application/animo")
     (name      "Animo Document")
     (extension "animo")

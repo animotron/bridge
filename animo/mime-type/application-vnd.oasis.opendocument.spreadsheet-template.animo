@@ -1,5 +1,5 @@
 def application-vnd-oasis-opendocument-spreadsheet-template
-    (mime-type)
+    (#mime-type)
     (type      "application/vnd.oasis.opendocument.spreadsheet-template")
     (name      "OpenOffice.org Spreadsheet Model")
     (extension "ots")

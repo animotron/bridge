@@ -1,5 +1,5 @@
 def application-vnd-oasis-opendocument-image
-    (mime-type)
+    (#mime-type)
     (type      "application/vnd.oasis.opendocument.image")
     (name      "OpenOffice.org Image")
     (extension "odi")

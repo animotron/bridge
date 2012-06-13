@@ -1,5 +1,5 @@
 def application-vnd-oasis-opendocument-presentation-template
-    (mime-type)
+    (#mime-type)
     (type      "application/vnd.oasis.opendocument.presentation-template")
     (name      "OpenOffice.org Presentation Model")
     (extension "otp")

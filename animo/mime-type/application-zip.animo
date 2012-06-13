@@ -1,5 +1,5 @@
 def application-zip
-    (mime-type)
+    (#mime-type)
     (type      "application/zip")
     (name      "ZIP Archive")
     (extension "zip")

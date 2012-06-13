@@ -1,5 +1,5 @@
 def html-page
-    (mime-type text-html)
+    (text-html)
     (\html
         (\head
             (\title get title)

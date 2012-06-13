@@ -1,4 +1,4 @@
 def application-octet-stream
-    (mime-type)
+    (#mime-type)
     (type      "application/octet-stream")
     (name      "Generic binary stream")

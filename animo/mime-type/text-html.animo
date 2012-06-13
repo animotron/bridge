@@ -1,5 +1,5 @@
 def text-html
-    (mime-type)
+    (#mime-type)
     (type      "text/html")
     (name      "HTML Document")
     (extension "htm" "html")

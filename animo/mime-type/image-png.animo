@@ -1,5 +1,5 @@
 def image-png
-    (mime-type)
+    (#mime-type)
     (type      "image/png")
     (name      "PNG Image")
     (extension "png")

@@ -1,5 +1,5 @@
 def application-vnd-ms-excel
-    (mime-type)
+    (#mime-type)
     (type      "application/vnd.ms-excel")
     (name      "Microsoft Excel Document")
     (extension "xls")

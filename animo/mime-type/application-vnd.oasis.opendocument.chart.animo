@@ -1,5 +1,5 @@
 def application-vnd-oasis-opendocument-chart
-    (mime-type)
+    (#mime-type)
     (type      "application/vnd.oasis.opendocument.chart")
     (name      "OpenOffice.org Diagram Chart")
     (extension "odc")

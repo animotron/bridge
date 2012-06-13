@@ -1,5 +1,5 @@
 def image-x-bitmap
-    (mime-type)
+    (#mime-type)
     (type      "image/x-bitmap")
     (name      "X Bitmap Graphic")
     (extension "xbm")

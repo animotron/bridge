@@ -1,5 +1,5 @@
 def application-vnd-oasis-opendocument-database
-    (mime-type)
+    (#mime-type)
     (type      "application/vnd.oasis.opendocument.database")
     (name      "OpenOffice.org Data Base")
     (extension "odb")

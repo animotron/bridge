@@ -1,5 +1,5 @@
 def text-css
-    (mime-type)
+    (#mime-type)
     (type      "text/css")
     (name      "CSS stylesheet")
     (extension "css")

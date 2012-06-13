@@ -1,5 +1,5 @@
 def image-bmp
-    (mime-type)
+    (#mime-type)
     (type      "image/bmp")
     (name      "Windows Bitmap Image")
     (extension "bmp")

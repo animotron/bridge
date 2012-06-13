@@ -54,7 +54,7 @@
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.4" level="project" />
     <orderEntry type="library" name="Maven: jgroups:jgroups:2.9.0.GA" level="project" />
     <orderEntry type="library" name="Maven: org.jetlang:jetlang:0.2.5" level="project" />
-    <orderEntry type="library" name="Maven: com.eaio.uuid:uuid:3.2" level="project" />
+    <orderEntry type="library" name="Maven: com.eaio.uuid:uuid:3.3" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:8.1.0.v20120127" level="project" />

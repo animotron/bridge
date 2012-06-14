@@ -26,15 +26,16 @@ import org.animotron.expression.BinaryExpression;
 import org.animotron.expression.DefaultDescription;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
+import org.animotron.utils.MessageDigester;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.MessageDigest;
 
 import static org.animotron.bridge.web.AbstractRequestExpression.URI;
 import static org.animotron.expression.Expression.__;
-import static org.animotron.utils.MessageDigester.uuid;
 
 /**
 * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
@@ -57,7 +58,9 @@ public class ResourcesBridge extends AbstractResourcesBridge {
                 new BinaryExpression(is, true) {
                     @Override
                     protected String id () {
-                        return uuid().toString();
+                        MessageDigest md = MessageDigester.md();
+                        md.update(file.getPath().getBytes());
+                        return super.id() + MessageDigester.byteArrayToHex(md.digest());
                     }
                     @Override
                     protected void description() throws AnimoException, IOException {

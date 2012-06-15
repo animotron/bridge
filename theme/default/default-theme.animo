@@ -2,8 +2,6 @@ def default-theme
 
     (default, bootstrap, theme)
 
-    (weak-use bootstrap.less, less.min.js)
-
     (brand-icon any logo-tiny)
 
     (link-color            "#08c")

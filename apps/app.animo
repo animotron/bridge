@@ -1,4 +1,5 @@
 def app
     (html-page)
-    (use app-layout)
-    (weak-use bootstrap.less, less.min.js)
+    (app-layout)
+	(any bootstrap.less)
+	(any less.min.js)

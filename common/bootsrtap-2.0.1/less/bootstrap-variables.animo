@@ -1,6 +1,6 @@
 def bootstrap-variables
 
-    (mime-type text-x-less)
+    (text-x-less)
 
     (any bootstrap, theme)
 

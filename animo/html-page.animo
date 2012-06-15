@@ -18,11 +18,11 @@ def html-page
 
             (each (get shortcut-icon) (\link (@rel "shortcut icon") (@href get uri)))
 
-            (each (prefer less) (\link (@rel "stylesheet/less") (@href get uri)))
-            (each (prefer css) (\link (@rel "stylesheet") (@href get uri)))
+            (each (get less) (\link (@rel "stylesheet/less") (@href get uri)))
+            (each (get css) (\link (@rel "stylesheet") (@href get uri)))
 
             (get css-ie-hack)
 
-            (each (prefer js) (\script @src get uri)))
+            (each (get js) (\script @src get uri)))
 
-        (\body any layout))
+        (\body get layout))

@@ -1,4 +1,4 @@
 def default-root-layout
-    (default, root, layout)
+    (layout)
     (get content)
 

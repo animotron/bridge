@@ -3,4 +3,4 @@ def localhost-site
     (server-name "localhost")
     (project-name "Animo test")
 
-    (root it-working)
+    (root #it-working)

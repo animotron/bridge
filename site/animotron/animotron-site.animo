@@ -3,9 +3,9 @@ def animotron-site
     (server-name "animotron.org" "www.animotron.org" "animotron.local")
     (project-name "Animotron")
 
-    (root animo-language)
+    (root #animo-language)
 
-    (geo geo-app)
-    (IDE IDE-app)
-    (IMS IMS-app)
+    (geo #geo-app)
+    (IDE #IDE-app)
+    (IMS #IMS-app)
     

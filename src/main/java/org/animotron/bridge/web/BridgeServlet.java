@@ -23,6 +23,7 @@ package org.animotron.bridge.web;
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.JExpression;
 import org.animotron.graph.serializer.CachedSerializer;
+import org.animotron.statement.operator.AREV;
 import org.animotron.statement.operator.DEF;
 import org.animotron.statement.query.GET;
 import org.animotron.statement.value.STREAM;
@@ -65,7 +66,7 @@ public class BridgeServlet extends HttpServlet {
             if (r == null) {
                 throw new ENotFound(null);
             }
-            Node n = r.getEndNode().getSingleRelationship(STREAM._, Direction.OUTGOING).getEndNode();
+            Node n = AREV._.actualNode(r).getSingleRelationship(STREAM._, Direction.OUTGOING).getEndNode();
             File file = new File((String) VALUE.get(n));
             is = new FileInputStream(file);
             long modified = file.lastModified();

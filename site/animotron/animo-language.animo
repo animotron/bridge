@@ -3,8 +3,8 @@ def animo-language
 	(html-page)
 	(default-root-layout)
 
-	(any bootstrap.less)
-	(any less.min.js)
+	(less any bootstrap.less)
+	(js any less.min.js)
 
     (title "Animo")
 

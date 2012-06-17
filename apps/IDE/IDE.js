@@ -54,7 +54,7 @@
         var AnimoHighlightRules = function() {
 
             var operators = lang.arrayToMap(
-                ("the an any ~ all ~~ prefer get <~~ this ?is ?has each " +
+                ("def an any ~ all ~~ prefer get <~~ this ?is ?has each " +
                  "use weak-use with eq gt ge lt le ne not and or id 's " +
                  "add delete set replace -> --> value qname ptrn").split(" ")
             );
@@ -184,7 +184,7 @@
 
     function getId(data) {
         var t = data.split("\n")[0].split(" ");
-        if (t.length > 1 && t[0] == "the") {
+        if (t.length > 1 && t[0] == "def") {
             return t[1].split(".")[0];
         }
         return "";
@@ -275,7 +275,7 @@
         }
     });
 
-    function onidentifier(editor, callback) {
+    function onIdentifier(editor, callback) {
         var pos = editor.getCursorPosition();
         var token = editor.getSession().bgTokenizer.lines[pos.row].tokens;
         var t = 0, n = 0, s = 0;
@@ -303,7 +303,7 @@
             sender: 'editor'
         },
         exec: function(env, args, request) {
-            onidentifier(env.editor, function(id){
+            onIdentifier(env.editor, function(id){
                 window.location.hash = "#" + id
             });
         }
@@ -317,7 +317,7 @@
             sender: 'editor'
         },
         exec: function(env, args, request) {
-            onidentifier(env.editor, function(id){
+            onIdentifier(env.editor, function(id){
                 window.open(window.location.pathname + "#" + id, "_blank");
             });
         }
@@ -331,7 +331,7 @@
             sender: 'editor'
         },
         exec: function(env, args, request) {
-            onidentifier(env.editor, function(id){
+            onIdentifier(env.editor, function(id){
                 sinput.val("all " + id);
                 sinput.focus();
             });

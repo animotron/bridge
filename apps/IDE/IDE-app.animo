@@ -39,5 +39,5 @@ def IDE-app
     (js
         (any ace.js)
         (any bootstrap-modal.js)
-        (any animo-IDE.js)
+        (any IDE.js)
     )

@@ -32,7 +32,7 @@ def animo-language
                             (\li \a (@href "#future") "Future")
                             (\li (@class "divider-vertical"))
                             (\li \a (@href "/geo") "Geo!")
-                            (\li \a (@href "/animoIDE") "IDE")
+                            (\li \a (@href "/IDE") "IDE")
                         )
                     )
                 )

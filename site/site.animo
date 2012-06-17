@@ -7,4 +7,4 @@ def site
     (shortcut-icon any favicon)
     (not-found-error #default-not-found-error)
     (internal-server-error #default-internal-server-error)
-    (variables.less #bootstarp-variables)
+    (variables.less #bootstrap-variables)

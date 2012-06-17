@@ -37,7 +37,7 @@ def app-layout
     (\script @src get uri any bootstrap-collapse.js)
     (\script @src get uri any app.js)
 
-    (each (get js) (\script @src get uri))
+    (each (get js this app) (\script @src get uri))
 
-    (each (get script) (\script this script))
+    (each (get script this app) (\script this script))
 

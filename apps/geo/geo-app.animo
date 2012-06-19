@@ -4,7 +4,7 @@ def geo-app
 
     (title "Geo!")
 
-    (weak-use leaflet.css)
+    (css any leaflet.css)
 
 	(css-ie-hack "<!--[if lte IE 8]><link rel=\"stylesheet\" href=\"" (get uri any leaflet.ie.css) "\"<![endif]-->")
 
@@ -12,13 +12,14 @@ def geo-app
         ".leaflet-tile {max-width: none; max-height: none;}"
     )
 
-    (frame
-        (\div (@id "map") (@class "frame"))
-    )
-
     (js
         (any leaflet.min.js)
         (any geo.js)
     )
 
-    (script "$(function(){$.geo(51.505, -0.09, 13);});")
+    (script "$(function(){$.geo(51.31289, 37.855317, 13);});")
+
+    (frame
+        (\div (@id "map") (@class "frame"))
+    )
+

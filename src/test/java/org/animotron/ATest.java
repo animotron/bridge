@@ -283,7 +283,7 @@ public abstract class ATest {
 
 		@Override
 		public String getProtocol() {
-			return null;
+			return "HTTP/1.0";
 		}
 
 		@Override
@@ -382,7 +382,7 @@ public abstract class ATest {
 
 		@Override
 		public String getPathInfo() {
-			return null;
+			return requestURI;
 		}
 
 		@Override

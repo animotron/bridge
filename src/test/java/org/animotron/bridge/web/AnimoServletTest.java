@@ -34,7 +34,10 @@ public class AnimoServletTest extends ATest {
 
     @Test
     public void test() throws Throwable {
-    	FSBridge._.load("src/test/resources/animo/");
+    	
+    	JettyHttpServer server = new JettyHttpServer();
+    	server.start();
+    	
     	AnimoServlet servlet = new AnimoServlet();
     	HttpRequest request = new HttpRequest("/","localhost");
     	HttpResponse response = new HttpResponse(false);
@@ -58,6 +61,8 @@ public class AnimoServletTest extends ATest {
             "</html>",
             response.getResponseString()
         );
+        
+        server.stop();
     }
 
 }

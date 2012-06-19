@@ -3,6 +3,8 @@ def animotron-site
     (server-name "animotron.org" "www.animotron.org" "animotron.local")
     (project-name "Animotron")
 
+    (weak-use animotron)
+
     (root #animo-language)
 
     (geo #geo-app)

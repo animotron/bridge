@@ -120,7 +120,7 @@ public class AnimoServlet extends HttpServlet {
         }
 
         @Override
-        public void context() throws AnimoException, IOException {
+        protected void context() throws AnimoException, IOException {
             if (list.size() > 1) {
                 builder.start(USE._);
                     for (int i = 1; i < list.size() - 1; i++) {

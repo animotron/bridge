@@ -1,5 +1,0 @@
-def it-working
-	(html-page)
-	(default-root-layout)
-    (title   "Welcome to Animo")
-    (content "It is working!")

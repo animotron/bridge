@@ -1,8 +1,0 @@
-def localhost-site
-    (site)
-    (server-name "localhost")
-    (project-name "Animo test")
-
-    (weak-use localhost)
-
-    (root #it-working)

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.animotron</groupId>
 	<artifactId>bridge</artifactId>
-	<version>0.0.9-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 	<name>Animo bridge</name>
 
 	<developers>
@@ -18,8 +18,7 @@
 	</developers>
 
 	<properties>
-		<jettyVersion>8.1.0.v20120127</jettyVersion>
-		<!-- <jettyVersion>8.1.1.v20120215</jettyVersion> -->
+		<jettyVersion>8.1.4.v20120524</jettyVersion>
 		<miltonVersion>1.6.2</miltonVersion>
 		<slf4jVersion>1.6.1</slf4jVersion>
 		<staging.dir>${project.build.directory}/staging</staging.dir>
@@ -30,7 +29,7 @@
 		<dependency>
 			<groupId>org.animotron</groupId>
 			<artifactId>core</artifactId>
-			<version>0.0.9-SNAPSHOT</version>
+			<version>0.1-SNAPSHOT</version>
 		</dependency>
 		<!-- logger -->
 		<dependency>

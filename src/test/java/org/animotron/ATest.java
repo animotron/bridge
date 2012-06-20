@@ -25,7 +25,6 @@ import junit.framework.Assert;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.graph.serializer.BinarySerializer;
 import org.animotron.graph.serializer.CachedSerializer;
-import org.apache.log4j.helpers.NullEnumeration;
 import org.junit.After;
 import org.junit.Before;
 import org.neo4j.graphdb.Relationship;
@@ -48,6 +47,7 @@ import javax.servlet.http.Part;
 import java.io.*;
 import java.security.Principal;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
@@ -282,7 +282,7 @@ public abstract class ATest {
 
 		@Override
 		public Enumeration<String> getParameterNames() {
-			return NullEnumeration.getInstance();
+			return Collections.emptyEnumeration();
 		}
 
 		@Override

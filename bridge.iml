@@ -20,18 +20,18 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.animotron:core:0.0.9-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j:neo4j-kernel:1.8.M03" level="project" />
+    <orderEntry type="library" name="Maven: org.animotron:core:0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j:neo4j-kernel:1.8.M04" level="project" />
     <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j:neo4j-lucene-index:1.8.M03" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j:neo4j-lucene-index:1.8.M04" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-core:3.5.0" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j:neo4j-graph-algo:1.8.M03" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j:neo4j-udc:1.8.M03" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j:neo4j-graph-matching:1.8.M03" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j:neo4j-cypher:1.8.M03" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j:neo4j-graph-algo:1.8.M04" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j:neo4j-udc:1.8.M04" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j:neo4j-graph-matching:1.8.M04" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j:neo4j-cypher:1.8.M04" level="project" />
     <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.9.1-1" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j:neo4j-jmx:1.8.M03" level="project" />
-    <orderEntry type="library" name="Maven: org.neo4j.build:neo4j-berkeleydb-je-index:1.8.M03" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j:neo4j-jmx:1.8.M04" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j.build:neo4j-berkeleydb-je-index:1.8.M04" level="project" />
     <orderEntry type="library" name="Maven: com.sleepycat:je:4.1.10" level="project" />
     <orderEntry type="library" name="Maven: javolution:javolution:5.5.1" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:1.6.2" level="project" />
@@ -57,15 +57,15 @@
     <orderEntry type="library" name="Maven: com.eaio.uuid:uuid:3.3" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:1.6.1" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:8.1.0.v20120127" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-security:8.1.0.v20120127" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-server:8.1.0.v20120127" level="project" />
-    <orderEntry type="library" name="Maven: org.mortbay.jetty:servlet-api:3.0.20100224" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-continuation:8.1.0.v20120127" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-http:8.1.0.v20120127" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:8.1.0.v20120127" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:8.1.0.v20120127" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-websocket:8.1.0.v20120127" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:8.1.4.v20120524" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-security:8.1.4.v20120524" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-server:8.1.4.v20120524" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-continuation:8.1.4.v20120524" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-http:8.1.4.v20120524" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:8.1.4.v20120524" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:8.1.4.v20120524" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-websocket:8.1.4.v20120524" level="project" />
     <orderEntry type="library" name="Maven: org.igniterealtime.smack:smack:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.igniterealtime.smack:smackx:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.scribe:scribe:1.2.3" level="project" />

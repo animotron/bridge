@@ -22,7 +22,6 @@ package org.animotron.bridge.web;
 
 import junit.framework.Assert;
 import org.animotron.ATest;
-import org.animotron.bridge.FSBridge;
 import org.junit.Test;
 
 /**

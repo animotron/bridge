@@ -26,6 +26,7 @@ import org.animotron.bridge.websocket.WebSocketServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.component.LifeCycle;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -36,17 +37,21 @@ import static org.animotron.graph.AnimoGraph.startDB;
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  *
  */
-public class
-        JettyHttpServer {
+public class JettyHttpServer implements LifeCycle.Listener {
 
     private Server jetty;
-    private int jettyPort = 8080;
+    private static final int JettyPort = 8080;
+    private int jettyPort;
 
-    public JettyHttpServer() {}
+    public JettyHttpServer() {
+        this(JettyPort);
+    }
 
 	public JettyHttpServer(int port) {
     	jettyPort = port;
 	}
+
+
 
     public void start() throws IOException {
     	
@@ -105,17 +110,32 @@ public class
     
     public static void main(String[] args) throws IOException {
     	JettyHttpServer server = new JettyHttpServer();
-    	
     	server.start();
-
         Shell.process();
-
-//    	while (true) {
-//    		try {
-//				Thread.sleep(10000);
-//			} catch (InterruptedException e) {
-//			}
-//    	}
 	}
 
+    @Override
+    public void lifeCycleStarting(LifeCycle lifeCycle) {
+        System.out.println("Starting");
+    }
+
+    @Override
+    public void lifeCycleStarted(LifeCycle lifeCycle) {
+        System.out.println("Started");
+    }
+
+    @Override
+    public void lifeCycleFailure(LifeCycle lifeCycle, Throwable throwable) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void lifeCycleStopping(LifeCycle lifeCycle) {
+        System.out.println("Stopping");
+    }
+
+    @Override
+    public void lifeCycleStopped(LifeCycle lifeCycle) {
+        System.out.println("Stopped");
+    }
 }

@@ -21,7 +21,6 @@
 package org.animotron;
 
 import junit.framework.Assert;
-
 import org.animotron.expression.AnimoExpression;
 import org.animotron.graph.serializer.BinarySerializer;
 import org.animotron.graph.serializer.CachedSerializer;
@@ -29,29 +28,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.neo4j.graphdb.Relationship;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.DispatcherType;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
-
+import javax.servlet.*;
+import javax.servlet.http.*;
 import java.io.*;
 import java.security.Principal;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import static org.animotron.graph.AnimoGraph.shutdownDB;
 import static org.animotron.graph.AnimoGraph.startDB;
@@ -741,7 +722,7 @@ public abstract class ATest {
 
     private static class EmptyEnumeration<E> implements Enumeration<E> {
         static final EmptyEnumeration<Object> EMPTY_ENUMERATION
-            = new EmptyEnumeration<>();
+            = new EmptyEnumeration<Object>();
 
         public boolean hasMoreElements() { return false; }
         public E nextElement() { throw new NoSuchElementException(); }

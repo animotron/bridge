@@ -51,6 +51,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import static org.animotron.graph.AnimoGraph.shutdownDB;
 import static org.animotron.graph.AnimoGraph.startDB;
@@ -282,7 +283,9 @@ public abstract class ATest {
 
 		@Override
 		public Enumeration<String> getParameterNames() {
-			return Collections.emptyEnumeration();
+//			import java.util.Collections.EmptyEnumeration;
+//			return Collections.emptyEnumeration();
+			return emptyEnumeration();
 		}
 
 		@Override
@@ -736,4 +739,15 @@ public abstract class ATest {
 		}
     }
 
+    private static class EmptyEnumeration<E> implements Enumeration<E> {
+        static final EmptyEnumeration<Object> EMPTY_ENUMERATION
+            = new EmptyEnumeration<>();
+
+        public boolean hasMoreElements() { return false; }
+        public E nextElement() { throw new NoSuchElementException(); }
+    }
+
+    public static <T> Enumeration<T> emptyEnumeration() {
+        return (Enumeration<T>) EmptyEnumeration.EMPTY_ENUMERATION;
+    }
 }

@@ -22,7 +22,6 @@ package org.animotron;
 
 import junit.framework.Assert;
 import org.animotron.expression.AnimoExpression;
-import org.animotron.graph.serializer.BinarySerializer;
 import org.animotron.graph.serializer.CachedSerializer;
 import org.junit.After;
 import org.junit.Before;
@@ -163,17 +162,6 @@ public abstract class ATest {
         System.out.println(result);
         Assert.assertEquals("", expected, result);
 
-        System.out.println();
-    }
-
-    protected void assertBinary(Relationship op, String expected) throws IOException {
-        assertNotNull(op);
-        System.out.println("Binary serializer...");
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        BinarySerializer._.serialize(op, out);
-        String bin = out.toString();
-        Assert.assertEquals("", expected, bin);
-        System.out.println(bin);
         System.out.println();
     }
 

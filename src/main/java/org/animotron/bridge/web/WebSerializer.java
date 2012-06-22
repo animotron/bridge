@@ -35,7 +35,6 @@ import java.io.OutputStream;
 
 import static org.animotron.expression.JExpression._;
 import static org.animotron.expression.JExpression.value;
-import static org.animotron.graph.Nodes.EXTENSION;
 import static org.animotron.graph.serializer.CachedSerializer.*;
 import static org.animotron.utils.MessageDigester.uuid;
 
@@ -46,9 +45,11 @@ import static org.animotron.utils.MessageDigester.uuid;
  */
 public class WebSerializer {
 
-    private static Cache CACHE = FileCache._;
     public static final String TYPE = "type";
     public static final String MIME_TYPE = "mime-type";
+    public static final String EXTENSION = "extension";
+
+    private static Cache CACHE = FileCache._;
 
     public static void serialize(Expression request, HttpServletResponse res) throws Throwable, ENotFound {
         serialize(request, res, uuid().toString());

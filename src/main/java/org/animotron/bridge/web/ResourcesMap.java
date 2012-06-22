@@ -21,8 +21,8 @@
 package org.animotron.bridge.web;
 
 import org.animotron.exception.AnimoException;
+import org.animotron.expression.AbstractBinaryExpression;
 import org.animotron.expression.AnimoExpression;
-import org.animotron.expression.BinaryMapExpression;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 import org.animotron.utils.MessageDigester;
@@ -52,7 +52,7 @@ public class ResourcesMap extends AbstractResourcesBridge {
             __(new AnimoExpression(new FileInputStream(file)));
         } else {
             __(
-                new BinaryMapExpression(file) {
+                new AbstractBinaryExpression() {
                     @Override
                     protected void description() throws AnimoException, IOException {
                         int index;

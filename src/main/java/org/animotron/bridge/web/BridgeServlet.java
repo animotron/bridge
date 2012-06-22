@@ -21,14 +21,11 @@
 package org.animotron.bridge.web;
 
 import org.animotron.exception.ENotFound;
+import org.animotron.expression.BinaryExpression;
 import org.animotron.expression.JExpression;
 import org.animotron.graph.serializer.CachedSerializer;
-import org.animotron.statement.operator.AREV;
 import org.animotron.statement.operator.DEF;
 import org.animotron.statement.query.GET;
-import org.animotron.statement.value.STREAM;
-import org.neo4j.graphdb.Direction;
-import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 
 import javax.servlet.ServletException;
@@ -39,10 +36,9 @@ import java.io.*;
 import java.util.Enumeration;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
+import static org.animotron.bridge.web.WebSerializer.EXTENSION;
 import static org.animotron.expression.JExpression._;
-import static org.animotron.graph.Nodes.EXTENSION;
 import static org.animotron.graph.Properties.HASH;
-import static org.animotron.graph.Properties.VALUE;
 import static org.animotron.utils.MessageDigester.byteArrayToHex;
 
 /**
@@ -62,12 +58,15 @@ public class BridgeServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         InputStream is = null;
         try {
-            Relationship r = DEF._.get(req.getPathInfo().substring(1));
+
+            String id = req.getPathInfo().substring(1);
+
+            Relationship r = DEF._.get(id);
             if (r == null) {
                 throw new ENotFound(null);
             }
-            Node n = AREV._.actualNode(r).getSingleRelationship(STREAM._, Direction.OUTGOING).getEndNode();
-            File file = new File((String) VALUE.get(n));
+
+            File file = BinaryExpression.getFile(id);
             is = new FileInputStream(file);
             long modified = file.lastModified();
             res.setDateHeader("Last-Modified", modified);

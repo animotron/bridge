@@ -1,3 +1,0 @@
-def file
-    any mime-type
-        with extension get extension

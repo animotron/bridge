@@ -21,20 +21,26 @@
 package org.animotron.bridge.web;
 
 import org.animotron.exception.AnimoException;
+import org.animotron.expression.AbstractExpression;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.BinaryExpression;
-import org.animotron.expression.DefaultDescription;
+import org.animotron.graph.builder.FastGraphBuilder;
+import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
+import org.animotron.statement.operator.DEF;
 import org.animotron.statement.operator.REF;
-import org.animotron.utils.MessageDigester;
+import org.animotron.statement.query.ANY;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.MessageDigest;
+import java.util.Iterator;
+import java.util.regex.Pattern;
 
 import static org.animotron.bridge.web.AbstractRequestExpression.URI;
+import static org.animotron.bridge.web.WebSerializer.EXTENSION;
+import static org.animotron.bridge.web.WebSerializer.MIME_TYPE;
 import static org.animotron.expression.Expression.__;
 
 /**
@@ -49,30 +55,127 @@ public class ResourcesBridge extends AbstractResourcesBridge {
 
     @Override
     protected void loadFile(final File file) throws IOException {
+
         InputStream is = new FileInputStream(file);
+
         if (file.getName().endsWith(".animo")) {
-        	System.out.println("animo loading "+file.getName());
+
             __(new AnimoExpression(is));
+
         } else {
+
+            final String[] a = file.getName().split(Pattern.quote("."));
+
+            final BinaryExpression e =  new BinaryExpression(is, true) {
+
+                @Override
+                protected void description() throws AnimoException, IOException {
+
+                    builder.start(AN._);
+                        builder._(REF._, URI);
+                        builder._(uriContext + id());
+                    builder.end();
+
+                    builder.start(ANY._);
+                        builder._(REF._, MIME_TYPE);
+                        builder.start(WITH._);
+                            builder._(REF._, EXTENSION);
+                            builder._(a[a.length - 1]);
+                        builder.end();
+                    builder.end();
+
+                }
+            };
+
             __(
-                new BinaryExpression(is, true) {
-                    @Override
-                    protected String id () {
-                        MessageDigest md = MessageDigester.md();
-                        md.update(file.getPath().getBytes());
-                        return super.id() + MessageDigester.byteArrayToHex(md.digest());
-                    }
-                    @Override
-                    protected void description() throws AnimoException, IOException {
-                        DefaultDescription.create(builder, path(file));
+                new AbstractExpression(new FastGraphBuilder()) {
+
+                    private void is(String s) throws AnimoException, IOException {
                         builder.start(AN._);
-                            builder._(REF._, URI);
-                            builder._(uriContext + id());
+                        builder._(REF._, s);
                         builder.end();
                     }
+
+                    @Override
+                    public void build() throws Throwable {
+
+                        builder.start(DEF._);
+
+                            builder.start(AN._);
+                                builder._(REF._, e);
+                            builder.end();
+
+                            Iterator<String> it = new StringArrayIterator(path(file).split(Pattern.quote("/")));
+                            while (it.hasNext()) {
+                                String i = it.next();
+                                is(i);
+                                if (!it.hasNext()) {
+                                    for (String s : new StringArrayIterator(a)) {
+                                        is(s);
+                                    }
+                                }
+                            }
+
+                            builder.start(AN._);
+                                builder._(REF._, URI);
+                                builder._(uriContext + e.id());
+                            builder.end();
+
+                        builder.end();
+
+                    }
+
                 }
             );
+
         }
+
+    }
+
+    private class StringArrayIterator implements Iterable<String>, Iterator<String> {
+
+        private String[] a;
+        private String c = null;
+        int i = 0;
+
+        public StringArrayIterator(String[] a) {
+            this.a = a;
+            next();
+        }
+
+        @Override
+        public Iterator<String> iterator() {
+            return this;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return c != null;
+        }
+
+        @Override
+        public String next() {
+            String next = c;
+            c = step();
+            return next;
+        }
+
+        private String step() {
+            if (i < a.length) {
+                String s = a[i]; i++;
+                if (s == null || s.isEmpty()) {
+                   return step();
+                } else {
+                    return s;
+                }
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public void remove() {}
+
     }
 
 }

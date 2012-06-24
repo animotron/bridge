@@ -116,11 +116,6 @@ public class ResourcesBridge extends AbstractResourcesBridge {
                                 }
                             }
 
-                            builder.start(AN._);
-                                builder._(REF._, URI);
-                                builder._(uriContext + e.id());
-                            builder.end();
-
                         builder.end();
 
                     }

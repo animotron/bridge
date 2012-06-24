@@ -22,10 +22,7 @@ package org.animotron.bridge.web;
 
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.BinaryExpression;
-import org.animotron.expression.JExpression;
-import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.statement.operator.DEF;
-import org.animotron.statement.query.GET;
 import org.neo4j.graphdb.Relationship;
 
 import javax.servlet.ServletException;
@@ -36,8 +33,7 @@ import java.io.*;
 import java.util.Enumeration;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
-import static org.animotron.bridge.web.WebSerializer.EXTENSION;
-import static org.animotron.expression.JExpression._;
+import static org.animotron.bridge.web.WebSerializer.mime;
 import static org.animotron.graph.Properties.HASH;
 import static org.animotron.utils.MessageDigester.byteArrayToHex;
 
@@ -49,10 +45,6 @@ import static org.animotron.utils.MessageDigester.byteArrayToHex;
 public class BridgeServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 6702513972501476806L;
-
-    private String mime(Relationship r) throws Throwable {
-        return WebSerializer.mime(CachedSerializer.STRING.serialize(new JExpression(_(GET._, EXTENSION, _(r)))));
-    }
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -88,7 +80,9 @@ public class BridgeServlet extends HttpServlet {
                     res.setHeader("Cache-Control", "public, max-age=" + (long) 365 * 24 * 60 * 60);
                 }
                 res.setDateHeader("Expires", time + (long) 365 * 24 * 60 * 60 * 1000);
-                res.setContentType(mime(r));
+                String mime = mime(r);
+                mime = mime.isEmpty() ? "application/octet-stream" : mime;
+                res.setContentType(mime);
                 OutputStream os = res.getOutputStream();
                 byte [] buf = new byte[4096];
                 int len;

@@ -29,6 +29,7 @@ import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.query.ANY;
 import org.animotron.statement.query.GET;
+import org.neo4j.graphdb.Relationship;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
@@ -56,34 +57,37 @@ public class WebSerializer {
     }
 
     public static void serialize(Expression request, HttpServletResponse res, String uuid) throws Throwable, ENotFound {
-        System.out.println(CachedSerializer.ANIMO.serialize(request));
-        System.out.println(CachedSerializer.ANIMO_RESULT.serialize(request));
-        String mime = STRING.serialize(
-                new JExpression(
-                        _(GET._, TYPE, _(GET._, MIME_TYPE, _(request)))
-                ),
-                CACHE
-        );
+        String mime = mime(request);
         if (mime.isEmpty()) {
             throw new ENotFound(request);
         } else {
-            OutputStream os = res.getOutputStream();
+            res.setCharacterEncoding("UTF-8");
             res.setContentType(mime);
             res.setContentLength(-1);
             CachedSerializer cs =
-                    mime.equals("text/html") ? HTML : mime.endsWith("xml") ? XML : STRING;
+                mime.equals("text/html") ? HTML : mime.endsWith("xml") ? XML : STRING;
+            OutputStream os = res.getOutputStream();
             cs.serialize(request, os, CACHE, uuid);
+            os.close();
         }
     }
 
+    public static  String mime (Relationship r) throws Throwable {
+        return STRING.serialize(
+            new JExpression(
+                    _(GET._, TYPE, _(GET._, MIME_TYPE, _(r)))
+            ),
+            CACHE
+        );
+    }
+
     public static String mime(String ext) throws Throwable {
-        String mime = CachedSerializer.STRING.serialize(
+        return STRING.serialize(
                 new JExpression(
                         _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value(ext))))
                 ),
                 CACHE
         );
-        return mime.isEmpty() ? "application/octet-stream" : mime;
     }
 
 }

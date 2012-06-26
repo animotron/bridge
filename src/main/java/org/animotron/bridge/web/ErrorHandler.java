@@ -42,30 +42,30 @@ import static org.animotron.bridge.web.WebSerializer.serialize;
  */
 public class ErrorHandler {
 
-    public static void doRequest(HttpServletRequest req, HttpServletResponse res, Throwable x) {
+    public static void doRequest(HttpServletRequest req, HttpServletResponse res, Throwable x) throws IOException {
         long startTime = System.currentTimeMillis();
+        int status = SC_INTERNAL_SERVER_ERROR;
         try {
             if (x instanceof ENotFound || x instanceof FileNotFoundException) {
-                res.setStatus(SC_NOT_FOUND);
+                status =  SC_NOT_FOUND;
+                res.setStatus(status);
                 serialize(new AnimoRequest(req, SC_NOT_FOUND, null), res);
             } else {
                 res.reset();
-                res.setStatus(SC_INTERNAL_SERVER_ERROR);
+                res.setStatus(status);
                 serialize(new AnimoRequest(req, SC_INTERNAL_SERVER_ERROR, x), res);
             }
         } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
-    }
-
-    public static void doRequest(HttpServletRequest req, HttpServletResponse res, int status) {
-        long startTime = System.currentTimeMillis();
-        try {
+            res.reset();
             res.setStatus(status);
-            serialize(new AnimoRequest(req, status, null), res);
-        } catch (Throwable t) {
-            doRequest(req, res, t);
+            res.setCharacterEncoding("UTF-8");
+            res.setContentType("text/plain");
+            OutputStream os = res.getOutputStream();
+            PrintWriter pw = new PrintWriter(os);
+            t.printStackTrace(pw);
+            pw.close();
+            os.close();
+
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
     }

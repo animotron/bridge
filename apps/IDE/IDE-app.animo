@@ -6,8 +6,8 @@ def IDE-app
 
     (style
          ".console-editor {position: relative; visible: yes} "
-         "editor {background-color: fff;} "
-         "content {overflow: auto; padding-top: 20px} "
+         "#editor {background-color: fff;} "
+         "#content {overflow: auto; padding-top: 20px} "
          ".ace_editor {font-size: 16px;}"
     )
 

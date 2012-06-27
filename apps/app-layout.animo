@@ -5,7 +5,7 @@ def app-layout
     (\style
         ("html, body {overflow: hidden} ")
         (".frame {position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} ")
-        (get style)
+        (get style this app)
     )
 
     (\nav (@class "navbar navbar-fixed-top")

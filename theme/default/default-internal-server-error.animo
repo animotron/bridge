@@ -1,5 +1,5 @@
 def default-internal-server-error
-    (html-page)
+    (^html-page)
     (default-error-layout)
     (title "Internal Server Error")
     (message

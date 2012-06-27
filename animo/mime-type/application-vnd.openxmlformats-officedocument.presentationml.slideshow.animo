@@ -1,5 +1,5 @@
 def application-vnd-openxmlformats-officedocument-presentationml-slideshow
-    (#mime-type)
+    (mime-type)
     (type      "application/vnd.oasis.openxmlformats-officedocument.presentationml.slideshow")
     (name      "OOXML Presentation Slideshow")
     (extension "ppsx")

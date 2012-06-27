@@ -1,5 +1,5 @@
 def image-vnd-microsoft-icon
-    (#mime-type)
+    (mime-type)
     (type      "image/vnd.microsoft.icon")
     (name      "Icon Image")
     (extension "ico")

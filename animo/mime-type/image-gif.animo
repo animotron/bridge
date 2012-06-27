@@ -1,5 +1,5 @@
 def image-gif
-    (#mime-type)
+    (mime-type)
     (type      "image/gif")
     (name      "GIF Image")
     (extension "gif")

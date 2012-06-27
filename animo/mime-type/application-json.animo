@@ -1,5 +1,5 @@
 def application-json
-    (#mime-type)
+    (mime-type)
     (type      "application/json")
     (name      "JSON")
     (extension "json")

@@ -1,5 +1,5 @@
 def application-x-javascript
-    (#mime-type)
+    (mime-type)
     (type      "application/x-javascript")
     (name      "JavaScript")
     (extension "js")

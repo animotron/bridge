@@ -1,6 +1,6 @@
 def IMS-app
 
-    (app)
+    (^app)
 
     (title "Animo IMS")
 
@@ -10,7 +10,7 @@ def IMS-app
                 (\div (@class "well side-nav")
                     (\h5 (@class "nav-label") "Sidebar")
                     (\ul (@class "nav-group")
-                        (\li (@class "active") (\a (@class "nav-item") (@href "#") "Link"))
+                        (\li (@class "active") (\a (@class "nav-item") (@href "") "Link"))
                     )
                 )
             )
@@ -24,4 +24,4 @@ def IMS-app
 
     (js any IMS.js)
 
-    (\script "$(function(){$('#search').workspaceSearch();});")
+    (\script "$(function(){$('search').workspaceSearch();});")

@@ -1,5 +1,5 @@
 def application-vnd-ms-word
-    (#mime-type)
+    (mime-type)
     (type      "application/vnd.ms-word")
     (name      "Microsoft Word Document")
     (extension "doc")

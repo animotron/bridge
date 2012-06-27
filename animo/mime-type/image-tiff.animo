@@ -1,5 +1,5 @@
 def image-tiff
-    (#mime-type)
+    (mime-type)
     (type      "image/tiff")
     (name      "TIF Image")
     (extension "tif" "tiff")

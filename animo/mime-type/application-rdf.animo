@@ -1,5 +1,5 @@
 def application-rdf
-    (#mime-type)
+    (mime-type)
     (type      "application/rdf")
     (name      "RDF Document")
     (extension "rdf" "rdfs")

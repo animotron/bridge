@@ -1,5 +1,5 @@
 def image-svg
-    (#mime-type)
+    (mime-type)
     (type      "image/svg+xml")
     (name      "SVG Image")
     (extension "svg" "svgz")

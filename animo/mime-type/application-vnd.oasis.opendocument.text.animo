@@ -1,5 +1,5 @@
 def application-vnd-oasis-opendocument-text
-    (#mime-type)
+    (mime-type)
     (type      "application/vnd.oasis.opendocument.text")
     (name      "OpenOffice.org Formatted Text Document")
     (extension "odt")

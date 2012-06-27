@@ -1,5 +1,5 @@
 def application-xml
-    (#mime-type)
+    (mime-type)
     (type      "application/xml")
     (name      "XML Document")
     (extension "xml")

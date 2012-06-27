@@ -1,5 +1,5 @@
 def image-jpeg
-    (#mime-type)
+    (mime-type)
     (type      "image/jpeg")
     (name      "JPEG Image")
     (extension "jpg" "jpeg")

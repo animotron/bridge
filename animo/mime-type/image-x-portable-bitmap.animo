@@ -1,5 +1,5 @@
 def image-x-portable-bitmap
-    (#mime-type)
+    (mime-type)
     (type      "image/x-portable-bitmap")
     (name      "PBM Bitmap Format")
     (extension "pbm")

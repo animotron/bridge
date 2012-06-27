@@ -1,6 +1,6 @@
 def geo-app
 
-    (app)
+    (^app)
 
     (title "Geo!")
 

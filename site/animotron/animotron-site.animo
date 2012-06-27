@@ -1,13 +1,13 @@
 def animotron-site
-    (site)
+    (^site)
     (server-name "animotron.org" "www.animotron.org" "animotron.local" "localhost" "ip6-localhost" "127.0.0.1" "0.0.0.0" "[::1]")
     (project-name "Animotron")
 
     (weak-use animotron)
 
-    (root #animo-language)
+    (root animo-language)
 
-    (geo #geo-app)
-    (IDE #IDE-app)
-    (IMS #IMS-app)
+    (geo geo-app)
+    (IDE IDE-app)
+    (IMS IMS-app)
     

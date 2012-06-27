@@ -1,5 +1,5 @@
 def app
-    (html-page)
+    (^html-page)
     (app-layout)
 	(less any bootstrap.less)
 	(js any less.min.js)

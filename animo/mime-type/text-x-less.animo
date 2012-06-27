@@ -1,5 +1,5 @@
 def text-x-less
-    (#mime-type)
+    (mime-type)
     (type      "text/x-less")
     (name      "LessCSS stylesheet")
     (extension "less")

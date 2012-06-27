@@ -1,5 +1,5 @@
 def application-vnd-visio
-    (#mime-type)
+    (mime-type)
     (type      "application/vnd.visio")
     (name      "Microsoft Visio Document")
     (extension "vsd")

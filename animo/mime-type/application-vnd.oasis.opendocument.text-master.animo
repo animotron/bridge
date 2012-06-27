@@ -1,5 +1,5 @@
 def application-vnd-oasis-opendocument-text-master
-    (#mime-type)
+    (mime-type)
     (type      "application/vnd.oasis.opendocument.text-master")
     (name      "OpenOffice.org Main Document")
     (extension "odm")

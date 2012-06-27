@@ -2,7 +2,7 @@ def bootstrap-variables
 
     (^text-x-less)
 
-    (default-theme)
+    (^default-theme)
 
     ("@linkColor: ")            (get link-color) ("; ")
 

@@ -28,6 +28,7 @@ import org.animotron.graph.builder.FastGraphBuilder;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.DEF;
+import org.animotron.statement.operator.NONSTOP;
 import org.animotron.statement.operator.REF;
 import org.animotron.statement.query.ANY;
 
@@ -101,7 +102,7 @@ public class ResourcesBridge extends AbstractResourcesBridge {
 
                         builder.start(DEF._);
 
-                            builder.start(AN._);
+                            builder.start(NONSTOP._);
                                 builder._(REF._, e);
                             builder.end();
 

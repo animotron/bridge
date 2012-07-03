@@ -6,20 +6,39 @@ def IDE-app
 
     (style
          ".console-editor {position: relative; visible: yes} "
-         "#editor {background-color: #fff;} "
-         "#content {overflow: auto; padding-top: 20px} "
+         "#welcome, #editor, #search-result {background-color: #fff;} "
+         "#welcome, #search-result {overflow: auto; padding-top: 20px} "
          ".ace_editor {font-size: 16px;}"
     )
 
     (frame
 
-        (\div (@id "content")  (@class "frame")
+        (\div (@id "welcome") (@class "frame")
             (\div (@class "container")
-                (\header) (\section) (\footer)
+                (\div (@class "row")
+                    (\div (@class "span11") (\h1 "Welcome to Animo IDE"))
+                    (\div (@class "span1") (\img @src get uri any animotron, logo-72x72))
+                )
+                (\h2 "Hot keys")
+                (\table (@class "table")
+                    (\tr (\td "Ctrl-N") (\td "Open the new Animo object"))
+                    (\tr (\td "Ctrl-O") (\td "Find any Animo object to open"))
+                    (\tr (\td "Ctrl-S") (\td "Save Animo object"))
+                    (\tr (\td "Ctrl-B") (\td "Open Animo object declaration"))
+                    (\tr (\td "Ctrl-Shift-B") (\td "Open Animo object declaration in the new browser window or tab"))
+                    (\tr (\td "F9") (\td "Save and execute"))
+                )
+                (\p "Use the browser's history navigation too.")
             )
         )
 
         (\div (@id "editor") (@class "frame"))
+
+        (\div (@id "search-result")  (@class "frame hide")
+            (\div (@class "container")
+                (\header) (\section) (\footer)
+            )
+        )
 
         (\div (@id "console") (@class "modal hide fade")
             (\div (@class "modal-header")

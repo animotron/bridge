@@ -89,6 +89,9 @@
                         token : "constant.numeric", // float
                         regex : "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
                     }, {
+                        token : "keyword", // float
+                        regex : "\\^"
+                    }, {
                         token : function(value) {
                             if (operators.hasOwnProperty(value))
                                 return "keyword";
@@ -142,6 +145,7 @@
     });
 
     var editor;
+    var current;
     var modified = false;
 
     var self = $("#editor");
@@ -149,6 +153,7 @@
     var caption = $("header");
     var list = $("section");
     var cons = $("#console");
+    var res = $("#search-result")
 
 
     window.addEventListener('hashchange', function(event){
@@ -162,16 +167,22 @@
 
     function openLocation(){
         var id = window.location.hash.substr(1);
-        open(id == "" ? "new" : id);
+        if (id == "") {
+            self.hide();
+        } else {
+            open(id);
+        }
     }
 
     function open(id) {
+        current = id;
         $.socket.send(id, "src", function (event) {
             cons.modal("hide");
             var id = getId(event.data);
             editor.getSession().setValue(event.data);
             modified = false;
             update(id);
+            show();
         });
     }
 
@@ -340,7 +351,10 @@
 
     function show() {
         sinput.unbind("blur");
-        self.show();
+        res.hide();
+        if (current) {
+            self.show();
+        }
         editor.focus();
         editor.resize();
     }
@@ -375,11 +389,13 @@
         });
         if (sinput.val() != "") {
             self.hide();
+            res.show();
         }
     }).liveChange(function(){
         var val = sinput.val();
         if (val != "") {
             self.hide();
+            res.show();
             var count = 0;
             $.socket.close("search");
             caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Not found anything still</h6>");
@@ -393,6 +409,7 @@
                 var canFocus = true;
                 item.find("a").click(function(event){
                     canFocus = false;
+                    current = id;
                     show();
                     if (modified && hash != window.location.hash) {
                         window.open(window.location.pathname + "#" + id);

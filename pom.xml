@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.animotron</groupId>
 	<artifactId>bridge</artifactId>
-	<version>0.1.MO1</version>
+	<version>0.1.MO3</version>
 	<name>Animo bridge</name>
 
 	<developers>
@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>org.animotron</groupId>
 			<artifactId>core</artifactId>
-			<version>0.1.M01</version>
+			<version>0.1.M03</version>
 		</dependency>
 		<!-- logger -->
 		<dependency>
@@ -62,18 +62,6 @@
 			<artifactId>servlet-api</artifactId>
 			<version>3.0-alpha-1</version>
 			<scope>compile</scope>
-		</dependency>
-
-		<!-- Smack is an Open Source XMPP (Jabber) client -->
-		<dependency>
-			<groupId>org.igniterealtime.smack</groupId>
-			<artifactId>smack</artifactId>
-			<version>3.2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.igniterealtime.smack</groupId>
-			<artifactId>smackx</artifactId>
-			<version>3.2.1</version>
 		</dependency>
 
 		<!-- OAuth -->
@@ -427,5 +415,4 @@
 			<url>http://www.ettrema.com/maven2</url>
 		</repository>
 	</repositories>
-
 </project>

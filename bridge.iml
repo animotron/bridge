@@ -58,6 +58,8 @@
     <orderEntry type="library" name="Maven: org.scribe:scribe:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
+    <orderEntry type="library" name="Maven: org.igniterealtime.smack:smack:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.igniterealtime.smack:smackx:3.2.1" level="project" />
   </component>
 </module>
 

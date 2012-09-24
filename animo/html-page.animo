@@ -21,8 +21,4 @@ def html-page
             (each (get less) (\link (@rel "stylesheet/less") (@href get uri)))
             (each (get css) (\link (@rel "stylesheet") (@href get uri)))
 
-            (get css-ie-hack)
-
-            (each (get js) (\script @src get uri)))
-
         (\body get layout))

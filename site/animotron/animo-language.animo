@@ -8,7 +8,7 @@ def animo-language
 
     (title "Animo")
 
-    (content (@data-spy "scroll")
+    (content (@data-spy "scroll") (@data-target ".navbar")
 
         (\style "header, footer {margin-top: 60px;} section {padding-top: 60px;}")
 

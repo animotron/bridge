@@ -3,33 +3,3 @@ def default-theme
     (default, bootstrap, theme)
 
     (brand-icon any logo-tiny)
-
-    (link-color            "#08c")
-
-    (black                 "#000")
-    (gray-dark             "#333")
-    (gray                  "#555")
-    (gray-light            "#999")
-    (gray-lighter          "#eee")
-    (white                 "#fff")
-
-    (blue                  "#049CDB")
-    (blue-dark             "#0064CD")
-    (green                 "#46a546")
-    (red                   "#9d261d")
-    (yellow                "#ffc40d")
-    (orange                "#f89406")
-    (pink                  "#c3325f")
-    (purple                "#7a43b6")
-
-
-    (grid-columns          12)
-    (grid-column-width     "60px")
-    (grid-gutter-width     "20px")
-
-    (fluid-grid-column-width   "6.382978723%")
-    (fluid-grid-gutter-width   "2.127659574%")
-
-    (base-font-size        "13px")
-    (base-font-family      "'Helvetica Neue', Helvetica, Arial, sans-serif")
-    (base-line-height      "18px")

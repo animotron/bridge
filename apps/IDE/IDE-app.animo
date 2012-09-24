@@ -42,7 +42,7 @@ def IDE-app
 
         (\div (@id "console") (@class "modal hide fade")
             (\div (@class "modal-header")
-                (\a (@class "close") (@data-dismiss "modal") "&times;")
+                (\a (@class "close") (@data-dismiss "modal") ("&times;"))
                 (\h3 (@id console-caption) ("Evaluation's result"))
             )
             (\div (@class "modal-body")

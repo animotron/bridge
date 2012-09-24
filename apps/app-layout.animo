@@ -17,8 +17,14 @@ def app-layout
                     (\span (@class "icon-bar"))
                     (\span (@class "icon-bar"))
                 )
+
+                (each (get brand-icon)
+                    (\span (@class "brand")
+                        (\img @src get uri)
+                    )
+                )
+
                 (\span (@class "brand")
-                    (each (get brand-icon) (\img @src get uri))
                     (get title)
                 )
                 (\form (@class "navbar-search  pull-left")

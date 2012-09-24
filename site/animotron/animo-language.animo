@@ -3,8 +3,8 @@ def animo-language
 	(^html-page)
 	(default-root-layout)
 
-	(less any bootstrap.less)
-	(js any less.min.js)
+	(css any bootstrap.min.css)
+	(css any bootstrap.responsive.min.css)
 
     (title "Animo")
 
@@ -19,11 +19,18 @@ def animo-language
                         (@class "btn btn-navbar") (@data-toggle "collapse") (@data-target ".nav-collapse")
                         (\span (@class "icon-bar"))
                     )
+
+                    (each (get brand-icon)
+                        (\span (@class "brand")
+                            (\img @src get uri)
+                        )
+                    )
+
                     (\a (@class "brand")
                         (@href "#")
-                        (each (get brand-icon) (\img @src get uri))
                         (get title)
                     )
+
                     (\div (@class "nav-collapse")
                         (\ul (@class "nav")
                             (\li \a (@href "#overview") "Overview")

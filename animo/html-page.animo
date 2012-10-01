@@ -18,9 +18,9 @@ def html-page
 
             (each (get shortcut-icon) (\link (@rel "shortcut icon") (@href get uri)))
 
-            (each (get css) (\link (@rel "stylesheet") (@href get uri))))
+            (each (get css) (\link (@rel "stylesheet") (@href get uri)))
 
-            (each (get style) (\style this style))
+            (each (get style) (\style this style)))
 
         (\body
             (an get layout)

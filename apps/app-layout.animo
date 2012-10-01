@@ -1,13 +1,5 @@
 def app-layout
 
-	(layout)
-
-    (\style
-        ("html, body {overflow: hidden} ")
-        (".frame {position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} ")
-        (get style this app)
-    )
-
     (\nav (@class "navbar navbar-fixed-top")
         (\div (@class "navbar-inner")
             (\div (@class "container")
@@ -37,13 +29,4 @@ def app-layout
     )
 
     (get frame)
-
-    (\script @src get uri any jquery.min.js)
-    (\script @src get uri any jquery.json.min.js)
-    (\script @src get uri any bootstrap-collapse.js)
-    (\script @src get uri any app.js)
-
-    (each (get js this app) (\script @src get uri))
-
-    (each (get script this app) (\script this script))
 

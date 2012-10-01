@@ -1,18 +1,28 @@
 def geo-app
 
-    (^app)
+    (^html-page)
+    (layout app-layout)
 
     (title "Geo!")
 
-    (css any leaflet.css)
-
-    (style
-        ".leaflet-tile {max-width: none; max-height: none;}"
+    (css
+        (any bootstrap.min.css)
+        (any bootstrap-responsive.min.css)
+        (any leaflet.css)
     )
 
     (js
-        (any leaflet.min.js)
+        (any jquery.min.js)
+        (any jquery.json.min.js)
+        (any bootstrap-collapse.js)
+        (any app.js)
+        (any leaflet.js)
         (any geo.js)
+    )
+
+    (style
+        "html, body {overflow: hidden} "
+        ".frame {position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "
     )
 
     (script "$(function(){$.geo(51.31289, 37.855317, 13);});")

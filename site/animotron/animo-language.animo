@@ -1,10 +1,16 @@
 def animo-language
 
 	(^html-page)
-	(default-root-layout)
+	(layout default-layout)
 
-	(css any bootstrap.min.css)
-	(css any bootstrap.responsive.min.css)
+	(css
+	    (any bootstrap.min.css)
+	    (any bootstrap-responsive.min.css))
+
+    (js
+        (any jquery.min.js)
+        (any bootstrap-collapse.js)
+        (any bootstrap-scrollspy.js))
 
     (title "Animo")
 
@@ -81,7 +87,7 @@ def animo-language
                 (\p "Question operators used to select points base on intersections principal, GET operate is one.")
                 (\p "Each change in a topological space causes difference sequence of reactions in the structure. For example having a structure A-B-C will produce on answer to a question, but A-C-B structure will produce different answer to the same question until stored C for first sequence and B for second.")
                 (\p "Examples:")
-                (\pre "the dress colour red.")
+                (\pre "def dress colour red.")
                 (\pre "all red =&gt; dress.")
                 (\pre "all colour =&gt; red.")
             )
@@ -100,9 +106,9 @@ def animo-language
                 (\p "The Animo parser allows to drop out AN operator and simplify syntax by , (comma). Pure Lisp parser difficult to use because of brackets, that’s why Animo syntax is developing.")
                 (\h2 "Syntax differences examples:")
                 (\p "LISP:")
-                (\pre "the companyA (an mail-address (an office1-address) (an office2-address))")
+                (\pre "def companyA (an mail-address (an office1-address) (an office2-address))")
                 (\p "Animo:")
-                (\pre "the companyA mail-address office1-address, office2-address.")
+                (\pre "def companyA mail-address office1-address, office2-address.")
                 (\p "Of course, it’s not possible to run away from brackets, so Animo syntax does use it to separate the same level children.")
                 (\p "The XML parser transform XML structure into Animo sub-graph representation without information lost. Binary parser allow to store files to global name space and reference to it.")
                 (\p "XML:")
@@ -163,12 +169,9 @@ def animo-language
             )
         )
 
-        (\script @src get uri any jquery.min.js)
-        (\script @src get uri any bootstrap-collapse.js)
-        (\script @src get uri any bootstrap-scrollspy.js)
-
-        (\script "$('.navbar').scrollspy(); $('.nav-collapse').collapse();")
-
     )
+
+    (script "$('.navbar').scrollspy(); $('.nav-collapse').collapse();")
+
 
 

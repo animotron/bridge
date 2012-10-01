@@ -1,5 +1,0 @@
-def app
-    (^html-page)
-    (app-layout)
-	(css any bootstrap.min.css)
-	(css any bootstrap-responsive.min.css)

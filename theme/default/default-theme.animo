@@ -1,5 +1,0 @@
-def default-theme
-
-    (default, bootstrap, theme)
-
-    (brand-icon any logo-tiny)

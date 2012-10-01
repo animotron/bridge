@@ -1,4 +1,0 @@
-def default-root-layout
-    (layout)
-    (get content)
-

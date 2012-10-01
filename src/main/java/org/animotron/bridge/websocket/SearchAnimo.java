@@ -57,7 +57,7 @@ public class SearchAnimo extends OnTextMessage {
         Executor.execute(new Runnable() {
 
             private void sendThes (Relationship  r) throws Throwable {
-                Iterator<Path> it = Utils.THES.traverse(r.getEndNode()).iterator();
+                Iterator<Path> it =  Utils.THES.traverse(r.getEndNode()).iterator();
                 while(it.hasNext()) {
                     cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(it.next().lastRelationship(), FileCache._));
                 }
@@ -74,7 +74,8 @@ public class SearchAnimo extends OnTextMessage {
                 QCAVector v;
                 pipe = Evaluator._.execute(null, e);
                 while ((v = pipe.take()) != null && i < 100) {
-                    sendThes(v.getClosest());
+//                    sendThes(v.getClosest());
+                    cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(v.getClosest(), FileCache._));
                     i++;
                 }
             }

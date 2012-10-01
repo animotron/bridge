@@ -165,7 +165,7 @@
     };
 
     function resize (){
-        $('.frame').css({top: $('nav').height()});
+        $('.frame').css({top: $('nav').height() - 3});
     }
 
     $(window).resize(resize);

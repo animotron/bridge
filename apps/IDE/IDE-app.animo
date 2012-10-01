@@ -1,14 +1,33 @@
 def IDE-app
 
-    (^app)
+    (^html-page)
+    (layout app-layout)
 
     (title "Animo IDE")
 
+    (css
+        (any bootstrap.min.css)
+        (any bootstrap-responsive.min.css)
+    )
+
+    (js
+        (any jquery.min.js)
+        (any jquery.json.min.js)
+        (any bootstrap-collapse.js)
+        (any app.js)
+        (any bootstrap-modal.js)
+        (any ace.js)
+        (any IDE.js)
+    )
+
     (style
-         ".console-editor {position: relative; visible: yes} "
-         "#welcome, #editor, #search-result {background-color: #fff;} "
-         "#welcome, #search-result {overflow: auto; padding-top: 20px} "
-         ".ace_editor {font-size: 16px;}"
+        "html, body {overflow: hidden} "
+        ".frame {position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "
+        ".console-editor {position: relative; visible: yes} "
+        "#welcome, #editor, #search-result {background-color: #fff;} "
+        "#welcome, #search-result {overflow: auto; padding-top: 20px} "
+        ".ace_editor {font-size: 16px;}"
+        ".modal-body {max-height: none}"
     )
 
     (frame
@@ -53,10 +72,4 @@ def IDE-app
             )
         )
 
-    )
-
-    (js
-        (any ace.js)
-        (any bootstrap-modal.js)
-        (any IDE.js)
     )

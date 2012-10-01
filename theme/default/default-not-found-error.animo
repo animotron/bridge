@@ -1,6 +1,6 @@
 def default-not-found-error
     (^html-page)
-    (default-error-layout)
+    (layout default-error-layout)
     (title "Not found")
     (message
         ("The server has not found anything matching def request ")

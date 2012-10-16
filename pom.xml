@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.animotron</groupId>
 	<artifactId>bridge</artifactId>
-	<version>0.1.MO3</version>
+	<version>0.1.MO4</version>
 	<name>Animo bridge</name>
 
 	<developers>
@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>org.animotron</groupId>
 			<artifactId>core</artifactId>
-			<version>0.1.M03</version>
+			<version>0.1.M04</version>
 		</dependency>
 		<!-- logger -->
 		<dependency>

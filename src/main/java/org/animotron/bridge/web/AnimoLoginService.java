@@ -20,10 +20,15 @@
  */
 package org.animotron.bridge.web;
 
+import org.animotron.bridge.Principal;
+import org.animotron.statement.operator.DEF;
 import org.eclipse.jetty.security.MappedLoginService;
 import org.eclipse.jetty.server.UserIdentity;
+import org.neo4j.graphdb.Relationship;
 
 import java.io.IOException;
+
+import javax.security.auth.Subject;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -37,8 +42,13 @@ public class AnimoLoginService extends MappedLoginService {
 	@Override
 	protected UserIdentity loadUser(String username) {
 		System.out.println("loadUser(String username)");
+		
+		Relationship account = DEF._.get(username);
 
-		return null;
+		if (account == null)
+			return null;
+		
+		return new UI(account);
 	}
 
 	/* (non-Javadoc)
@@ -47,6 +57,32 @@ public class AnimoLoginService extends MappedLoginService {
 	@Override
 	protected void loadUsers() throws IOException {
 		System.out.println("loadUsers()");
+	}
+	
+	class UI implements UserIdentity {
+
+		Relationship account;
+		
+		public UI(Relationship account) {
+			this.account = account;
+		}
+
+		@Override
+		public Subject getSubject() {
+			System.out.println("getSubject");
+			return null;
+		}
+
+		@Override
+		public Principal getUserPrincipal() {
+			return new Principal(account);
+		}
+
+		@Override
+		public boolean isUserInRole(String role, Scope scope) {
+			System.out.println("isUserInRole");
+			return false;
+		}
 	}
 
 }

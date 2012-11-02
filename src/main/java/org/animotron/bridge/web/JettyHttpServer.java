@@ -23,11 +23,12 @@ package org.animotron.bridge.web;
 import org.animotron.Shell;
 import org.animotron.bridge.FSBridge;
 import org.animotron.bridge.websocket.WebSocketServlet;
+import org.eclipse.jetty.security.*;
+import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.*;
+import org.eclipse.jetty.util.security.Constraint;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 import static org.animotron.graph.AnimoGraph.startDB;
@@ -37,6 +38,8 @@ import static org.animotron.graph.AnimoGraph.startDB;
  *
  */
 public class JettyHttpServer {
+	
+	private static final String REALM = "animotron";
 
     private Server jetty;
     private static final int JettyPort = 8080;
@@ -50,9 +53,7 @@ public class JettyHttpServer {
     	jettyPort = port;
 	}
 
-
-
-    public void start() throws IOException {
+    public void start() throws Exception {
     	
     	//initialize animo
     	if (startDB("data")) {
@@ -68,13 +69,8 @@ public class JettyHttpServer {
     	
     	//setup servlet container
         jetty = new Server(jettyPort);
-//        jetty = new Server();
+        jetty.setGracefulShutdown(1000);
         jetty.setStopAtShutdown(true);
-        
-//        Connector connector=new SelectChannelConnector();
-//        connector.setHost("192.168.7.101");
-//        connector.setPort(8080);
-//        jetty.addConnector(connector);
         
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
@@ -87,7 +83,7 @@ public class JettyHttpServer {
         context.addServlet(new ServletHolder(new MapServlet("apps/")),"/apps/*");
         context.addServlet(new ServletHolder(new WebSocketServlet()),"/ws/*");
         
-        //context.getSecurityHandler().setLoginService(new AnimoLoginService());
+//        context.setSecurityHandler(getSecurityHandler());
         
         // ... and start it up
         try {
@@ -98,6 +94,38 @@ public class JettyHttpServer {
 
         System.out.println(Arrays.toString(jetty.getConnectors()));
     }
+    
+    private SecurityHandler getSecurityHandler() throws Exception {
+
+        // add authentication
+        Constraint constraint = new Constraint(Constraint.__BASIC_AUTH,"user");
+        constraint.setAuthenticate(true);
+        constraint.setRoles(new String[]{"user","admin"});
+
+        // map the security constraint to the root path.
+        ConstraintMapping cm = new ConstraintMapping();
+        cm.setConstraint(constraint);
+        cm.setPathSpec("/*");
+
+        // create the security handler, set the authentication to Basic
+        // and assign the realm.
+        ConstraintSecurityHandler csh = new ConstraintSecurityHandler();
+        csh.setAuthenticator(new BasicAuthenticator());
+        csh.setRealmName(REALM);
+        csh.addConstraintMapping(cm);
+
+        // set the login service
+        csh.setLoginService(getLoginService());
+
+        return csh;
+
+    }
+    
+    private AnimoLoginService getLoginService() throws Exception {
+    	AnimoLoginService ls = new AnimoLoginService();
+    	ls.start();
+    	return ls;
+    }
 
     public void stop() {
         try {
@@ -107,10 +135,9 @@ public class JettyHttpServer {
         }
     }
     
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
     	JettyHttpServer server = new JettyHttpServer();
     	server.start();
         Shell.process();
 	}
-
 }

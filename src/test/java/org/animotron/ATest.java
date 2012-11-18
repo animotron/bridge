@@ -125,31 +125,6 @@ public abstract class ATest {
         System.out.println();
     }
 
-    protected void assertXMLResult(final Relationship op, String expected) throws IOException {
-        assertNotNull(op);
-
-        System.out.println("XML Result serializer...");
-
-        PipedInputStream in = new PipedInputStream(1024);
-        final PipedOutputStream out = new PipedOutputStream(in);
-
-        Runnable runner = new Runnable() {
-			@Override
-			public void run() {
-		        try {
-					CachedSerializer.XML.serialize(op, out);
-			        out.close();
-				} catch (IOException e) {
-					Assert.fail(e.getMessage());
-				}
-			}
-        };
-        Thread th = new Thread(runner);
-        th.start();
-        assertEquals(in, "<?xml version='1.0' encoding='UTF-8'?>"+expected);
-        System.out.println();
-    }
-
     protected void assertStringResult(String op, String expected) throws IOException, InterruptedException {
     	assertStringResult(new AnimoExpression(op), expected);
     }

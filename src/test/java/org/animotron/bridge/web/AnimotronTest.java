@@ -22,15 +22,13 @@ package org.animotron.bridge.web;
 
 import org.animotron.ATest;
 import org.animotron.bridge.FSBridge;
-import org.animotron.expression.JExpression;
+import org.animotron.expression.AnimoExpression;
+import org.animotron.expression.Expression;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.query.ANY;
 import org.animotron.statement.relation.USE;
 import org.junit.Test;
-
-import static org.animotron.expression.JExpression._;
-import static org.animotron.expression.JExpression.value;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -47,20 +45,11 @@ public class AnimotronTest extends ATest {
 
         (new ResourcesMap("/common")).load("common/");
 
-    	JExpression s;
+    	Expression s;
 
-    	s = new JExpression(
-			_(
-				_(ANY._, "site",
-					_(WITH._, "server-name", value("localhost"))
-				),
-			    _(AN._, "html-page",
-		    		_(USE._, "root"),
-		    		_(ANY._, "resource")
-	    		)
-			)
-        );
-    	assertXMLResult(s, 
+    	s = new AnimoExpression("def query (any site with server-name) (html-page root resource)");
+
+    	assertStringResult(s,
 			"<html>" +
 				"<head>" +
 					"<title>Welcome to Animo</title>" +

@@ -22,7 +22,6 @@ package org.animotron.bridge.web;
 
 import org.animotron.exception.AnimoException;
 import org.animotron.expression.AbstractExpression;
-import org.animotron.graph.builder.FastGraphBuilder;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
@@ -48,7 +47,6 @@ public abstract class AbstractRequestExpression extends AbstractExpression {
     protected final HttpServletRequest req;
 
     public AbstractRequestExpression(HttpServletRequest req) throws Throwable {
-        super(new FastGraphBuilder(true));
         this.req = req;
     }
 

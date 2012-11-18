@@ -25,7 +25,6 @@ import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
 import org.animotron.graph.AnimoGraph;
-import org.animotron.graph.builder.FastGraphBuilder;
 import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.io.Pipe;
 import org.animotron.manipulator.Evaluator;
@@ -100,7 +99,7 @@ public class SearchAnimo extends OnTextMessage {
                             cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r, FileCache._));
                         } else {
                             if (exp.indexOf(" ") > 0) {
-                                sendThes(new AnimoExpression(new FastGraphBuilder(false), exp));
+                                sendThes(new AnimoExpression(exp));
                             }
                         }
                     } catch (Throwable t) {}

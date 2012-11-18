@@ -23,10 +23,11 @@ package org.animotron.bridge.web;
 import org.animotron.cache.Cache;
 import org.animotron.cache.FileCache;
 import org.animotron.exception.ENotFound;
+import org.animotron.expression.AbstractExpression;
 import org.animotron.expression.Expression;
-import org.animotron.expression.JExpression;
 import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.statement.compare.WITH;
+import org.animotron.statement.operator.REF;
 import org.animotron.statement.query.ANY;
 import org.animotron.statement.query.GET;
 import org.neo4j.graphdb.Relationship;
@@ -34,8 +35,6 @@ import org.neo4j.graphdb.Relationship;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 
-import static org.animotron.expression.JExpression._;
-import static org.animotron.expression.JExpression.value;
 import static org.animotron.graph.serializer.CachedSerializer.*;
 import static org.animotron.utils.MessageDigester.uuid;
 
@@ -64,28 +63,47 @@ public class WebSerializer {
             res.setCharacterEncoding("UTF-8");
             res.setContentType(mime);
             res.setContentLength(-1);
-            CachedSerializer cs =
-                mime.equals("text/html") ? HTML : mime.endsWith("xml") ? XML : STRING;
             OutputStream os = res.getOutputStream();
-            cs.serialize(request, os, CACHE, uuid);
+            STRING.serialize(request, os, CACHE, uuid);
             os.close();
         }
     }
 
-    public static  String mime (Relationship r) throws Throwable {
+    public static  String mime (final Relationship r) throws Throwable {
         return STRING.serialize(
-            new JExpression(
-                    _(GET._, TYPE, _(GET._, MIME_TYPE, _(r)))
-            ),
-            CACHE
+                new AbstractExpression() {
+                    @Override
+                    public void build() throws Throwable {
+                        builder.start(GET._);
+                            builder._(REF._,  TYPE);
+                            builder.start(GET._);
+                                builder._(REF._, MIME_TYPE);
+                                builder.bind(r);
+                            builder.end();
+                        builder.end();
+                    }
+                },
+                CACHE
         );
     }
 
-    public static String mime(String ext) throws Throwable {
+    public static String mime(final String ext) throws Throwable {
         return STRING.serialize(
-                new JExpression(
-                        _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value(ext))))
-                ),
+                new AbstractExpression() {
+                    @Override
+                    public void build() throws Throwable {
+                        builder.start(GET._);
+                            builder._(REF._,  TYPE);
+                            builder.start(ANY._);
+                                builder._(REF._, MIME_TYPE);
+                                builder.start(WITH._);
+                                    builder._(REF._, EXTENSION);
+                                    builder._(ext);
+                                builder.end();
+                            builder.end();
+                        builder.end();
+                    }
+                },
                 CACHE
         );
     }

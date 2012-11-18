@@ -23,7 +23,8 @@ package org.animotron.bridge.web;
 import org.animotron.ATest;
 import org.animotron.bridge.FSBridge;
 import org.animotron.cache.FileCache;
-import org.animotron.expression.JExpression;
+import org.animotron.expression.AnimoExpression;
+import org.animotron.expression.Expression;
 import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
@@ -33,8 +34,6 @@ import org.animotron.statement.relation.USE;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.animotron.expression.JExpression._;
-import static org.animotron.expression.JExpression.value;
 import static org.animotron.bridge.web.WebSerializer.*;
 
 /**
@@ -50,15 +49,9 @@ public class WebFrameworkTest extends ATest {
     	FSBridge._.load("src/test/resources/animo/");
         new ResourcesBridge("/binary").load("src/test/resources/site/");
 
-    	JExpression s;
+    	Expression s;
 
-    	s = new JExpression(
-            _(AN._, "rest",
-                _(USE._, "root"),
-                _(AN._, "uri", value("/")),
-                _(AN._, "host", value("localhost"))
-            )
-        );
+    	s = new AnimoExpression("rest (use root) (uri '/') (host 'localhost')");
 
         assertAnimoResult(s,
             "rest " +
@@ -81,7 +74,7 @@ public class WebFrameworkTest extends ATest {
                                             "(\\li \"Host: \" (\\strong host \"localhost\")) " +
                                             "(\\li \"URI: \" (\\strong uri \"/\")))))) (root) (localhost) (title) (content)).");
 
-        assertXMLResult(s,
+        assertStringResult(s,
             "<html>" +
                 "<head>" +
                     "<title>Welcome to Animo</title>" +
@@ -98,72 +91,6 @@ public class WebFrameworkTest extends ATest {
                 "</body>" +
             "</html>");
 
-        s = new JExpression(
-            _(GET._, "type",
-                _(GET._, "mime-type",
-                    _(AN._, "rest",
-                        _(USE._, "root"),
-                        _(AN._, "uri", value("/")),
-                        _(AN._, "host", value("localhost"))
-                    )
-                )
-            )
-        );
-        assertAnimoResult(s, "type \"text/html\".");
-
-        s = new JExpression(
-                _(GET._, "extension",
-                        _(AN._, "rest",
-                                _(USE._, "favicon"),
-                                _(AN._, "uri", value("/favicon.ico")),
-                                _(AN._, "host", value("localhost"))
-                        )
-                )
-        );
-        assertAnimoResult(s, "extension \"ico\".");
-
-        s = new JExpression(
-                _(GET._, "mime-type",
-                        _(AN._, "rest",
-                                _(USE._, "favicon"),
-                                _(AN._, "uri", value("/favicon.ico")),
-                                _(AN._, "host", value("localhost"))
-                        )
-                )
-        );
-        assertAnimoResult(s, "def image-vnd-microsoft-icon (mime-type) (image) (type) (name) (extension).");
-
-        s = new JExpression(
-                _(GET._, "type",
-                        _(GET._, "mime-type",
-                                _(AN._, "rest",
-                                        _(USE._, "favicon"),
-                                        _(AN._, "uri", value("/favicon.ico")),
-                                        _(AN._, "host", value("localhost"))
-                                )
-                        )
-                )
-        );
-        assertAnimoResult(s, "type \"image/vnd.microsoft.icon\".");
-
-        s = new JExpression(
-                _(GET._, "type",
-                        _(AN._, "rest",
-                                _(USE._, "favicon"),
-                                _(AN._, "uri", value("/favicon.ico")),
-                                _(AN._, "host", value("localhost"))
-                        )
-                )
-        );
-        assertAnimoResult(s, "type \"image/vnd.microsoft.icon\".");
-
-	    String mime = CachedSerializer.STRING.serialize(
-            new JExpression(
-                _(GET._, TYPE, _(ANY._, MIME_TYPE, _(WITH._, EXTENSION, value("html"))))
-            ),
-            FileCache._
-        );
-	    Assert.assertEquals("text/html", mime);
     }
 
 }

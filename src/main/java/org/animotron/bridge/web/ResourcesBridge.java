@@ -24,7 +24,6 @@ import org.animotron.exception.AnimoException;
 import org.animotron.expression.AbstractExpression;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.BinaryExpression;
-import org.animotron.graph.builder.FastGraphBuilder;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.DEF;
@@ -89,7 +88,7 @@ public class ResourcesBridge extends AbstractResourcesBridge {
             };
 
             __(
-                new AbstractExpression(new FastGraphBuilder()) {
+                new AbstractExpression() {
 
                     private void is(String s) throws AnimoException, IOException {
                         builder.start(AN._);

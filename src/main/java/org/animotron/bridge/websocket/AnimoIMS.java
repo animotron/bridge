@@ -37,7 +37,7 @@ public class AnimoIMS extends OnTextMessage {
             return;
 
         try {
-			cnn.sendMessage(CachedSerializer.HTML_PART.serialize(new AnimoExpression(data), FileCache._));
+			cnn.sendMessage(CachedSerializer.STRING.serialize(new AnimoExpression(data), FileCache._));
 		} catch (Throwable e) {
         	//XXX: send error message, if it come from serializer
 		}

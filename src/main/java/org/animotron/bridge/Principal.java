@@ -20,22 +20,78 @@
  */
 package org.animotron.bridge;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.codec.binary.Base64;
+import org.eclipse.jetty.security.MappedLoginService.UserPrincipal;
 import org.neo4j.graphdb.Relationship;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  *
  */
-public class Principal implements java.security.Principal {
+public class Principal implements UserPrincipal {
 	
-	private Relationship the;
+	private static final long serialVersionUID = -8124711283293498187L;
+
+	private Relationship def;
 	
-	public Principal(Relationship the) {
-		this.the = the;
+	public Principal(Relationship account) {
+		assert account != null;
+		
+		this.def = account;
 	}
 
 	@Override
 	public String getName() {
-		return the.toString();
+		System.out.println(def.toString());
+		return def.toString();
+	}
+
+	public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o instanceof Principal) {
+        	Principal that = (Principal) o;
+            if (def == null ? that.def == null : def.equals(that.def)) {
+                return true;
+            }
+        }
+        return false;
+	}
+
+	@Override
+	public boolean authenticate(Object credentials) {
+		System.out.println("authenticate");
+		System.out.println(credentials);
+		System.out.println();
+		
+		byte[] result = getMac().doFinal(credentials.toString().getBytes());
+
+		System.out.println(Base64.encodeBase64String(result));
+		
+		return false;
+	}
+
+	@Override
+	public boolean isAuthenticated() {
+		System.out.println("isAuthenticated");
+		return false;
+	}
+	
+	private final SecretKeySpec keySpec = new SecretKeySpec(
+	        "qnscAdgRlkIhAUPY44oiexBKtQbGY0orf7OV1I50".getBytes(),
+	        "HmacSHA1");
+
+	//XXX: RIPEMD160
+	private Mac getMac() {
+		try {
+			Mac mac = Mac.getInstance("HmacSHA1");
+			mac.init(keySpec);
+			return mac;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

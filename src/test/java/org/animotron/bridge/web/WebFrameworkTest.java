@@ -22,19 +22,9 @@ package org.animotron.bridge.web;
 
 import org.animotron.ATest;
 import org.animotron.bridge.FSBridge;
-import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
-import org.animotron.graph.serializer.CachedSerializer;
-import org.animotron.statement.compare.WITH;
-import org.animotron.statement.operator.AN;
-import org.animotron.statement.query.ANY;
-import org.animotron.statement.query.GET;
-import org.animotron.statement.relation.USE;
-import org.junit.Assert;
 import org.junit.Test;
-
-import static org.animotron.bridge.web.WebSerializer.*;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>

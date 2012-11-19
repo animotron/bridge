@@ -24,10 +24,6 @@ import org.animotron.ATest;
 import org.animotron.bridge.FSBridge;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
-import org.animotron.statement.compare.WITH;
-import org.animotron.statement.operator.AN;
-import org.animotron.statement.query.ANY;
-import org.animotron.statement.relation.USE;
 import org.junit.Test;
 
 /**

@@ -691,7 +691,8 @@ public abstract class ATest {
         public E nextElement() { throw new NoSuchElementException(); }
     }
 
-    public static <T> Enumeration<T> emptyEnumeration() {
+    @SuppressWarnings("unchecked")
+	public static <T> Enumeration<T> emptyEnumeration() {
         return (Enumeration<T>) EmptyEnumeration.EMPTY_ENUMERATION;
     }
 }

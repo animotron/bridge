@@ -27,7 +27,5 @@ def geo-app
 
     (script "$(function(){$.geo(51.31289, 37.855317, 13);});")
 
-    (frame
-        (\div (@id "map") (@class "frame"))
-    )
+    (frame "<div id='map' class='frame'></div>")
 

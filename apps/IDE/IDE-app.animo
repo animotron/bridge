@@ -32,44 +32,45 @@ def IDE-app
 
     (frame
 
-        (\div (@id "welcome") (@class "frame")
-            (\div (@class "container")
-                (\div (@class "row")
-                    (\div (@class "span11") (\h1 "Welcome to Animo IDE"))
-                    (\div (@class "span1") (\img @src get uri any animotron, logo-72x72))
-                )
-                (\h2 "Hot keys")
-                (\table (@class "table")
-                    (\tr (\td "Ctrl-N") (\td "Open the new Animo object"))
-                    (\tr (\td "Ctrl-O") (\td "Find any Animo object to open"))
-                    (\tr (\td "Ctrl-S") (\td "Save Animo object"))
-                    (\tr (\td "Ctrl-B") (\td "Open Animo object declaration"))
-                    (\tr (\td "Ctrl-Shift-B") (\td "Open Animo object declaration in the new browser window or tab"))
-                    (\tr (\td "F9") (\td "Save and execute"))
-                )
-                (\p "Use the browser's history navigation too.")
-            )
-        )
+        "
+        <div id='welcome' class='frame'>
+            <div class='container'>
+                <div class='row'>
+                    <div class='span11'><h1>Welcome to Animo IDE</h1></div>
+                    <div class='span1'><img src='" (get uri any animotron, logo-72x72) "'></div>
+                </div>
+                <h2>Hot keys</h2>
+                <table class='table'>
+                    <tr><td>Ctrl-N</td><td>Open the new Animo object</td></tr>
+                    <tr><td>Ctrl-O</td><td>Find any Animo object to open</td></tr>
+                    <tr><td>Ctrl-S</td><td>Save Animo object</td></tr>
+                    <tr><td>Ctrl-B</td><td>Open Animo object declaration</td></tr>
+                    <tr><td>Ctrl-Shift-B</td><td>Open Animo object declaration in the new browser window or tab</td></tr>
+                    <tr><td>F9</td><td>Save and execute</td></tr>
+                </table>
+                <p>Use the browser's history navigation too.</p>
+            </div>
+        </div>
 
-        (\div (@id "editor") (@class "frame"))
+        <div id='editor' class='frame'></div>
 
-        (\div (@id "search-result")  (@class "frame hide")
-            (\div (@class "container")
-                (\header) (\section) (\footer)
-            )
-        )
-
-        (\div (@id "console") (@class "modal hide fade")
-            (\div (@class "modal-header")
-                (\a (@class "close") (@data-dismiss "modal") ("&times;"))
-                (\h3 (@id console-caption) ("Evaluation's result"))
-            )
-            (\div (@class "modal-body")
-                (\div (@class "console-editor"))
-            )
-            (\div (@class "modal-footer")
-                (\a (@class "btn primary") (@data-dismiss "modal") ("Close"))
-            )
-        )
+        <div id='search-result' class='frame hide'>
+            <div class='container'>
+                <header></header>
+                <section></section>
+                <footer></footer>
+            </div>
+        </div>
+        <div id='console' class='modal hide fade'>
+            <div class='modal-header'>
+                <a class='close' data-dismiss='modal'>&times;</a>
+                <h3 id=''>Evaluation's result</h3>
+            </div>
+            <div class='modal-body'>
+                <div class='console-editor'></div>
+            </div>
+            <div class='modal-footer'><a class='btn primary' data-dismiss='modal'>Close</a></div>
+        </div>
+        "
 
     )

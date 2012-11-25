@@ -36,6 +36,7 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
 import static org.animotron.bridge.web.WebSerializer.mime;
 import static org.animotron.graph.Properties.HASH;
 import static org.animotron.utils.MessageDigester.byteArrayToHex;
+import static org.animotron.utils.MessageDigester.uuid;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -64,7 +65,7 @@ public class BridgeServlet extends HttpServlet {
             res.setDateHeader("Last-Modified", modified);
             boolean isHTTP11 = req.getProtocol().endsWith("1.1");
             if (isHTTP11) {
-                String hash = byteArrayToHex((byte[]) HASH.get(r));
+                String hash = uuid().toString();
                 res.setHeader("ETag", hash);
                 Enumeration<String> etag = req.getHeaders("If-None-Match");
                 if (etag.hasMoreElements()) {

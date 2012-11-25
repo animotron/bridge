@@ -3,6 +3,7 @@ def default-not-found-error
     (layout default-error-layout)
     (title "Not found")
     (message
-        ("The server has not found anything matching def request ")
-        (\strong get uri) ("."))
+        "
+        The server has not found anything matching def request
+        <strong>" (get uri) "</strong>.")
 

@@ -3,6 +3,7 @@ def default-internal-server-error
     (layout default-error-layout)
     (title "Internal Server Error")
     (message
-        ("The server encountered an unexpected condition which prevented it from fulfilling def request ")
-        (\strong get uri) ("."))
+        "
+        The server encountered an unexpected condition which prevented it from fulfilling def request
+        <strong>" (get uri) "</strong>.")
 

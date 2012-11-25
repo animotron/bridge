@@ -1,27 +1,30 @@
 def IMS-app
 
-    (^app)
+    (^html-page)
+    (layout app-layout)
 
-    (title "Animo IMS")
+    (title 'Animo IMS')
 
     (frame
-        (\div (@class "frame fluid-container sidebar-left")
-            (\div (@class "fluid-sidebar")
-                (\div (@class "well side-nav")
-                    (\h5 (@class "nav-label") "Sidebar")
-                    (\ul (@class "nav-group")
-                        (\li (@class "active") (\a (@class "nav-item") (@href "") "Link"))
-                    )
-                )
-            )
-            (\div (@class "fluid-content")
-                (\div (@class "hero-unit")
-                    (\div (@id "workspace"))
-                )
-            )
-        )
+        "
+        <div class='frame fluid-container sidebar-left'>
+            <div class='fluid-sidebar'>
+                <div class='well side-nav'>
+                    <h5 class='nav-label'>Sidebar</h5>
+                    <ul class='nav-group'>
+                        <li class='active'><a class='nav-item' href='#'>Link</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class='fluid-content'>
+                <div class='hero-unit'>
+                    <div id='workspace'></div>
+                </div>
+            </div>
+        </div>
+        "
     )
 
     (js any IMS.js)
 
-    (\script "$(function(){$('search').workspaceSearch();});")
+    (script "$(function(){$('search').workspaceSearch();});")

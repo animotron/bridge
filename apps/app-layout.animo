@@ -1,32 +1,23 @@
 def app-layout
 
-    (\nav (@class "navbar navbar-fixed-top")
-        (\div (@class "navbar-inner")
-            (\div (@class "container")
-                (\a
-                    (@class "btn btn-navbar") (@data-toggle "collapse") (@data-target ".nav-collapse")
-                    (\span (@class "icon-bar"))
-                    (\span (@class "icon-bar"))
-                    (\span (@class "icon-bar"))
-                )
-
-                (each (get brand-icon)
-                    (\span (@class "brand")
-                        (\img @src get uri)
-                    )
-                )
-
-                (\span (@class "brand")
-                    (get title)
-                )
-                (\form (@class "navbar-search  pull-left")
-                    (\input (@id "search") (@type "text") (@class "search-query") (@placeholder "Search"))
-                )
-                (\div (@class "nav-collapse")
-                )
-            )
-        )
-    )
+    "
+    <nav class='navbar navbar-fixed-top'>
+        <div class='navbar-inner'>
+            <div class='container'>
+                <a class='btn btn-navbar' data-toogle='collapse' data-target='.nav-collapse'>
+                    <span class='icon-bar'></span>
+                    <span class='icon-bar'></span>
+                    <span class='icon-bar'></span>
+                </a>"
+                (each (get brand-icon) ("<span class='brand'><img src='" (get uri ) "'></span>"))
+                "
+                <a class='brand' href='#'>" (get title) "</a>
+                <form class='navbar-search pull-left'><input id='search' type='text' class='search-query' placeholder='Search'></form>
+                <div class='nav-collapse'></div>
+            </div>
+        </div>
+    </nav>
+    "
 
     (get frame)
 

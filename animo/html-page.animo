@@ -1,28 +1,40 @@
 def html-page
     (^text-html)
-    (\html
-        (\head
-            (\title get title)
-            (\meta (@name "viewport") (@content "width=device-width, initial-scale=1.0"))
 
-            (each (get keywords) (\meta (@name "keywords") (@content this keywords)))
-            (each (get description) (\meta (@name "description") (@content this description)))
+    "
+    <!DOCTYPE html>
 
-            (each (get icon) (\link (@rel "icon") (@href get uri)))
+    <html>
 
-            (each (get iphone-icon) (\link (@rel "apple-touch-icon") (@size "57x57") (@href get uri)))
-            (each (get iphone-hires-icon) (\link (@rel "apple-touch-icon") (@size "114x114") (@href get uri)))
+        <head>
 
-            (each (get ipad-icon) (\link (@rel "apple-touch-icon") (@size "72x72") (@href get uri)))
-            (each (get ipad-hires-icon) (\link (@rel "apple-touch-icon") (@size "144x144") (@href get uri)))
+            <title>" (get title) "</title>
 
-            (each (get shortcut-icon) (\link (@rel "shortcut icon") (@href get uri)))
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>"
 
-            (each (get css) (\link (@rel "stylesheet") (@href get uri)))
+            (each (get keywords) ("<meta name='keywords' content='" (this keywords) "'>"))
+            (each (get description) ("<meta name='description' content='" (this description) "'>"))
 
-            (each (get style) (\style this style)))
+            (each (get icon) ("<link rel='icon' href='" (get uri) "'>"))
 
-        (\body
-            (an get layout)
-            (each (get js) (\script @src get uri))
-            (each (get script) (\script this script))))
+            (each (get iphone-icon) ("<link rel='apple-touch-icon' size='57x57' href='" (get uri) "'>"))
+            (each (get iphone-hires-icon) ("<link rel='apple-touch-icon' size='114x114' href='" (get uri) "'>"))
+
+            (each (get ipad-icon) ("<link rel='apple-touch-icon' size='72x72' href='" (get uri) "'>"))
+            (each (get ipad-hires-icon) ("<link rel='apple-touch-icon' size='144x144' href='" (get uri) "'>"))
+
+            (each (get css) ("<link rel='stylesheet' href='" (get uri) "'>"))
+
+        "
+        </head>
+
+        <body data-spy='scroll' data-target='.navbar'>"
+            (each (get style) ("<style>" (this style) "</style>"))
+            (get layout)
+            (each (get js) ("<script src='" (get uri) "'></script>"))
+            (each (get script) ("<script>" (this script) "</script>"))
+        "
+        </body>
+
+     </html>
+    "

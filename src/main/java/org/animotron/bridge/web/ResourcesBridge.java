@@ -92,7 +92,7 @@ public class ResourcesBridge extends AbstractResourcesBridge {
 
                     private void is(String s) throws AnimoException, IOException {
                         builder.start(AN._);
-                        builder._(REF._, s);
+                            builder._(REF._, s);
                         builder.end();
                     }
 

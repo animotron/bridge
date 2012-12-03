@@ -11,7 +11,7 @@ def app-layout
                 </a>"
                 (each (get brand-icon) ("<span class='brand'><img src='" (get uri ) "'></span>"))
                 "
-                <a class='brand' href='#'>" (get title) "</a>
+                <a class='brand' hre    f='#'>" (get title) "</a>
                 <form class='navbar-search pull-left'><input id='search' type='text' class='search-query' placeholder='Search'></form>
                 <div class='nav-collapse'></div>
             </div>

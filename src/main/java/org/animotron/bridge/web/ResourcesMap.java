@@ -54,6 +54,10 @@ public class ResourcesMap extends AbstractResourcesBridge {
             __(
                 new AbstractBinaryExpression() {
                     @Override
+                    protected String fs() {
+                        return file.getPath();
+                    }
+                    @Override
                     protected void description() throws AnimoException, IOException {
                         int index;
                         byte buf[] = new byte[1024 * 4];

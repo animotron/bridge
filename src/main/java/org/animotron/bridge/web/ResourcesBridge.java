@@ -67,15 +67,16 @@ public class ResourcesBridge extends AbstractResourcesBridge {
             final String[] a = file.getName().split(Pattern.quote("."));
 
             final BinaryExpression e =  new BinaryExpression(is, true) {
-
+                @Override
+                protected String fs() {
+                    return file.getPath();
+                }
                 @Override
                 protected void description() throws AnimoException, IOException {
-
                     builder.start(AN._);
                         builder._(REF._, URI);
                         builder._(uriContext + id());
                     builder.end();
-
                     builder.start(ANY._);
                         builder._(REF._, MIME_TYPE);
                         builder.start(WITH._);
@@ -83,7 +84,6 @@ public class ResourcesBridge extends AbstractResourcesBridge {
                             builder._(a[a.length - 1]);
                         builder.end();
                     builder.end();
-
                 }
             };
 

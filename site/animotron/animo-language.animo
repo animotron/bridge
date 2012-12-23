@@ -10,7 +10,7 @@ def animo-language
     (js
         (any jquery.min.js)
         (any bootstrap-collapse.js)
-        (any bootstrap-scrosllspy.js))
+        (any bootstrap-scrollspy.js))
 
     (title "Animo")
 

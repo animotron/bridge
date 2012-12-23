@@ -2,7 +2,7 @@ def html-page
     (^text-html)
 
     "
-    <!DOCTYPE html>
+    <!doctype html>
 
     <html>
 

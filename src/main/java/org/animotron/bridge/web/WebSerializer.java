@@ -23,9 +23,7 @@ package org.animotron.bridge.web;
 import org.animotron.cache.Cache;
 import org.animotron.cache.FileCache;
 import org.animotron.exception.ENotFound;
-import org.animotron.expression.AbstractExpression;
 import org.animotron.expression.Expression;
-import org.animotron.graph.serializer.CachedSerializer;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.REF;
 import org.animotron.statement.query.ANY;
@@ -35,7 +33,7 @@ import org.neo4j.graphdb.Relationship;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 
-import static org.animotron.graph.serializer.CachedSerializer.*;
+import static org.animotron.graph.serializer.Serializer.*;
 import static org.animotron.utils.MessageDigester.uuid;
 
 /**
@@ -71,7 +69,7 @@ public class WebSerializer {
 
     public static  String mime (final Relationship r) throws Throwable {
         return STRING.serialize(
-                new AbstractExpression() {
+                new Expression() {
                     @Override
                     public void build() throws Throwable {
                         builder.start(GET._);
@@ -89,7 +87,7 @@ public class WebSerializer {
 
     public static String mime(final String ext) throws Throwable {
         return STRING.serialize(
-                new AbstractExpression() {
+                new Expression() {
                     @Override
                     public void build() throws Throwable {
                         builder.start(GET._);

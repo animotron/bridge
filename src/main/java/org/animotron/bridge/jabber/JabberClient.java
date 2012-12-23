@@ -23,7 +23,7 @@ package org.animotron.bridge.jabber;
 import javolution.util.FastMap;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.graph.AnimoGraph;
-import org.animotron.graph.serializer.CachedSerializer;
+import org.animotron.graph.serializer.Serializer;
 import org.animotron.statement.operator.DEF;
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.packet.Message;
@@ -36,6 +36,8 @@ import java.io.IOException;
 import java.util.Map;
 
 import static org.animotron.graph.AnimoGraph.startDB;
+import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
+import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO_RESULT;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -195,9 +197,9 @@ public class JabberClient implements MessageListener, ChatManagerListener, Packe
 
         try {
         	if (!sendResult)
-        		return CachedSerializer.PRETTY_ANIMO.serialize(op);
+        		return PRETTY_ANIMO.serialize(op);
         	else
-        		return CachedSerializer.PRETTY_ANIMO_RESULT.serialize(op);
+        		return PRETTY_ANIMO_RESULT.serialize(op);
 
         } catch (Throwable t) {
 			t.printStackTrace();

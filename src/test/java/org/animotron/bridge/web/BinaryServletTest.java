@@ -23,11 +23,11 @@ package org.animotron.bridge.web;
 import org.animotron.ATest;
 import org.animotron.bridge.FSBridge;
 import org.animotron.expression.AnimoExpression;
-import org.animotron.graph.serializer.CachedSerializer;
 import org.junit.Test;
 
 import java.io.File;
 
+import static org.animotron.graph.serializer.Serializer.STRING;
 import static org.junit.Assert.assertArrayEquals;
 
 /**
@@ -44,7 +44,7 @@ public class BinaryServletTest extends ATest {
         FSBridge._.load("src/test/resources/animo/");
         new ResourcesBridge(URI_CONTEXT).load("src/test/resources/site/");
         BridgeServlet servlet = new BridgeServlet();
-        String uri = CachedSerializer.STRING.serialize(new AnimoExpression("get uri any favicon."));
+        String uri = STRING.serialize(new AnimoExpression("get uri any favicon."));
         HttpRequest request = new HttpRequest(uri, "localhost") {
             @Override
             public String getPathInfo() {

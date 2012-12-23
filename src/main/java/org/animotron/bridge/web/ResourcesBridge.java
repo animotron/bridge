@@ -21,9 +21,9 @@
 package org.animotron.bridge.web;
 
 import org.animotron.exception.AnimoException;
-import org.animotron.expression.AbstractExpression;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.BinaryExpression;
+import org.animotron.expression.Expression;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.DEF;
@@ -68,7 +68,7 @@ public class ResourcesBridge extends AbstractResourcesBridge {
 
             final BinaryExpression e =  new BinaryExpression(is, true) {
                 @Override
-                protected String fs() {
+                public String fs() {
                     return file.getPath();
                 }
                 @Override
@@ -88,7 +88,7 @@ public class ResourcesBridge extends AbstractResourcesBridge {
             };
 
             __(
-                new AbstractExpression() {
+                new Expression() {
 
                     private void is(String s) throws AnimoException, IOException {
                         builder.start(AN._);

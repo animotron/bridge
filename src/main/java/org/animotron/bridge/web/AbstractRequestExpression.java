@@ -21,7 +21,7 @@
 package org.animotron.bridge.web;
 
 import org.animotron.exception.AnimoException;
-import org.animotron.expression.AbstractExpression;
+import org.animotron.expression.Expression;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
@@ -37,7 +37,7 @@ import java.util.Enumeration;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public abstract class AbstractRequestExpression extends AbstractExpression {
+public abstract class AbstractRequestExpression extends Expression {
 
     public static final String URI = "uri";
     public static final String HOST = "host";

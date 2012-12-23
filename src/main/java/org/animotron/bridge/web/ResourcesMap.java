@@ -54,7 +54,7 @@ public class ResourcesMap extends AbstractResourcesBridge {
             __(
                 new AbstractBinaryExpression() {
                     @Override
-                    protected String fs() {
+                    public String fs() {
                         return file.getPath();
                     }
                     @Override

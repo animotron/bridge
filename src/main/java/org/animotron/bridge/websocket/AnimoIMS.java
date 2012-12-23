@@ -22,7 +22,8 @@ package org.animotron.bridge.websocket;
 
 import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
-import org.animotron.graph.serializer.CachedSerializer;
+
+import static org.animotron.graph.serializer.Serializer.STRING;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -37,7 +38,7 @@ public class AnimoIMS extends OnTextMessage {
             return;
 
         try {
-			cnn.sendMessage(CachedSerializer.STRING.serialize(new AnimoExpression(data), FileCache._));
+			cnn.sendMessage(STRING.serialize(new AnimoExpression(data), FileCache._));
 		} catch (Throwable e) {
         	//XXX: send error message, if it come from serializer
 		}

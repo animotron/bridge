@@ -22,7 +22,6 @@ package org.animotron;
 
 import junit.framework.Assert;
 import org.animotron.expression.AnimoExpression;
-import org.animotron.graph.serializer.CachedSerializer;
 import org.junit.After;
 import org.junit.Before;
 import org.neo4j.graphdb.Relationship;
@@ -35,6 +34,7 @@ import java.util.*;
 
 import static org.animotron.graph.AnimoGraph.shutdownDB;
 import static org.animotron.graph.AnimoGraph.startDB;
+import static org.animotron.graph.serializer.Serializer.*;
 import static org.junit.Assert.assertNotNull;
 
 
@@ -103,7 +103,7 @@ public abstract class ATest {
         assertNotNull(op);
 
         System.out.println("Animo serializer...");
-        String result = pretty ? CachedSerializer.PRETTY_ANIMO.serialize(op) : CachedSerializer.ANIMO.serialize(op);
+        String result = pretty ? PRETTY_ANIMO.serialize(op) : ANIMO.serialize(op);
         System.out.println(result);
         Assert.assertEquals("", expected, result);
 
@@ -118,7 +118,7 @@ public abstract class ATest {
         assertNotNull(op);
 
         System.out.println("Animo result serializer...");
-        String result = pretty ? CachedSerializer.PRETTY_ANIMO_RESULT.serialize(op) : CachedSerializer.ANIMO_RESULT.serialize(op);
+        String result = pretty ? PRETTY_ANIMO_RESULT.serialize(op) : ANIMO_RESULT.serialize(op);
         System.out.println(result);
         Assert.assertEquals("", expected, result);
 
@@ -133,7 +133,7 @@ public abstract class ATest {
         assertNotNull(op);
 
         System.out.println("VALUE result serializer...");
-        String result = CachedSerializer.STRING.serialize(op);
+        String result = STRING.serialize(op);
         System.out.println(result);
         Assert.assertEquals("", expected, result);
 

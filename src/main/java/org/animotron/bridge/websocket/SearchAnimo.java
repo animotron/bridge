@@ -25,7 +25,7 @@ import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
 import org.animotron.graph.AnimoGraph;
-import org.animotron.graph.serializer.CachedSerializer;
+import org.animotron.graph.serializer.Serializer;
 import org.animotron.io.Pipe;
 import org.animotron.manipulator.Evaluator;
 import org.animotron.manipulator.QCAVector;
@@ -37,6 +37,8 @@ import org.neo4j.graphdb.Path;
 import org.neo4j.graphdb.Relationship;
 
 import java.util.Iterator;
+
+import static org.animotron.graph.serializer.Serializer.*;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -58,7 +60,7 @@ public class SearchAnimo extends OnTextMessage {
             private void sendThes (Relationship  r) throws Throwable {
                 Iterator<Path> it =  Utils.THES.traverse(r.getEndNode()).iterator();
                 while(it.hasNext()) {
-                    cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(it.next().lastRelationship(), FileCache._));
+                    cnn.sendMessage(PRETTY_ANIMO.serialize(it.next().lastRelationship(), FileCache._));
                 }
             }
 
@@ -74,7 +76,7 @@ public class SearchAnimo extends OnTextMessage {
                 pipe = Evaluator._.execute(null, e);
                 while ((v = pipe.take()) != null && i < 100) {
 //                    sendThes(v.getClosest());
-                    cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(v.getClosest(), FileCache._));
+                    cnn.sendMessage(PRETTY_ANIMO.serialize(v.getClosest(), FileCache._));
                     i++;
                 }
             }
@@ -96,7 +98,7 @@ public class SearchAnimo extends OnTextMessage {
                     Relationship r = DEF._.get(exp);
                     try {
                         if (r != null) {
-                            cnn.sendMessage(CachedSerializer.PRETTY_ANIMO.serialize(r, FileCache._));
+                            cnn.sendMessage(PRETTY_ANIMO.serialize(r, FileCache._));
                         } else {
                             if (exp.indexOf(" ") > 0) {
                                 sendThes(new AnimoExpression(exp));

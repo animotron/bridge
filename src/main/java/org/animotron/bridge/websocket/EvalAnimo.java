@@ -23,7 +23,8 @@ package org.animotron.bridge.websocket;
 import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
-import org.animotron.graph.serializer.CachedSerializer;
+
+import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO_RESULT;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -38,7 +39,7 @@ public class EvalAnimo extends OnTextMessage {
             return;
         try {
             Expression e = new AnimoExpression(data);
-            cnn.sendMessage(CachedSerializer.PRETTY_ANIMO_RESULT.serialize(e, FileCache._));
+            cnn.sendMessage(PRETTY_ANIMO_RESULT.serialize(e, FileCache._));
         } catch (Throwable e) {
             //XXX: send error message
         }

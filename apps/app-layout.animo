@@ -9,7 +9,7 @@ def app-layout
                     <span class='icon-bar'></span>
                     <span class='icon-bar'></span>
                 </a>"
-                (each (get brand-icon) ("<span class='brand'><img src='" (get uri ) "'></span>"))
+                (each (get brand-icon) ("<a href='/' class='brand'><img src='" (get uri ) "'></a>"))
                 "
                 <a class='brand' hre    f='#'>" (get title) "</a>
                 <form class='navbar-search pull-left'><input id='search' type='text' class='search-query' placeholder='Search'></form>

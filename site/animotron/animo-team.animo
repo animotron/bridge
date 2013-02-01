@@ -1,0 +1,68 @@
+def animo-team
+    (^html-page)
+    (layout default-layout)
+    (css
+        (any bootstrap.min.css)
+        (any bootstrap-responsive.min.css))
+    (js
+        (any jquery.min.js)
+        (any bootstrap-collapse.js)
+        (any bootstrap-scrollspy.js))
+    (title "Animo Team")
+    (content
+        "
+        <nav class='navbar navbar-fixed-top'>
+            <div class='navbar-inner'>
+                <div class='container'>
+                    <a class='btn btn-navbar' data-toogle='collapse' data-target='.nav-collapse'>
+                        <span class='icon-bar'></span>
+                        <span class='icon-bar'></span>
+                        <span class='icon-bar'></span>
+                    </a>"
+        (each
+            (get brand-icon)
+            (
+                "<a href='/' class='brand'><img src='"
+                (get uri)
+                "'></a>"))
+        "
+                    <a class='brand' href='#'>"
+        (get title)
+        "</a>
+                    <div class='nav-collapse'>
+                        <ul class='nav'>
+                            <li><a href='#" (id starcev) "'>" (get name starcev) "</a></li>
+                            <li><a href='#" (id shabanov) "'>" (get name shabanov) "</a></li>
+                            <li><a href='#" (id gazdovsky) "'>" (get name gazdovsky) "</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class='container'>
+
+            <header>
+                <div class='hero-unit'>
+                    <h1>
+                        <img src='"
+                            (get uri
+                                any animotron, logo-144x144)
+                            "' alt='logo'>
+                        Animo Team
+                    </h1>
+                </div>
+            </header>
+            "
+            (animo-team-left-widget starcev)
+            (animo-team-right-widget shabanov)
+            (animo-team-left-widget gazdovsky)
+            "
+            <footer>
+                <p>Copyright &copy; 2013 Animotron. All Rights Reserved.</p>
+            </footer>
+
+        </div>
+        ")
+    (style "header, footer {margin-top: 60px;} section {padding-top: 60px;}")
+    (script "$('.navbar').scrollspy(); $('.nav-collapse').collapse();").

@@ -1,0 +1,4 @@
+def animo-team-photo
+    "<div class='span3'>
+        <img src='" (each (get photo) (get uri)) "'>
+    </div>"

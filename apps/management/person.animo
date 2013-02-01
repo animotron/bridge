@@ -1,0 +1,2 @@
+def person
+	full-name (get name) " " (get family)

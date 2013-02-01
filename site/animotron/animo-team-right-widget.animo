@@ -1,0 +1,5 @@
+def animo-team-right-widget
+    (animo-team-section
+        "<div class='span2'></div>"
+        (animo-team-about)
+        (animo-team-photo))

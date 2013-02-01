@@ -1,0 +1,10 @@
+def starcev
+    (person)
+    (name "Wasilii")
+    (family "Starcev")
+    (photo any wstarcev.jpg)
+    (email "mailto:wstarcev@gmail.com")
+    (twitter "https://twitter.com/wstarcev")
+    (facebook "https://facebook.com/wstarcev")
+    (linkedin "https://linkedin.com/in/wstarcev")
+    (bio "...")

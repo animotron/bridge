@@ -35,6 +35,7 @@ def animo-language
                             <li><a href='#why'>Why animo?</a></li>
                             <li><a href='#future'>Future</a></li>
                             <li class='divider-vertical'></li>
+                            <li><a href='/q'>Team</a></li>
                             <li><a href='/geo'>Geo!</a></li>
                             <li><a href='/IDE'>IDE</a></li>
                         </ul>
@@ -368,7 +369,7 @@ def animo-language
             </section>
 
             <footer>
-                <p>Copyright &copy; 2012 Animotron. All Rights Reserved.</p>
+                <p>Copyright &copy; 2013 Animotron. All Rights Reserved.</p>
             </footer>
 
         </div>

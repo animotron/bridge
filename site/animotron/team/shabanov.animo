@@ -1,0 +1,10 @@
+def shabanov
+    (person)
+    (name "Dmitriy")
+    (family "Shabanov")
+    (photo any shabanovd.jpg)
+    (email "mailto:shabanovd@gmail.com")
+    (twitter "https://twitter.com/shabanovd")
+    (facebook "https://facebook.com/dmitriy.shabanov")
+    (linkedin "https://linkedin.com/in/shabanovd")
+    (bio "...")

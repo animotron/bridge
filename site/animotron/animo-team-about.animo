@@ -1,0 +1,20 @@
+def animo-team-about
+    "<div class='span7'>
+        <h2>
+            " (get full-name get person) "
+        </h2>
+        <ul>
+            <li>
+                <a href='" (get email get person) "' target='_blank'>" (get email get person) "</a>
+            </li>
+            <li>
+                <a href='" (get linkedin get person) "' target='_blank'>" (get linkedin get person) "</a>
+            </li>
+            <li>
+                <a href='" (get facebook get person) "' target='_blank'>" (get facebook get person) "</a>
+            </li>
+            <li>
+                <a href='" (get twitter get person) "' target='_blank'>" (get twitter get person) "</a>
+            </li>
+        </ul>
+    </div>"

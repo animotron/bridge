@@ -1,0 +1,8 @@
+def animo-team-section
+    "<section id='" (id get person) "'>
+        <div class='row'>
+            "
+            (context)
+            "
+        </div>
+    </section>"

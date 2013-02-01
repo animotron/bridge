@@ -1,0 +1,10 @@
+def gazdovsky
+    (person)
+    (name "Evgeny")
+    (family "Gazdovsky")
+    (photo any gazdovsky.jpg)
+    (email "mailto:gazdovsky@gmail.com")
+    (twitter "https://twitter.com/gazdovsky")
+    (facebook "https://facebook.com/evgeny.gazdovsky")
+    (linkedin "https://linkedin.com/in/gazdovsky")
+    (bio "...")

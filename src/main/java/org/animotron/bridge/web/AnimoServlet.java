@@ -40,6 +40,7 @@ import java.util.List;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
 import static org.animotron.bridge.web.WebSerializer.serialize;
 import static org.animotron.graph.Properties.RUUID;
+import static org.animotron.utils.MessageDigester.getTime;
 import static org.animotron.utils.MessageDigester.uuid;
 
 /**
@@ -64,7 +65,7 @@ public class AnimoServlet extends HttpServlet {
                 uuid = uuid();
                 suuid = uuid.toString();
             }
-            long modified = uuid.getTime();
+            long modified = getTime(uuid);
             res.setDateHeader("Last-Modified", modified);
             boolean isHTTP11 = req.getProtocol().endsWith("1.1");
             if (isHTTP11) {

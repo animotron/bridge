@@ -42,7 +42,7 @@ public class JettyHttpServer {
 	private static final String REALM = "animotron";
 
     private Server jetty;
-    private static final int JettyPort = 8080;
+    private static final int JettyPort = 7532;
     private int jettyPort;
 
     public JettyHttpServer() {

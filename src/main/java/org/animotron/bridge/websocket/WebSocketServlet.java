@@ -75,6 +75,8 @@ public class WebSocketServlet extends HttpServlet {
 			}
 		});
 
+        factory.setMaxTextMessageSize(Integer.MAX_VALUE);
+        factory.setMaxBinaryMessageSize(Integer.MAX_VALUE);
 		factory.setBufferSize(4096);
 		factory.setMaxIdleTime(60000);
 	}

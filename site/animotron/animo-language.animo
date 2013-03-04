@@ -47,12 +47,17 @@ def animo-language
         <div class='container'>
 
             <header>
-                <div class='hero-unit'>
-                    <img src='" (get uri any animotron, logo-288x288) "' alt='logo'>
-                    <h1>Animo</h1>
-                    <div>
-                        A language based on ideas from linguistic, neuroscience, algebra and graph database.
-                        It is a declarative representation of information relationships and processing agreements.
+                <div class='row hero-unit'>
+                    <div class='span6'>
+                        <h1>Animo</h1>
+                        <div>
+                            A language based on ideas from linguistic, neuroscience, algebra and graph database.
+                            It is a declarative representation of information relationships and processing agreements.
+                        </div>
+                    </div>
+                    <div class='span1'></div>
+                    <div class='span3'>
+                        <img src='" (get uri any animotron, logo-288x288) "' alt='logo'>
                     </div>
                 </div>
             </header>

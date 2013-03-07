@@ -14,7 +14,7 @@ def geo-app
     (js
         (any jquery.min.js)
         (any jquery.json.min.js)
-        (any bootstrap-collapse.js)
+        (any bootstrap.min.js)
         (any app.js)
         (any leaflet.js)
         (any geo.js)

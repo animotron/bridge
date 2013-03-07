@@ -6,8 +6,7 @@ def animo-team
         (any bootstrap-responsive.min.css))
     (js
         (any jquery.min.js)
-        (any bootstrap-collapse.js)
-        (any bootstrap-scrollspy.js))
+        (any bootstrap.min.js))
     (title "Animo Team")
     (content
         "
@@ -29,7 +28,7 @@ def animo-team
                     <a class='brand' href='#'>"
         (get title)
         "</a>
-                    <div class='nav-collapse'>
+                    <div class='nav-collapse collapse'>
                         <ul class='nav'>
                             <li><a href='#" (id starcev) "'>" (get name starcev) "</a></li>
                             <li><a href='#" (id shabanov) "'>" (get name shabanov) "</a></li>
@@ -65,4 +64,3 @@ def animo-team
         </div>
         ")
     (style "header, footer {margin-top: 60px;} section {padding-top: 60px;}")
-    (script "$('.navbar').scrollspy(); $('.nav-collapse').collapse();").

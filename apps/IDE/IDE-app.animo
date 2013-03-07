@@ -13,9 +13,8 @@ def IDE-app
     (js
         (any jquery.min.js)
         (any jquery.json.min.js)
-        (any bootstrap-collapse.js)
+        (any bootstrap.min.js)
         (any app.js)
-        (any bootstrap-modal.js)
         (any ace.js)
         (any IDE.js)
     )

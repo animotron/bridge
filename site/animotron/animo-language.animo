@@ -1,21 +1,15 @@
 def animo-language
-
-	(^html-page)
-	(layout default-layout)
-
-	(css
-	    (any bootstrap.min.css)
-	    (any bootstrap-responsive.min.css))
-
+    (^html-page)
+    (layout default-layout)
+    (css
+        (any bootstrap.min.css)
+        (any bootstrap-responsive.min.css))
     (js
         (any jquery.min.js)
         (any bootstrap-collapse.js)
         (any bootstrap-scrollspy.js))
-
     (title "Animo")
-
     (content
-
         "
         <nav class='navbar navbar-fixed-top'>
             <div class='navbar-inner'>
@@ -25,9 +19,16 @@ def animo-language
                         <span class='icon-bar'></span>
                         <span class='icon-bar'></span>
                     </a>"
-                    (each (get brand-icon) ("<span class='brand'><img src='" (get uri) "'></span>"))
-                    "
-                    <a class='brand' href='#'>" (get title) "</a>
+        (each
+            (get brand-icon)
+            (
+                "<span class='brand'><img src='"
+                (get uri)
+                "'></span>"))
+        "
+                    <a class='brand' href='#'>"
+        (get title)
+        "</a>
                     <div class='nav-collapse'>
                         <ul class='nav'>
                             <li><a href='#overview'>Overview</a></li>
@@ -57,7 +58,10 @@ def animo-language
                     </div>
                     <div class='span1'></div>
                     <div class='span3'>
-                        <img src='" (get uri any animotron, logo-288x288) "' alt='logo'>
+                        <img src='"
+        (get uri
+            any animotron, logo-288x288)
+        "' alt='logo'>
                     </div>
                 </div>
             </header>
@@ -102,6 +106,12 @@ def animo-language
                     Currently the language constructions are based on English-Prime concepts, so you can write
                     your code as through writting a book or specification.
                 </p>
+            </section>
+
+            <section id='prezi'>
+                <iframe class='img-polaroid'
+                    src='http://prezi.com/embed/a0fdh5gislnw/?bgcolor=ffffff&lock_to_path=0&autoplay=no&autohide_ctrls=0&features=undefined&disabled_features=undefined' 
+                    width='480' height='350' frameBorder='0'></iframe>
             </section>
 
             <section id='language'>
@@ -251,6 +261,13 @@ def animo-language
                 </p>
             </section>
 
+            <section id='screencast'>
+                <iframe  class='img-polaroid'
+                    width='480' height='360'
+                    src='http://www.youtube.com/embed/Na4MdojbNh0' 
+                    frameborder='0' allowfullscreen='1'></iframe>
+            </section>
+
             <section id='rationale'>
                 <h1>
                     Animo rationale
@@ -378,13 +395,6 @@ def animo-language
             </footer>
 
         </div>
-        "
-
-    )
-
+        ")
     (style "header, footer {margin-top: 60px;} section {padding-top: 60px;}")
-
-    (script "$('.navbar').scrollspy(); $('.nav-collapse').collapse();")
-
-
-
+    (script "$('.navbar').scrollspy(); $('.nav-collapse').collapse();").

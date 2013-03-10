@@ -30,7 +30,7 @@
 
 		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			osmAttribution = 'Map data &copy; 2011 OpenStreetMap contributors',
-			osm = new L.TileLayer(osmUrl, {maxZoom: 18, attribution: osmAttribution});
+			osm = new L.TileLayer(osmUrl, {detectRetina: true, maxZoom: 18, attribution: osmAttribution});
 
 		map.setView(new L.LatLng(lon, lat), zoom).addLayer(osm);
 

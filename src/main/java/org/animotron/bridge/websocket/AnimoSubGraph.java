@@ -22,6 +22,8 @@ package org.animotron.bridge.websocket;
 
 import org.animotron.graph.index.Order;
 import org.animotron.statement.operator.DEF;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.index.IndexHits;
 
@@ -35,8 +37,8 @@ import java.io.IOException;
  */
 public class AnimoSubGraph extends OnTextMessage {
 
-	@Override
-	public void onMessage(String data) {
+	@OnWebSocketMessage
+	public void onMessage(Session session, String data) {
         if (data.isEmpty())
             return;
         
@@ -46,7 +48,7 @@ public class AnimoSubGraph extends OnTextMessage {
         IndexHits<Relationship> hits = Order._.queryDown(r.getEndNode());
         try {
         	for (Relationship rr : hits) {
-				cnn.sendMessage(rr.getType().name());
+				session.getRemote().sendString(rr.getType().name());
         	}
 		} catch (IOException e) {
         } finally {

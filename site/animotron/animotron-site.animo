@@ -10,5 +10,5 @@ def animotron-site
     (geo geo-app)
     (IDE IDE-app)
     (IMS IMS-app)
+    (e anime-app)
     (q animo-team)
-    

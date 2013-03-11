@@ -17,25 +17,18 @@
  *  You should have received a copy of
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
- */
-package org.animotron.bridge.websocket;
-
-import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
-
-/**
- * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
+ *
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class WebSocketServlet extends org.eclipse.jetty.websocket.servlet.WebSocketServlet {
+ (function($){
 
-    @Override
-    public void configure(WebSocketServletFactory factory) {
-//        factory.register(AnimoIMS.class);
-//        factory.register(AnimoSubGraph.class);
-//        factory.register(EvalAnimo.class);
-        factory.register(SearchAnimo.class);
-//        factory.register(SaveAnimo.class);
-    }
 
-}
+    var editor = $("#editor");
+
+    editor.onselect = function() {
+        console.log("offset: " + window.getSelection().getRangeAt(0).startOffset)
+    };
+
+
+})(jQuery);

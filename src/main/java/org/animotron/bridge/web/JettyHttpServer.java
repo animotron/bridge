@@ -23,10 +23,13 @@ package org.animotron.bridge.web;
 import org.animotron.Shell;
 import org.animotron.bridge.FSBridge;
 import org.animotron.bridge.websocket.WebSocketServlet;
-import org.eclipse.jetty.security.*;
+import org.eclipse.jetty.security.ConstraintMapping;
+import org.eclipse.jetty.security.ConstraintSecurityHandler;
+import org.eclipse.jetty.security.SecurityHandler;
 import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.*;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.security.Constraint;
 
 import java.util.Arrays;
@@ -69,7 +72,7 @@ public class JettyHttpServer {
     	
     	//setup servlet container
         jetty = new Server(jettyPort);
-        jetty.setGracefulShutdown(1000);
+        jetty.setStopTimeout(1000);
         jetty.setStopAtShutdown(true);
         
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);

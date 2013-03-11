@@ -22,6 +22,8 @@ package org.animotron.bridge.websocket;
 
 import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 
 import static org.animotron.graph.serializer.Serializer.STRING;
 
@@ -32,13 +34,13 @@ import static org.animotron.graph.serializer.Serializer.STRING;
  */
 public class AnimoIMS extends OnTextMessage {
 
-	@Override
-	public void onMessage(String data) {
+	@OnWebSocketMessage
+	public void onMessage(Session session, String data) {
         if (data.isEmpty())
             return;
 
         try {
-			cnn.sendMessage(STRING.serialize(new AnimoExpression(data), FileCache._));
+			session.getRemote().sendString(STRING.serialize(new AnimoExpression(data), FileCache._));
 		} catch (Throwable e) {
         	//XXX: send error message, if it come from serializer
 		}

@@ -170,7 +170,6 @@
 
     $(window).resize(resize);
 
-    $('.nav-collapse').collapse();
     $('.nav-collapse').on("shown", resize);
     $('.nav-collapse').on("hidden", resize);
 

@@ -23,7 +23,6 @@ package org.animotron.bridge.jabber;
 import javolution.util.FastMap;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.graph.AnimoGraph;
-import org.animotron.graph.serializer.Serializer;
 import org.animotron.statement.operator.DEF;
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.packet.Message;

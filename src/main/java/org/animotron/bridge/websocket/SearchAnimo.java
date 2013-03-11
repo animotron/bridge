@@ -25,12 +25,15 @@ import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
 import org.animotron.graph.AnimoGraph;
-import org.animotron.graph.serializer.Serializer;
 import org.animotron.io.Pipe;
 import org.animotron.manipulator.Evaluator;
 import org.animotron.manipulator.QCAVector;
 import org.animotron.statement.operator.DEF;
 import org.animotron.statement.operator.Utils;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketFrame;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
+import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Path;
@@ -38,19 +41,20 @@ import org.neo4j.graphdb.Relationship;
 
 import java.util.Iterator;
 
-import static org.animotron.graph.serializer.Serializer.*;
+import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class SearchAnimo extends OnTextMessage {
+@WebSocket
+public class SearchAnimo {
 
     private Pipe pipe = null;
 
-    @Override
-    public void onMessage(final String data) {
+    @OnWebSocketMessage
+    public void onMessage(final Session session, final String data) {
 
         if (data.isEmpty())
             return;
@@ -60,7 +64,7 @@ public class SearchAnimo extends OnTextMessage {
             private void sendThes (Relationship  r) throws Throwable {
                 Iterator<Path> it =  Utils.THES.traverse(r.getEndNode()).iterator();
                 while(it.hasNext()) {
-                    cnn.sendMessage(PRETTY_ANIMO.serialize(it.next().lastRelationship(), FileCache._));
+                    session.getRemote().sendString(PRETTY_ANIMO.serialize(it.next().lastRelationship(), FileCache._));
                 }
             }
 
@@ -76,7 +80,7 @@ public class SearchAnimo extends OnTextMessage {
                 pipe = Evaluator._.execute(null, e);
                 while ((v = pipe.take()) != null && i < 100) {
 //                    sendThes(v.getClosest());
-                    cnn.sendMessage(PRETTY_ANIMO.serialize(v.getClosest(), FileCache._));
+                    session.getRemote().sendString(PRETTY_ANIMO.serialize(v.getClosest(), FileCache._));
                     i++;
                 }
             }
@@ -98,7 +102,7 @@ public class SearchAnimo extends OnTextMessage {
                     Relationship r = DEF._.get(exp);
                     try {
                         if (r != null) {
-                            cnn.sendMessage(PRETTY_ANIMO.serialize(r, FileCache._));
+                            session.getRemote().sendString(PRETTY_ANIMO.serialize(r, FileCache._));
                         } else {
                             if (exp.indexOf(" ") > 0) {
                                 sendThes(new AnimoExpression(exp));

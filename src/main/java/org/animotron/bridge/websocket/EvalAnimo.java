@@ -23,6 +23,8 @@ package org.animotron.bridge.websocket;
 import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 
 import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO_RESULT;
 
@@ -31,15 +33,16 @@ import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO_RESULT;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class EvalAnimo extends OnTextMessage {
 
-    @Override
-    public void onMessage(String data) {
+public class EvalAnimo {
+
+    @OnWebSocketMessage
+    public void onMessage(Session session, String data) {
         if (data.isEmpty())
             return;
         try {
             Expression e = new AnimoExpression(data);
-            cnn.sendMessage(PRETTY_ANIMO_RESULT.serialize(e, FileCache._));
+            session.getRemote().sendString(PRETTY_ANIMO_RESULT.serialize(e, FileCache._));
         } catch (Throwable e) {
             //XXX: send error message
         }

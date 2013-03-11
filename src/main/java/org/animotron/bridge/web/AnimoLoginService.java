@@ -26,9 +26,8 @@ import org.eclipse.jetty.security.MappedLoginService;
 import org.eclipse.jetty.server.UserIdentity;
 import org.neo4j.graphdb.Relationship;
 
-import java.io.IOException;
-
 import javax.security.auth.Subject;
+import java.io.IOException;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>

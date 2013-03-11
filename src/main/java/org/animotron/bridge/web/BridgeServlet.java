@@ -34,8 +34,6 @@ import java.util.Enumeration;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED;
 import static org.animotron.bridge.web.WebSerializer.mime;
-import static org.animotron.graph.Properties.HASH;
-import static org.animotron.utils.MessageDigester.byteArrayToHex;
 import static org.animotron.utils.MessageDigester.uuid;
 
 /**

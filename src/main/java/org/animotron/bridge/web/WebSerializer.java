@@ -33,7 +33,7 @@ import org.neo4j.graphdb.Relationship;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 
-import static org.animotron.graph.serializer.Serializer.*;
+import static org.animotron.graph.serializer.Serializer.STRING;
 import static org.animotron.utils.MessageDigester.uuid;
 
 /**
@@ -60,7 +60,7 @@ public class WebSerializer {
         } else {
             res.setCharacterEncoding("UTF-8");
             res.setContentType(mime);
-            res.setContentLength(-1);
+            //res.setContentLength(-1);
             OutputStream os = res.getOutputStream();
             STRING.serialize(request, os, CACHE, uuid);
             os.close();

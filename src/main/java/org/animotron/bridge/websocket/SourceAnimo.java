@@ -22,6 +22,8 @@ package org.animotron.bridge.websocket;
 
 import org.animotron.cache.FileCache;
 import org.animotron.statement.operator.DEF;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.neo4j.graphdb.Relationship;
 
 import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
@@ -33,19 +35,20 @@ import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
  */
 public class SourceAnimo extends OnTextMessage {
 
-    @Override
-    public void onMessage(String data) {
+    @OnWebSocketMessage
+
+    public void onMessage(Session session, String data) {
         if (data.isEmpty())
             return;
         try {
             Relationship r = DEF._.get(data);
             if (r != null) {
-                cnn.sendMessage(PRETTY_ANIMO.serialize(r, FileCache._));
+                session.getRemote().sendString(PRETTY_ANIMO.serialize(r, FileCache._));
             } else {
                 //XXX: send error message
             }
         } catch (Throwable e) {
-        	sendError(e);
+        	sendError(session, e);
         }
     }
 }

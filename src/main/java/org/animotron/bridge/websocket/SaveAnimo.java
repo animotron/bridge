@@ -23,6 +23,8 @@ package org.animotron.bridge.websocket;
 import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 
 import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
 
@@ -33,13 +35,13 @@ import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
  */
 public class SaveAnimo extends OnTextMessage {
 
-    @Override
-    public void onMessage(String data) {
+    @OnWebSocketMessage
+    public void onMessage(Session session, String data) {
         if (data.isEmpty())
             return;
         try {
             Expression e = new AnimoExpression(data);
-            cnn.sendMessage(PRETTY_ANIMO.serialize(e, FileCache._));
+            session.getRemote().sendString(PRETTY_ANIMO.serialize(e, FileCache._));
         } catch (Throwable e) {
             //XXX: send error message
         }

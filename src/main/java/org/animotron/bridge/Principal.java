@@ -20,12 +20,12 @@
  */
 package org.animotron.bridge;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
 import org.apache.commons.codec.binary.Base64;
 import org.eclipse.jetty.security.MappedLoginService.UserPrincipal;
 import org.neo4j.graphdb.Relationship;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>

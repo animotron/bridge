@@ -23,6 +23,7 @@ package org.animotron.bridge.websocket;
 import org.eclipse.jetty.websocket.api.UpgradeRequest;
 import org.eclipse.jetty.websocket.api.UpgradeResponse;
 import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
+import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 
 /**
@@ -30,7 +31,7 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class WebSocketServlet extends org.eclipse.jetty.websocket.servlet.WebSocketServlet {
+public class WebSocketCreatorServlet extends WebSocketServlet {
 
     @Override
     public void configure(WebSocketServletFactory factory) {

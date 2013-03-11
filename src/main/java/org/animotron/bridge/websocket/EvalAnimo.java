@@ -25,6 +25,7 @@ import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
+import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO_RESULT;
 
@@ -34,6 +35,7 @@ import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO_RESULT;
  *
  */
 
+@WebSocket
 public class EvalAnimo {
 
     @OnWebSocketMessage

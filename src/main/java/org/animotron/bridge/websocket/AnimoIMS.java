@@ -24,6 +24,7 @@ import org.animotron.cache.FileCache;
 import org.animotron.expression.AnimoExpression;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
+import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 import static org.animotron.graph.serializer.Serializer.STRING;
 
@@ -32,7 +33,8 @@ import static org.animotron.graph.serializer.Serializer.STRING;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class AnimoIMS extends OnTextMessage {
+@WebSocket
+public class AnimoIMS {
 
 	@OnWebSocketMessage
 	public void onMessage(Session session, String data) {

@@ -20,7 +20,12 @@
  */
 package org.animotron.bridge.websocket;
 
+import org.eclipse.jetty.websocket.api.UpgradeRequest;
+import org.eclipse.jetty.websocket.api.UpgradeResponse;
+import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
+
+import java.io.IOException;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -31,11 +36,19 @@ public class WebSocketServlet extends org.eclipse.jetty.websocket.servlet.WebSoc
 
     @Override
     public void configure(WebSocketServletFactory factory) {
-//        factory.register(AnimoIMS.class);
-//        factory.register(AnimoSubGraph.class);
-//        factory.register(EvalAnimo.class);
-        factory.register(SearchAnimo.class);
-//        factory.register(SaveAnimo.class);
+        factory.setCreator(new WebSocketCreator() {
+            @Override
+            public Object createWebSocket(UpgradeRequest req, UpgradeResponse resp) {
+                switch (req.getSubProtocols().get(0)) {
+                    case "animoIMS" : return new AnimoIMS();
+                    case "eval"     : return new EvalAnimo();
+                    case "save"     : return new SaveAnimo();
+                    case "search"   : return new SearchAnimo();
+                    case "src"      : return new SourceAnimo();
+                    default         : return null;
+                }
+            }
+        });
     }
 
 }

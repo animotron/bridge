@@ -24,7 +24,12 @@ import org.animotron.cache.FileCache;
 import org.animotron.statement.operator.DEF;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
+import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.neo4j.graphdb.Relationship;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
 
@@ -33,7 +38,8 @@ import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class SourceAnimo extends OnTextMessage {
+@WebSocket
+public class SourceAnimo {
 
     @OnWebSocketMessage
 
@@ -47,8 +53,15 @@ public class SourceAnimo extends OnTextMessage {
             } else {
                 //XXX: send error message
             }
-        } catch (Throwable e) {
-        	sendError(session, e);
+        } catch (Throwable t) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            t.printStackTrace(pw);
+            try {
+                session.getRemote().sendString(sw.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

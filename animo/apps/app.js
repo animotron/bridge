@@ -85,7 +85,7 @@
                 },
 
                 onMessage : function(callback){
-                    onMessage = callback
+                    onMessage = callback;
                 }
 
             };

@@ -22,7 +22,7 @@ package org.animotron.bridge.web;
 
 import org.animotron.Shell;
 import org.animotron.bridge.FSBridge;
-import org.animotron.bridge.websocket.WebSocketServlet;
+import org.animotron.bridge.websocket.WebSocketCreatorServlet;
 import org.eclipse.jetty.security.ConstraintMapping;
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.SecurityHandler;
@@ -61,11 +61,7 @@ public class JettyHttpServer {
     	//initialize animo
     	if (startDB("data")) {
     		//if (!getSTART().hasRelationship(Direction.OUTGOING)) {
-                new ResourcesMap("/common").load("common/");
-                new ResourcesMap("/theme").load("theme/");
-                new ResourcesMap("/apps").load("apps/");
-                FSBridge._.load("animo/");
-                FSBridge._.load("etc/");
+                new ResourcesMap("/animo").load("animo/");
                 new ResourcesBridge("/binary").load("site/");
         	//}
     	}
@@ -81,11 +77,9 @@ public class JettyHttpServer {
 
         context.addServlet(new ServletHolder(new AnimoServlet()),"/*");
         context.addServlet(new ServletHolder(new BridgeServlet()),"/binary/*");
-        context.addServlet(new ServletHolder(new MapServlet("common/")),"/common/*");
-        context.addServlet(new ServletHolder(new MapServlet("theme/")),"/theme/*");
-        context.addServlet(new ServletHolder(new MapServlet("apps/")),"/apps/*");
-        context.addServlet(new ServletHolder(new WebSocketServlet()),"/ws/*");
-        
+        context.addServlet(new ServletHolder(new MapServlet("animo/")),"/animo/*");
+        context.addServlet(new ServletHolder(new WebSocketCreatorServlet()),"/ws/*");
+
 //        context.setSecurityHandler(getSecurityHandler());
         
         // ... and start it up

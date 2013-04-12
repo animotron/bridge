@@ -1,7 +1,0 @@
-def default-error-layout
-    "
-    <h1>" (get code) "</h1>
-    <h2>" (get title) "</h2>
-    <p>" (get message) "</p>
-    <p>" (each (get stack-trace) ((this stack-trace) <br>)) "</p>
-    "

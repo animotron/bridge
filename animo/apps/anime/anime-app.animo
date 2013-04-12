@@ -1,0 +1,34 @@
+def anime-app
+
+    (^html-page)
+    (layout app-layout)
+
+    (title "Anime")
+
+    (css
+        (bootstrap.css)
+        (bootstrap-responsive.css)
+    )
+
+    (js
+        (jquery.js)
+        (bootstrap.js)
+        (any app.js)
+        (any anime.js)
+    )
+
+    (style
+        "html, body {overflow: hidden} "
+        ".frame {position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "
+    )
+
+    (frame
+        "
+        <div id='main' class='frame'>
+            <div id='editor' contenteditable>
+                Bla bla bla...
+            </div>
+            <div id='console'></div>
+        </div>
+    ")
+

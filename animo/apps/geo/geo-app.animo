@@ -1,0 +1,30 @@
+def geo-app
+
+    (^html-page)
+    (layout app-layout)
+
+    (title "Geo!")
+
+    (css
+        (bootstrap.css)
+        (bootstrap-responsive.css)
+        (leaflet.css)
+    )
+
+    (js
+        (jquery.js)
+        (bootstrap.js)
+        (leaflet.js)
+        (any app.js)
+        (any geo.js)
+    )
+
+    (style
+        "html, body {overflow: hidden} "
+        ".frame {position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "
+    )
+
+    (script "$(function(){$.geo(51.31289, 37.855317, 13);});")
+
+    (frame "<div id='map' class='frame'></div>")
+

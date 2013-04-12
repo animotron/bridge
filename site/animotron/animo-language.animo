@@ -1,14 +1,13 @@
 def animo-language
     (^html-page)
-    (layout default-layout)
     (css
-        (any bootstrap.min.css)
-        (any bootstrap-responsive.min.css))
+        (bootstrap.css)
+        (bootstrap-responsive.css))
     (js
-        (any jquery.min.js)
-        (any bootstrap.min.js))
+        (jquery.js)
+        (bootstrap.js))
     (title "Animo")
-    (content
+    (layout
         "
         <nav class='navbar navbar-fixed-top'>
             <div class='navbar-inner'>

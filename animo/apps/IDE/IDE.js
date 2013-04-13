@@ -175,14 +175,14 @@
         update(getId(event.data));
     });
 
-    var saveSocket = $.socket("save", function(){
+    var saveSocket = $.socket("save", function(event){
         cons.modal("hide");
         editor.getSession().setValue(event.data);
         modified = false;
         update(getId(event.data));
     });
 
-    var srcSocket = $.socket("src", function(){
+    var srcSocket = $.socket("src", function(event){
         cons.modal("hide");
         var id = getId(event.data);
         editor.getSession().setValue(event.data);
@@ -191,7 +191,7 @@
         show();
     });
 
-    var searchSocket = $.socket("search", function(){
+    var searchSocket = $.socket("search", function(event){
         count++;
         caption.html("<a class='close'>&times;</a><h2>Searching...</h2><h6>Found " + count + "</h6>");
         var id = getId(event.data);

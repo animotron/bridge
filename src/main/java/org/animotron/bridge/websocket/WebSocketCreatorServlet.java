@@ -40,6 +40,7 @@ public class WebSocketCreatorServlet extends WebSocketServlet {
             public Object createWebSocket(UpgradeRequest req, UpgradeResponse resp) {
                 switch (req.getSubProtocols().get(0)) {
                     case "animoIMS" : return new AnimoIMS();
+                    case "echo"     : return new Echo();
                     case "eval"     : return new EvalAnimo();
                     case "save"     : return new SaveAnimo();
                     case "search"   : return new SearchAnimo();

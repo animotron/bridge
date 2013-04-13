@@ -23,12 +23,15 @@
  */
  (function($){
 
-
     var editor = $("#editor");
 
-    editor.onselect = function() {
-        console.log("offset: " + window.getSelection().getRangeAt(0).startOffset)
-    };
+    var echoSocket = $.socket("echo", function(event){
+        editor.text(event.data);
+    });
+
+//    editor.onselect = function() {
+//        console.log("offset: " + window.getSelection().getRangeAt(0).startOffset)
+//    };
 
 
 })(jQuery);

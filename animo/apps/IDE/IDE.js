@@ -425,7 +425,7 @@
             self.hide();
             res.show();
         }
-    }).liveChange(function(){
+    }).liveChange(function(event){
         var val = sinput.val();
         if (val != "") {
             self.hide();

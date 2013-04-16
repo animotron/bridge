@@ -43,7 +43,7 @@ import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO_RESULT;
 @WebSocket
 public class Echo {
 
-    private List<Session> set = FastList.newInstance();
+    private static List<Session> set = FastList.newInstance();
 
     @OnWebSocketMessage
     public void onMessage(Session session, String data) {
@@ -64,7 +64,7 @@ public class Echo {
     }
 
     @OnWebSocketClose
-    public void onClose (Session session) {
+    public void onClose (Session session, int status, String reason) {
         set.remove(session);
     }
 

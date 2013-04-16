@@ -26,12 +26,14 @@
     var editor = $("#editor");
 
     var echoSocket = $.socket("echo", function(event){
-        editor.text(event.data);
+        editor.val(event.data);
     });
 
-//    editor.onselect = function() {
-//        console.log("offset: " + window.getSelection().getRangeAt(0).startOffset)
-//    };
+    editor.change(function(){
+        echoSocket.send(editor.val());
+    });
+
+
 
 
 })(jQuery);

@@ -13,6 +13,7 @@ def anime-app
     (js
         (jquery.js)
         (bootstrap.js)
+        (wysihtml5.js)
         (any app.js)
         (any anime.js)
     )
@@ -24,11 +25,10 @@ def anime-app
 
     (frame
         "
-        <div id='main' class='frame'>
-            <div id='editor' contenteditable>
-                Bla bla bla...
-            </div>
-            <div id='console'></div>
+        <div id='editor' class='frame'>
+
         </div>
-    ")
+        <div></div>
+        "
+    )
 

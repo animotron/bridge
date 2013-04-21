@@ -13,22 +13,328 @@ def anime-app
     (js
         (jquery.js)
         (bootstrap.js)
-        (wysihtml5.js)
         (any app.js)
         (any anime.js)
     )
 
     (style
-        "html, body {overflow: hidden} "
-        ".frame {position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "
+        "body {padding-top: 40px} "
     )
 
     (frame
         "
-        <div id='editor' class='frame'>
+        <div id='editor' class='container' contenteditable>
+            <section id='0004da79-b695-db98-bba8-20c9d07faa29'>
+                <h1 id='0004da79-b695-fec0-bba8-20c9d07faa29'>
+                    Overview
+                </h1>
+                <p id='0004da79-b696-1a18-bba8-20c9d07faa29'>
+                    Most of people are happy with current set of programming language and tools till they need to write
+                    very big information system. <strong id='fuck'>Currently</strong> available tools and languages require programmer to be
+                    the link between problem and solution, as problem solver keeping in mind complete information about
+                    the problems. Humans have natural limits and this approach leads to  exponential growth in complexity
+                    of information system. The Animo project attempts to provide a solution by combining research results
+                    from linguistic, neuroscience and others areas, common term for which is algebra.
+                </p>
+                <p id='0004da79-b696-3958-bba8-20c9d07faa29'>
+                    RDF, SPARQL, OWL, XQuery, XSL and XML Database are well known technologies, but there is no single
+                    glue to put all this together. The main advantage of these formats is flexibility. However,
+                    that leads to many different representations of same structures (e.g DocBook, TEI and etc).
+                    The problem of complexity is similar to C libraries, in that we must operate at the level
+                    of the data structures. After C, came Java with its standard libraries, a language which
+                    programmers can use and which can be easily understood by other programmer. The Animo language aim
+                    to create universal language for people (not only programmers) to speak.
+                </p>
+                <p id='0004da79-b696-5c80-bba8-20c9d07faa29'>
+                    Each time we start new project, we have to choose which technologies we should use, and how to put
+                    them all together. We are also concerned with separating data from code, and constructing tests
+                    to assert the behaviour.
+                </p>
+                <p id='0004da79-b696-9330-bba8-20c9d07faa29'>
+                    Animo solves these issues and much more. With Animo, at design time your are not forced,
+                    for example, to have to choose top-down or bottom-up processing, it can be controlled
+                    by instructions. Default evaluation strategy similar to LISP.
+                    The Animo language cover PROLOG's use cases.
+                </p>
+                <p id='0004da79-b696-be28-bba8-20c9d07faa29'>
+                    The language incorporates many proven features whilst also incorporating some new ideas,
+                    with the aim of making programming more natural for humans. The eventual goal is to create a bridge
+                    between native languages and Animo structures, computer programming style should evolve to become
+                    a dialog with the computer and as such dialog constructs must be a part of the language itself.
+                    Currently the language constructions are based on English-Prime concepts, so you can write
+                    your code as through writting a book or specification.
+                </p>
+            </section>
 
+            <section id='0004da79-b696-fca8-bba8-20c9d07faa29'>
+                <h1 id='0004da79-b697-27a0-bba8-20c9d07faa29'>
+                    The Animo language
+                </h1>
+                <p id='0004da79-b697-6620-bba8-20c9d07faa29'>
+                    The Animo language is design for declarative information relationships representation,
+                    manipulations and processing agreements. It starts from a names-space, that points in the space
+                    (DEF-nodes, because defined by DEF operator), where each point have an unique name.
+                    Next is topological spaces that connect this points.
+                </p>
+                <p id='0004da79-b697-8d30-bba8-20c9d07faa29'>
+                    The main concept incorporates the notion of names-spaces animated by the context,
+                    reference and question operators.
+                </p>
+                <p id='0004da79-b697-b440-bba8-20c9d07faa29'>
+                    The context is key concept. It have simple definition: the outgoing relationships and incoming one
+                    with first order cyclic structures in references topological space.
+                </p>
+                <p id='0004da79-b697-d768-bba8-20c9d07faa29'>
+                    There are two groups of operators:  conditional or unconditional reference and question operators.
+                </p>
+                <p id='0004da79-b698-0648-bba8-20c9d07faa29'>
+                    References operators,  point to THE-node(s).
+                </p>
+                <ul id='0004da79-b698-2588-bba8-20c9d07faa29'>
+                    <li id='0004da79-b698-40e0-bba8-20c9d07faa29'>
+                        The default reference operator is AN: direct unconditional reference.
+                    </li>
+                    <li id='0004da79-b698-6020-bba8-20c9d07faa29'>
+                        ANY is a reference operator that after evaluation, a reference to (n)one THE-node is guaranteed
+                        (any means that either none or at least one reference is guaranteed,
+                        none because of security restriction for example).
+                    </li>
+                    <li id='0004da79-b698-8348-bba8-20c9d07faa29'>
+                        ALL is a reference operator that returns the THE-nodes down is-topology
+                        (excluding DEF-node referenced by ALL).
+                    </li>
+                    <li id='0004da79-b698-ae40-bba8-20c9d07faa29'>
+                        PREFER acts the same way as ALL, but only if a USE is defined in an evaluation context.
+                    </li>
+                </ul>
+                <p id='0004da79-b698-cd80-bba8-20c9d07faa29'>
+                    ANY, ALL, PREFER are conditional reference operators.
+                </p>
+                <p id='0004da79-b698-ecc0-bba8-20c9d07faa29'>
+                    Question operators used to select points base on intersections principal, GET operate is one.
+                </p>
+                <p id='0004da79-b699-0fe8-bba8-20c9d07faa29'>
+                    Each change in a topological space causes difference sequence of reactions in the structure.
+                    For example having a structure A-B-C will produce on answer to a question,
+                    but A-C-B structure will produce different answer to the same question until stored C
+                    for first sequence and B for second.
+                </p>
+                <p id='0004da79-b699-42b0-bba8-20c9d07faa29'>
+                    Examples:
+                </p>
+                <pre id='0004da79-b699-6da8-bba8-20c9d07faa29'>def dress colour red.</pre>
+                <pre id='0004da79-b699-9c88-bba8-20c9d07faa29'>all red =&gt; dress.</pre>
+                <pre id='0004da79-b699-cb68-bba8-20c9d07faa29'>all colour =&gt; red.</pre>
+            </section>
+
+            <section id='0004da79-b699-fe30-bba8-20c9d07faa29'>
+                <h1 id='0004da79-b69a-5808-bba8-20c9d07faa29'>
+                    The Animotron – virtual machine
+                </h1>
+                <p id='0004da79-b69a-7748-bba8-20c9d07faa29'>
+                    Hidden behavior are graph optimization by identical leaf collapsing by graph builder,
+                    persistent graph (one of option do not run garbage collector at all), caching result of evaluation
+                    and serialization because a deterministic model of evaluation is used and clear or update cache
+                    by destruction or change waves (created by graph builder).
+                </p>
+                <p id='0004da79-b69a-9a70-bba8-20c9d07faa29'>
+                    There are several types of manipulators, one of them is dependency analyzer for destruction
+                    or change waves creation (aka graph restructurization). Manipulator models have plugable API,
+                    so it is simple to write another one and activate it.
+                </p>
+                <p id='0004da79-b69a-bd98-bba8-20c9d07faa29'>
+                    The serializer activate graph traverser, which can traverse the Animo graph till it meet
+                    evaluable operator and send it to evaluator to calculate, result direct traverse
+                    to next node in the Animo graph.
+                </p>
+                <p id='0004da79-b69a-e890-bba8-20c9d07faa29'>
+                    The Evaluator is one of the manipulators, its processing model is interesting,
+                    because the Animo language is created by the realisation of that model.
+                    It is difficult to picture that model, because it is in a multi-dimensional space.
+                </p>
+            </section>
+
+            <section id='0004da79-b69b-0bb8-bba8-20c9d07faa29'>
+                <h1 id='0004da79-b69b-4e20-bba8-20c9d07faa29'>
+                    Parsers
+                </h1>
+                <p id='0004da79-b69b-7148-bba8-20c9d07faa29'>
+                    The parsers aim to transform  the input stream into Animo sub-graph representation.
+                    At present there are several types: Animo (LISP-like), XML, binary or file system mimic.
+                    To simplify plain text transformations different parsers can be used, but the default one is animo.
+                </p>
+                <p id='0004da79-b69b-9858-bba8-20c9d07faa29'>
+                    The Animo parser allows to drop out AN operator and simplify syntax by , (comma).
+                    Pure Lisp parser difficult to use because of brackets, that’s why Animo syntax is developing.
+                </p>
+                <h2 id='0004da79-b69b-c738-bba8-20c9d07faa29'>
+                    Syntax differences examples:
+                </h2>
+                <p id='0004da79-b69b-e290-bba8-20c9d07faa29'>
+                    LISP:
+                </p>
+                <pre id='0004da79-b69c-01d0-bba8-20c9d07faa29'>def companyA (an mail-address (an office1-address) (an office2-address))</pre>
+                <p id='0004da79-b69c-2110-bba8-20c9d07faa29'>
+                    Animo:
+                </p>
+                <pre id='0004da79-b69c-4438-bba8-20c9d07faa29'>def companyA mail-address office1-address, office2-address.</pre>
+                <p id='0004da79-b69c-6378-bba8-20c9d07faa29'>
+                    Of course, it’s not possible to run away from brackets, so Animo syntax does use it
+                    to separate the same level children.
+                </p>
+                <p id='0004da79-b69c-7ed0-bba8-20c9d07faa29'>
+                    The XML parser transform XML structure into Animo sub-graph representation without information lost.
+                    Binary parser allow to store files to global name space and reference to it.
+                </p>
+                <p id='0004da79-b69c-a1f8-bba8-20c9d07faa29'>
+                    There are no limits to number or type of parsers.
+                </p>
+            </section>
+
+            <section id='0004da79-b69c-c520-bba8-20c9d07faa29'>
+                <h1 id='0004da79-b69c-f7e8-bba8-20c9d07faa29'>
+                    Why Animo helps?
+                </h1>
+                <p id='0004da79-b69d-1728-bba8-20c9d07faa29'>
+                    What makes Animo concept different? Main advantages - no needs in programmer as problem solver,
+                    this role handled by different manipulators. Information system programmer should give expressions
+                    set (aka knowledge) and dialogue as a way to resolve structure conflicts or debugging.
+                    The Animi (natural language bridge project) extends this idea to allow information system
+                    developing in dialog on natural language.
+                </p>
+                <p id='0004da79-b69d-3668-bba8-20c9d07faa29'>
+                    Another feature helps to reduce calculations by magnitude of read vs write request.
+                    That is change waves. The Animotron can trace dependence from incoming data to result one
+                    and update results by recalculation only new data. In set with Animo changers protocol it possible
+                    to update only small region on page at browser after getting new/modifications in data
+                    that this page depend on and without any attention from information system programmer.
+                    In practice, this means breaking away from many details of programming and focus on key properties
+                    of the final product.
+                </p>
+            </section>
+
+            <section id='rationale'>
+                <h1 id='0004da79-b69d-9428-bba8-20c9d07faa29'>
+                    Animo rationale
+                </h1>
+                <p id='0004da79-b69d-b750-bba8-20c9d07faa29'>
+                    One of the application possibilities of a super-high level programming language is its use
+                    in natural language processing (NLP), Machine Learning (ML) and Machine Translation (MT).
+                    Both NLP and MT applications are varied reflecting different interest and exploitation ambitions.
+                    One of the project goals is to demonstrate the advantages of Animo in NLP (in particular,
+                    either as language or text generation, or as a QA system) and in Machine Learning
+                    and Machine Translation through the application of a foundation ontology language
+                    as a more appropriate approach to improve and/or replace current practices in those fields.
+                </p>
+                <p id='0004da79-b69d-e248-bba8-20c9d07faa29'>
+                    It looks more sensible not to join the data-mining bandwagon (including sentiment analysis, etc.)
+                    or the mixed statistical and rule based processing of large corpora. The reason for such a different
+                    approach is that the methods mentioned result in poor quality, a low rate of relevant hits
+                    in various search applications called content analysis or content processing, creating
+                    a huge waste in processing time and loss of energy. The failure to integrate domain ontologies
+                    so that knowledge (representation) management applications could be standardised, etc.
+                    to offer transparency and cross-fertilisation is also a motivation behind taking such a turn.
+                </p>
+                <p id='0004da79-b69e-0188-bba8-20c9d07faa29'>
+                    It is envisioned that
+                </p>
+                <ul id='0004da79-b69e-2898-bba8-20c9d07faa29'>
+                    <li id='0004da79-b69e-4bc0-bba8-20c9d07faa29'>
+                        the cost of high quality translation of documents and textual data
+                    </li>
+                    <li id='0004da79-b69e-76b8-bba8-20c9d07faa29'>
+                        the need for life-long education and training of people who have to stay familiar
+                        and keep abreast with changes to technologies that involve changes to jobs
+                        and trades and employment
+                    </li>
+                    <li id='0004da79-b69e-99e0-bba8-20c9d07faa29'>
+                        the outsourcing of human capabilities to smart devices
+                    </li>
+                </ul>
+                <p id='0004da79-b69e-b920-bba8-20c9d07faa29'>
+                    are likely to continue with designing and manufacturing prospective gadgets
+                    that make personal learning and knowledge checks possible.
+                </p>
+                <p id='0004da79-b69e-e418-bba8-20c9d07faa29'>
+                    The technology may be complete with the option of recording of the progress that one makes
+                    in acquiring new knowledge in his life-time in sync with the availability of repertories
+                    of reliable collective knowledge representations through hand-held devices.
+                </p>
+                <p id='0004da79-b69f-0740-bba8-20c9d07faa29'>
+                    All that boils down to a few number of basic issues that may have a solution
+                    by using Animo for collaborative technologies in the WEB to produce
+                    the next level of integration of man and machine.
+                </p>
+            </section>
+
+            <section id='0004da79-b69f-6cd0-bba8-20c9d07faa29'>
+                <h1 id='0004da79-b69f-8c10-bba8-20c9d07faa29'>
+                    Animo future
+                </h1>
+                <p id='0004da79-b69f-b320-bba8-20c9d07faa29'>
+                    It should be realised that the translation of natural language texts in written form calls
+                    for an evaluation model consisting of at least two parties who agree on the equivalence
+                    or identical value (balance, symmetry) of phrases of different lengths and structures
+                    in natural language one (L1) and language two (L2).
+                </p>
+                <p id='0004da79-b69f-de18-bba8-20c9d07faa29'>
+                    This procedure lacks from present day MT and is a reason why it has so many mistakes in them.
+                    The solution is to reverse the approach - have pre-processing instead of post-processing.
+                </p>
+                <p id='0004da79-b6a0-0910-bba8-20c9d07faa29'>
+                    The knowledge of the world and of the self of the animal/human being is both inherited
+                    and instinctive as well as acquired and conditioned during the life-time of anything animated
+                    or spirited, including robots and machines that simulate human behavior. The representation
+                    of the world in computers by concept graphs and visual thesauri for instance do not show
+                    the dynamic changes between semantics and syntax, or the development of lexicography.
+                    All that may be mended by using animo tools for representation of knowledge and language.
+                    Context and pragmatics should no longer be separated from anything in focus that is either input
+                    to or output from the participants of an interaction, including communication in a natural language.
+                </p>
+                <p id='0004da79-b6a0-3020-bba8-20c9d07faa29'>
+                    The problems to be solved cover the issues of
+                </p>
+                <ul id='0004da79-b6a0-5348-bba8-20c9d07faa29'>
+                    <li id='0004da79-b6a0-89f8-bba8-20c9d07faa29'>
+                        creating the equivalent of code tables, i.e. one to one relation between a referent,
+                        a symbol and reference itself. This means that the concept of relation as seen by semantics
+                        in formal logic (Boolean algebra, syntax parsing and foundation ontology) and applied
+                        linguistics will be abandoned to give way to dynamic representation. Also the division
+                        of knowledge representation into dictionaries and lexicons (encyclopedias), i.e. semantics
+                        and pragmatics should be removed and WordNet [1] should be redesigned;
+                    </li>
+                    <li id='0004da79-b6a0-b8d8-bba8-20c9d07faa29'>
+                        the redesign of WordNet will help sort out the problem of search for content, which
+                        is currently awkward due to the lack of chained relations of transformations of various
+                        linguistics forms (i.e. parts of speech) and a cross-section of semantic equivalence between
+                        various sentence patterns, verbs, etc. of different contexts. So the demonstration
+                        of how basically most operations consist of a search operation which only ends well
+                        if it returns a match as opposed to a hit. That means that at the foundation level
+                        of ontologies an interface has to be created that allows for traversing from generic
+                        to specific items across all domains that there are within the universe of known objects,
+                        relations and properties showing where the edges of unknown territories are both
+                        for individuals and for the multilingual language communities;
+                    </li>
+                    <li id='0004da79-b6a0-eba0-bba8-20c9d07faa29'>
+                        the reference to the real world as it is documented through various copies, replicas
+                        and recordings of various modalities, most of which indicate analog signal processing
+                        must be aligned to the external representations of concepts, or the products of mental
+                        operations, of which a complete system is available to explain how we generate the elements
+                        of natural language phrases or sequences. The issue is to find and demonstrate how we use
+                        2D representations in an alternating fashion to find our way both in the real physical
+                        and the virtual or mental world using a new lean ontology (Go-LORP [2]) as a language
+                        independent representation tool to generate verbal (written) utterances in any natural
+                        language that is aligned to such a common lean ontology.
+                    </li>
+                </ul>
+                <p id='0004da79-b6a1-1698-bba8-20c9d07faa29'>
+                    The Animo project do not putting goal to invent something new, but it target is merge
+                    and integrate existing research result and technologies to create single workspace
+                    for information systems developing. Work that is done is the preparation for bigger steps:
+                    programming on natural language.
+                </p>
+            </section>
         </div>
-        <div></div>
         "
     )
 

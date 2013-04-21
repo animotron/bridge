@@ -25,6 +25,8 @@
 
  (function($){
 
+     $.session = "" + Math.random();
+
    /*
     *  The simple socket management system
     */

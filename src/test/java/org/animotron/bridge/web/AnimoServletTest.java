@@ -34,7 +34,7 @@ public class AnimoServletTest extends ATest {
     @Test
     public void test() throws Throwable {
     	
-    	JettyHttpServer server = new JettyHttpServer();
+    	HttpServer server = new HttpServer();
     	server.start();
     	
     	AnimoServlet servlet = new AnimoServlet();

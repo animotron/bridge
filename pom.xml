@@ -31,44 +31,13 @@
 			<artifactId>core</artifactId>
 			<version>0.1.M06</version>
 		</dependency>
-		<!-- logger -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4jVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>${slf4jVersion}</version>
-		</dependency>
-		<!-- servlet container -->
-		<!-- <dependency> <groupId>javax</groupId> <artifactId>javaee-api</artifactId> 
-			<version>6.0</version> <type>jar</type> <scope>compile</scope> </dependency> -->
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-servlet</artifactId>
-			<version>${jettyVersion}</version>
-		</dependency>
 
         <dependency>
-            <groupId>org.eclipse.jetty.websocket</groupId>
-            <artifactId>websocket-servlet</artifactId>
-            <version>${jettyVersion}</version>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.0.0.CR3</version>
+            <scope>compile</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.jetty.websocket</groupId>
-            <artifactId>websocket-server</artifactId>
-            <version>${jettyVersion}</version>
-        </dependency>
-
-        <dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>3.0-alpha-1</version>
-			<scope>compile</scope>
-		</dependency>
 
 		<!-- OAuth -->
 		<dependency>
@@ -176,14 +145,14 @@
 					<assembleDirectory>${staging.dir}</assembleDirectory>
 					<programs>
 						<program>
-							<mainClass>org.animotron.bridge.web.JettyHttpServer</mainClass>
+							<mainClass>org.animotron.bridge.web.HttpServer</mainClass>
 							<name>animotron</name>
 						</program>
 					</programs>
 					<daemons>
 						<daemon>
 							<id>animobridge</id>
-							<mainClass>org.animotron.bridge.web.JettyHttpServer</mainClass>
+							<mainClass>org.animotron.bridge.web.HttpServer</mainClass>
 							<commandLineArguments>
 								<commandLineArgument>start</commandLineArgument>
 							</commandLineArguments>

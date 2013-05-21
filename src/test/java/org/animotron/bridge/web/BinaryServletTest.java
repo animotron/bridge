@@ -43,7 +43,7 @@ public class BinaryServletTest extends ATest {
     public void test() throws Throwable {
         FSBridge._.load("src/test/resources/animo/");
         new ResourcesBridge(URI_CONTEXT).load("src/test/resources/site/");
-        BridgeServlet servlet = new BridgeServlet();
+        BridgeHandler servlet = new BridgeHandler();
         String uri = STRING.serialize(new AnimoExpression("get uri any favicon."));
         HttpRequest request = new HttpRequest(uri, "localhost") {
             @Override

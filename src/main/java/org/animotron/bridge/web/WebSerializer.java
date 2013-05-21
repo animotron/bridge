@@ -30,9 +30,11 @@ import org.animotron.statement.query.ANY;
 import org.animotron.statement.query.GET;
 import org.neo4j.graphdb.Relationship;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.OutputStream;
+import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.util.CharsetUtil;
 
+import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
 import static org.animotron.graph.serializer.Serializer.STRING;
 import static org.animotron.utils.MessageDigester.uuid;
 
@@ -49,21 +51,27 @@ public class WebSerializer {
 
     private static Cache CACHE = FileCache._;
 
-    public static void serialize(Expression request, HttpServletResponse res) throws Throwable, ENotFound {
+    public static void serialize(Expression request, FullHttpResponse res) throws Throwable, ENotFound {
         serialize(request, res, uuid().toString());
     }
 
-    public static void serialize(Expression request, HttpServletResponse res, String uuid) throws Throwable, ENotFound {
+    public static void serialize(Expression request, FullHttpResponse res, String uuid) throws Throwable, ENotFound {
         String mime = mime(request);
         if (mime.isEmpty()) {
             throw new ENotFound(request);
         } else {
-            res.setCharacterEncoding("UTF-8");
-            res.setContentType(mime);
+        	//res.headers().set(CONTENT_TYPE, "text/html; charset=UTF-8");
+        	res.headers().set(CONTENT_TYPE, mime+"; charset=UTF-8");
+        	
             //res.setContentLength(-1);
-            OutputStream os = res.getOutputStream();
+        	
+        	StringBuilder os = new StringBuilder();
+            //OutputStream os = res.getOutputStream();
+
             STRING.serialize(request, os, CACHE, uuid);
-            os.close();
+            
+            res.content().writeBytes(Unpooled.copiedBuffer(os, CharsetUtil.UTF_8));
+            //os.close();
         }
     }
 

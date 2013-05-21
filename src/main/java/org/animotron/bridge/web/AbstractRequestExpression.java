@@ -28,7 +28,9 @@ import org.animotron.statement.operator.REF;
 import org.animotron.statement.query.ANY;
 import org.animotron.statement.query.GET;
 
-import javax.servlet.http.HttpServletRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpHeaders.Names;
+
 import java.io.IOException;
 import java.util.Enumeration;
 
@@ -44,10 +46,14 @@ public abstract class AbstractRequestExpression extends Expression {
     public static final String SITE = "site";
     public static final String SERVER_NAME = "server-name";
 
-    protected final HttpServletRequest req;
+    protected final FullHttpRequest req;
 
-    public AbstractRequestExpression(HttpServletRequest req) throws Throwable {
+    public AbstractRequestExpression(FullHttpRequest req) throws Throwable {
         this.req = req;
+    }
+    
+    private String serverName() {
+    	return req.headers().get(Names.HOST);
     }
 
     @Override
@@ -59,7 +65,7 @@ public abstract class AbstractRequestExpression extends Expression {
                     builder._(REF._, SITE);
                     builder.start(WITH._);
                         builder._(REF._, SERVER_NAME);
-                        builder._(req.getServerName());
+                        builder._(serverName());
                     builder.end();
                 builder.end();
             builder.end();
@@ -77,11 +83,11 @@ public abstract class AbstractRequestExpression extends Expression {
     private void uri() throws AnimoException, IOException {
         builder.start(AN._);
             builder._(REF._, HOST);
-            builder._(req.getServerName());
+            builder._(serverName());
         builder.end();
         builder.start(AN._);
             builder._(REF._, URI);
-            builder._(req.getRequestURI());
+            builder._(serverName());
         builder.end();
     }
 

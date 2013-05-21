@@ -37,7 +37,7 @@ import static org.junit.Assert.assertArrayEquals;
  */
 public class FAnimoServletTest extends ATest {
 
-    private void test(AnimoServlet servlet, String uri) throws IOException, ServletException {
+    private void test(AnimoHandler servlet, String uri) throws IOException {
         HttpRequest request = new HttpRequest(uri, "localhost");
         HttpResponse response = new HttpResponse(false);
         servlet.doGet(request, response);
@@ -48,7 +48,7 @@ public class FAnimoServletTest extends ATest {
     public void test() throws Throwable {
         FSBridge._.load("src/test/resources/animo/");
         new ResourcesBridge("/binary").load("src/test/resources/site/");
-        AnimoServlet servlet = new AnimoServlet();
+        AnimoHandler servlet = new AnimoHandler();
         test(servlet, "/favicon");
         test(servlet, "/favicon/ico");
         test(servlet, "/favicon.ico");

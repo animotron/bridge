@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011-2012 The Animo Project
+ *  Copyright (C) 2011-2013 The Animo Project
  *  http://animotron.org
  *
  *  This file is part of Animotron.
@@ -21,7 +21,6 @@
 package org.animotron.bridge.web;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -37,7 +36,7 @@ public class HttpServer {
 	
     private static final int HTTP_PORT = 7532;
 
-    public static void run(int port) throws Exception {
+    public void run(int port) throws Exception {
         // Configure the server.
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -89,8 +88,21 @@ public class HttpServer {
 //        System.out.println(Arrays.toString(jetty.getConnectors()));
 //    }
 
-    public static void main(String[] args) throws Exception {
+	public void start() throws Exception {
+    	init();
+    	
     	run(HTTP_PORT);
-        Shell.process();
+	}
+
+	public void stop() {
+		//XXX: ????
+	}
+
+	public static void main(String[] args) throws Exception {
+    	HttpServer server = new HttpServer();
+    	
+    	server.start();
+        
+    	Shell.process();
 	}
 }

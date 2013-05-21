@@ -37,7 +37,7 @@ public class AnimoServletTest extends ATest {
     	HttpServer server = new HttpServer();
     	server.start();
     	
-    	AnimoServlet servlet = new AnimoServlet();
+    	AnimoHandler servlet = new AnimoHandler();
     	HttpRequest request = new HttpRequest("/","localhost");
     	HttpResponse response = new HttpResponse(false);
     	servlet.doGet(request, response);

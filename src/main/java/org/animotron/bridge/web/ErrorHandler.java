@@ -27,33 +27,34 @@ import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 import org.animotron.statement.query.ANY;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpResponseStatus;
+
 import java.io.*;
 
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static org.animotron.bridge.web.WebSerializer.serialize;
 
 /**
+ * 
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
- *
  */
 public class ErrorHandler {
 
-    public static void doRequest(HttpServletRequest req, HttpServletResponse res, Throwable x) throws IOException {
+	public static void messageReceived(Throwable x, ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
         long startTime = System.currentTimeMillis();
-        int status = SC_INTERNAL_SERVER_ERROR;
+        HttpResponseStatus status = INTERNAL_SERVER_ERROR;
         try {
             if (x instanceof ENotFound || x instanceof FileNotFoundException) {
-                status =  SC_NOT_FOUND;
+                status =  NOT_FOUND;
                 res.setStatus(status);
-                serialize(new AnimoRequest(req, SC_NOT_FOUND, null), res);
+                serialize(new AnimoRequest(req, NOT_FOUND, null), res);
             } else {
                 res.reset();
                 res.setStatus(status);
-                serialize(new AnimoRequest(req, SC_INTERNAL_SERVER_ERROR, x), res);
+                serialize(new AnimoRequest(req, INTERNAL_SERVER_ERROR, x), res);
             }
         } catch (Throwable t) {
             res.reset();
@@ -65,7 +66,6 @@ public class ErrorHandler {
             t.printStackTrace(pw);
             pw.close();
             os.close();
-
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
     }
@@ -78,7 +78,7 @@ public class ErrorHandler {
         private Throwable x;
         private int status;
 
-        public AnimoRequest(HttpServletRequest req, int status, Throwable x) throws Throwable {
+        public AnimoRequest(FullHttpRequest req, int status, Throwable x) throws Throwable {
             super(req);
             this.status = status;
             this.x = x;

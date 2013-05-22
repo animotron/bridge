@@ -28,12 +28,13 @@ import org.animotron.statement.operator.REF;
 import org.animotron.statement.query.ANY;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.*;
 
 import java.io.*;
 
+import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import static org.animotron.bridge.web.WebSerializer.serialize;
 
 /**
@@ -48,24 +49,27 @@ public class ErrorHandler {
         HttpResponseStatus status = INTERNAL_SERVER_ERROR;
         try {
             if (x instanceof ENotFound || x instanceof FileNotFoundException) {
+            	
+            	FullHttpResponse res = new DefaultFullHttpResponse(HTTP_1_1, OK);
                 status =  NOT_FOUND;
-                res.setStatus(status);
-                serialize(new AnimoRequest(req, NOT_FOUND, null), res);
+            	res.setStatus(status);
+                serialize(new AnimoRequest(msg, NOT_FOUND.code(), null), res);
             } else {
-                res.reset();
+            	FullHttpResponse res = new DefaultFullHttpResponse(HTTP_1_1, OK);
                 res.setStatus(status);
-                serialize(new AnimoRequest(req, INTERNAL_SERVER_ERROR, x), res);
+                serialize(new AnimoRequest(msg, INTERNAL_SERVER_ERROR.code(), x), res);
             }
         } catch (Throwable t) {
-            res.reset();
+        	FullHttpResponse res = new DefaultFullHttpResponse(HTTP_1_1, OK);
             res.setStatus(status);
-            res.setCharacterEncoding("UTF-8");
-            res.setContentType("text/plain");
-            OutputStream os = res.getOutputStream();
+        	res.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
+
+        	ByteArrayOutputStream os = new ByteArrayOutputStream();
+
             PrintWriter pw = new PrintWriter(os);
             t.printStackTrace(pw);
-            pw.close();
-            os.close();
+
+            res.content().writeBytes(os.toByteArray());
         }
         System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
     }

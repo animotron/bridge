@@ -53,15 +53,15 @@ public class BridgeHandler extends AbstractHandler {
 	private final static long EXPIRES_IN = 365 * 24 * 60 * 60 * 1000;
 
 	@Override
-	public void messageReceived(ChannelHandlerContext ctx, FullHttpRequest msg)
+	public void messageReceived(ChannelHandlerContext ctx, FullHttpRequest request)
 			throws Exception {
 
-		if (!msg.getDecoderResult().isSuccess()) {
+		if (!request.getDecoderResult().isSuccess()) {
 			sendError(ctx, BAD_REQUEST);
 			return;
 		}
 
-		if (msg.getMethod() != GET) {
+		if (request.getMethod() != GET) {
 			sendError(ctx, METHOD_NOT_ALLOWED);
 			return;
 		}
@@ -69,7 +69,7 @@ public class BridgeHandler extends AbstractHandler {
         InputStream is = null;
         try {
 
-            String id = msg.getUri().substring(1);
+            String id = request.getUri().substring(1);
 
             Relationship r = DEF._.get(id);
             if (r == null) {
@@ -81,16 +81,16 @@ public class BridgeHandler extends AbstractHandler {
             String mime = mime(r);
             mime = mime.isEmpty() ? "application/octet-stream" : mime;
             
-            sendFile(ctx, msg, file, mime);
+            sendFile(ctx, request, file, mime);
             
         } catch (Throwable t) {
-            //XXX: ErrorHandler.doRequest(req, res, t);
+            ErrorHandler.messageReceived(t, ctx, request);
         } finally {
             if (is != null) is.close();
         }
 	}
 	
-	protected void sendFile(final ChannelHandlerContext ctx, final FullHttpRequest msg, final File file, final String mime) throws IOException {
+	protected void sendFile(final ChannelHandlerContext ctx, final FullHttpRequest request, final File file, final String mime) throws IOException {
 		final RandomAccessFile raf;
 		try {
 			raf = new RandomAccessFile(file, "r");
@@ -105,27 +105,28 @@ public class BridgeHandler extends AbstractHandler {
 		long modified = file.lastModified();
         setDateHeader(res, LAST_MODIFIED, new Date(modified));
         
-        boolean isHTTP11 = isHTTP11(msg.getProtocolVersion());
+        boolean isHTTP11 = isHTTP11(request.getProtocolVersion());
         if (isHTTP11) {
             String hash = uuid().toString();
             res.headers().add(ETAG, hash);
-            List<String> etag = msg.headers().getAll(IF_NONE_MATCH);
+            List<String> etag = request.headers().getAll(IF_NONE_MATCH);
             if (!etag.isEmpty()) {
             	sendNotModified(ctx);
+            	raf.close();
                 return;
             }
         }
-        long since = Long.valueOf( msg.headers().get(IF_MODIFIED_SINCE) );
+        long since = Long.valueOf( request.headers().get(IF_MODIFIED_SINCE) );
         long time = System.currentTimeMillis();
         if (since < modified || since > time) {
         	setContentLength(res, fileLength);
         	if (isHTTP11) {
                 res.headers().set(CACHE_CONTROL, "public, max-age=" + MAX_AGE);
             }
-            setDateHeader(msg, EXPIRES, new Date(time + EXPIRES_IN));
+            setDateHeader(request, EXPIRES, new Date(time + EXPIRES_IN));
             res.headers().set(CONTENT_TYPE, mime);
 
-    		if (isKeepAlive(msg)) {
+    		if (isKeepAlive(request)) {
     			res.headers().set(CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
     		}
 
@@ -136,7 +137,7 @@ public class BridgeHandler extends AbstractHandler {
     		ChannelFuture writeFuture = ctx.write(new ChunkedFile(raf, 0, fileLength, 8192));
 
     		// Decide whether to close the connection or not.
-    		if (!isKeepAlive(msg)) {
+    		if (!isKeepAlive(request)) {
     			// Close the connection when the whole content is written out.
     			writeFuture.addListener(ChannelFutureListener.CLOSE);
     		}

@@ -29,10 +29,13 @@ import org.animotron.statement.query.ANY;
 import org.animotron.statement.query.GET;
 
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.HttpHeaders.Names;
 
 import java.io.IOException;
-import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -92,15 +95,22 @@ public abstract class AbstractRequestExpression extends Expression {
     }
 
     private void params() throws AnimoException, IOException {
-        Enumeration<String> names = req.getParameterNames();
-        while (names.hasMoreElements()) {
-            String name = names.nextElement();
-            builder.start(AN._);
-            builder._(REF._, name);
-            for  (String value : req.getParameterValues(name)) {
-                builder._(value);
+        final QueryStringDecoder queryStringDecoder = new QueryStringDecoder(req.getUri());
+        final Map<String, List<String>> params = queryStringDecoder.parameters();
+
+        if (!params.isEmpty()) {
+            for (Entry<String, List<String>> p: params.entrySet()) {
+                final String name = p.getKey();
+
+                builder.start(AN._);
+                builder._(REF._, name);
+
+                final List<String> values = p.getValue();
+                for (String value : values) {
+                    builder._(value);
+                }
+                builder.end();
             }
-            builder.end();
         }
     }
 

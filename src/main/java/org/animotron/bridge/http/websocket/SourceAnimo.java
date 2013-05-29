@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011-2012 The Animo Project
+ *  Copyright (C) 2011-2013 The Animo Project
  *  http://animotron.org
  *
  *  This file is part of Animotron.
@@ -22,11 +22,9 @@ package org.animotron.bridge.http.websocket;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import org.animotron.expression.AnimoExpression;
 import org.animotron.statement.operator.DEF;
 import org.neo4j.graphdb.Relationship;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 

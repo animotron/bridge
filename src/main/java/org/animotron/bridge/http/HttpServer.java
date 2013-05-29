@@ -37,8 +37,6 @@ import org.animotron.cache.Cache;
 import org.animotron.cache.FileCache;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.animotron.graph.AnimoGraph.startDB;
 

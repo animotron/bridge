@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011-2012 The Animo Project
+ *  Copyright (C) 2011-2013 The Animo Project
  *  http://animotron.org
  *
  *  This file is part of Animotron.
@@ -33,8 +33,6 @@ import java.nio.file.attribute.UserPrincipal;
  */
 public class Principal implements UserPrincipal {
 	
-	private static final long serialVersionUID = -8124711283293498187L;
-
 	private Relationship def;
 	
 	public Principal(Relationship account) {

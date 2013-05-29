@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011-2012 The Animo Project
+ *  Copyright (C) 2011-2013 The Animo Project
  *  http://animotron.org
  *
  *  This file is part of Animotron.
@@ -85,7 +85,7 @@ public class AnimoHandler extends HttpHandler {
 
 	protected static class AnimoRequest extends AbstractRequestExpression {
 		private static final int MAX_PARTS_COUNT = 12;
-		private List<String> list = new ArrayList(MAX_PARTS_COUNT);
+		private List<String> list = new ArrayList<String>(MAX_PARTS_COUNT);
 		private static final String ROOT = "root";
 		public AnimoRequest(FullHttpRequest req) throws Throwable {
 			super(req);

@@ -18,15 +18,13 @@
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.animotron.bridge.websocket;
+package org.animotron.bridge.http.websocket;
 
-import org.animotron.cache.FileCache;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.animotron.expression.AnimoExpression;
-import org.animotron.expression.Expression;
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
-import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
+import static org.animotron.bridge.http.HttpServer.CACHE;
 import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
 
 /**
@@ -34,18 +32,18 @@ import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-@WebSocket
 public class SaveAnimo {
 
-    @OnWebSocketMessage
-    public void onMessage(Session session, String data) {
-        if (data.isEmpty())
+    public static void handle(ChannelHandlerContext ctx, TextWebSocketFrame frame) {
+        if (frame.text().isEmpty())
             return;
         try {
-            Expression e = new AnimoExpression(data);
-            session.getRemote().sendString(PRETTY_ANIMO.serialize(e, FileCache._));
+            ctx.channel().write(
+                    new TextWebSocketFrame(
+                            PRETTY_ANIMO.serialize(new AnimoExpression(frame.text()), CACHE)));
         } catch (Throwable e) {
             //XXX: send error message
         }
     }
+
 }

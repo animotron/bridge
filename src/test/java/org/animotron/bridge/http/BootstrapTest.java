@@ -18,7 +18,7 @@
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.animotron.bridge.web;
+package org.animotron.bridge.http;
 
 import org.animotron.ATest;
 import org.junit.Test;

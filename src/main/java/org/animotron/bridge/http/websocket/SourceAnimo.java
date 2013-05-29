@@ -18,19 +18,19 @@
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.animotron.bridge.websocket;
+package org.animotron.bridge.http.websocket;
 
-import org.animotron.cache.FileCache;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.animotron.expression.AnimoExpression;
 import org.animotron.statement.operator.DEF;
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
-import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.neo4j.graphdb.Relationship;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import static org.animotron.bridge.http.HttpServer.CACHE;
 import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
 
 /**
@@ -38,18 +38,17 @@ import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-@WebSocket
 public class SourceAnimo {
 
-    @OnWebSocketMessage
-
-    public void onMessage(Session session, String data) {
-        if (data.isEmpty())
+    public static void handle(ChannelHandlerContext ctx, TextWebSocketFrame frame) {
+        if (frame.text().isEmpty())
             return;
         try {
-            Relationship r = DEF._.get(data);
+            Relationship r = DEF._.get(frame.text());
             if (r != null) {
-                session.getRemote().sendString(PRETTY_ANIMO.serialize(r, FileCache._));
+                ctx.channel().write(
+                        new TextWebSocketFrame(
+                                PRETTY_ANIMO.serialize(r, CACHE)));
             } else {
                 //XXX: send error message
             }
@@ -57,11 +56,9 @@ public class SourceAnimo {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             t.printStackTrace(pw);
-            try {
-                session.getRemote().sendString(sw.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ctx.channel().write(new TextWebSocketFrame(sw.toString()));
         }
+
     }
+
 }

@@ -18,8 +18,9 @@
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.animotron.bridge.web;
+package org.animotron.bridge;
 
+import org.animotron.bridge.http.AbstractRequestExpression;
 import org.animotron.exception.AnimoException;
 import org.animotron.expression.AbstractBinaryExpression;
 import org.animotron.expression.AnimoExpression;
@@ -33,7 +34,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 
-import static org.animotron.bridge.web.AbstractRequestExpression.URI;
 import static org.animotron.expression.Expression.__;
 
 /**
@@ -80,7 +80,7 @@ public class ResourcesMap extends AbstractResourcesBridge {
                             builder._(REF._, name);
                         builder.end();
                         builder.start(AN._);
-                            builder._(REF._, URI);
+                            builder._(REF._, AbstractRequestExpression.URI);
                             StringBuilder s = new StringBuilder(4);
                             s.append(uriContext);
                             s.append(path(file));

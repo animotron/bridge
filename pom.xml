@@ -145,14 +145,14 @@
 					<assembleDirectory>${staging.dir}</assembleDirectory>
 					<programs>
 						<program>
-							<mainClass>org.animotron.bridge.web.HttpServer</mainClass>
+							<mainClass>org.animotron.bridge.http.HttpServer</mainClass>
 							<name>animotron</name>
 						</program>
 					</programs>
 					<daemons>
 						<daemon>
 							<id>animobridge</id>
-							<mainClass>org.animotron.bridge.web.HttpServer</mainClass>
+							<mainClass>org.animotron.bridge.http.HttpServer</mainClass>
 							<commandLineArguments>
 								<commandLineArgument>start</commandLineArgument>
 							</commandLineArguments>

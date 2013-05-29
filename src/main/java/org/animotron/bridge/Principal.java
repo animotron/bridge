@@ -21,11 +21,11 @@
 package org.animotron.bridge;
 
 import org.apache.commons.codec.binary.Base64;
-import org.eclipse.jetty.security.MappedLoginService.UserPrincipal;
 import org.neo4j.graphdb.Relationship;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.file.attribute.UserPrincipal;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -60,7 +60,6 @@ public class Principal implements UserPrincipal {
         return false;
 	}
 
-	@Override
 	public boolean authenticate(Object credentials) {
 		System.out.println("authenticate");
 		System.out.println(credentials);
@@ -73,7 +72,6 @@ public class Principal implements UserPrincipal {
 		return false;
 	}
 
-	@Override
 	public boolean isAuthenticated() {
 		System.out.println("isAuthenticated");
 		return false;

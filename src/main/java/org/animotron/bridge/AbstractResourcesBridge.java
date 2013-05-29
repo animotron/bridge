@@ -18,9 +18,7 @@
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.animotron.bridge.web;
-
-import org.animotron.bridge.AbstractFSBridge;
+package org.animotron.bridge;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,22 +32,17 @@ public abstract class AbstractResourcesBridge extends AbstractFSBridge {
     protected final String uriContext;
 
     public AbstractResourcesBridge(String uriContext) {
-        if (uriContext.endsWith("/")) {
-            this.uriContext = uriContext;
-        } else {
-            this.uriContext = uriContext + "/";
-        }
+        this.uriContext = uriContext.endsWith("/") ? uriContext : uriContext + "/";
     }
 
     private int root = 0;
 
     @Override
-    public void load(String path) throws IOException {
-        File f = new File(path);
+    public void load(File f) throws IOException {
         if (f.isDirectory()) {
             root = f.toURI().toString().length();
         }
-        super.load(path);
+        super.load(f);
     }
     
     protected String path (File file) {

@@ -18,7 +18,7 @@
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.animotron.bridge.web;
+package org.animotron.bridge;
 
 import org.animotron.exception.AnimoException;
 import org.animotron.expression.AnimoExpression;
@@ -38,9 +38,9 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
-import static org.animotron.bridge.web.AbstractRequestExpression.URI;
-import static org.animotron.bridge.web.WebSerializer.EXTENSION;
-import static org.animotron.bridge.web.WebSerializer.MIME_TYPE;
+import static org.animotron.bridge.http.AbstractRequestExpression.URI;
+import static org.animotron.bridge.http.Mime.EXTENSION;
+import static org.animotron.bridge.http.Mime.MIME_TYPE;
 import static org.animotron.expression.Expression.__;
 
 /**
@@ -55,17 +55,11 @@ public class ResourcesBridge extends AbstractResourcesBridge {
 
     @Override
     protected void loadFile(final File file) throws IOException {
-
         InputStream is = new FileInputStream(file);
-
         if (file.getName().endsWith(".animo")) {
-
             __(new AnimoExpression(is));
-
         } else {
-
             final String[] a = file.getName().split(Pattern.quote("."));
-
             final BinaryExpression e =  new BinaryExpression(is, true) {
                 @Override
                 public String fs() {
@@ -86,25 +80,19 @@ public class ResourcesBridge extends AbstractResourcesBridge {
                     builder.end();
                 }
             };
-
             __(
                 new Expression() {
-
                     private void is(String s) throws AnimoException, IOException {
                         builder.start(AN._);
                             builder._(REF._, s);
                         builder.end();
                     }
-
                     @Override
                     public void build() throws Throwable {
-
                         builder.start(DEF._);
-
                             builder.start(NONSTOP._);
                                 builder._(REF._, e);
                             builder.end();
-
                             Iterator<String> it = new StringArrayIterator(path(file).split(Pattern.quote("/")));
                             while (it.hasNext()) {
                                 String i = it.next();
@@ -115,24 +103,17 @@ public class ResourcesBridge extends AbstractResourcesBridge {
                                     }
                                 }
                             }
-
                         builder.end();
-
                     }
-
                 }
             );
-
         }
-
     }
 
     private class StringArrayIterator implements Iterable<String>, Iterator<String> {
-
         private String[] a;
         private String c = null;
         int i = 0;
-
         public StringArrayIterator(String[] a) {
             this.a = a;
             next();

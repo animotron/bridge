@@ -18,40 +18,51 @@
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.animotron.bridge.web;
+package org.animotron.bridge.http;
 
 import org.animotron.ATest;
 import org.animotron.bridge.FSBridge;
+import org.animotron.bridge.ResourcesMap;
+import org.animotron.expression.AnimoExpression;
+import org.animotron.expression.Expression;
 import org.junit.Test;
-
-import java.io.File;
-
-import static org.junit.Assert.assertArrayEquals;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class CommonServletTest extends ATest {
-
-    private static final String URI_CONTEXT = "/site";
-    private static final String PATH = "src/test/resources/site/";
+public class AnimotronTest extends ATest {
 
     @Test
     public void test() throws Throwable {
-        FSBridge._.load("src/test/resources/animo/");
-        new ResourcesMap(URI_CONTEXT).load(PATH);
-    	MappedFileHandler servlet = new MappedFileHandler(PATH);
-        HttpRequest request = new HttpRequest("/site/localhost/favicon.ico", "localhost"){
-            @Override
-            public String getPathInfo() {
-                return getRequestURI().substring(URI_CONTEXT.length());
-            }
-        };
-    	HttpResponse response = new HttpResponse(false);
-    	servlet.doGet(request, response);
-    	assertArrayEquals(getBytesFromFile(new File("src/test/resources/site/localhost/favicon.ico")), response.getResponse());
+
+		FSBridge._.load("animo/");
+        FSBridge._.load("site/");
+
+        (new ResourcesMap("/common")).load("common/");
+
+    	Expression s;
+
+    	s = new AnimoExpression("def query (any site with server-name) (html-page root resource)");
+
+    	assertStringResult(s,
+			"<html>" +
+				"<head>" +
+					"<title>Welcome to Animo</title>" +
+					"<meta name=\"keywords\" content=\"\"/>" +
+					"<meta name=\"description\" content=\"\"/>" +
+					"<link rel=\"shortcut icon\" href=\"\"/>" +
+				"</head>" +
+				"<body>" +
+					"<h1>Welcome to Animo</h1>" +
+					"<p>It is working!</p>" +
+					"<ul>" +
+						"<li>Host: <strong/></li>" +
+						"<li>URI: <strong/></li>" +
+					"</ul>" +
+				"</body>" +
+			"</html>");
     }
     
 }

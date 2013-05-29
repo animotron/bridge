@@ -18,8 +18,13 @@
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.animotron.bridge.web;
+package org.animotron.bridge.http;
 
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.animotron.exception.AnimoException;
 import org.animotron.exception.ENotFound;
 import org.animotron.statement.compare.WITH;
@@ -27,51 +32,45 @@ import org.animotron.statement.operator.AN;
 import org.animotron.statement.operator.REF;
 import org.animotron.statement.query.ANY;
 
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.*;
-
 import java.io.*;
 
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
-import static io.netty.handler.codec.http.HttpResponseStatus.*;
+import static io.netty.handler.codec.http.HttpHeaders.setHeader;
+import static io.netty.handler.codec.http.HttpResponseStatus.INTERNAL_SERVER_ERROR;
+import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
-import static org.animotron.bridge.web.WebSerializer.serialize;
 
 /**
  * 
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  */
-public class ErrorHandler {
+public class ErrorHandler extends HttpHandler {
 
-	public static void messageReceived(Throwable x, ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
-        long startTime = System.currentTimeMillis();
-        HttpResponseStatus status = INTERNAL_SERVER_ERROR;
+	protected static void handle(ChannelHandlerContext ctx, FullHttpRequest request, Throwable x) {
         try {
             if (x instanceof ENotFound || x instanceof FileNotFoundException) {
-            	
-            	FullHttpResponse res = new DefaultFullHttpResponse(HTTP_1_1, OK);
-                status =  NOT_FOUND;
-            	res.setStatus(status);
-                serialize(new AnimoRequest(msg, NOT_FOUND.code(), null), res);
+                handle(ctx, request, null, NOT_FOUND);
             } else {
-            	FullHttpResponse res = new DefaultFullHttpResponse(HTTP_1_1, OK);
-                res.setStatus(status);
-                serialize(new AnimoRequest(msg, INTERNAL_SERVER_ERROR.code(), x), res);
+                handle(ctx, request, x, INTERNAL_SERVER_ERROR);
             }
         } catch (Throwable t) {
-        	FullHttpResponse res = new DefaultFullHttpResponse(HTTP_1_1, OK);
-            res.setStatus(status);
-        	res.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
-
+        	FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, INTERNAL_SERVER_ERROR);
+        	setHeader(response, CONTENT_TYPE, "text/plain; charset=UTF-8");
         	ByteArrayOutputStream os = new ByteArrayOutputStream();
-
             PrintWriter pw = new PrintWriter(os);
             t.printStackTrace(pw);
-
-            res.content().writeBytes(os.toByteArray());
+            response.content().writeBytes(os.toByteArray());
+            sendHttpResponse(ctx, request, response);
         }
-        System.out.println("Generated in "+(System.currentTimeMillis() - startTime));
+    }
+
+    protected static void handle(ChannelHandlerContext ctx, FullHttpRequest request, Throwable x, HttpResponseStatus status) throws Throwable {
+        serialize(ctx, new AnimoRequest(request, status, x), request, new DefaultFullHttpResponse(HTTP_1_1, status));
+    }
+
+    protected static void handle(ChannelHandlerContext ctx, FullHttpRequest request, HttpResponseStatus status) throws Throwable {
+        handle(ctx, request, null, status);
     }
 
     private static class AnimoRequest extends AbstractRequestExpression {
@@ -82,9 +81,9 @@ public class ErrorHandler {
         private Throwable x;
         private int status;
 
-        public AnimoRequest(FullHttpRequest req, int status, Throwable x) throws Throwable {
+        public AnimoRequest(FullHttpRequest req, HttpResponseStatus status, Throwable x) throws Throwable {
             super(req);
-            this.status = status;
+            this.status = status.code();
             this.x = x;
         }
 

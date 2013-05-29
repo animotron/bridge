@@ -18,11 +18,8 @@
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.animotron.bridge.web;
+package org.animotron.bridge.http;
 
-import org.animotron.cache.Cache;
-import org.animotron.cache.FileCache;
-import org.animotron.exception.ENotFound;
 import org.animotron.expression.Expression;
 import org.animotron.statement.compare.WITH;
 import org.animotron.statement.operator.REF;
@@ -30,49 +27,25 @@ import org.animotron.statement.query.ANY;
 import org.animotron.statement.query.GET;
 import org.neo4j.graphdb.Relationship;
 
-import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.util.CharsetUtil;
+import java.io.File;
 
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
+import static org.animotron.bridge.http.HttpServer.CACHE;
 import static org.animotron.graph.serializer.Serializer.STRING;
-import static org.animotron.utils.MessageDigester.uuid;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class WebSerializer {
+public class Mime {
 
     public static final String TYPE = "type";
     public static final String MIME_TYPE = "mime-type";
     public static final String EXTENSION = "extension";
+    public static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
 
-    private static Cache CACHE = FileCache._;
-
-    public static void serialize(Expression request, FullHttpResponse res) throws Throwable, ENotFound {
-        serialize(request, res, uuid().toString());
-    }
-
-    public static void serialize(Expression request, FullHttpResponse res, String uuid) throws Throwable, ENotFound {
-        String mime = mime(request);
-        if (mime.isEmpty()) {
-            throw new ENotFound(request);
-        } else {
-        	//res.headers().set(CONTENT_TYPE, "text/html; charset=UTF-8");
-        	res.headers().set(CONTENT_TYPE, mime+"; charset=UTF-8");
-        	
-            //res.setContentLength(-1);
-        	
-        	StringBuilder os = new StringBuilder();
-            //OutputStream os = res.getOutputStream();
-
-            STRING.serialize(request, os, CACHE, uuid);
-            
-            res.content().writeBytes(Unpooled.copiedBuffer(os, CharsetUtil.UTF_8));
-            //os.close();
-        }
+    protected static String check(String mime) {
+        return mime.isEmpty() ? APPLICATION_OCTET_STREAM : mime;
     }
 
     public static  String mime (final Relationship r) throws Throwable {
@@ -81,11 +54,11 @@ public class WebSerializer {
                     @Override
                     public void build() throws Throwable {
                         builder.start(GET._);
-                            builder._(REF._,  TYPE);
-                            builder.start(GET._);
-                                builder._(REF._, MIME_TYPE);
-                                builder.bind(r);
-                            builder.end();
+                        builder._(REF._, TYPE);
+                        builder.start(GET._);
+                        builder._(REF._, MIME_TYPE);
+                        builder.bind(r);
+                        builder.end();
                         builder.end();
                     }
                 },
@@ -99,14 +72,14 @@ public class WebSerializer {
                     @Override
                     public void build() throws Throwable {
                         builder.start(GET._);
-                            builder._(REF._,  TYPE);
-                            builder.start(ANY._);
-                                builder._(REF._, MIME_TYPE);
-                                builder.start(WITH._);
-                                    builder._(REF._, EXTENSION);
-                                    builder._(ext);
-                                builder.end();
-                            builder.end();
+                        builder._(REF._, TYPE);
+                        builder.start(ANY._);
+                        builder._(REF._, MIME_TYPE);
+                        builder.start(WITH._);
+                        builder._(REF._, EXTENSION);
+                        builder._(ext);
+                        builder.end();
+                        builder.end();
                         builder.end();
                     }
                 },
@@ -114,4 +87,12 @@ public class WebSerializer {
         );
     }
 
+    public static String mime(File file) throws Throwable {
+        String name = file.getName();
+        int index = name.lastIndexOf(".");
+        if (index > 0) {
+            return mime(name.substring(index + 1));
+        }
+        return APPLICATION_OCTET_STREAM;
+    }
 }

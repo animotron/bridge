@@ -18,8 +18,11 @@
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.animotron.bridge.web;
+package org.animotron.bridge.http;
 
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpHeaders.Names;
+import io.netty.handler.codec.http.QueryStringDecoder;
 import org.animotron.exception.AnimoException;
 import org.animotron.expression.Expression;
 import org.animotron.statement.compare.WITH;
@@ -28,14 +31,12 @@ import org.animotron.statement.operator.REF;
 import org.animotron.statement.query.ANY;
 import org.animotron.statement.query.GET;
 
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.QueryStringDecoder;
-import io.netty.handler.codec.http.HttpHeaders.Names;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import static io.netty.handler.codec.http.HttpHeaders.getHeader;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -49,14 +50,16 @@ public abstract class AbstractRequestExpression extends Expression {
     public static final String SITE = "site";
     public static final String SERVER_NAME = "server-name";
 
-    protected final FullHttpRequest req;
+    protected final FullHttpRequest request;
+    private final String host;
 
-    public AbstractRequestExpression(FullHttpRequest req) throws Throwable {
-        this.req = req;
+    public AbstractRequestExpression(FullHttpRequest request) throws Throwable {
+        this.request = request;
+        host = getHeader(request, Names.HOST).split(":")[0];
     }
     
     private String serverName() {
-    	return req.headers().get(Names.HOST);
+    	return host;
     }
 
     @Override
@@ -90,12 +93,12 @@ public abstract class AbstractRequestExpression extends Expression {
         builder.end();
         builder.start(AN._);
             builder._(REF._, URI);
-            builder._(serverName());
+            builder._(request.getUri());
         builder.end();
     }
 
     private void params() throws AnimoException, IOException {
-        final QueryStringDecoder queryStringDecoder = new QueryStringDecoder(req.getUri());
+        final QueryStringDecoder queryStringDecoder = new QueryStringDecoder(request.getUri());
         final Map<String, List<String>> params = queryStringDecoder.parameters();
 
         if (!params.isEmpty()) {

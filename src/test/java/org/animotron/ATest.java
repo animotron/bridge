@@ -27,7 +27,8 @@ import org.junit.Before;
 import org.neo4j.graphdb.Relationship;
 
 import java.io.*;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.NoSuchElementException;
 
 import static org.animotron.graph.AnimoGraph.shutdownDB;
 import static org.animotron.graph.AnimoGraph.startDB;

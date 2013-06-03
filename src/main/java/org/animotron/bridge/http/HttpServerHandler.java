@@ -22,16 +22,10 @@ package org.animotron.bridge.http;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundMessageHandlerAdapter;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.*;
 import org.animotron.bridge.http.websocket.*;
 
-import static io.netty.handler.codec.http.HttpHeaders.Names.*;
-import static io.netty.handler.codec.http.HttpHeaders.getHeader;
-import static io.netty.handler.codec.http.HttpMethod.GET;
-import static io.netty.handler.codec.http.HttpResponseStatus.*;
-import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import static org.animotron.bridge.http.HttpServer.*;
 
 /**
@@ -58,51 +52,22 @@ public class HttpServerHandler extends ChannelInboundMessageHandlerAdapter<Objec
     }
 
     private void handleHttpRequest(ChannelHandlerContext ctx, FullHttpRequest request) throws Throwable {
-
-        if (!request.getDecoderResult().isSuccess()) {
-            HttpHandler.sendHttpResponse(ctx, request, new DefaultFullHttpResponse(HTTP_1_1, BAD_REQUEST));
-            return;
-        }
-
-        if (WS_URI.equals(request.getUri())) {
-            if (request.getMethod() != GET) {
-                HttpHandler.sendHttpResponse(ctx, request, new DefaultFullHttpResponse(HTTP_1_1, FORBIDDEN));
-                return;
-            }
-            if (!"websocket".equals(getHeader(request, UPGRADE))) {
-                HttpHandler.sendHttpResponse(ctx, request, new DefaultFullHttpResponse(HTTP_1_1, UPGRADE_REQUIRED));
-                return;
-            }
-            WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
-                    getWebSocketLocation(request), getHeader(request, SEC_WEBSOCKET_PROTOCOL), false);
-            hs = wsFactory.newHandshaker(request);
-            if (hs == null) {
-                WebSocketServerHandshakerFactory.sendUnsupportedWebSocketVersionResponse(ctx.channel());
-            } else {
-                hs.handshake(ctx.channel(), request);
-            }
-            return;
-        }
-
         String uri = request.getUri();
-
+        if (uri.equals(WS_URI)) {
+            hs = WebSocketUpgradeHandler.handle(ctx, request);
+        }
         if (uri.startsWith(BINARY_CONTEXT_URI)) {
             ResourceBridgeHandler.handle(ctx, request, BINARY_CONTEXT_URI);
             return;
         }
-
         if (uri.startsWith(ANIMO_CONTEXT_URI)) {
             ResourceMapHandler.handle(ctx, request, ANIMO_CONTEXT_URI, ANIMO_FOLDER);
             return;
         }
-
         AnimoHandler.handle(ctx, request);
-
     }
 
     private void handleWebSocketFrame(ChannelHandlerContext ctx, WebSocketFrame frame) {
-
-        // Check for closing frame
         if (frame instanceof CloseWebSocketFrame) {
             frame.retain();
             hs.close(ctx.channel(), (CloseWebSocketFrame) frame);
@@ -117,7 +82,6 @@ public class HttpServerHandler extends ChannelInboundMessageHandlerAdapter<Objec
             throw new UnsupportedOperationException(
                     String.format("%s frame types not supported", frame.getClass().getName()));
         }
-
         if (frame instanceof TextWebSocketFrame) {
             TextWebSocketFrame text = (TextWebSocketFrame) frame;
             switch (hs.selectedSubprotocol()) {
@@ -128,7 +92,6 @@ public class HttpServerHandler extends ChannelInboundMessageHandlerAdapter<Objec
                 case "src"      : SourceAnimo.handle(ctx, text);
             }
         }
-
     }
 
     @Override
@@ -137,7 +100,4 @@ public class HttpServerHandler extends ChannelInboundMessageHandlerAdapter<Objec
         ctx.close();
     }
 
-    private static String getWebSocketLocation(FullHttpRequest request) {
-        return "ws://" + getHeader(request, HOST) + WS_URI;
-    }
 }

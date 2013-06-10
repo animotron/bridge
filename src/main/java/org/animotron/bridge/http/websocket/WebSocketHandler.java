@@ -43,9 +43,7 @@ public abstract class WebSocketHandler<T>{
 
     public abstract void handle(WebSocketServerHandshaker hs, ChannelHandlerContext ctx, T frame);
 
-    public void open(WebSocketServerHandshaker hs, ChannelHandlerContext ctx) {
-
-    }
+    public void open(WebSocketServerHandshaker hs, ChannelHandlerContext ctx) {}
 
     public void ping(WebSocketServerHandshaker hs, ChannelHandlerContext ctx, PingWebSocketFrame frame) {
         frame.content().retain();
@@ -55,4 +53,5 @@ public abstract class WebSocketHandler<T>{
     public void close(WebSocketServerHandshaker hs, ChannelHandlerContext ctx, CloseWebSocketFrame frame) {
         hs.close(ctx.channel(), frame.retain());
     }
+
 }

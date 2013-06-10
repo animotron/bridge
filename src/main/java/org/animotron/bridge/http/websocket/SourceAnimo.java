@@ -45,30 +45,24 @@ public class SourceAnimo extends WebSocketHandler<TextWebSocketFrame> {
     }
 
     @Override
-    public void handle(WebSocketServerHandshaker hs, final ChannelHandlerContext ctx, final TextWebSocketFrame frame) {
-        final String def = frame.text();
+    public void handle(WebSocketServerHandshaker hs, ChannelHandlerContext ctx, TextWebSocketFrame frame) {
+        String def = frame.text();
         if (def.isEmpty()) return;
-        Executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Relationship r = DEF._.get(def);
-                    if (r != null) {
-                        ctx.channel().write(
-                                new TextWebSocketFrame(
-                                        PRETTY_ANIMO.serialize(r, CACHE)));
-                    } else {
-                        //XXX: send error message
-                    }
-                } catch (Throwable t) {
-                    StringWriter sw = new StringWriter();
-                    PrintWriter pw = new PrintWriter(sw);
-                    t.printStackTrace(pw);
-                    ctx.channel().write(new TextWebSocketFrame(sw.toString()));
-                }
+        try {
+            Relationship r = DEF._.get(def);
+            if (r != null) {
+                ctx.channel().write(
+                        new TextWebSocketFrame(
+                                PRETTY_ANIMO.serialize(r, CACHE)));
+            } else {
+                //XXX: send error message
             }
-        });
-
+        } catch (Throwable t) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            t.printStackTrace(pw);
+            ctx.channel().write(new TextWebSocketFrame(sw.toString()));
+        }
     }
 
 }

@@ -98,14 +98,14 @@ public class HttpServer {
 	}
 
     private static class Initializer extends ChannelInitializer<SocketChannel> {
-        private WebSocketHandler[] wsHandlers = {
+        private static WebSocketHandler[] wsHandlers = {
                 new Echo("echo"),
                 new EvalAnimo("eval"),
                 new SaveAnimo("save"),
                 new SearchAnimo("search"),
                 new SourceAnimo("src")
         };
-        private HttpHandler[] httpHandlers = {
+        private static HttpHandler[] httpHandlers = {
                 new WebSocketUpgradeHandler(WS_URI_CONTEXT, wsHandlers),
                 new ResourceBridgeHandler(BINARY_CONTEXT_URI),
                 new ResourceMapHandler(ANIMO_CONTEXT_URI, ANIMO_FOLDER),

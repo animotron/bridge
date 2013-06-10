@@ -99,17 +99,17 @@ public class HttpServer {
 
     private static class Initializer extends ChannelInitializer<SocketChannel> {
         private static WebSocketHandler[] wsHandlers = {
-                new Echo("echo"),
-                new EvalAnimo("eval"),
-                new SaveAnimo("save"),
-                new SearchAnimo("search"),
-                new SourceAnimo("src")
+                new EchoWebSocketHandler("echo"),
+                new EvalAnimoWebSocketHandler("eval"),
+                new SaveAnimoWebSocketHandler("save"),
+                new SearchAnimoWebSocketHandler("search"),
+                new SourceAnimoWebSocketHandler("src")
         };
         private static HttpHandler[] httpHandlers = {
-                new WebSocketUpgradeHandler(WS_URI_CONTEXT, wsHandlers),
-                new ResourceBridgeHandler(BINARY_CONTEXT_URI),
-                new ResourceMapHandler(ANIMO_CONTEXT_URI, ANIMO_FOLDER),
-                new AnimoHandler()
+                new WebSocketUpgradeHttpHandler(WS_URI_CONTEXT, wsHandlers),
+                new ResourceBridgeHttpHandler(BINARY_CONTEXT_URI),
+                new ResourceMapHttpHandler(ANIMO_CONTEXT_URI, ANIMO_FOLDER),
+                new AnimoHttpHandler()
         };
         @Override
         public void initChannel(SocketChannel ch) throws Exception {

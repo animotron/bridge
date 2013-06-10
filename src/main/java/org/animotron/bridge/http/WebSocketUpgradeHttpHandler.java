@@ -25,7 +25,7 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
-import org.animotron.bridge.http.helper.ErrorHandlerHelper;
+import org.animotron.bridge.http.helper.HttpErrorHelper;
 import org.animotron.bridge.http.websocket.WebSocketHandler;
 import org.animotron.bridge.http.websocket.WebSocketServerHandler;
 
@@ -35,19 +35,19 @@ import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpResponseStatus.METHOD_NOT_ALLOWED;
 import static io.netty.handler.codec.http.HttpResponseStatus.UPGRADE_REQUIRED;
 import static io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory.sendUnsupportedWebSocketVersionResponse;
-import static org.animotron.bridge.http.helper.HttpHandlerHelper.sendStatus;
+import static org.animotron.bridge.http.helper.HttpHelper.sendStatus;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class WebSocketUpgradeHandler implements HttpHandler {
+public class WebSocketUpgradeHttpHandler implements HttpHandler {
 
     private final String uriContext;
     private WebSocketHandler[] handlers;
 
-    public WebSocketUpgradeHandler(String uriContext, WebSocketHandler[] handlers) {
+    public WebSocketUpgradeHttpHandler(String uriContext, WebSocketHandler[] handlers) {
         this.uriContext = uriContext;
         this.handlers = handlers;
     }
@@ -57,7 +57,7 @@ public class WebSocketUpgradeHandler implements HttpHandler {
         if (!request.getUri().equals(uriContext))
             return false;
         if (!request.getMethod().equals(GET)) {
-            ErrorHandlerHelper.handle(ctx, request, METHOD_NOT_ALLOWED);
+            HttpErrorHelper.handle(ctx, request, METHOD_NOT_ALLOWED);
             return true;
         }
         if (!"websocket".equals(getHeader(request, UPGRADE))) {
@@ -71,7 +71,7 @@ public class WebSocketUpgradeHandler implements HttpHandler {
             sendUnsupportedWebSocketVersionResponse(ctx.channel());
             return true;
         }
-        WebSocketHandler handler = selectHandler(getProtocol(request), handlers);
+        WebSocketHandler handler = selectHandler(getProtocol(request));
         if (handler == null) {
             hs.handshake(ctx.channel(), request);
             hs.close(ctx.channel(), new CloseWebSocketFrame());
@@ -84,14 +84,14 @@ public class WebSocketUpgradeHandler implements HttpHandler {
         return true;
 	}
 
-    private WebSocketHandler selectHandler(WebSocketHandler[] handlers) {
+    private WebSocketHandler selectHandler() {
         for (WebSocketHandler handler : handlers)
             if (handler.protocol == null) return handler;
         return null;
     }
 
-    private WebSocketHandler selectHandler(String protocol, WebSocketHandler[] handlers) {
-        if (protocol == null) return selectHandler(handlers);
+    private WebSocketHandler selectHandler(String protocol) {
+        if (protocol == null) return selectHandler();
         for (WebSocketHandler handler : handlers)
             if (protocol.equals(handler.protocol)) return handler;
         return null;

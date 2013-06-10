@@ -23,17 +23,14 @@ package org.animotron.bridge.http;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.QueryStringDecoder;
-import org.animotron.bridge.http.helper.ErrorHandlerHelper;
-import org.animotron.exception.ENotFound;
-import org.animotron.expression.BinaryExpression;
-import org.animotron.statement.operator.DEF;
-import org.neo4j.graphdb.Relationship;
+import org.animotron.bridge.http.helper.HttpErrorHelper;
 
+import java.io.File;
 import java.util.regex.Pattern;
 
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpResponseStatus.METHOD_NOT_ALLOWED;
-import static org.animotron.bridge.http.helper.HttpHandlerHelper.sendFile;
+import static org.animotron.bridge.http.helper.HttpHelper.sendFile;
 import static org.animotron.bridge.http.helper.MimeHelper.mime;
 
 /**
@@ -41,31 +38,27 @@ import static org.animotron.bridge.http.helper.MimeHelper.mime;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class ResourceBridgeHandler implements HttpHandler {
+public class ResourceMapHttpHandler implements HttpHandler {
 
     private String uriContext;
-	
-	private final static long MAX_AGE = 31536000;
+    private File folder;
 
-    public ResourceBridgeHandler (String uriContext) {
+    public ResourceMapHttpHandler(String uriContext, File folder){
         this.uriContext = uriContext;
+        this.folder = folder;
     }
 
     @Override
-	public boolean handle(ChannelHandlerContext ctx, FullHttpRequest request) throws Throwable{
+    public boolean handle(ChannelHandlerContext ctx, FullHttpRequest request) throws Throwable {
         if (!request.getUri().startsWith(uriContext))
             return false;
         if (!request.getMethod().equals(GET)) {
-            ErrorHandlerHelper.handle(ctx, request, METHOD_NOT_ALLOWED);
+            HttpErrorHelper.handle(ctx, request, METHOD_NOT_ALLOWED);
             return true;
         }
         QueryStringDecoder uri = new QueryStringDecoder(request.getUri());
-        String id = uri.path().replaceFirst(Pattern.quote(uriContext), "");
-        Relationship r = DEF._.get(id);
-        if (r == null) {
-            throw new ENotFound(null);
-        }
-        sendFile(ctx, request, BinaryExpression.getFile(id), mime(r), "private, max-age=" + MAX_AGE);
+        File file = new File(folder, uri.path().replaceFirst(Pattern.quote(uriContext), ""));
+        sendFile(ctx, request, file, mime(file), "no-cache");
         return true;
     }
 

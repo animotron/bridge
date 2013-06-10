@@ -20,36 +20,45 @@
  */
 package org.animotron.bridge.http.websocket;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
-import org.animotron.expression.AnimoExpression;
+import javolution.util.FastList;
 
-import static org.animotron.bridge.http.HttpServer.CACHE;
-import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
+import java.util.List;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class SaveAnimo extends WebSocketHandler<TextWebSocketFrame> {
 
-    public SaveAnimo(String protocol) {
+public class EchoWebSocketHandler extends WebSocketHandler<WebSocketFrame> {
+
+    public EchoWebSocketHandler(String protocol) {
         super(protocol);
     }
 
+    private static List<Channel> set = FastList.newInstance();
+
     @Override
-    public void handle(WebSocketServerHandshaker hs, ChannelHandlerContext ctx, TextWebSocketFrame frame) {
-        String exp = frame.text();
-        if (exp.isEmpty()) return;
-        try {
-            ctx.channel().write(
-                    new TextWebSocketFrame(
-                            PRETTY_ANIMO.serialize(new AnimoExpression(exp), CACHE)));
-        } catch (Throwable e) {
-            //XXX: send error message
+    public void handle(WebSocketServerHandshaker hs, ChannelHandlerContext ctx, WebSocketFrame frame) {
+        for (Channel s : set) {
+            s.write(frame.retain());
         }
+    }
+
+    @Override
+    public void open(WebSocketServerHandshaker hs, ChannelHandlerContext ctx) {
+        set.add(ctx.channel());
+    }
+
+    @Override
+    public void close(WebSocketServerHandshaker hs, ChannelHandlerContext ctx, CloseWebSocketFrame frame) {
+        super.close(hs, ctx, frame);
+        set.remove(ctx.channel());
     }
 
 }

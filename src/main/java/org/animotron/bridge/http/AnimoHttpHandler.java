@@ -26,7 +26,7 @@ import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import org.animotron.bridge.http.helper.AbstractRequestExpression;
-import org.animotron.bridge.http.helper.ErrorHandlerHelper;
+import org.animotron.bridge.http.helper.HttpErrorHelper;
 import org.animotron.exception.AnimoException;
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.Expression;
@@ -44,7 +44,7 @@ import static io.netty.handler.codec.http.HttpHeaders.setHeader;
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
-import static org.animotron.bridge.http.helper.HttpHandlerHelper.*;
+import static org.animotron.bridge.http.helper.HttpHelper.*;
 import static org.animotron.graph.Properties.RUUID;
 import static org.animotron.utils.MessageDigester.getTime;
 import static org.animotron.utils.MessageDigester.uuid;
@@ -54,12 +54,12 @@ import static org.animotron.utils.MessageDigester.uuid;
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  */
-public class AnimoHandler implements HttpHandler {
+public class AnimoHttpHandler implements HttpHandler {
 
 	@Override
     public boolean handle(ChannelHandlerContext ctx, FullHttpRequest request) throws Throwable{
         if (!request.getMethod().equals(GET)) {
-            ErrorHandlerHelper.handle(ctx, request, METHOD_NOT_ALLOWED);
+            HttpErrorHelper.handle(ctx, request, METHOD_NOT_ALLOWED);
             return false;
         }
         Expression e = new AnimoRequest(request);

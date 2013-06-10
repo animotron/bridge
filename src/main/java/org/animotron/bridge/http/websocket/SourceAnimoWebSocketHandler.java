@@ -37,9 +37,9 @@ import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class SourceAnimo extends WebSocketHandler<TextWebSocketFrame> {
+public class SourceAnimoWebSocketHandler extends WebSocketHandler<TextWebSocketFrame> {
 
-    public SourceAnimo(String protocol) {
+    public SourceAnimoWebSocketHandler(String protocol) {
         super(protocol);
     }
 

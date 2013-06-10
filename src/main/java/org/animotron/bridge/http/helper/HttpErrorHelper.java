@@ -39,14 +39,15 @@ import static io.netty.handler.codec.http.HttpHeaders.setHeader;
 import static io.netty.handler.codec.http.HttpResponseStatus.INTERNAL_SERVER_ERROR;
 import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
-import static org.animotron.bridge.http.helper.HttpHandlerHelper.sendHttpResponse;
+import static org.animotron.bridge.http.helper.HttpHelper.sendHttpResponse;
+import static org.animotron.bridge.http.helper.HttpHelper.serialize;
 
 /**
  * 
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  */
-public class ErrorHandlerHelper {
+public class HttpErrorHelper {
 
 	public static void handle(ChannelHandlerContext ctx, FullHttpRequest request, Throwable x) {
         try {
@@ -67,7 +68,7 @@ public class ErrorHandlerHelper {
     }
 
     protected static void handle(ChannelHandlerContext ctx, FullHttpRequest request, Throwable x, HttpResponseStatus status) throws Throwable {
-        HttpHandlerHelper.serialize(ctx, new AnimoRequest(request, status, x), request, new DefaultFullHttpResponse(HTTP_1_1, status));
+        serialize(ctx, new AnimoRequest(request, status, x), request, new DefaultFullHttpResponse(HTTP_1_1, status));
     }
 
     public static void handle(ChannelHandlerContext ctx, FullHttpRequest request, HttpResponseStatus status) throws Throwable {

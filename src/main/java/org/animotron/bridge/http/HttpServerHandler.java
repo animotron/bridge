@@ -23,7 +23,7 @@ package org.animotron.bridge.http;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundMessageHandlerAdapter;
 import io.netty.handler.codec.http.FullHttpRequest;
-import org.animotron.bridge.http.helper.ErrorHandlerHelper;
+import org.animotron.bridge.http.helper.HttpErrorHelper;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
@@ -46,11 +46,11 @@ public class HttpServerHandler extends ChannelInboundMessageHandlerAdapter<FullH
             if (request.getDecoderResult().isSuccess()) {
                 for (HttpHandler handler : handlers)
                     if (handler.handle(ctx, request)) return;
-                ErrorHandlerHelper.handle(ctx, request, NOT_FOUND);
+                HttpErrorHelper.handle(ctx, request, NOT_FOUND);
             }
-            ErrorHandlerHelper.handle(ctx, request, BAD_REQUEST);
+            HttpErrorHelper.handle(ctx, request, BAD_REQUEST);
         } catch (Throwable t) {
-            ErrorHandlerHelper.handle(ctx, request, t);
+            HttpErrorHelper.handle(ctx, request, t);
         }
     }
 

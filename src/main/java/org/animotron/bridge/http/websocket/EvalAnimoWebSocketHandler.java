@@ -34,9 +34,9 @@ import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO_RESULT;
  *
  */
 
-public class EvalAnimo extends WebSocketHandler<TextWebSocketFrame> {
+public class EvalAnimoWebSocketHandler extends WebSocketHandler<TextWebSocketFrame> {
 
-    public EvalAnimo(String protocol) {
+    public EvalAnimoWebSocketHandler(String protocol) {
         super(protocol);
     }
 

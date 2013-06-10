@@ -46,9 +46,9 @@ import static org.neo4j.graphdb.Direction.INCOMING;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class SearchAnimo extends WebSocketHandler<TextWebSocketFrame> {
+public class SearchAnimoWebSocketHandler extends WebSocketHandler<TextWebSocketFrame> {
 
-    public SearchAnimo(String protocol) {
+    public SearchAnimoWebSocketHandler(String protocol) {
         super(protocol);
     }
 

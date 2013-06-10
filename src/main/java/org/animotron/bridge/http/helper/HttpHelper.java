@@ -53,7 +53,7 @@ import static org.animotron.utils.MessageDigester.uuid;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class HttpHandlerHelper {
+public class HttpHelper {
 
 	private static final String HTTP_DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss zzz";
 	private static final String HTTP_DATE_GMT_TIMEZONE = "GMT";

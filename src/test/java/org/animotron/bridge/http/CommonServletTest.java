@@ -36,7 +36,7 @@ public class CommonServletTest extends ATest {
 //    public void test() throws Throwable {
 //        FSBridge._.load("src/test/resources/animo/");
 //        new ResourcesMap(URI_CONTEXT).load(PATH);
-//    	ResourceMapHandler servlet = new ResourceMapHandler(PATH);
+//    	ResourceMapHttpHandler servlet = new ResourceMapHttpHandler(PATH);
 //        HttpRequest request = new HttpRequest("/site/localhost/favicon.ico", "localhost"){
 //            @Override
 //            public String getPathInfo() {

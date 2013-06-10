@@ -23,7 +23,6 @@ package org.animotron.bridge.http.websocket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
-import org.animotron.Executor;
 import org.animotron.statement.operator.DEF;
 import org.neo4j.graphdb.Relationship;
 

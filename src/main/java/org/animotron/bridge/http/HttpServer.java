@@ -33,6 +33,7 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 import org.animotron.Shell;
 import org.animotron.bridge.ResourcesBridge;
 import org.animotron.bridge.ResourcesMap;
+import org.animotron.bridge.http.websocket.*;
 import org.animotron.cache.Cache;
 import org.animotron.cache.FileCache;
 
@@ -50,6 +51,7 @@ public class HttpServer {
 
     public static final Cache CACHE = FileCache._;
 
+    protected static final String WS_URI_CONTEXT = "/ws";
     protected static final String ANIMO_CONTEXT_URI = "/animo/";
     protected static final String BINARY_CONTEXT_URI = "/binary/";
 
@@ -96,15 +98,28 @@ public class HttpServer {
 	}
 
     private static class Initializer extends ChannelInitializer<SocketChannel> {
+        private WebSocketHandler[] wsHandlers = {
+                new Echo("echo"),
+                new EvalAnimo("eval"),
+                new SaveAnimo("save"),
+                new SearchAnimo("search"),
+                new SourceAnimo("src")
+        };
+        private HttpHandler[] httpHandlers = {
+                new WebSocketUpgradeHandler(WS_URI_CONTEXT, wsHandlers),
+                new ResourceBridgeHandler(BINARY_CONTEXT_URI),
+                new ResourceMapHandler(ANIMO_CONTEXT_URI, ANIMO_FOLDER),
+                new AnimoHandler()
+        };
         @Override
         public void initChannel(SocketChannel ch) throws Exception {
             ch.pipeline().addLast(
-                    new HttpRequestDecoder(),
-                    new HttpObjectAggregator(1048576),
-                    new HttpResponseEncoder(),
-                    new ChunkedWriteHandler(),
-                    //new HttpContentCompressor(),
-                    new HttpServerHandler()
+                new HttpRequestDecoder(),
+                new HttpObjectAggregator(1048576),
+                new HttpResponseEncoder(),
+                new ChunkedWriteHandler(),
+                //new HttpContentCompressor(),
+                new HttpServerHandler(httpHandlers)
             );
         }
     }

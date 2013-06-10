@@ -21,55 +21,89 @@
 package org.animotron.bridge.http;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.QueryStringDecoder;
+import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
-import org.animotron.exception.ENotFound;
-import org.animotron.expression.BinaryExpression;
-import org.animotron.statement.operator.DEF;
-import org.neo4j.graphdb.Relationship;
+import org.animotron.bridge.http.helper.ErrorHandlerHelper;
+import org.animotron.bridge.http.websocket.WebSocketHandler;
+import org.animotron.bridge.http.websocket.WebSocketServerHandler;
 
-import java.util.regex.Pattern;
-
-import static io.netty.handler.codec.http.HttpHeaders.Names.HOST;
-import static io.netty.handler.codec.http.HttpHeaders.Names.SEC_WEBSOCKET_PROTOCOL;
-import static io.netty.handler.codec.http.HttpHeaders.Names.UPGRADE;
+import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 import static io.netty.handler.codec.http.HttpHeaders.getHeader;
 import static io.netty.handler.codec.http.HttpMethod.GET;
+import static io.netty.handler.codec.http.HttpResponseStatus.METHOD_NOT_ALLOWED;
 import static io.netty.handler.codec.http.HttpResponseStatus.UPGRADE_REQUIRED;
-import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import static io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory.sendUnsupportedWebSocketVersionResponse;
-import static org.animotron.bridge.http.Mime.mime;
+import static org.animotron.bridge.http.helper.HttpHandlerHelper.sendStatus;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class WebSocketUpgradeHandler extends HttpHandler {
+public class WebSocketUpgradeHandler implements HttpHandler {
 
-    public static WebSocketServerHandshaker handle(ChannelHandlerContext ctx, FullHttpRequest request) throws Throwable {
-        if (!isSuccess(ctx, request)) return null;
-        if (!isAllowed(ctx, request, GET)) return null;
+    private final String uriContext;
+    private WebSocketHandler[] handlers;
+
+    public WebSocketUpgradeHandler(String uriContext, WebSocketHandler[] handlers) {
+        this.uriContext = uriContext;
+        this.handlers = handlers;
+    }
+
+    @Override
+    public boolean handle(ChannelHandlerContext ctx, FullHttpRequest request) throws Throwable {
+        if (!request.getUri().equals(uriContext))
+            return false;
+        if (!request.getMethod().equals(GET)) {
+            ErrorHandlerHelper.handle(ctx, request, METHOD_NOT_ALLOWED);
+            return true;
+        }
         if (!"websocket".equals(getHeader(request, UPGRADE))) {
             sendStatus(ctx, UPGRADE_REQUIRED);
+            return true;
         }
         WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
-                getWebSocketLocation(request), getHeader(request, SEC_WEBSOCKET_PROTOCOL), false);
+                getWebSocketLocation(request), getProtocol(request), false);
         WebSocketServerHandshaker hs = wsFactory.newHandshaker(request);
         if (hs == null) {
             sendUnsupportedWebSocketVersionResponse(ctx.channel());
-        } else {
-            hs.handshake(ctx.channel(), request);
+            return true;
         }
-        return hs;
+        WebSocketHandler handler = selectHandler(getProtocol(request), handlers);
+        if (handler == null) {
+            hs.handshake(ctx.channel(), request);
+            hs.close(ctx.channel(), new CloseWebSocketFrame());
+            return true;
+        }
+        handler.open(hs, ctx);
+        ctx.pipeline().removeLast();
+        ctx.pipeline().addLast(new WebSocketServerHandler(handler, hs));
+        hs.handshake(ctx.channel(), request);
+        return true;
 	}
 
-    private static String getWebSocketLocation(FullHttpRequest request) {
-        return "ws://" + getHeader(request, HOST) + request.getUri();
+    private WebSocketHandler selectHandler(WebSocketHandler[] handlers) {
+        for (WebSocketHandler handler : handlers)
+            if (handler.protocol == null) return handler;
+        return null;
     }
 
+    private WebSocketHandler selectHandler(String protocol, WebSocketHandler[] handlers) {
+        if (protocol == null) return selectHandler(handlers);
+        for (WebSocketHandler handler : handlers)
+            if (protocol.equals(handler.protocol)) return handler;
+        return null;
+    }
+
+
+    private String getProtocol(FullHttpRequest request){
+        return getHeader(request, SEC_WEBSOCKET_PROTOCOL);
+    }
+
+    private String getWebSocketLocation(FullHttpRequest request) {
+        return "ws://" + getHeader(request, HOST) + request.getUri();
+    }
 
 }

@@ -23,6 +23,7 @@ package org.animotron.bridge.http;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.QueryStringDecoder;
+import org.animotron.bridge.http.helper.ErrorHandlerHelper;
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.BinaryExpression;
 import org.animotron.statement.operator.DEF;
@@ -31,32 +32,41 @@ import org.neo4j.graphdb.Relationship;
 import java.util.regex.Pattern;
 
 import static io.netty.handler.codec.http.HttpMethod.GET;
-import static org.animotron.bridge.http.Mime.mime;
+import static io.netty.handler.codec.http.HttpResponseStatus.METHOD_NOT_ALLOWED;
+import static org.animotron.bridge.http.helper.HttpHandlerHelper.sendFile;
+import static org.animotron.bridge.http.helper.MimeHelper.mime;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class ResourceBridgeHandler extends HttpHandler {
+public class ResourceBridgeHandler implements HttpHandler {
+
+    private String uriContext;
 	
 	private final static long MAX_AGE = 31536000;
 
-	public static void handle(ChannelHandlerContext ctx, FullHttpRequest request, String uriContext) {
-        try {
-            if (!isSuccess(ctx, request)) return;
-            if (!isAllowed(ctx, request, GET)) return;
-            QueryStringDecoder uri = new QueryStringDecoder(request.getUri());
-            String id = uri.path().replaceFirst(Pattern.quote(uriContext), "");
-            Relationship r = DEF._.get(id);
-            if (r == null) {
-                throw new ENotFound(null);
-            }
-            sendFile(ctx, request, BinaryExpression.getFile(id), mime(r), "private, max-age=" + MAX_AGE);
-        } catch (Throwable t) {
-            ErrorHandler.handle(ctx, request, t);
-        }
+    public ResourceBridgeHandler (String uriContext) {
+        this.uriContext = uriContext;
+    }
 
-	}
+    @Override
+	public boolean handle(ChannelHandlerContext ctx, FullHttpRequest request) throws Throwable{
+        if (!request.getUri().startsWith(uriContext))
+            return false;
+        if (!request.getMethod().equals(GET)) {
+            ErrorHandlerHelper.handle(ctx, request, METHOD_NOT_ALLOWED);
+            return true;
+        }
+        QueryStringDecoder uri = new QueryStringDecoder(request.getUri());
+        String id = uri.path().replaceFirst(Pattern.quote(uriContext), "");
+        Relationship r = DEF._.get(id);
+        if (r == null) {
+            throw new ENotFound(null);
+        }
+        sendFile(ctx, request, BinaryExpression.getFile(id), mime(r), "private, max-age=" + MAX_AGE);
+        return true;
+    }
 
 }

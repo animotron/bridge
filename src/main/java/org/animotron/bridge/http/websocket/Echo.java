@@ -20,8 +20,14 @@
  */
 package org.animotron.bridge.http.websocket;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
+import javolution.util.FastList;
+
+import java.util.List;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -29,37 +35,30 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
  *
  */
 
-public class Echo {
+public class Echo extends WebSocketHandler<WebSocketFrame> {
 
-//    private static List<Session> set = FastList.newInstance();
-
-    public static void handle(ChannelHandlerContext ctx, WebSocketFrame frame) {
-        //To change body of created methods use File | Settings | File Templates.
+    public Echo(String protocol) {
+        super(protocol);
     }
 
-//
-//    @OnWebSocketMessage
-//    public void onMessage(Session session, String data) {
-//        if (data.isEmpty())
-//            return;
-//        try {
-//            for (Session s : set) {
-//                s.getRemote().sendString(data);
-//            }
-//        } catch (Throwable e) {
-//            //XXX: send error message
-//        }
-//    }
-//
-//    @OnWebSocketConnect
-//    public void onConnect (Session session) {
-//        set.add(session);
-//    }
-//
-//    @OnWebSocketClose
-//    public void onClose (Session session, int status, String reason) {
-//        set.remove(session);
-//    }
-//
+    private static List<Channel> set = FastList.newInstance();
+
+    @Override
+    public void handle(WebSocketServerHandshaker hs, ChannelHandlerContext ctx, WebSocketFrame frame) {
+        for (Channel s : set) {
+            s.write(frame.retain());
+        }
+    }
+
+    @Override
+    public void open(WebSocketServerHandshaker hs, ChannelHandlerContext ctx) {
+        set.add(ctx.channel());
+    }
+
+    @Override
+    public void close(WebSocketServerHandshaker hs, ChannelHandlerContext ctx, CloseWebSocketFrame frame) {
+        super.close(hs, ctx, frame);
+        set.remove(ctx.channel());
+    }
 
 }

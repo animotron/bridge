@@ -20,7 +20,7 @@
  */
 package org.animotron.bridge;
 
-import org.animotron.bridge.http.AbstractRequestExpression;
+import org.animotron.bridge.http.helper.AbstractRequestExpression;
 import org.animotron.exception.AnimoException;
 import org.animotron.expression.AbstractBinaryExpression;
 import org.animotron.expression.AnimoExpression;

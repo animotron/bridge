@@ -38,9 +38,9 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
-import static org.animotron.bridge.http.AbstractRequestExpression.URI;
-import static org.animotron.bridge.http.Mime.EXTENSION;
-import static org.animotron.bridge.http.Mime.MIME_TYPE;
+import static org.animotron.bridge.http.helper.AbstractRequestExpression.URI;
+import static org.animotron.bridge.http.helper.MimeHelper.EXTENSION;
+import static org.animotron.bridge.http.helper.MimeHelper.MIME_TYPE;
 import static org.animotron.expression.Expression.__;
 
 /**

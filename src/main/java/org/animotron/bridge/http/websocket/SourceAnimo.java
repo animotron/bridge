@@ -22,6 +22,8 @@ package org.animotron.bridge.http.websocket;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
+import org.animotron.Executor;
 import org.animotron.statement.operator.DEF;
 import org.neo4j.graphdb.Relationship;
 
@@ -36,26 +38,36 @@ import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class SourceAnimo {
+public class SourceAnimo extends WebSocketHandler<TextWebSocketFrame> {
 
-    public static void handle(ChannelHandlerContext ctx, TextWebSocketFrame frame) {
-        if (frame.text().isEmpty())
-            return;
-        try {
-            Relationship r = DEF._.get(frame.text());
-            if (r != null) {
-                ctx.channel().write(
-                        new TextWebSocketFrame(
-                                PRETTY_ANIMO.serialize(r, CACHE)));
-            } else {
-                //XXX: send error message
+    public SourceAnimo(String protocol) {
+        super(protocol);
+    }
+
+    @Override
+    public void handle(WebSocketServerHandshaker hs, final ChannelHandlerContext ctx, final TextWebSocketFrame frame) {
+        final String def = frame.text();
+        if (def.isEmpty()) return;
+        Executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Relationship r = DEF._.get(def);
+                    if (r != null) {
+                        ctx.channel().write(
+                                new TextWebSocketFrame(
+                                        PRETTY_ANIMO.serialize(r, CACHE)));
+                    } else {
+                        //XXX: send error message
+                    }
+                } catch (Throwable t) {
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+                    t.printStackTrace(pw);
+                    ctx.channel().write(new TextWebSocketFrame(sw.toString()));
+                }
             }
-        } catch (Throwable t) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            t.printStackTrace(pw);
-            ctx.channel().write(new TextWebSocketFrame(sw.toString()));
-        }
+        });
 
     }
 

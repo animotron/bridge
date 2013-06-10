@@ -21,13 +21,7 @@
 package org.animotron.bridge.http.websocket;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
-import org.animotron.Executor;
-import org.animotron.expression.AnimoExpression;
-
-import static org.animotron.bridge.http.HttpServer.CACHE;
-import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO_RESULT;
+import io.netty.handler.codec.http.websocketx.*;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
@@ -35,23 +29,30 @@ import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO_RESULT;
  *
  */
 
-public class EvalAnimo extends WebSocketHandler<TextWebSocketFrame> {
+public abstract class WebSocketHandler<T>{
 
-    public EvalAnimo(String protocol) {
-        super(protocol);
+    public final String protocol;
+
+    public WebSocketHandler () {
+        this(null);
     }
 
-    @Override
-    public void handle(WebSocketServerHandshaker hs, ChannelHandlerContext ctx, TextWebSocketFrame frame) {
-        String exp = frame.text();
-        if (exp.isEmpty()) return;
-        try {
-            ctx.channel().write(
-                    new TextWebSocketFrame(
-                            PRETTY_ANIMO_RESULT.serialize(new AnimoExpression(exp), CACHE)));
-        } catch (Throwable e) {
-            //XXX: send error message
-        }
+    public WebSocketHandler (String protocol) {
+        this.protocol = protocol;
     }
 
+    public abstract void handle(WebSocketServerHandshaker hs, ChannelHandlerContext ctx, T frame);
+
+    public void open(WebSocketServerHandshaker hs, ChannelHandlerContext ctx) {
+
+    }
+
+    public void ping(WebSocketServerHandshaker hs, ChannelHandlerContext ctx, PingWebSocketFrame frame) {
+        frame.content().retain();
+        ctx.channel().write(new PongWebSocketFrame(frame.content()));
+    }
+
+    public void close(WebSocketServerHandshaker hs, ChannelHandlerContext ctx, CloseWebSocketFrame frame) {
+        hs.close(ctx.channel(), frame.retain());
+    }
 }

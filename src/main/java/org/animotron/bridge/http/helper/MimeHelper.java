@@ -18,7 +18,7 @@
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.animotron.bridge.http;
+package org.animotron.bridge.http.helper;
 
 import org.animotron.expression.Expression;
 import org.animotron.statement.compare.WITH;
@@ -37,7 +37,7 @@ import static org.animotron.graph.serializer.Serializer.STRING;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class Mime {
+public class MimeHelper {
 
     public static final String TYPE = "type";
     public static final String MIME_TYPE = "mime-type";

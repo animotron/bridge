@@ -22,6 +22,7 @@ package org.animotron.bridge.http.websocket;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import org.animotron.expression.AnimoExpression;
 import org.animotron.expression.Expression;
 import org.animotron.graph.AnimoGraph;
@@ -35,7 +36,6 @@ import org.neo4j.graphdb.Relationship;
 
 import java.util.Iterator;
 
-import static org.animotron.Executor.execute;
 import static org.animotron.bridge.http.HttpServer.CACHE;
 import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
 import static org.animotron.statement.operator.Utils.THES;
@@ -46,79 +46,66 @@ import static org.neo4j.graphdb.Direction.INCOMING;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class SearchAnimo {
+public class SearchAnimo extends WebSocketHandler<TextWebSocketFrame> {
 
-        public static void handle(final ChannelHandlerContext ctx, final TextWebSocketFrame frame) {
+    public SearchAnimo(String protocol) {
+        super(protocol);
+    }
 
-            if (frame.text().isEmpty())
-                return;
-
-            execute(new Runnable() {
-
-                Pipe pipe = null;
-
-                private void sendThes(Relationship r) throws Throwable {
-                    Iterator<Path> it = THES.traverse(r.getEndNode()).iterator();
-                    while (it.hasNext()) {
-                        ctx.channel().write(
-                                new TextWebSocketFrame(
-                                        PRETTY_ANIMO.serialize(it.next().lastRelationship(), CACHE)));
+    @Override
+    public void handle(WebSocketServerHandshaker hs, final ChannelHandlerContext ctx, final TextWebSocketFrame frame) {
+        final String exp = frame.text().trim();
+        if (exp.isEmpty()) return;
+        try {
+            String e = exp.toLowerCase();
+            if (e.startsWith("node "))
+                sendThes(ctx, AnimoGraph.getDb().getNodeById(Long.valueOf(e.substring(5))));
+            else if (e.startsWith("relationship "))
+                sendThes(ctx, AnimoGraph.getDb().getRelationshipById(Long.valueOf(e.substring(13))));
+            else {
+                Relationship r = DEF._.get(exp);
+                if (r != null) {
+                    ctx.channel().write(
+                            new TextWebSocketFrame(
+                                    PRETTY_ANIMO.serialize(r, CACHE)));
+                } else {
+                    if (exp.indexOf(" ") > 0) {
+                        sendThes(ctx, new AnimoExpression(exp));
                     }
                 }
-
-                private void sendThes(Node n) throws Throwable {
-                    for (Relationship r : n.getRelationships(INCOMING)) {
-                        sendThes(r);
-                    }
-                }
-
-                private void sendThes(Expression e) throws Throwable {
-                    int i = 0;
-                    QCAVector v;
-                    pipe = Evaluator._.execute(null, e);
-                    while ((v = pipe.take()) != null && i < 100) {
-//                    sendThes(v.getClosest());
-                        ctx.channel().write(
-                                new TextWebSocketFrame(
-                                        PRETTY_ANIMO.serialize(v.getClosest(), CACHE)));
-                        i++;
-                    }
-                }
-
-                @Override
-                public void run() {
-                    String exp = frame.text().trim();
-                    try {
-                        String e = exp.toLowerCase();
-                        if (e.startsWith("node ")) {
-                            sendThes(AnimoGraph.getDb().getNodeById(Long.valueOf(e.substring(5))));
-                        } else {
-                            if (e.startsWith("relationship ")) {
-                                e = e.substring(13);
-                            }
-                            sendThes(AnimoGraph.getDb().getRelationshipById(Long.valueOf(e)));
-                        }
-                    } catch (NumberFormatException nfe) {
-                        Relationship r = DEF._.get(exp);
-                        try {
-                            if (r != null) {
-                                ctx.channel().write(
-                                        new TextWebSocketFrame(
-                                                PRETTY_ANIMO.serialize(r, CACHE)));
-                            } else {
-                                if (exp.indexOf(" ") > 0) {
-                                    sendThes(new AnimoExpression(exp));
-                                }
-                            }
-                        } catch (Throwable t) {
-                        }
-                    } catch (Throwable t) {
-                    }
-                }
-            });
-
-
+            }
+        } catch (NumberFormatException nfe) {
+        } catch (Throwable t) {
         }
 
+    }
+
+    private void sendThes(ChannelHandlerContext ctx, Relationship r) throws Throwable {
+        Iterator<Path> it = THES.traverse(r.getEndNode()).iterator();
+        while (it.hasNext()) {
+            ctx.channel().write(
+                    new TextWebSocketFrame(
+                            PRETTY_ANIMO.serialize(it.next().lastRelationship(), CACHE)));
+        }
+    }
+
+    private void sendThes(ChannelHandlerContext ctx, Node n) throws Throwable {
+        for (Relationship r : n.getRelationships(INCOMING)) {
+            sendThes(ctx, r);
+        }
+    }
+
+    private void sendThes(ChannelHandlerContext ctx, Expression e) throws Throwable {
+        int i = 0;
+        QCAVector v;
+        Pipe pipe = Evaluator._.execute(null, e);
+        while ((v = pipe.take()) != null && i < 100) {
+//            sendThes(ctx, v.getClosest());
+            ctx.channel().write(
+                    new TextWebSocketFrame(
+                            PRETTY_ANIMO.serialize(v.getClosest(), CACHE)));
+            i++;
+        }
+    }
 
 }

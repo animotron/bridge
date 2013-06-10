@@ -18,42 +18,45 @@
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.animotron.bridge.http;
+package org.animotron.bridge.http.websocket;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundMessageHandlerAdapter;
-import io.netty.handler.codec.http.FullHttpRequest;
-import org.animotron.bridge.http.helper.ErrorHandlerHelper;
-
-import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
-import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
+import io.netty.handler.codec.http.websocketx.*;
 
 /**
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class HttpServerHandler extends ChannelInboundMessageHandlerAdapter<FullHttpRequest> {
+public class WebSocketServerHandler extends ChannelInboundMessageHandlerAdapter<WebSocketFrame>{
 
-    private static HttpHandler[] handlers;
+    private WebSocketHandler handler;
+    private WebSocketServerHandshaker hs;
 
-    public HttpServerHandler(HttpHandler[] handlers) {
-        this.handlers = handlers;
+    public WebSocketServerHandler(WebSocketHandler handler, WebSocketServerHandshaker hs) {
+        this.handler = handler;
+        this.hs = hs;
     }
 
     @Override
-    public void messageReceived(ChannelHandlerContext ctx, FullHttpRequest request) {
+    public void messageReceived(ChannelHandlerContext ctx, WebSocketFrame frame) throws Exception {
         try {
-            if (request.getDecoderResult().isSuccess()) {
-                for (HttpHandler handler : handlers)
-                    if (handler.handle(ctx, request)) return;
-                ErrorHandlerHelper.handle(ctx, request, NOT_FOUND);
+            if (frame instanceof CloseWebSocketFrame) {
+                frame.retain();
+                handler.close(hs, ctx, (CloseWebSocketFrame) frame);
+                return;
             }
-            ErrorHandlerHelper.handle(ctx, request, BAD_REQUEST);
+            if (frame instanceof PingWebSocketFrame) {
+                handler.ping(hs, ctx, (PingWebSocketFrame) frame);
+                return;
+            }
+            if (frame instanceof WebSocketFrame) {
+                handler.handle(hs, ctx, frame);
+            }
         } catch (Throwable t) {
-            ErrorHandlerHelper.handle(ctx, request, t);
+            throw (Exception) t;
         }
     }
-
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();

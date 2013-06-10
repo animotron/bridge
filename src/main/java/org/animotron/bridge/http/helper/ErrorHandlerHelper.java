@@ -18,7 +18,7 @@
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.animotron.bridge.http;
+package org.animotron.bridge.http.helper;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -39,15 +39,16 @@ import static io.netty.handler.codec.http.HttpHeaders.setHeader;
 import static io.netty.handler.codec.http.HttpResponseStatus.INTERNAL_SERVER_ERROR;
 import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+import static org.animotron.bridge.http.helper.HttpHandlerHelper.sendHttpResponse;
 
 /**
  * 
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  */
-public class ErrorHandler extends HttpHandler {
+public class ErrorHandlerHelper {
 
-	protected static void handle(ChannelHandlerContext ctx, FullHttpRequest request, Throwable x) {
+	public static void handle(ChannelHandlerContext ctx, FullHttpRequest request, Throwable x) {
         try {
             if (x instanceof ENotFound || x instanceof FileNotFoundException) {
                 handle(ctx, request, null, NOT_FOUND);
@@ -66,10 +67,10 @@ public class ErrorHandler extends HttpHandler {
     }
 
     protected static void handle(ChannelHandlerContext ctx, FullHttpRequest request, Throwable x, HttpResponseStatus status) throws Throwable {
-        serialize(ctx, new AnimoRequest(request, status, x), request, new DefaultFullHttpResponse(HTTP_1_1, status));
+        HttpHandlerHelper.serialize(ctx, new AnimoRequest(request, status, x), request, new DefaultFullHttpResponse(HTTP_1_1, status));
     }
 
-    protected static void handle(ChannelHandlerContext ctx, FullHttpRequest request, HttpResponseStatus status) throws Throwable {
+    public static void handle(ChannelHandlerContext ctx, FullHttpRequest request, HttpResponseStatus status) throws Throwable {
         handle(ctx, request, null, status);
     }
 

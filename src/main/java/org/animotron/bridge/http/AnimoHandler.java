@@ -25,6 +25,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
+import org.animotron.bridge.http.helper.AbstractRequestExpression;
+import org.animotron.bridge.http.helper.ErrorHandlerHelper;
 import org.animotron.exception.AnimoException;
 import org.animotron.exception.ENotFound;
 import org.animotron.expression.Expression;
@@ -40,9 +42,9 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 import static io.netty.handler.codec.http.HttpHeaders.getHeader;
 import static io.netty.handler.codec.http.HttpHeaders.setHeader;
 import static io.netty.handler.codec.http.HttpMethod.GET;
-import static io.netty.handler.codec.http.HttpResponseStatus.NOT_MODIFIED;
-import static io.netty.handler.codec.http.HttpResponseStatus.OK;
+import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+import static org.animotron.bridge.http.helper.HttpHandlerHelper.*;
 import static org.animotron.graph.Properties.RUUID;
 import static org.animotron.utils.MessageDigester.getTime;
 import static org.animotron.utils.MessageDigester.uuid;
@@ -52,41 +54,43 @@ import static org.animotron.utils.MessageDigester.uuid;
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  */
-public class AnimoHandler extends HttpHandler {
+public class AnimoHandler implements HttpHandler {
 
-	public static void handle(ChannelHandlerContext ctx, FullHttpRequest request) {
-        try {
-            if (!isSuccess(ctx, request)) return;
-            if (!isAllowed(ctx, request, GET)) return;
-            Expression e = new AnimoRequest(request);
-            UUID uuid;
-            String suuid;
-            if (RUUID.has(e)) {
-                suuid = (String) RUUID.get(e);
-                uuid = uuid(suuid);
-            } else {
-                uuid = uuid();
-                suuid = uuid.toString();
-            }
-            if (suuid.equals(getHeader(request, IF_NONE_MATCH))) {
-                sendStatus(ctx, NOT_MODIFIED);
-            } else {
-                FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK);
-                setDate(response);
-                setLastModified(response, getTime(uuid));
-                setHeader(response, ETAG, suuid);
-                setHeader(response, CACHE_CONTROL, "no-cache");
-                serialize(ctx, e, request, response, suuid);
-            }
-        } catch (Throwable t) {
-            ErrorHandler.handle(ctx, request, t);
+	@Override
+    public boolean handle(ChannelHandlerContext ctx, FullHttpRequest request) throws Throwable{
+        if (!request.getMethod().equals(GET)) {
+            ErrorHandlerHelper.handle(ctx, request, METHOD_NOT_ALLOWED);
+            return false;
         }
-	}
+        Expression e = new AnimoRequest(request);
+        UUID uuid;
+        String suuid;
+        if (RUUID.has(e)) {
+            suuid = (String) RUUID.get(e);
+            uuid = uuid(suuid);
+        } else {
+            uuid = uuid();
+            suuid = uuid.toString();
+        }
+        if (suuid.equals(getHeader(request, IF_NONE_MATCH))) {
+            sendStatus(ctx, NOT_MODIFIED);
+        } else {
+            FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK);
+            setDate(response);
+            setLastModified(response, getTime(uuid));
+            setHeader(response, ETAG, suuid);
+            setHeader(response, CACHE_CONTROL, "no-cache");
+            serialize(ctx, e, request, response, suuid);
+        }
+        return true;
+    }
 
-	protected static class AnimoRequest extends AbstractRequestExpression {
+	private class AnimoRequest extends AbstractRequestExpression {
+
 		private static final int MAX_PARTS_COUNT = 12;
-		private List<String> list = new ArrayList<String>(MAX_PARTS_COUNT);
+		private List<String> list = new ArrayList<>(MAX_PARTS_COUNT);
 		private static final String ROOT = "root";
+
 		public AnimoRequest(FullHttpRequest req) throws Throwable {
 			super(req);
 			String[] parts = req.getUri().split("/");

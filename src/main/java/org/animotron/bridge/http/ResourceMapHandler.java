@@ -23,29 +23,43 @@ package org.animotron.bridge.http;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.QueryStringDecoder;
+import org.animotron.bridge.http.helper.ErrorHandlerHelper;
 
 import java.io.File;
 import java.util.regex.Pattern;
 
 import static io.netty.handler.codec.http.HttpMethod.GET;
-import static org.animotron.bridge.http.Mime.mime;
+import static io.netty.handler.codec.http.HttpResponseStatus.METHOD_NOT_ALLOWED;
+import static org.animotron.bridge.http.helper.HttpHandlerHelper.sendFile;
+import static org.animotron.bridge.http.helper.MimeHelper.mime;
 
 /**
  * @author <a href="mailto:shabanovd@gmail.com">Dmitriy Shabanov</a>
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class ResourceMapHandler extends HttpHandler {
+public class ResourceMapHandler implements HttpHandler {
 
-    public static void handle(ChannelHandlerContext ctx, FullHttpRequest request, String uriContext, File folder) {
-        try {
-            if (!isSuccess(ctx, request)) return;
-            if (!isAllowed(ctx, request, GET)) return;
-            QueryStringDecoder uri = new QueryStringDecoder(request.getUri());
-            File file = new File(folder, uri.path().replaceFirst(Pattern.quote(uriContext), ""));
-            sendFile(ctx, request, file, mime(file), "no-cache");
-        } catch (Throwable t) {
-            ErrorHandler.handle(ctx, request, t);
+    private String uriContext;
+    private File folder;
+
+    public ResourceMapHandler(String uriContext, File folder){
+        this.uriContext = uriContext;
+        this.folder = folder;
+    }
+
+    @Override
+    public boolean handle(ChannelHandlerContext ctx, FullHttpRequest request) throws Throwable {
+        if (!request.getUri().startsWith(uriContext))
+            return false;
+        if (!request.getMethod().equals(GET)) {
+            ErrorHandlerHelper.handle(ctx, request, METHOD_NOT_ALLOWED);
+            return true;
         }
-	}
+        QueryStringDecoder uri = new QueryStringDecoder(request.getUri());
+        File file = new File(folder, uri.path().replaceFirst(Pattern.quote(uriContext), ""));
+        sendFile(ctx, request, file, mime(file), "no-cache");
+        return true;
+    }
+
 }

@@ -22,6 +22,8 @@ package org.animotron.bridge.http.websocket;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
+import org.animotron.Executor;
 import org.animotron.expression.AnimoExpression;
 
 import static org.animotron.bridge.http.HttpServer.CACHE;
@@ -32,15 +34,20 @@ import static org.animotron.graph.serializer.Serializer.PRETTY_ANIMO;
  * @author <a href="mailto:gazdovsky@gmail.com">Evgeny Gazdovsky</a>
  *
  */
-public class SaveAnimo {
+public class SaveAnimo extends WebSocketHandler<TextWebSocketFrame> {
 
-    public static void handle(ChannelHandlerContext ctx, TextWebSocketFrame frame) {
-        if (frame.text().isEmpty())
-            return;
+    public SaveAnimo(String protocol) {
+        super(protocol);
+    }
+
+    @Override
+    public void handle(WebSocketServerHandshaker hs, ChannelHandlerContext ctx, TextWebSocketFrame frame) {
+        String exp = frame.text();
+        if (exp.isEmpty()) return;
         try {
             ctx.channel().write(
                     new TextWebSocketFrame(
-                            PRETTY_ANIMO.serialize(new AnimoExpression(frame.text()), CACHE)));
+                            PRETTY_ANIMO.serialize(new AnimoExpression(exp), CACHE)));
         } catch (Throwable e) {
             //XXX: send error message
         }

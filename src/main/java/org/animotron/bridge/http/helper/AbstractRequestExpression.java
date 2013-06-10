@@ -18,7 +18,7 @@
  *  the GNU Affero General Public License along with Animotron.
  *  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.animotron.bridge.http;
+package org.animotron.bridge.http.helper;
 
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaders.Names;
@@ -51,15 +51,13 @@ public abstract class AbstractRequestExpression extends Expression {
     public static final String SERVER_NAME = "server-name";
 
     protected final FullHttpRequest request;
-    private final String host;
 
     public AbstractRequestExpression(FullHttpRequest request) throws Throwable {
         this.request = request;
-        host = getHeader(request, Names.HOST).split(":")[0];
     }
     
     private String serverName() {
-    	return host;
+    	return getHeader(request, Names.HOST).split(":")[0];
     }
 
     @Override

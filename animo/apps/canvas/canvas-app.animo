@@ -1,0 +1,26 @@
+def canvas-app
+
+    (^html-page)
+    (layout app-layout)
+
+    (title "Canvas")
+
+    (css
+        (bootstrap.css)
+        (bootstrap-responsive.css)
+    )
+
+    (js
+        (jquery.js)
+        (bootstrap.js)
+        (any app.js)
+        (any canvas.js)
+    )
+
+    (style
+        "html, body {overflow: hidden} "
+        ".frame {position: absolute; top: 40px; bottom: 0; left: 0; right: 0;} "
+    )
+
+    (frame "<canvas id='canvas' class='frame'></canvas>")
+

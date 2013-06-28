@@ -12,3 +12,4 @@ def animotron-site
     (IMS IMS-app)
     (e anime-app)
     (q animo-team)
+    (canvas canvas-app)
